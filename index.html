@@ -5,341 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZYSKN ★</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background: #fff;
-            color: #000;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .logo {
-            font-size: 48px;
-            font-weight: 900;
-            letter-spacing: -2px;
-            margin-bottom: 8px;
-        }
-        .tagline {
-            font-size: 14px;
-            letter-spacing: 3px;
-            opacity: 0.6;
-            text-transform: uppercase;
-        }
-        .filters {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-        .main-filters {
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
-        }
-        .sub-filters {
-            display: none;
-            margin-bottom: 20px;
-        }
-        .sub-filters.show {
-            display: block;
-        }
-        .filter-title {
-            font-size: 13px;
-            opacity: 0.5;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 700;
-        }
-        .filter-btn {
-            background: transparent;
-            color: #000;
-            border: 1px solid #ccc;
-            padding: 8px 14px;
-            margin: 4px 3px;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .filter-btn:hover, .filter-btn.active {
-            background: #000;
-            color: #fff;
-            border-color: #000;
-        }
-        .filter-btn.main {
-            font-size: 12px;
-            padding: 10px 20px;
-            font-weight: 700;
-            border-width: 2px;
-        }
-        .products {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 30px;
-            min-height: 200px;
-        }
-        .product {
-            text-align: left;
-            display: none;
-            cursor: pointer;
-            position: relative;
-        }
-        .product.show {
-            display: block;
-        }
-        .product-img-wrap {
-            position: relative;
-            overflow: hidden;
-        }
-        .product-img {
-            width: 100%;
-            aspect-ratio: 3/4;
-            object-fit: cover;
-            background: #f5f5f5;
-            margin-bottom: 12px;
-            transition: transform 0.3s;
-        }
-        .product:hover .product-img {
-            transform: scale(1.03);
-        }
-        .sold-out-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: #000;
-            color: #fff;
-            padding: 6px 12px;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        .product-name {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 4px;
-            text-transform: uppercase;
-        }
-        .product-price {
-            font-size: 14px;
-            opacity: 0.7;
-            margin-bottom: 12px;
-        }
-        .btn {
-            display: block;
-            width: 100%;
-            background: #000;
-            color: #fff;
-            text-decoration: none;
-            padding: 14px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border: none;
-            cursor: pointer;
-            text-align: center;
-        }
-        .btn:hover {
-            opacity: 0.8;
-        }
-        .btn.disabled {
-            background: #eee;
-            color: #999;
-            cursor: not-allowed;
-        }
-        .empty {
-            grid-column: 1 / -1;
-            opacity: 0.3;
-            font-size: 14px;
-            letter-spacing: 1px;
-            padding: 60px 0;
-            text-transform: uppercase;
-            text-align: center;
-        }
-        .contact-section {
-            display: none;
-            text-align: center;
-            padding: 60px 0;
-        }
-        .contact-section.show {
-            display: block;
-        }
-        .contact-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 50px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        .contact-links {
-            display: flex;
-            justify-content: center;
-            gap: 50px;
-            flex-wrap: wrap;
-        }
-        .contact-link {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-            color: #000;
-            text-decoration: none;
-            font-size: 14px;
-            letter-spacing: 1px;
-            transition: all 0.2s;
-        }
-        .contact-link:hover {
-            opacity: 0.6;
-            transform: translateY(-2px);
-        }
-        .contact-icon {
-            width: 48px;
-            height: 48px;
-            border: 2px solid #000;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-        .contact-link:hover .contact-icon {
-            background: #000;
-        }
-        .contact-link:hover .contact-icon svg {
-            fill: #fff;
-        }
-        .contact-icon svg {
-            width: 24px;
-            height: 24px;
-            fill: #000;
-            transition: all 0.2s;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255,255,255,0.98);
-            z-index: 1000;
-            overflow-y: auto;
-            padding: 40px 20px;
-        }
-        .modal.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-content {
-            background: #fff;
-            max-width: 900px;
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            position: relative;
-            border: 1px solid #eee;
-        }
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 30px;
-            cursor: pointer;
-            z-index: 10;
-            line-height: 1;
-        }
-        .modal-img {
-            width: 100%;
-            aspect-ratio: 3/4;
-            object-fit: cover;
-        }
-        .modal-info {
-            padding: 40px 40px 40px 0;
-            text-align: left;
-        }
-        .modal-name {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-        }
-        .modal-price {
-            font-size: 20px;
-            margin-bottom: 24px;
-        }
-        .modal-desc {
-            font-size: 14px;
-            opacity: 0.7;
-            margin-bottom: 24px;
-            line-height: 1.6;
-        }
-        .size-title {
-            font-size: 12px;
-            opacity: 0.5;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .sizes {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-        }
-        .size-btn {
-            border: 1px solid #ccc;
-            background: transparent;
-            color: #000;
-            padding: 10px 16px;
-            font-size: 12px;
-            cursor: pointer;
-        }
-        .size-btn.active, .size-btn:hover {
-            background: #000;
-            color: #fff;
-            border-color: #000;
-        }
-        .footer {
-            font-size: 12px;
-            opacity: 0.4;
-            margin-top: 80px;
-            letter-spacing: 1px;
-            text-align: center;
-        }
-        @media (max-width: 768px) {
-            .modal-content {
-                grid-template-columns: 1fr;
-                gap: 0;
-            }
-            .modal-info {
-                padding: 20px;
-            }
-            .products {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            }
-            .filter-btn {
-                padding: 7px 10px;
-                font-size: 9px;
-            }
-            .contact-links {
-                gap: 30px;
-            }
-        }
+        *{margin:0;padding:0;box-sizing:border-box}body{background:#fff;color:#000;font-family:'Helvetica Neue',Arial,sans-serif}.container{max-width:1200px;margin:0 auto;padding:40px 20px}header{text-align:center;margin-bottom:40px}.logo{font-size:48px;font-weight:900;letter-spacing:-2px;margin-bottom:8px}.tagline{font-size:14px;letter-spacing:3px;opacity:.6;text-transform:uppercase}.filters{text-align:center;margin-bottom:50px}.main-filters{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #eee}.sub-filters{max-height:0;overflow:hidden;transition:max-height .4s ease,opacity .3s ease;opacity:0;margin-bottom:0}.sub-filters.show{max-height:200px;opacity:1;margin-bottom:20px}.filter-title{font-size:13px;opacity:.5;margin-bottom:12px;text-transform:uppercase;letter-spacing:2px;font-weight:700}.filter-btn{background:transparent;color:#000;border:1px solid #ccc;padding:8px 14px;margin:4px 3px;font-size:10px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:all .2s}.filter-btn:hover,.filter-btn.active{background:#000;color:#fff;border-color:#000}.filter-btn.main{font-size:12px;padding:10px 20px;font-weight:700;border-width:2px}.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:30px;min-height:200px}.product{text-align:left;display:none;cursor:pointer;position:relative}.product.show{display:block}.product-img-wrap{position:relative;overflow:hidden}.product-img{width:100%;aspect-ratio:3/4;object-fit:cover;background:#f5f5f5;margin-bottom:12px;transition:transform .3s}.product:hover .product-img{transform:scale(1.03)}.sold-out-badge{position:absolute;top:12px;right:12px;background:#000;color:#fff;padding:6px 12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase}.product-name{font-size:14px;font-weight:700;margin-bottom:4px;text-transform:uppercase}.product-price{font-size:14px;opacity:.7;margin-bottom:12px}.btn{display:block;width:100%;background:#000;color:#fff;text-decoration:none;padding:14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;border:none;cursor:pointer;text-align:center}.btn:hover{opacity:.8}.btn.disabled{background:#eee;color:#999;cursor:not-allowed}.empty{grid-column:1/-1;opacity:.3;font-size:14px;letter-spacing:1px;padding:60px 0;text-transform:uppercase;text-align:center}.contact-section{display:none;text-align:center;padding:60px 0}.contact-section.show{display:block}.contact-title{font-size:24px;font-weight:700;margin-bottom:50px;text-transform:uppercase;letter-spacing:2px}.contact-links{display:flex;justify-content:center;gap:50px;flex-wrap:wrap}.contact-link{display:flex;flex-direction:column;align-items:center;gap:16px;color:#000;text-decoration:none;font-size:14px;letter-spacing:1px;transition:all .2s}.contact-link:hover{opacity:.6;transform:translateY(-2px)}.contact-icon{width:48px;height:48px;border:2px solid #000;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s}.contact-link:hover .contact-icon{background:#000}.contact-link:hover .contact-icon svg{fill:#fff}.contact-icon svg{width:24px;height:24px;fill:#000;transition:all .2s}.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,.98);z-index:1000;overflow-y:auto;padding:40px 20px}.modal.active{display:flex;align-items:center;justify-content:center}.modal-content{background:#fff;max-width:900px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:40px;position:relative;border:1px solid #eee}.modal-close{position:absolute;top:20px;right:20px;font-size:30px;cursor:pointer;z-index:10;line-height:1}.modal-img{width:100%;aspect-ratio:3/4;object-fit:cover}.modal-info{padding:40px 40px 40px 0;text-align:left}.modal-name{font-size:24px;font-weight:700;margin-bottom:12px;text-transform:uppercase}.modal-price{font-size:20px;margin-bottom:24px}.modal-desc{font-size:14px;opacity:.7;margin-bottom:24px;line-height:1.6}.size-title{font-size:12px;opacity:.5;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}.sizes{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}.size-btn{border:1px solid #ccc;background:transparent;color:#000;padding:10px 16px;font-size:12px;cursor:pointer}.size-btn.active,.size-btn:hover{background:#000;color:#fff;border-color:#000}.footer{font-size:12px;opacity:.4;margin-top:80px;letter-spacing:1px;text-align:center}@media(max-width:768px){.modal-content{grid-template-columns:1fr;gap:0}.modal-info{padding:20px}.products{grid-template-columns:repeat(2,1fr);gap:20px}.filter-btn{padding:7px 10px;font-size:9px}.contact-links{gap:30px}}
     </style>
 </head>
 <body>
@@ -348,17 +14,13 @@
             <h1 class="logo">ZYSKN ★</h1>
             <p class="tagline">Curated Vintage. No Restocks.</p>
         </header>
-
         <div class="filters">
-            <!-- CATEGORÍAS PRINCIPALES -->
             <div class="main-filters">
                 <button class="filter-btn main active" onclick="showMainCategory('all')">Todo</button>
                 <button class="filter-btn main" onclick="showMainCategory('arriba')">Arriba</button>
                 <button class="filter-btn main" onclick="showMainCategory('abajo')">Abajo</button>
                 <button class="filter-btn main" onclick="showContact()">Contacto</button>
             </div>
-            
-            <!-- SUBCATEGORÍAS ARRIBA -->
             <div class="sub-filters" id="sub-arriba">
                 <p class="filter-title">Arriba</p>
                 <button class="filter-btn" onclick="filterProducts('remeras')">Remeras</button>
@@ -371,8 +33,6 @@
                 <button class="filter-btn" onclick="filterProducts('hoodies')">Hoodies</button>
                 <button class="filter-btn" onclick="filterProducts('camperas')">Camperas</button>
             </div>
-
-            <!-- SUBCATEGORÍAS ABAJO -->
             <div class="sub-filters" id="sub-abajo">
                 <p class="filter-title">Abajo</p>
                 <button class="filter-btn" onclick="filterProducts('pantalones')">Pantalones</button>
@@ -382,21 +42,9 @@
                 <button class="filter-btn" onclick="filterProducts('shorts')">Shorts</button>
             </div>
         </div>
-
         <div class="products" id="product-grid">
-            <!-- PLANTILLA: COPIÁ ESTO POR CADA PRODUCTO -->
-            <!-- IMPORTANTE: data-section="arriba" o data-section="abajo" -->
             <!--
-            <div class="product show" 
-                 data-section="arriba"
-                 data-category="remeras" 
-                 data-name="VINTAGE TEE 001"
-                 data-price="25000"
-                 data-desc="Remera vintage original 90s. Algodón 100%. Fit oversized. Única pieza."
-                 data-img="LINK_FOTO"
-                 data-sizes="S,M,L,XL"
-                 data-soldout="false"
-                 onclick="openModal(this)">
+            <div class="product show" data-section="arriba" data-category="remeras" data-name="VINTAGE TEE 001" data-price="25000" data-desc="Remera vintage original 90s. Algodón 100%. Fit oversized. Única pieza." data-img="LINK_FOTO" data-sizes="S,M,L,XL" data-soldout="false" onclick="openModal(this)">
                 <div class="product-img-wrap">
                     <img src="LINK_FOTO" alt="NOMBRE" class="product-img">
                 </div>
@@ -404,37 +52,29 @@
                 <p class="product-price">$25.000</p>
             </div>
             -->
-
             <p class="empty">Próximo drop cargando...</p>
         </div>
-
-        <!-- SECCIÓN CONTACTO CON LOGOS MEJORADOS -->
         <div class="contact-section" id="contactSection">
             <h2 class="contact-title">Contacto</h2>
             <div class="contact-links">
                 <a href="https://wa.me/5493544631553" class="contact-link" target="_blank">
                     <div class="contact-icon">
-                        <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm0 18.15c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.264 8.264 0 01-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24 4.54 0 8.24 3.7 8.24 8.24s-3.7 8.24-8.24 8.24zm4.52-6.14c-.25-.12-1.47-.73-1.7-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.98-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.24-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.44.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42h-.48c-.17 0-.44.06-.67.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.07-.11-.24-.19-.49-.31z"/></svg>
+                        <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm0 18.15c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.264 0 01-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24 4.54 0 8.24 3.7 8.24 8.24s-3.7 8.24-8.24 8.24zm4.52-6.14c-.25-.12-1.47-.73-1.7-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.98-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.24-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.44.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42h-.48c-.17 0-.44.06-.67.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.07-.11-.24-.19-.49-.31z"/></svg>
                     </div>
                     <span>WhatsApp</span>
-                    <span style="opacity: 0.5; font-size: 12px;">+54 9 3544 63-1553</span>
+                    <span style="opacity:.5;font-size:12px;">+54 9 3544 63-1553</span>
                 </a>
                 <a href="https://instagram.com/zyskn.vtg" class="contact-link" target="_blank">
                     <div class="contact-icon">
-                        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                     </div>
                     <span>Instagram</span>
-                    <span style="opacity: 0.5; font-size: 12px;">@zyskn.vtg</span>
+                    <span style="opacity:.5;font-size:12px;">@zyskn.vtg</span>
                 </a>
             </div>
         </div>
-
-        <div class="footer">
-            <p>ZYSKN ★ 2026</p>
-        </div>
+        <div class="footer"><p>ZYSKN ★ 2026</p></div>
     </div>
-
-    <!-- MODAL PRODUCTO -->
     <div class="modal" id="productModal">
         <div class="modal-content">
             <span class="modal-close" onclick="closeModal()">&times;</span>
@@ -449,148 +89,13 @@
             </div>
         </div>
     </div>
-
     <script>
-        function showMainCategory(section) {
-            const products = document.querySelectorAll('.product');
-            const buttons = document.querySelectorAll('.filter-btn');
-            const subArriba = document.getElementById('sub-arriba');
-            const subAbajo = document.getElementById('sub-abajo');
-            const contactSection = document.getElementById('contactSection');
-            const productGrid = document.getElementById('product-grid');
-            const emptyMsg = document.querySelector('.empty');
-            
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            subArriba.classList.remove('show');
-            subAbajo.classList.remove('show');
-            contactSection.classList.remove('show');
-            productGrid.style.display = 'grid';
-            
-            let visibleCount = 0;
-            
-            if (section === 'all') {
-                products.forEach(product => {
-                    product.classList.add('show');
-                    visibleCount++;
-                });
-            } else if (section === 'arriba') {
-                subArriba.classList.add('show');
-                products.forEach(product => {
-                    if (product.getAttribute('data-section') === 'arriba') {
-                        product.classList.add('show');
-                        visibleCount++;
-                    } else {
-                        product.classList.remove('show');
-                    }
-                });
-            } else if (section === 'abajo') {
-                subAbajo.classList.add('show');
-                products.forEach(product => {
-                    if (product.getAttribute('data-section') === 'abajo') {
-                        product.classList.add('show');
-                        visibleCount++;
-                    } else {
-                        product.classList.remove('show');
-                    }
-                });
-            }
-
-            if (emptyMsg) {
-                emptyMsg.style.display = visibleCount === 0 && products.length > 0 ? 'block' : 'none';
-            }
-        }
-
-        function filterProducts(category) {
-            const products = document.querySelectorAll('.product');
-            const buttons = document.querySelectorAll('.filter-btn');
-            const emptyMsg = document.querySelector('.empty');
-            
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            let visibleCount = 0;
-            products.forEach(product => {
-                if (product.getAttribute('data-category') === category) {
-                    product.classList.add('show');
-                    visibleCount++;
-                } else {
-                    product.classList.remove('show');
-                }
-            });
-
-            if (emptyMsg) {
-                emptyMsg.style.display = visibleCount === 0 && products.length > 0 ? 'block' : 'none';
-            }
-        }
-
-        function showContact() {
-            const buttons = document.querySelectorAll('.filter-btn');
-            const contactSection = document.getElementById('contactSection');
-            const productGrid = document.getElementById('product-grid');
-            const subArriba = document.getElementById('sub-arriba');
-            const subAbajo = document.getElementById('sub-abajo');
-            
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            subArriba.classList.remove('show');
-            subAbajo.classList.remove('show');
-            productGrid.style.display = 'none';
-            contactSection.classList.add('show');
-        }
-
-        function openModal(el) {
-            const modal = document.getElementById('productModal');
-            const name = el.getAttribute('data-name');
-            const price = el.getAttribute('data-price');
-            const desc = el.getAttribute('data-desc');
-            const img = el.getAttribute('data-img');
-            const sizes = el.getAttribute('data-sizes').split(',');
-            const soldout = el.getAttribute('data-soldout') === 'true';
-
-            document.getElementById('modalName').textContent = name;
-            document.getElementById('modalPrice').textContent = '$' + Number(price).toLocaleString('es-AR');
-            document.getElementById('modalDesc').textContent = desc;
-            document.getElementById('modalImg').src = img;
-
-            const sizesContainer = document.getElementById('modalSizes');
-            sizesContainer.innerHTML = '';
-            sizes.forEach(size => {
-                const btn = document.createElement('button');
-                btn.className = 'size-btn';
-                btn.textContent = size;
-                btn.onclick = () => {
-                    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                };
-                sizesContainer.appendChild(btn);
-            });
-
-            const modalBtn = document.getElementById('modalBtn');
-            if (soldout) {
-                modalBtn.textContent = 'Sold Out';
-                modalBtn.classList.add('disabled');
-                modalBtn.removeAttribute('href');
-            } else {
-                modalBtn.textContent = 'Comprar por WhatsApp';
-                modalBtn.classList.remove('disabled');
-                modalBtn.href = `https://wa.me/5493544631553?text=Hola ZYSKN ★ Quiero el ${name}`;
-            }
-
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            document.getElementById('productModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        document.getElementById('productModal').onclick = function(e) {
-            if (e.target === this) closeModal();
-        }
+        function showMainCategory(section){const products=document.querySelectorAll('.product');const buttons=document.querySelectorAll('.filter-btn.main');const subArriba=document.getElementById('sub-arriba');const subAbajo=document.getElementById('sub-abajo');const contactSection=document.getElementById('contactSection');const productGrid=document.getElementById('product-grid');const emptyMsg=document.querySelector('.empty');buttons.forEach(btn=>btn.classList.remove('active'));event.target.classList.add('active');subArriba.classList.remove('show');subAbajo.classList.remove('show');contactSection.classList.remove('show');productGrid.style.display='grid';let visibleCount=0;if(section==='all'){products.forEach(product=>{product.classList.add('show');visibleCount++})}else if(section==='arriba'){subArriba.classList.add('show');products.forEach(product=>{if(product.getAttribute('data-section')==='arriba'){product.classList.add('show');visibleCount++}else{product.classList.remove('show')}})}else if(section==='abajo'){subAbajo.classList.add('show');products.forEach(product=>{if(product.getAttribute('data-section')==='abajo'){product.classList.add('show');visibleCount++}else{product.classList.remove('show')}})}if(emptyMsg){emptyMsg.style.display=visibleCount===0&&products.length>0?'block':'none'}}
+        function filterProducts(category){const products=document.querySelectorAll('.product');const buttons=document.querySelectorAll('.filter-btn');const emptyMsg=document.querySelector('.empty');buttons.forEach(btn=>btn.classList.remove('active'));event.target.classList.add('active');let visibleCount=0;products.forEach(product=>{if(product.getAttribute('data-category')===category){product.classList.add('show');visibleCount++}else{product.classList.remove('show')}});if(emptyMsg){emptyMsg.style.display=visibleCount===0&&products.length>0?'block':'none'}}
+        function showContact(){const buttons=document.querySelectorAll('.filter-btn.main');const contactSection=document.getElementById('contactSection');const productGrid=document.getElementById('product-grid');const subArriba=document.getElementById('sub-arriba');const subAbajo=document.getElementById('sub-abajo');buttons.forEach(btn=>btn.classList.remove('active'));event.target.classList.add('active');subArriba.classList.remove('show');subAbajo.classList.remove('show');productGrid.style.display='none';contactSection.classList.add('show')}
+        function openModal(el){const modal=document.getElementById('productModal');const name=el.getAttribute('data-name');const price=el.getAttribute('data-price');const desc=el.getAttribute('data-desc');const img=el.getAttribute('data-img');const sizes=el.getAttribute('data-sizes').split(',');const soldout=el.getAttribute('data-soldout')==='true';document.getElementById('modalName').textContent=name;document.getElementById('modalPrice').textContent='$'+Number(price).toLocaleString('es-AR');document.getElementById('modalDesc').textContent=desc;document.getElementById('modalImg').src=img;const sizesContainer=document.getElementById('modalSizes');sizesContainer.innerHTML='';sizes.forEach(size=>{const btn=document.createElement('button');btn.className='size-btn';btn.textContent=size;btn.onclick=()=>{document.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active')};sizesContainer.appendChild(btn)});const modalBtn=document.getElementById('modalBtn');if(soldout){modalBtn.textContent='Sold Out';modalBtn.classList.add('disabled');modalBtn.removeAttribute('href')}else{modalBtn.textContent='Comprar por WhatsApp';modalBtn.classList.remove('disabled');modalBtn.href=`https://wa.me/5493544631553?text=Hola ZYSKN ★ Quiero el ${name}`}modal.classList.add('active');document.body.style.overflow='hidden'}
+        function closeModal(){document.getElementById('productModal').classList.remove('active');document.body.style.overflow='auto'}
+        document.getElementById('productModal').onclick=function(e){if(e.target===this)closeModal()}
     </script>
 </body>
-</html>
+</html>v
