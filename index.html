@@ -179,11 +179,11 @@
             justify-content: center;
         }
 
-        /* Sub-navigation con Slide Lento */
+        /* Sub-navigation con Slide Rápido */
         .sub-nav-wrapper {
             overflow: hidden;
             max-height: 0;
-            transition: max-height 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Slide más rápido */
             background: #fff;
             text-align: center;
         }
@@ -199,9 +199,9 @@
             flex-wrap: wrap;
             gap: 24px;
             padding: 30px 0;
-            transform: translateY(-20px);
+            transform: translateY(-10px);
             opacity: 0;
-            transition: transform 0.7s ease, opacity 0.7s ease;
+            transition: transform 0.3s ease, opacity 0.3s ease;
         }
 
         .sub-nav.show {
@@ -430,7 +430,7 @@
                 <button class="nav-link active" onclick="showMainCategory('all', this)">TODO</button>
                 <button class="nav-link" onclick="showMainCategory('arriba', this)">ARRIBA</button>
                 <button class="nav-link" onclick="showMainCategory('abajo', this)">ABAJO</button>
-                <button class="nav-link" onclick="scrollToSection('contact')">CONTACT</button>
+                <button class="nav-link" onclick="scrollToSection('contact')">contacto</button>
             </nav>
 
             <div class="nav-actions">
@@ -544,6 +544,7 @@
 
         let cart = JSON.parse(localStorage.getItem('zyskn_cart')) || [];
         let selectedSize = null;
+        let currentSection = null;
 
         window.onload = () => {
             renderProducts(products);
@@ -567,9 +568,20 @@
         }
 
         function showMainCategory(section, btn) {
-            // Corrección Robusta de Scroll: 
-            // Si el usuario está scrolleado más allá de la mitad de la página o en contacto, subimos.
-            const threshold = window.innerHeight * 0.5;
+            const wrapper = document.getElementById('sub-nav-wrapper');
+            const allSubs = document.querySelectorAll('.sub-nav');
+            
+            // Toggle: Si presionas la misma sección que ya está abierta, se cierra.
+            if (currentSection === section) {
+                wrapper.classList.remove('show');
+                allSubs.forEach(s => s.classList.remove('show'));
+                currentSection = null;
+                btn.classList.remove('active');
+                return;
+            }
+
+            // Scroll suave si el usuario está muy abajo
+            const threshold = window.innerHeight * 0.4;
             if (window.scrollY > threshold) {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
@@ -577,15 +589,14 @@
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             btn.classList.add('active');
             
-            const wrapper = document.getElementById('sub-nav-wrapper');
-            const allSubs = document.querySelectorAll('.sub-nav');
-            
             if(section === 'all') {
                 wrapper.classList.remove('show');
                 renderProducts(products);
+                currentSection = 'all';
                 return;
             }
 
+            // Cambio rápido entre secciones
             wrapper.classList.remove('show');
             allSubs.forEach(s => s.classList.remove('show'));
 
@@ -594,7 +605,8 @@
                 const target = document.getElementById(`sub-${section}`);
                 target.classList.add('show');
                 renderProducts(products.filter(p => p.section === section));
-            }, 150);
+                currentSection = section;
+            }, 50); // Delay mínimo para rapidez
         }
 
         function filterProducts(cat, btn) {
@@ -657,3 +669,4 @@
     </script>
 </body>
 </html>
+
