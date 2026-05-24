@@ -346,6 +346,10 @@ function updateQty(index, delta){
     if(cart[index].qty <=0) cart.splice(index,1);
     saveCart();
 }
+function removeItem(index){
+    cart.splice(index,1);
+    saveCart();
+}
 function saveCart(){ localStorage.setItem('zyskn_cart', JSON.stringify(cart)); updateCartUI(); }
 function updateCartUI(){
     const container = document.getElementById('cart-items-container');
@@ -359,17 +363,18 @@ function updateCartUI(){
     } else {
         container.innerHTML = cart.map((item,i)=>{
             total += item.price * item.qty;
-            return `<div class="cart-item">
+            return `<div class="cart-item" style="position:relative;padding-right:24px">
                 <img src="${item.img}" class="cart-item-img" alt="">
                 <div class="cart-item-info">
                     <p class="cart-item-name">${item.name}</p>
-                    <p class="cart-item-details">TALLE: ${item.talle} | $${item.price.toLocaleString('es-AR')}</p>
+                    <p class="cart-item-details">Talle: ${item.talle}</p>
                     <div class="cart-qty-control">
                         <button class="qty-btn" onclick="updateQty(${i},-1)">-</button>
                         <span style="font-size:12px;width:20px;text-align:center">${item.qty}</span>
                         <button class="qty-btn" onclick="updateQty(${i},1)">+</button>
                     </div>
                 </div>
+                <button onclick="removeItem(${i})" style="position:absolute;top:-4px;right:0;background:none;border:none;font-size:22px;cursor:pointer;opacity:0.35;line-height:1" aria-label="Eliminar">&times;</button>
             </div>`;
         }).join('');
     }
