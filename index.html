@@ -7,11 +7,27 @@
   <meta name="description" content="ZYSKN ★ - Curated Vintage & Streetwear. No Restocks. Piezas únicas seleccionadas. Envíos a todo el país.">
   <link rel="icon" type="image/jpeg" href="./favicon.jpeg">
   <link rel="apple-touch-icon" href="./favicon.jpeg">
-  
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://zyskn.github.io/">
+  <meta property="og:title" content="ZYSKN | EST. 2026">
+  <meta property="og:description" content="Proximamente... Córdoba, Argentina.">
+  <meta property="og:image" content="https://zyskn.github.io/open%20graph.jpeg">
+  <meta property="og:image:secure_url" content="https://zyskn.github.io/open%20graph.jpeg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="ZYSKN">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ZYSKN | EST. 2026">
+  <meta name="twitter:description" content="Proximamente... Córdoba, Argentina.">
+  <meta name="twitter:image" content="https://zyskn.github.io/open%20graph.jpeg">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://zyskn.github.io/">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
-  
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
@@ -19,10 +35,10 @@
       --gray-bg: #F5F5F5;
       --text-muted: #666;
       --blue: #3B82F6;
-      --red: #D00000;
+      --red: #EF4444;
       --whatsapp: #25D366;
       --instagram: #E4405F;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1 );
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       --container-max: 1200px;
     }
 
@@ -34,43 +50,12 @@
       line-height: 1.4;
       overflow-x: hidden;
       position: relative;
-      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" result="noise" seed="2"/><feColorMatrix in="noise" type="saturate" values="0"/><feBlend in="SourceGraphic" in2="noise" mode="overlay"/></filter><rect width="200" height="200" fill="rgba(0,0,0,0.008 )" filter="url(%23noise)"/></svg>');
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" result="noise" seed="2"/><feColorMatrix in="noise" type="saturate" values="0"/><feBlend in="SourceGraphic" in2="noise" mode="overlay"/></filter><rect width="200" height="200" fill="rgba(0,0,0,0.008)" filter="url(%23noise)"/></svg>');
       background-size: 200px 200px;
       background-attachment: fixed;
     }
 
-    /* BARRA SUPERIOR ROJA (CSS) */
-    .top-bar {
-      background: var(--red);
-      color: #fff;
-      padding: 10px 0;
-      font-size: 0.85rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      overflow: hidden;
-      white-space: nowrap;
-      position: relative;
-      z-index: 1000;
-    }
-    .marquee-content {
-      display: inline-block;
-      animation: marquee-infinite 25s linear infinite;
-      padding-left: 100%;
-    }
-    .marquee-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      margin-right: 60px;
-    }
-    .marquee-item svg { width: 16px; height: 16px; fill: currentColor; }
-    @keyframes marquee-infinite {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-100%); }
-    }
-
-    /* ESTILOS DEL HEADER (DENTRO DEL STYLE) */
+    /* HEADER */
     header {
       position: sticky;
       top: 0;
@@ -79,41 +64,174 @@
       backdrop-filter: blur(10px);
       border-bottom: 1px solid #000;
       transition: padding 0.3s var(--transition);
-      padding: 2rem 3rem;
+      padding: 2rem 3rem; /* Header más grande */
     }
     header.scrolled { padding: 1.2rem 3rem; }
 
-    /* AQUÍ DEBES PEGAR EL RESTO DE TUS ESTILOS (.header-content, .logo, etc.) */
+    .header-content {
+      max-width: 100%; /* Ocupar todo el ancho */
+      padding: 0 1rem; /* Pequeño margen de seguridad */
+      margin: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-section { display: flex; flex-direction: column; cursor: pointer; }
+    .logo { font-size: 2.4rem; font-weight: 900; letter-spacing: -0.02em; text-transform: uppercase; } /* Logo más grande */
+    .logo-slogan { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
+
+    .nav-main { display: flex; gap: 3rem; align-items: center; }
+    .nav-item { position: relative; padding: 1.5rem 0; }
+    .nav-main a {
+      font-size: 0.95rem; /* Navegación más grande */
+      font-weight: 600;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #000;
+      cursor: pointer;
+      position: relative;
+      padding-bottom: 0.25rem;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.3s var(--transition);
+    }
+    .nav-main a:hover { border-bottom-color: #000; }
+
+    .sub-nav-wrapper {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #fff;
+      border: 1px solid #000;
+      width: 240px; /* Submenú más ancho */
+      padding: 0.75rem 0;
+      display: none;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s var(--transition);
+      pointer-events: none;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .nav-item:hover .sub-nav-wrapper {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .sub-nav-item {
+      font-size: 0.85rem; /* Subcategorías más grandes */
+      font-weight: 600;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 0.8rem 1.5rem;
+      transition: all 0.2s var(--transition);
+    }
+    .sub-nav-item:hover { background: var(--gray-bg); padding-left: 2rem; }
+
+    .nav-icons { display: flex; gap: 1.5rem; align-items: center; }
+    .icon-btn {
+      background: none; border: none; cursor: pointer;
+      padding: 0.5rem; transition: transform 0.2s var(--transition);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .icon-btn svg { width: 24px; height: 24px; fill: currentColor; } /* Iconos más grandes */
+    .icon-btn:hover { transform: scale(1.1); }
+    .search-icon { color: var(--blue); }
+    .cart-icon { color: var(--red); }
+
+    .auth-status { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; cursor: pointer; color: #000; }
+    .auth-status:hover { opacity: 0.7; }
+
+    .cart-badge {
+      position: absolute; top: -2px; right: -2px;
+      background: #000; color: #fff;
+      width: 16px; height: 16px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem; font-weight: 700;
+    }
+
+    /* HERO */
+    .hero {
+      height: 80vh; min-height: 500px;
+      background: linear-gradient(135deg, #000 0%, #333 100%);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; text-align: center;
+    }
+    .hero h1 { font-size: clamp(2rem, 7vw, 4.5rem); font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; }
+
+    .btn {
+      display: inline-block; padding: 0.8rem 1.8rem;
+      background: #fff; color: #000; border: 2px solid #fff;
+      font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+      cursor: pointer; transition: var(--transition); text-decoration: none;
+      margin-top: 1.5rem;
+    }
+    .btn:hover { background: #000; color: #fff; transform: scale(1.05); }
+
+    /* FOOTER */
+    footer { background: #000; color: #fff; padding: 2rem; margin-top: 4rem; }
+    .footer-container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    .footer-brand h2 { font-size: 1.1rem; font-weight: 900; margin: 0; color: #fff; }
+    .footer-brand hr { border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 8px 0; width: 100%; }
+    .footer-brand p { font-size: 0.7rem; color: #999; margin-top: 2px; }
+
+    .footer-rights p { font-size: 0.7rem; color: #666; margin: 0; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* SHOP */
+    #shop { padding: 4rem 2rem; max-width: var(--container-max); margin: 0 auto; }
+    .section-title { font-size: clamp(1.4rem, 4vw, 2.2rem); font-weight: 900; text-transform: uppercase; margin-bottom: 2.5rem; letter-spacing: -0.02em; }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
+    .product-card { cursor: pointer; transition: transform 0.3s var(--transition); }
+    .product-image { width: 100%; aspect-ratio: 3/4; background: var(--gray-bg); overflow: hidden; margin-bottom: 0.8rem; }
+    .product-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s var(--transition); }
+    .product-card:hover .product-image img { transform: scale(1.05); }
+
+    /* MODAL GENERAL */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); z-index: 200; align-items: center; justify-content: center; }
+    .modal.active { display: flex; }
+    .modal-content { background: #fff; width: 90%; max-width: 800px; padding: 2rem; position: relative; }
+    .modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+
+    /* AUTH MODAL */
+    .auth-modal-content { max-width: 400px; text-align: center; }
+    .auth-form { margin-top: 1.5rem; text-align: left; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.3rem; }
+    .form-group input { width: 100%; padding: 0.6rem; border: 1px solid #000; font-size: 0.8rem; outline: none; }
+    .auth-toggle { font-size: 0.7rem; color: #666; margin-top: 1rem; cursor: pointer; text-decoration: underline; }
+
+    /* CART SIDEBAR */
+    .cart-sidebar {
+      position: fixed; right: -100%; top: 0; width: 400px; height: 100vh;
+      background: #fff; border-left: 1px solid #000; z-index: 150;
+      transition: right 0.3s var(--transition); display: flex; flex-direction: column;
+    }
+    .cart-sidebar.active { right: 0; }
+    .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: 140; display: none; }
+    .cart-overlay.active { display: block; }
+
+    @media (max-width: 768px) {
+      .nav-main { display: none; }
+      .cart-sidebar { width: 100%; }
+      .footer-container { flex-direction: column; text-align: center; }
+      .footer-rights { text-align: center; }
+      .modal-content { grid-template-columns: 1fr; padding: 1.5rem; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- BARRA SUPERIOR ROJA (HTML) -->
-  <div class="top-bar">
-    <div class="marquee-content">
-      <div class="marquee-item">
-        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.805.249 2.227.412.56.216.96.474 1.38.894.42.42.678.82.894 1.38.163.422.358 1.057.412 2.227.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.249 1.805-.412 2.227-.216.56-.474.96-.894 1.38-.42.42-.82.678-1.38.894-.422.163-1.057.358-2.227.412-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.805-.249-2.227-.412-.56-.216-.96-.474-1.38-.894-.42-.42-.678-.82-.894-1.38-.163-.422-.358-1.057-.412-2.227-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.054-1.17.249-1.805.412-2.227.216-.56.474-.96.894-1.38.42-.42.82-.678 1.38-.894.422-.163 1.057-.358 2.227-.412 1.266-.058 1.646-.07 4.85-.07ZM12 0C8.741 0 8.333.014 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.741 0 12s.014 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126s1.337 1.078 2.126 1.384c.766.296 1.636.499 2.913.558C8.333 23.986 8.741 24 12 24s3.667-.014 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384s1.078-1.337 1.384-2.126c.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.014-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126s-1.337-1.078-2.126-1.384c-.765-.296-1.636-.499-2.913-.558C15.667.012 15.259 0 12 0Zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324ZM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881Z"/></svg>
-        <span>@zyskn.vintage</span>
-      </div>
-      <div class="marquee-item">
-        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.001c0 2.1.547 4.15 1.588 5.95L0 24l7.135-1.872a11.876 11.876 0 005.481 1.311h.005c6.554 0 11.89-5.335 11.893-12.001a11.934 11.934 0 00-3.51-8.413Z"/></svg>
-        <span>+54 9 3544 631553</span>
-      </div>
-      <!-- Repetición para efecto infinito -->
-      <div class="marquee-item">
-        <svg viewBox="0 0 24 24">...</svg>
-        <span>@zyskn.vintage</span>
-      </div>
-      <div class="marquee-item">
-        <svg viewBox="0 0 24 24">...</svg>
-        <span>+54 9 3544 631553</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- AQUÍ EMPIEZA TU HEADER ORIGINAL -->
   <header id="header">
-
     <div class="header-content">
       <div class="logo-section" onclick="scrollToTop()">
         <span class="logo">ZYSKN ★</span>
@@ -207,7 +325,7 @@
     <div class="modal-content auth-modal-content">
       <button class="modal-close" onclick="closeAuthModal()">✕</button>
       <h2 id="authTitle">INICIAR SESIÓN</h2>
-      
+
       <div class="auth-form" id="loginForm">
         <div class="form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="tu@email.com"></div>
         <div class="form-group"><label>Contraseña</label><input type="password" id="loginPass" placeholder="••••••••"></div>
@@ -248,7 +366,7 @@
   <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
   <div class="cart-sidebar" id="cartSidebar">
     <div style="padding:1.5rem; border-bottom:1px solid #000; display:flex; justify-content:space-between"><h3>TU CARRITO</h3><button onclick="toggleCart()" style="background:none; border:none; cursor:pointer; font-size:1.5rem">✕</button></div>
-    
+
     <!-- CONTENEDOR CON SCROLL -->
     <div style="flex:1; overflow-y:auto; display:flex; flex-direction:column">
       <div id="cartItems" style="padding:1rem"></div>
@@ -262,6 +380,7 @@
         <div class="form-group"><label>Dirección de Correo Argentino</label><input type="text" id="orderShippingAddr"></div>
         <div class="form-group"><label>DNI</label><input type="text" id="orderDni"></div>
         <div class="form-group"><label>Celular</label><input type="tel" id="orderPhone"></div>
+      </div>
         </div>
     </div>
 
@@ -342,10 +461,10 @@
       const email = document.getElementById('regEmail').value;
       const pass = document.getElementById('regPass').value;
       if(!name || !email || pass.length < 6) { alert('Completa todos los datos (contraseña min 6 caracteres)'); return; }
-      
+
       let users = getUsersDB();
       if(users.find(u => u.email === email)) { alert('Este email ya está registrado'); return; }
-      
+
       users.push({name, email, pass});
       saveUserDB(users);
       alert('Registro exitoso. Ya puedes iniciar sesión.');
@@ -357,7 +476,7 @@
       const pass = document.getElementById('loginPass').value;
       let users = getUsersDB();
       const user = users.find(u => u.email === email && u.pass === pass);
-      
+
       if(user) {
         currentUser = user;
         localStorage.setItem('zyskn_current_user', JSON.stringify(user));
@@ -387,7 +506,7 @@
 
     function showMainCategory(s, e) { if(e) e.preventDefault(); renderProducts(s==='todo'?products:products.filter(p=>p.section===s)); scrollToSection('shop'); }
     function filterProducts(c) { renderProducts(products.filter(p=>p.category===c)); scrollToSection('shop'); }
-    
+
     function openModal(id) {
       currentProduct = products.find(p=>p.id===id); selectedSize = null;
       document.getElementById('modalName').textContent = currentProduct.name;
@@ -397,26 +516,26 @@
       document.getElementById('sizeOptions').innerHTML = currentProduct.sizes.map(s=>`<button onclick="setS('${s}', this)" style="padding:0.5rem 1rem; border:1px solid #000; background:#fff; cursor:pointer; font-size:0.75rem">${s}</button>`).join('');
       document.getElementById('productModal').classList.add('active');
     }
-    
+
     function setS(s, btn) {
       selectedSize = s;
       document.querySelectorAll('#sizeOptions button').forEach(b=>b.style.background='#fff');
       btn.style.background = '#eee';
     }
-    
+
     function closeModal() { document.getElementById('productModal').classList.remove('active'); }
     function closeModalIfOutside(e) { if(e.target.id==='productModal') closeModal(); }
     function toggleCart() { document.getElementById('cartSidebar').classList.toggle('active'); document.getElementById('cartOverlay').classList.toggle('active'); }
-    
+
     function addToCartFromModal() {
       if(!selectedSize){alert('Selecciona talle'); return;}
       cart.push({...currentProduct, size:selectedSize}); updateCartUI(); closeModal();
     }
-    
+
     function updateCartUI() {
       const badge = document.getElementById('cartBadge');
       badge.textContent = cart.length; badge.style.display = cart.length?'flex':'none';
-      
+
       const form = document.getElementById('cartDataForm');
       form.style.display = cart.length > 0 ? 'block' : 'none';
 
@@ -433,10 +552,10 @@
       cart.splice(index, 1);
       updateCartUI();
     }
-    
+
     function shareOnWhatsApp() {
       if(cart.length === 0) { alert('El carrito está vacío'); return; }
-      
+
       const name = document.getElementById('orderName').value;
       const location = document.getElementById('orderLocation').value;
       const email = document.getElementById('orderEmail').value;
@@ -462,18 +581,18 @@
       t += `- Sucursal Correo Argentino: ${shipping}\n`;
       t += `- DNI: ${dni}\n`;
       t += `- Celular: ${phone}\n\n`;
-      
+
       t += `PRODUCTOS:\n`;
       cart.forEach(i=>t+=`- ${i.name} (${i.size})\n`);
       t += `\nTOTAL: $${cart.reduce((s,i)=>s+i.price,0).toLocaleString('es-AR')}`;
-      
+
       window.open(`https://wa.me/5493544631553?text=${encodeURIComponent(t)}`, '_blank');
     }
-    
+
     function setupScrollListener() { window.addEventListener('scroll', () => { const h=document.getElementById('header'); if(window.scrollY>50) h.classList.add('scrolled'); else h.classList.remove('scrolled'); }); }
     function scrollToSection(id) { document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
     function scrollToTop() { window.scrollTo({top:0, behavior:'smooth'}); }
-    
+
     init();
   </script>
 </body>
