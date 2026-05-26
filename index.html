@@ -497,12 +497,12 @@
           </div>
           <div style="margin-bottom:3rem;">
             <p style="font-size:0.8rem; font-weight:900; text-transform:uppercase; margin-bottom:1.5rem; border-bottom:1px solid #000; display:inline-block;">Datos de Envío</p>
-            <div class="form-group"><label>Nombre Completo</label><input type="text" id="orderName"></div>
-            <div class="form-group"><label>Localidad / Ciudad</label><input type="text" id="orderLocation"></div>
-            <div class="form-group"><label>Email</label><input type="email" id="orderEmail"></div>
-            <div class="form-group"><label>Sucursal Correo Argentino</label><input type="text" id="orderShippingAddr" placeholder="Ej: Sucursal Centro"></div>
-            <div class="form-group"><label>DNI</label><input type="text" id="orderDni"></div>
-            <div class="form-group"><label>Celular</label><input type="text" id="orderPhone"></div>
+<div class="form-group"><label>Nombre y Apellido *</label><input type="text" id="orderName" required></div>
+<div class="form-group"><label>DNI *</label><input type="text" id="orderDni" required></div>
+<div class="form-group"><label>Celular *</label><input type="tel" id="orderPhone" placeholder="Ej: 3544631553" required></div>
+<div class="form-group"><label>Email</label><input type="email" id="orderEmail" placeholder="Para enviarte el seguimiento"></div>
+<div class="form-group"><label>Ciudad y Provincia *</label><input type="text" id="orderLocation" placeholder="Ej: La Paz, Córdoba" required></div>
+<div class="form-group"><label>Sucursal para retirar o Dirección de envío</label><input type="text" id="orderShippingAddr" placeholder="Ej: Sucursal Centro o Calle Falsa 123"></div>
           </div>
           <div class="yellow-warning">RECUERDA COMPLETAR TODOS LOS DATOS PARA AGILIZAR TU PEDIDO</div>
           <button class="btn" onclick="shareOnWhatsApp()" style="width:100%; background:#25D366; color:#fff; border:none; padding:1rem; font-size:1rem; font-weight:900; margin-top:0;">COMPLETAR PEDIDO POR WHATSAPP</button>
@@ -774,18 +774,52 @@
       document.getElementById('registerForm').style.display = type === 'register' ? 'block' : 'none';
     }
 
-    function shareOnWhatsApp() {
-      if(cart.length === 0) { alert('El carrito está vacío'); return; }
-      const fields = ['orderName', 'orderLocation', 'orderEmail', 'orderShippingAddr', 'orderDni', 'orderPhone'];
-      const values = fields.map(f => document.getElementById(f).value);
-      if(values.some(v => !v)) { alert('Por favor, completa todos los datos de envío.'); return; }
-      const now = new Date();
-      let t = `ZYSKN ★ - NUEVO PEDIDO\nFecha: ${now.toLocaleDateString()} | Hora: ${now.toLocaleTimeString()}\n\n`;
-      t += `CLIENTE: ${values[0]}\nUbicación: ${values[1]}\nCorreo: ${values[2]}\nSucursal: ${values[3]}\nDNI: ${values[4]}\nCelular: ${values[5]}\n\n`;
-      t += `PRODUCTOS:\n` + cart.map(i=>`- ${i.name} (${i.size})`).join('\n');
-      t += `\n\nTOTAL: $${cart.reduce((s,i)=>s+i.price,0).toLocaleString('es-AR')}`;
-      window.open(`https://wa.me/5493544631553?text=${encodeURIComponent(t)}`, '_blank');
-    }
+function shareOnWhatsApp() {
+  if (cart.length === 0) { 
+    alert('El carrito está vacío'); 
+    return; 
+  }
+  
+  const nombre = document.getElementById('orderName').value.trim();
+  const localidad = document.getElementById('orderLocation').value.trim();
+  const email = document.getElementById('orderEmail').value.trim();
+  const sucursal = document.getElementById('orderShippingAddr').value.trim();
+  const dni = document.getElementById('orderDni').value.trim();
+  const celular = document.getElementById('orderPhone').value.trim();
+  
+  // Solo obligatorios: nombre, localidad, dni, celular
+  if (!nombre || !localidad || !dni || !celular) { 
+    alert('Completá Nombre, Ciudad, DNI y Celular'); 
+    return; 
+  }
+  
+  const now = new Date();
+  const fecha = now.toLocaleDateString('es-AR');
+  const hora = now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+  
+  let t = `ZYSKN ★ - NUEVO PEDIDO%0A`;
+  t += `Fecha: ${fecha} | Hora: ${hora}%0A%0A`;
+  
+  t += `*DATOS DEL CLIENTE*%0A`;
+  t += `- Nombre: ${nombre}%0A`;
+  t += `- DNI: ${dni}%0A`;
+  t += `- Celular: ${celular}%0A`;
+  t += `- Correo: ${email || 'No informado'}%0A`;
+  t += `- Ubicación: ${localidad}%0A`;
+  t += `- Sucursal Correo: ${sucursal || 'Coordinar'}%0A%0A`;
+  
+  t += `*PRODUCTOS*%0A`;
+  let total = 0;
+  cart.forEach(i => {
+    const subtotal = i.price * i.qty;
+    t += `• ${i.title} ${i.size ? `(Talle ${i.size})` : ''} x${i.qty} - $${subtotal.toLocaleString('es-AR')}%0A`;
+    total += subtotal;
+  });
+  
+  t += `%0A*TOTAL: $${total.toLocaleString('es-AR')}*%0A`;
+  
+  window.open(`https://wa.me/5493544631553?text=${t}`, '_blank');
+}
 
     function setupScrollListener() { 
       window.addEventListener('scroll', () => { 
