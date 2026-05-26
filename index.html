@@ -43,7 +43,6 @@
       --container-max: 1200px;
     }
 
-    /* EFECTO DE ENTRADA NEGRO 450MS */
     #supreme-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: #000; z-index: 9999;
@@ -72,7 +71,6 @@
       100% { filter: brightness(1); }
     }
 
-    /* BARRA SUPERIOR ROJA */
     .top-bar {
       background: var(--red);
       color: #fff;
@@ -104,7 +102,6 @@
       100% { transform: translateX(-100%); }
     }
 
-    /* HEADER */
     header {
       position: sticky;
       top: 0;
@@ -131,7 +128,8 @@
     .logo { font-size: 2.4rem; font-weight: 900; letter-spacing: -0.02em; text-transform: uppercase; }
     .logo-slogan { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
 
-    /* CONTENEDOR NAVEGACIÓN Y BUSCADOR */
+    .hamburger { display: none; }
+
     .nav-container {
       display: flex;
       align-items: center;
@@ -205,7 +203,6 @@
     }
     .sub-nav-item:hover { background: var(--gray-bg); padding-left: 2rem; }
 
-    /* BUSCADOR BURBUJA CON MARGEN CELESTE */
     .search-wrapper {
       display: flex;
       align-items: center;
@@ -228,18 +225,18 @@
     .search-input-container input {
       width: 100%;
       padding: 0.8rem 1.5rem;
-      border: 2px solid var(--celeste); /* Borde celeste */
-      border-radius: 50px; /* Forma de burbuja */
+      border: 2px solid var(--celeste);
+      border-radius: 50px;
       outline: none;
       font-family: inherit;
       font-size: 0.9rem;
       text-transform: uppercase;
       font-weight: 700;
       background: #fff;
-      box-shadow: 0 4px 15px rgba(135, 206, 235, 0.2); /* Sombra suave celeste */
+      box-shadow: 0 4px 15px rgba(135, 206, 235, 0.2);
     }
 
-    .nav-icons { display: flex; gap: 1.5rem; align-items: center; flex-shrink: 0; }
+    .nav-actions { display: flex; gap: 1.5rem; align-items: center; flex-shrink: 0; }
     .icon-btn {
       background: none; border: none; cursor: pointer;
       padding: 0.5rem; transition: transform 0.2s var(--transition);
@@ -301,10 +298,9 @@
     .form-group label { display: block; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.3rem; }
     .form-group input { width: 100%; padding: 0.6rem; border: 1px solid #000; font-size: 0.8rem; outline: none; }
 
-    /* CONTACT ICONS NEGROS CON HOVER A COLOR */
     .contact-icon-btn {
       width: 70px; height: 70px; border-radius: 50%; 
-      background: #000; /* Fondo negro por defecto */
+      background: #000;
       display: flex; align-items: center; justify-content: center; 
       color: #fff; 
       margin: 0 auto 0.8rem auto; 
@@ -312,9 +308,7 @@
     }
     .contact-icon-btn svg { width: 32px; height: 32px; transition: all 0.3s ease; }
     
-    /* Hover WhatsApp */
     .contact-item:hover .icon-wa-btn { background: var(--whatsapp); transform: scale(1.1); }
-    /* Hover Instagram */
     .contact-item:hover .icon-ig-btn { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); transform: scale(1.1); }
 
     .notification {
@@ -327,133 +321,128 @@
     @keyframes slideIn { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
     @media (max-width: 1024px) {
-      .hamburger {display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 28px;
-  height: 22px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  z-index: 2001;
-}
+      header { padding: 1rem 1.5rem; }
+      header.scrolled { padding: 0.8rem 1.5rem; }
+      
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+      
+      .logo-section { order: 1; }
+      
+      .hamburger {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 28px;
+        height: 22px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        z-index: 2001;
+        order: 2;
+      }
+      
+      .hamburger span {
+        display: block;
+        height: 3px;
+        width: 100%;
+        background: #000;
+        transition: all 0.3s ease;
+      }
+      
+      .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(7px, 7px);
+      }
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+      }
+      .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -7px);
+      }
+      
       .nav-actions { 
-    display: flex; 
-    gap: 15px;
-    order: 3; 
-  }
-  
-  .nav-container {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 300px;
-    height: 100vh;
-    background: white;
-    flex-direction: column;
-    padding: 80px 30px 30px;
-    transition: right 0.3s ease;
-    z-index: 999;
-    box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-  }
-  
-  .nav-container.active {
-    right: 0;
-  }
-  
-  .main-nav {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-  }
-  
-  .nav-item {
-    width: 100%;
-  }
-
-.hamburger span {
-  display: block;
-  height: 3px;
-  width: 100%;
-  background: #000;
-  transition: all 0.3s ease;
-}
-
-.hamburger.active span:nth-child(1) {
-  transform: rotate(45deg) translate(7px, 7px);
-}
-
-.hamburger.active span:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(7px, -7px);
-}
-
-.nav-container {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: 80%;
-  max-width: 320px;
-  height: 100vh;
-  background: #fff;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 6rem 2rem;
-  box-shadow: -5px 0 20px rgba(0,0,0,0.1);
-  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow-y: auto;
-  gap: 0;
-}
-
-.nav-container.active {
-  right: 0;
-}
-
-.nav-main {
-  display: flex !important;
-  flex-direction: column;
-  gap: 0;
-  width: 100%;
-  transform: none !important;
-  opacity: 1 !important;
-}
-
-.nav-item {
-  padding: 1rem 0;
-  border-bottom: 1px solid #eee;
-  width: 100%;
-}
-
-.nav-main a {
-  font-size: 1.1rem;
-}
-
-.sub-nav-wrapper {
-  position: static;
-  display: flex;
-  opacity: 1;
-  transform: none;
-  box-shadow: none;
-  border: none;
-  padding: 0.5rem 0 0 1rem;
-  pointer-events: auto;
-}
-
-.nav-icons {
-  width: 100%;
-  justify-content: flex-start;
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid #000;
-}
+        display: flex; 
+        gap: 15px;
+        align-items: center;
+        order: 3; 
+      }
+      
+      .nav-actions .search-wrapper,
+      .nav-actions #searchInput,
+      .nav-actions .search-input-container {
+        display: none;
+      }
+      
+      .nav-actions .icon-btn {
+        display: flex;
+        background: none;
+        border: none;
+        padding: 5px;
+        cursor: pointer;
+      }
+      
+      .nav-actions .search-icon { color: var(--blue); }
+      .nav-actions .cart-icon { color: var(--red); }
+      .nav-actions .auth-status { font-size: 0.75rem; }
+      
+      .nav-container {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 320px;
+        height: 100vh;
+        background: #fff;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 6rem 2rem;
+        box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+        transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow-y: auto;
+        gap: 0;
+      }
+      
+      .nav-container.active {
+        right: 0;
+      }
+      
+      .nav-main {
+        display: flex !important;
+        flex-direction: column;
+        gap: 0;
+        width: 100%;
+        transform: none !important;
+        opacity: 1 !important;
+      }
+      
+      .nav-item {
+        padding: 1rem 0;
+        border-bottom: 1px solid #eee;
+        width: 100%;
+      }
+      
+      .nav-main a { font-size: 1.1rem; }
+      
+      .sub-nav-wrapper {
+        position: static;
+        display: flex;
+        opacity: 1;
+        transform: none;
+        box-shadow: none;
+        border: none;
+        padding: 0.5rem 0 0 1rem;
+        pointer-events: auto;
+        width: 100%;
+      }
+      
       section { padding: 4rem 1.5rem; }
       .product-detail-grid { grid-template-columns: 1fr !important; }
-      .nav-container.searching .search-input-container { width: 200px; }
     }
   </style>
 </head>
@@ -465,7 +454,7 @@
   <div class="top-bar">
     <div class="marquee-content">
       <div class="marquee-item">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.805.249 2.227.412.56.216.96.474 1.38.894.42.42.678.82.894 1.38.163.422.358 1.057.412 2.227.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.249 1.805-.412 2.227-.216.56-.474.96-.894 1.38-.42.42-.82.678-1.38.894-.422.163-1.057.358-2.227.412-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.805-.249-2.227-.412-.56-.216-.96-.474-1.38-.894-.42-.42-.678-.82-.894-1.38-.163-.422-.358-1.057-.412-2.227-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.054-1.17.249-1.805.412-2.227.216-.56.474-.96.894-1.38.42-.42.82-.678 1.38-.894.422-.163 1.057-.358 2.227-.412 1.266-.058 1.646-.07 4.85-.07ZM12 0C8.741 0 8.333.014 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.741 0 12s.014 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126s1.337 1.078 2.126 1.384c.766.296 1.636.499 2.913.558C8.333 23.986 8.741 24 12 24s3.667-.014 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384s1.078-1.337 1.384-2.126c.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.014-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126s-1.337-1.078-2.126-1.384c-.765-.296-1.636-.499-2.913-.558C15.667.012 15.259 0 12 0Zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324ZM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881Z"/></svg>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.805.249 2.227.412.56.216.96.474 1.38.894.42.42.678.82.894 1.38.163.422.358 1.057.412 2.227.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.249 1.805-.412 2.227-.216.56-.474.96-.894 1.38-.42.42-.82.678-1.38.894-.422.163-1.057.358-2.227.412-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.805-.249-2.227-.412-.56-.216-.96-.474-1.38-.894-.42-.42-.678-.82-.894-1.38-.163-.422-.358-1.057-.412-2.227-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.054-1.17.249-1.805.412-2.227.216-.56.474-.96.894-1.38.42-.42.82-.678 1.38-.894.422-.163 1.057-.358 2.227-.412 1.266-.058 1.646-.07 4.85-.07ZM12 0C8.741 0 8.333.014 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.741 0 12s.014 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126s1.337 1.078 2.126 1.384c.766.296 1.636.499 2.913.558C8.333 23.986 8.741 24 12 24s3.667-.014 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384s1.078-1.337 1.384-2.126c.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.014-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126s-1.337-1.078-2.126-1.384c-.765-.296-1.636-.499-2.913-.558C15.667.012 15.259 0 12 0Zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 0 0-12.324ZM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.406-11.845a1.44 0 1 0 0 2.881 1.44 0 0 0 0-2.881Z"/></svg>
         <span>@zyskn.vintage</span>
       </div>
       <div class="marquee-item">
@@ -481,15 +470,17 @@
         <span class="logo">ZYSKN ★</span>
         <span class="logo-slogan">Curated Vintage</span>
       </div>
-<button class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+
+      <button class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
       <div id="navContainer" class="nav-container">
         <nav class="nav-main">
           <div class="nav-item"><a onclick="showMainCategory('todo', event)">TODO</a></div>
-          <div class="nav-item nav-item-new"><a onclick="scrollToSection('new-section')">NEW</a></div>
+          <div class="nav-item nav-item-new"><a onclick="scrollToSection('nuevo-section')">NEW</a></div>
           <div class="nav-item">
             <a onclick="showMainCategory('arriba', event)">ARRIBA</a>
             <div class="sub-nav-wrapper">
@@ -509,22 +500,22 @@
           </div>
           <div class="nav-item"><a onclick="scrollToSection('contact')">CONTACTO</a></div>
         </nav>
+      </div>
 
-        <div class="nav-actions">
-          <div class="search-wrapper">
-            <div class="search-input-container">
-              <input type="text" id="searchInput" placeholder="BUSCAR PRENDA..." onkeyup="handleSearch(event)">
-            </div>
-            <button class="icon-btn search-icon" onclick="toggleSearch()">
-              <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-            </button>
+      <div class="nav-actions">
+        <div class="search-wrapper">
+          <div class="search-input-container">
+            <input type="text" id="searchInput" placeholder="BUSCAR PRENDA..." onkeyup="handleSearch(event)">
           </div>
-          <div id="userAuth" class="auth-status" onclick="scrollToSection('account-section')">LOGIN</div>
-          <button class="icon-btn cart-icon" onclick="scrollToSection('cart-section')">
-            <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-            <span class="cart-badge" id="cartBadge" style="display: none;">0</span>
+          <button class="icon-btn search-icon" onclick="toggleSearch()">
+            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
           </button>
         </div>
+        <div id="userAuth" class="auth-status" onclick="scrollToSection('account-section')">LOGIN</div>
+        <button class="icon-btn cart-icon" onclick="scrollToSection('cart-section')">
+          <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+          <span class="cart-badge" id="cartBadge" style="display: none;">0</span>
+        </button>
       </div>
     </div>
   </header>
@@ -537,7 +528,6 @@
       </div>
     </section>
 
-    <!-- SECCIÓN NUEVO -->
     <section id="nuevo-section" style="background: #fff; border-bottom: 1px solid #000;">
       <h2 class="section-title" style="color: var(--red);">NUEVO</h2>
       <div id="nuevoProductsGrid" class="products-grid"></div>
@@ -574,295 +564,4 @@
           <button class="btn" onclick="scrollToSection('shop')" style="background:#000; color:#fff;">VER PRODUCTOS</button>
         </div>
         <div id="cartCheckoutArea">
-          <div style="display:flex; justify-content:space-between; margin-bottom:2rem; font-weight:900; font-size:1.5rem; border-top:2px solid #000; padding-top:1.5rem;">
-            <span>TOTAL:</span><span id="cartTotal">$0</span>
-          </div>
-          <div style="margin-bottom:3rem;">
-            <p style="font-size:0.8rem; font-weight:900; text-transform:uppercase; margin-bottom:1.5rem; border-bottom:1px solid #000; display:inline-block;">Datos de Envío</p>
-            <div class="form-group"><label>Nombre Completo</label><input type="text" id="orderName"></div>
-            <div class="form-group"><label>Localidad / Ciudad</label><input type="text" id="orderLocation"></div>
-            <div class="form-group"><label>Email</label><input type="email" id="orderEmail"></div>
-            <div class="form-group"><label>Sucursal Correo Argentino</label><input type="text" id="orderShippingAddr" placeholder="Ej: Sucursal Centro"></div>
-            <div class="form-group"><label>DNI</label><input type="text" id="orderDni"></div>
-            <div class="form-group"><label>Celular</label><input type="text" id="orderPhone"></div>
-          </div>
-          <div style="background:#FFD700; color:#000; padding:0.6rem 1rem; margin-bottom:1rem; font-size:0.8rem; font-weight:900; text-transform:uppercase; display:flex; align-items:center; gap:0.8rem; border:2px solid #000;">
-            <span style="font-size:1.2rem;">&#9888;</span>
-            <span>No borrar texto generado</span>
-          </div>
-          <button class="btn" onclick="shareOnWhatsApp()" style="width:100%; background:#25D366; color:#fff; border:none; padding:1rem; font-size:1rem; font-weight:900; margin-top:0;">COMPLETAR PEDIDO POR WHATSAPP</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="account-section" style="background:#f9f9f9; border-top:1px solid #000;">
-      <div style="max-width: 400px; margin: 0 auto; text-align:center;">
-        <h2 class="section-title">MI CUENTA</h2>
-        <div id="loginForm">
-          <div class="form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="tu@email.com"></div>
-          <div class="form-group"><label>Contraseña</label><input type="password" id="loginPass" placeholder="********"></div>
-          <button class="btn" onclick="handleAuth('login')" style="width:100%; background:#000; color:#fff;">ENTRAR</button>
-          <p style="font-size: 0.7rem; color: #666; margin-top: 1.5rem; cursor: pointer; text-decoration: underline;" onclick="toggleAuthView('register')">¿No tienes cuenta? Regístrate</p>
-        </div>
-        <div id="registerForm" style="display:none;">
-          <div class="form-group"><label>Nombre Completo</label><input type="text" id="regName" placeholder="Juan Pérez"></div>
-          <div class="form-group"><label>Email</label><input type="email" id="regEmail" placeholder="tu@email.com"></div>
-          <div class="form-group"><label>Contraseña</label><input type="password" id="regPass" placeholder="********"></div>
-          <button class="btn" onclick="handleAuth('register')" style="width:100%; background:#000; color:#fff;">REGISTRARME</button>
-          <p style="font-size: 0.7rem; color: #666; margin-top: 1.5rem; cursor: pointer; text-decoration: underline;" onclick="toggleAuthView('login')">¿Ya tienes cuenta? Inicia sesión</p>
-        </div>
-        <div id="profileView" style="display:none;">
-          <p style="font-weight:700; text-transform:uppercase; margin-bottom:1rem;">¡Bienvenido de nuevo!</p>
-          <p id="userDisplay" style="font-size:0.9rem; margin-bottom:2rem;"></p>
-          <button class="btn" onclick="handleAuth('logout')" style="width:100%; background:#000; color:#fff;">CERRAR SESIÓN</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="contact" style="background: #fff; text-align: center; border-top: 1px solid #000;">
-      <h2 class="section-title">NUESTRAS REDES</h2>
-      <div style="display: flex; gap: 2.5rem; justify-content: center; align-items: center;">
-        <div class="contact-item">
-          <a href="https://wa.me/5493544631553" target="_blank" class="contact-icon-btn icon-wa-btn">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.01 2.01c-5.52 0-10 4.48-10 10 0 1.75.46 3.4 1.26 4.83L2 22l5.3-1.39c1.4.77 3 1.21 4.71 1.21 5.52 0 10-4.48 10-10s-4.48-10-10-10zm0 18.33c-1.57 0-3.1-.42-4.43-1.21l-.32-.19-3.29.86.88-3.21-.21-.33c-.87-1.39-1.33-3.01-1.33-4.68 0-4.6 3.74-8.33 8.33-8.33s8.33 3.74 8.33 8.33-3.74 8.33-8.33 8.33zm4.56-6.2c-.25-.13-1.47-.72-1.7-.8-.23-.08-.39-.13-.56.13-.17.25-.64.8-.78.96-.14.17-.29.19-.54.06-.25-.13-1.05-.39-1.99-1.28-.74-.66-1.23-1.47-1.38-1.72-.15-.25-.02-.39.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.82-.2-.48-.4-.41-.56-.42-.14 0-.31-.01-.47-.01-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1s.9 2.43 1.03 2.6c.13.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.11-.23-.17-.48-.3z"/></svg>
-          </a>
-          <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">WHATSAPP</p>
-        </div>
-        <div class="contact-item">
-          <a href="https://instagram.com/zyskn.vintage" target="_blank" class="contact-icon-btn icon-ig-btn">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.805.249 2.227.412.56.216.96.474 1.38.894.42.42.678.82.894 1.38.163.422.358 1.057.412 2.227.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.249 1.805-.412 2.227-.216.56-.474.96-.894 1.38-.42.42-.82.678-1.38.894-.422.163-1.057.358-2.227.412-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.805-.249-2.227-.412-.56-.216-.96-.474-1.38-.894-.42-.42-.678-.82-.894-1.38-.163-.422-.358-1.057-.412-2.227-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.054-1.17.249-1.805.412-2.227.216-.56.474-.96.894-1.38.42-.42.82-.678 1.38-.894.422-.163 1.057-.358 2.227-.412 1.266-.058 1.646-.07 4.85-.07ZM12 0C8.741 0 8.333.014 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.741 0 12s.014 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126s1.337 1.078 2.126 1.384c.766.296 1.636.499 2.913.558C8.333 23.986 8.741 24 12 24s3.667-.014 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384s1.078-1.337 1.384-2.126c.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.014-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126s-1.337-1.078-2.126-1.384c-.765-.296-1.636-.499-2.913-.558C15.667.012 15.259 0 12 0Zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324ZM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881Z"/></svg>
-          </a>
-          <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">INSTAGRAM</p>
-        </div>
-      </div>
-    </section>
-
-    <footer style="background: #000; color: #fff; padding: 3rem 2rem;">
-      <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end;">
-        <div style="text-align: left;">
-          <h2 style="font-size: 1.4rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem;">ZYSKN ★</h2>
-          <p style="font-size: 0.75rem; color: #aaa; text-transform: uppercase;">Curated Vintage & Streetwear. Córdoba, Argentina.</p>
-        </div>
-        <div style="text-align: right;">
-          <p style="font-size: 0.7rem; color: #666; text-transform: uppercase;">© 2026 ZYSKN. TODOS LOS DERECHOS RESERVADOS.</p>
-        </div>
-      </div>
-    </footer>
-  </main>
-
-  <script>
-    const products = [
-      {id:'t1', section:'arriba', category:'remeras', name:'VINTAGE TEE 01', price:25000, desc:'Remera 90s Cotton Blend. Estado 9/10.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['S','M','L'], isNew: true},
-      {id:'t2', section:'arriba', category:'chombas', name:'RETRO POLO NAVY', price:32000, desc:'Polo Lacoste vintage original.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['M','L'], isNew: true},
-      {id:'t3', section:'arriba', category:'hoodies', name:'CHAMPION HOODIE', price:45000, desc:'Hoodie heavyweight Champion.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['L','XL']},
-      {id:'t4', section:'arriba', category:'camisas', name:'FLANNEL SHIRT', price:28000, desc:'Camisa de franela a cuadros.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['M','L','XL']},
-      {id:'b1', section:'abajo', category:'pantalones', name:'CARGO PANTS KHAKI', price:38000, desc:'Pantalón cargo vintage.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['30','32','34'], isNew: true},
-      {id:'b2', section:'abajo', category:'jeans', name:'LEVIS 501 DENIM', price:42000, desc:'Levis 501 clásicos.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['32','34','36']},
-      {id:'b3', section:'abajo', category:'bermudas', name:'CHINO SHORTS', price:22000, desc:'Bermudas tipo chino.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['30','32']}
-    ];
-
-    let cart = [];
-    let currentProduct = null;
-    let selectedSize = null;
-
-    function init() {
-      renderProducts(products, 'productsGrid');
-      renderProducts(products.filter(p=>p.isNew), 'newProductsGrid');
-      setupScrollListener();
-      updateCartUI();
-    }
-
-    function toggleSearch() {
-      const container = document.getElementById('navContainer');
-      const input = document.getElementById('searchInput');
-      container.classList.toggle('searching');
-      if(container.classList.contains('searching')) {
-        setTimeout(() => input.focus(), 100);
-      }
-    }
-
-    function handleSearch(e) {
-      if(e.key === 'Enter') {
-        const query = e.target.value.toLowerCase();
-        const filtered = products.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
-        renderProducts(filtered, 'productsGrid');
-        scrollToSection('shop');
-        toggleSearch();
-        e.target.value = '';
-      }
-    }
-
-    function showNotification(msg) {
-      const n = document.getElementById('notification');
-      n.textContent = msg; n.style.display = 'block';
-      setTimeout(() => { n.style.display = 'none'; }, 3000);
-    }
-
-    function handleAuth(type) {
-      if(type === 'login') {
-        const email = document.getElementById('loginEmail').value;
-        if(!email) { alert('Ingresa tu email'); return; }
-        document.getElementById('userAuth').textContent = 'MI PERFIL';
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('profileView').style.display = 'block';
-        document.getElementById('userDisplay').textContent = `SESIÓN INICIADA COMO: ${email.toUpperCase()}`;
-        showNotification('Sesión iniciada correctamente');
-      } else if(type === 'register') {
-        const name = document.getElementById('regName').value;
-        if(!name) { alert('Ingresa tu nombre'); return; }
-        document.getElementById('userAuth').textContent = 'MI PERFIL';
-        document.getElementById('registerForm').style.display = 'none';
-        document.getElementById('profileView').style.display = 'block';
-        document.getElementById('userDisplay').textContent = `CUENTA CREADA: ${name.toUpperCase()}`;
-        showNotification('Cuenta creada con éxito');
-      } else if(type === 'logout') {
-        document.getElementById('userAuth').textContent = 'LOGIN';
-        document.getElementById('profileView').style.display = 'none';
-        document.getElementById('loginForm').style.display = 'block';
-        showNotification('Sesión cerrada');
-      }
-    }
-
-    function renderProducts(list, gridId) {
-      const grid = document.getElementById(gridId);
-      if(!grid) return;
-      grid.innerHTML = list.map(p => `
-        <div class="product-card" onclick="showProductDetail('${p.id}')">
-          <div class="product-image"><img src="${p.img}" alt="${p.name}"></div>
-          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-            <div>
-              <h3 style="font-size:0.85rem; font-weight:900; text-transform:uppercase;">${p.name}</h3>
-              <p style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">${p.category}</p>
-            </div>
-            <p style="font-size:0.85rem; font-weight:700;">$${p.price.toLocaleString('es-AR')}</p>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function showMainCategory(s, e) { 
-      if(e) e.preventDefault(); 
-      renderProducts(s==='todo'?products:products.filter(p=>p.section===s), 'productsGrid'); 
-      scrollToSection('shop'); 
-    }
-
-    function filterProducts(c) { 
-      renderProducts(products.filter(p=>p.category===c), 'productsGrid'); 
-      scrollToSection('shop'); 
-    }
-
-    function showProductDetail(id) {
-      currentProduct = products.find(p=>p.id===id);
-      selectedSize = null;
-      document.getElementById('detailName').textContent = currentProduct.name;
-      document.getElementById('detailPrice').textContent = `$${currentProduct.price.toLocaleString('es-AR')}`;
-      document.getElementById('detailDesc').textContent = currentProduct.desc;
-      document.getElementById('detailImage').src = currentProduct.img;
-      document.getElementById('detailSizes').innerHTML = currentProduct.sizes.map(s=>`
-        <button onclick="setS('${s}', this)" style="padding:0.8rem 1.5rem; border:1px solid #000; background:#fff; cursor:pointer; font-size:0.8rem; font-weight:700;">${s}</button>
-      `).join('');
-      document.getElementById('product-detail').classList.add('active');
-      scrollToSection('product-detail');
-    }
-
-    function setS(s, btn) {
-      selectedSize = s;
-      document.querySelectorAll('#detailSizes button').forEach(b=>b.style.background='#fff');
-      btn.style.background = '#eee';
-    }
-
-    function addToCartFromDetail() {
-      if(!selectedSize){alert('Selecciona talle'); return;}
-      cart.push({...currentProduct, size:selectedSize}); 
-      updateCartUI(); 
-      showNotification('Producto añadido al carrito');
-      scrollToSection('cart-section');
-    }
-
-    function updateCartUI() {
-      const badge = document.getElementById('cartBadge');
-      badge.textContent = cart.length; 
-      badge.style.display = cart.length ? 'flex' : 'none';
-      const checkoutArea = document.getElementById('cartCheckoutArea');
-      const emptyMsg = document.getElementById('cartEmptyMsg');
-      if(cart.length === 0) {
-        checkoutArea.style.display = 'none';
-        emptyMsg.style.display = 'block';
-        document.getElementById('cartItems').innerHTML = '';
-      } else {
-        checkoutArea.style.display = 'block';
-        emptyMsg.style.display = 'none';
-        document.getElementById('cartItems').innerHTML = cart.map((i, index)=>`
-          <div style="margin-bottom:1rem; font-size:0.9rem; border-bottom:1px solid #eee; padding-bottom:1rem; display:flex; justify-content:space-between; align-items:center">
-            <span style="font-weight:600;">${i.name} (${i.size}) - $${i.price.toLocaleString('es-AR')}</span>
-            <button onclick="removeFromCart(${index})" style="background:none; border:none; color:var(--red); cursor:pointer; font-weight:900; font-size:1.2rem; padding:0 10px">✕</button>
-          </div>
-        `).join('');
-      }
-      document.getElementById('cartTotal').textContent = `$${cart.reduce((s,i)=>s+i.price,0).toLocaleString('es-AR')}`;
-    }
-
-    function removeFromCart(index) {
-      cart.splice(index, 1);
-      updateCartUI();
-      showNotification('Producto eliminado');
-    }
-
-    function toggleAuthView(type) {
-      document.getElementById('loginForm').style.display = type === 'login' ? 'block' : 'none';
-      document.getElementById('registerForm').style.display = type === 'register' ? 'block' : 'none';
-    }
-
-    function shareOnWhatsApp() {
-      if(cart.length === 0) { alert('El carrito está vacío'); return; }
-      const fields = ['orderName', 'orderLocation', 'orderEmail', 'orderShippingAddr', 'orderDni', 'orderPhone'];
-      const values = fields.map(f => document.getElementById(f).value);
-      if(values.some(v => !v)) { alert('Por favor, completa todos los datos de envío.'); return; }
-      const now = new Date();
-      let t = `ZYSKN ★ - NUEVO PEDIDO\nFecha: ${now.toLocaleDateString()} | Hora: ${now.toLocaleTimeString()}\n\n`;
-      t += `CLIENTE: ${values[0]}\nUbicación: ${values[1]}\nCorreo: ${values[2]}\nSucursal: ${values[3]}\nDNI: ${values[4]}\nCelular: ${values[5]}\n\n`;
-      t += `PRODUCTOS:\n` + cart.map(i=>`- ${i.name} (${i.size})`).join('\n');
-      t += `\n\nTOTAL: $${cart.reduce((s,i)=>s+i.price,0).toLocaleString('es-AR')}`;
-      window.open(`https://wa.me/5493544631553?text=${encodeURIComponent(t)}`, '_blank');
-    }
-
-    function setupScrollListener() { 
-      window.addEventListener('scroll', () => { 
-        const h=document.getElementById('header'); 
-        if(window.scrollY>50) h.classList.add('scrolled'); 
-        else h.classList.remove('scrolled'); 
-      }); 
-    }
-
-    function scrollToSection(id) { 
-      const el = document.getElementById(id);
-      const headerOffset = document.getElementById('header').offsetHeight;
-      const elementPosition = el.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-    }
-    
-    function scrollToTop() { window.scrollTo({top:0, behavior:'smooth'}); }
-    // MENÚ HAMBURGER
-const hamburger = document.getElementById('hamburger');
-const navContainer = document.getElementById('navContainer');
-const navLinks = document.querySelectorAll('.nav-item a');
-
-if(hamburger && navContainer) {
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navContainer.classList.toggle('active');
-    document.body.style.overflow = navContainer.classList.contains('active') ? 'hidden' : '';
-  });
-}
-
-navLinks.forEach(link => {
-  link.addEventListener('click', () => {
-    hamburger.classList.remove('active');
-    navContainer.classList.remove('active');
-    document.body.style.overflow = '';
-  });
-    init();
-  </script>
-</body>
-</html>
+          <
