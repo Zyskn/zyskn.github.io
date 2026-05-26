@@ -497,11 +497,11 @@
           </div>
           <div style="margin-bottom:3rem;">
             <p style="font-size:0.8rem; font-weight:900; text-transform:uppercase; margin-bottom:1.5rem; border-bottom:1px solid #000; display:inline-block;">Datos de Envío</p>
-<div class="form-group"><label>Nombre y Apellido *</label><input type="text" id="orderName" required></div>
-<div class="form-group"><label>DNI *</label><input type="text" id="orderDni" required></div>
-<div class="form-group"><label>Celular *</label><input type="tel" id="orderPhone" placeholder="Ej: 3544631553" required></div>
+<div class="form-group"><label>Nombre y Apellido</label><input type="text" id="orderName" required></div>
+<div class="form-group"><label>DNI</label><input type="text" id="orderDni" required></div>
+<div class="form-group"><label>Celular</label><input type="tel" id="orderPhone" placeholder="Ej: 3544631553" required></div>
 <div class="form-group"><label>Email</label><input type="email" id="orderEmail" placeholder="Para enviarte el seguimiento"></div>
-<div class="form-group"><label>Ciudad y Provincia *</label><input type="text" id="orderLocation" placeholder="Ej: La Paz, Córdoba" required></div>
+<div class="form-group"><label>Ciudad y Provincia</label><input type="text" id="orderLocation" placeholder="Ej: La Paz, Córdoba" required></div>
 <div class="form-group"><label>Sucursal para retirar o Dirección de envío</label><input type="text" id="orderShippingAddr" placeholder="Ej: Sucursal Centro o Calle Falsa 123"></div>
           </div>
           <div class="yellow-warning">RECUERDA COMPLETAR TODOS LOS DATOS PARA AGILIZAR TU PEDIDO</div>
@@ -787,7 +787,6 @@ function shareOnWhatsApp() {
   const dni = document.getElementById('orderDni').value.trim();
   const celular = document.getElementById('orderPhone').value.trim();
   
-  // Solo obligatorios: nombre, localidad, dni, celular
   if (!nombre || !localidad || !dni || !celular) { 
     alert('Completá Nombre, Ciudad, DNI y Celular'); 
     return; 
@@ -799,7 +798,6 @@ function shareOnWhatsApp() {
   
   let t = `ZYSKN ★ - NUEVO PEDIDO%0A`;
   t += `Fecha: ${fecha} | Hora: ${hora}%0A%0A`;
-  
   t += `*DATOS DEL CLIENTE*%0A`;
   t += `- Nombre: ${nombre}%0A`;
   t += `- DNI: ${dni}%0A`;
@@ -807,8 +805,8 @@ function shareOnWhatsApp() {
   t += `- Correo: ${email || 'No informado'}%0A`;
   t += `- Ubicación: ${localidad}%0A`;
   t += `- Sucursal Correo: ${sucursal || 'Coordinar'}%0A%0A`;
-  
   t += `*PRODUCTOS*%0A`;
+  
   let total = 0;
   cart.forEach(i => {
     const subtotal = i.price * i.qty;
@@ -820,7 +818,7 @@ function shareOnWhatsApp() {
   
   window.open(`https://wa.me/5493544631553?text=${t}`, '_blank');
 }
-
+    
     function setupScrollListener() { 
       window.addEventListener('scroll', () => { 
         const h=document.getElementById('header'); 
