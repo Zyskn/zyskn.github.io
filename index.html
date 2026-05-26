@@ -796,16 +796,16 @@ function shareOnWhatsApp() {
   const fecha = now.toLocaleDateString('es-AR');
   const hora = now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
   
-  let t = `ZYSKN ★ - NUEVO PEDIDO%0A`;
+  let t = `Holaa! ZYSKN ★, Te envío mi nuevo pedido!.%0A`;
   t += `Fecha: ${fecha} | Hora: ${hora}%0A%0A`;
-  t += `*DATOS DEL CLIENTE*%0A`;
+  t += `*DATOS DEL CLIENTE:*%0A`;
   t += `- Nombre: ${nombre}%0A`;
   t += `- DNI: ${dni}%0A`;
   t += `- Celular: ${celular}%0A`;
   t += `- Correo: ${email || 'No informado'}%0A`;
   t += `- Ubicación: ${localidad}%0A`;
   t += `- Sucursal Correo: ${sucursal || 'Coordinar'}%0A%0A`;
-  t += `*PRODUCTOS*%0A`;
+  t += `*PRODUCTOS:*%0A`;
   
   let total = 0;
   cart.forEach(i => {
