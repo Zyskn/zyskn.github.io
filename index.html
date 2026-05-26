@@ -35,14 +35,26 @@
       --gray-bg: #F5F5F5;
       --text-muted: #666;
       --blue: #3B82F6;
-      --red: #D00000; /* Rojo intenso actualizado */
+      --red: #D00000;
       --whatsapp: #25D366;
       --instagram: #E4405F;
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       --container-max: 1200px;
     }
 
-    html { scroll-behavior: smooth; }
+    /* EFECTO DE ENTRADA NEGRO 400MS */
+    #supreme-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: #000; z-index: 9999;
+      animation: fadeOutOverlay 0.4s ease-in-out forwards;
+      pointer-events: none;
+    }
+    
+    @keyframes fadeOutOverlay {
+      0% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
     body {
       font-family: 'Inter', sans-serif;
       background: #fff;
@@ -50,9 +62,12 @@
       line-height: 1.4;
       overflow-x: hidden;
       position: relative;
-      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" result="noise" seed="2"/><feColorMatrix in="noise" type="saturate" values="0"/><feBlend in="SourceGraphic" in2="noise" mode="overlay"/></filter><rect width="200" height="200" fill="rgba(0,0,0,0.008)" filter="url(%23noise)"/></svg>');
-      background-size: 200px 200px;
-      background-attachment: fixed;
+      animation: contentShine 0.4s ease-out forwards;
+    }
+
+    @keyframes contentShine {
+      0% { filter: brightness(0.5); }
+      100% { filter: brightness(1); }
     }
 
     /* BARRA SUPERIOR ROJA */
@@ -80,7 +95,8 @@
       gap: 12px;
       margin-right: 60px;
     }
-    .marquee-item svg { width: 16px; height: 16px; fill: currentColor; }
+    .marquee-item svg { width: 16px; height: 16px; fill: #fff; }
+    .marquee-item span { color: #fff; }
     @keyframes marquee-infinite {
       0% { transform: translateX(0); }
       100% { transform: translateX(-100%); }
@@ -95,13 +111,13 @@
       backdrop-filter: blur(10px);
       border-bottom: 1px solid #000;
       transition: padding 0.3s var(--transition);
-      padding: 2rem 3rem; /* Header más grande */
+      padding: 2rem 3rem;
     }
     header.scrolled { padding: 1.2rem 3rem; }
 
     .header-content {
-      max-width: 100%; /* Ocupar todo el ancho */
-      padding: 0 1rem; /* Pequeño margen de seguridad */
+      max-width: 100%;
+      padding: 0 1rem;
       margin: 0;
       display: flex;
       justify-content: space-between;
@@ -109,13 +125,13 @@
     }
 
     .logo-section { display: flex; flex-direction: column; cursor: pointer; }
-    .logo { font-size: 2.4rem; font-weight: 900; letter-spacing: -0.02em; text-transform: uppercase; } /* Logo más grande */
+    .logo { font-size: 2.4rem; font-weight: 900; letter-spacing: -0.02em; text-transform: uppercase; }
     .logo-slogan { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
 
     .nav-main { display: flex; gap: 3rem; align-items: center; }
     .nav-item { position: relative; padding: 1.5rem 0; }
     .nav-main a {
-      font-size: 0.95rem; /* Navegación más grande */
+      font-size: 0.95rem;
       font-weight: 600;
       text-transform: uppercase;
       text-decoration: none;
@@ -134,7 +150,7 @@
       left: 0;
       background: #fff;
       border: 1px solid #000;
-      width: 240px; /* Submenú más ancho */
+      width: 240px;
       padding: 0.75rem 0;
       display: none;
       flex-direction: column;
@@ -151,7 +167,7 @@
       pointer-events: auto;
     }
     .sub-nav-item {
-      font-size: 0.85rem; /* Subcategorías más grandes */
+      font-size: 0.85rem;
       font-weight: 600;
       text-transform: uppercase;
       cursor: pointer;
@@ -167,11 +183,11 @@
       display: flex; align-items: center; justify-content: center;
       position: relative;
     }
-    .icon-btn svg { width: 24px; height: 24px; fill: currentColor; } /* Iconos más grandes */
+    .icon-btn svg { width: 24px; height: 24px; fill: currentColor; }
     .icon-btn:hover { transform: scale(1.1); }
     .search-icon { color: var(--blue); }
     .cart-icon { color: var(--red); }
-
+    
     .auth-status { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; cursor: pointer; color: #000; }
     .auth-status:hover { opacity: 0.7; }
 
@@ -200,30 +216,6 @@
       margin-top: 1.5rem;
     }
     .btn:hover { background: #000; color: #fff; transform: scale(1.05); }
-
-    /* FOOTER */
-    footer { background: #000; color: #fff; padding: 2rem; margin-top: 4rem; }
-    .footer-container {
-      max-width: var(--container-max);
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 2rem;
-    }
-    .footer-brand h2 { font-size: 1.1rem; font-weight: 900; margin: 0; color: #fff; }
-    .footer-brand hr { border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 8px 0; width: 100%; }
-    .footer-brand p { font-size: 0.7rem; color: #999; margin-top: 2px; }
-
-    .footer-divider {
-      flex: 1;
-      height: 1px;
-      background: rgba(255,255,255,0.1);
-      margin: 0 2rem;
-    }
-
-    .footer-rights p { font-size: 0.7rem; color: #666; margin: 0; text-transform: uppercase; letter-spacing: 0.05em; }
 
     /* SHOP */
     #shop { padding: 4rem 2rem; max-width: var(--container-max); margin: 0 auto; }
@@ -268,6 +260,33 @@
   </style>
 </head>
 <body>
+
+  <!-- CAPA DE ENTRADA NEGRA -->
+  <div id="supreme-overlay"></div>
+
+  <!-- BARRA SUPERIOR -->
+  <div class="top-bar">
+    <div class="marquee-content">
+      <div class="marquee-item">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.805.249 2.227.412.56.216.96.474 1.38.894.42.42.678.82.894 1.38.163.422.358 1.057.412 2.227.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.249 1.805-.412 2.227-.216.56-.474.96-.894 1.38-.42.42-.82.678-1.38.894-.422.163-1.057.358-2.227.412-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.805-.249-2.227-.412-.56-.216-.96-.474-1.38-.894-.42-.42-.678-.82-.894-1.38-.163-.422-.358-1.057-.412-2.227-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.054-1.17.249-1.805.412-2.227.216-.56.474-.96.894-1.38.42-.42.82-.678 1.38-.894.422-.163 1.057-.358 2.227-.412 1.266-.058 1.646-.07 4.85-.07ZM12 0C8.741 0 8.333.014 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.741 0 12s.014 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126s1.337 1.078 2.126 1.384c.766.296 1.636.499 2.913.558C8.333 23.986 8.741 24 12 24s3.667-.014 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384s1.078-1.337 1.384-2.126c.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.014-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126s-1.337-1.078-2.126-1.384c-.765-.296-1.636-.499-2.913-.558C15.667.012 15.259 0 12 0Zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324ZM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881Z"/></svg>
+        <span>@zyskn.vintage</span>
+      </div>
+      <div class="marquee-item">
+        <!-- LOGO WHATSAPP CORREGIDO -->
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.01 2.01c-5.52 0-10 4.48-10 10 0 1.75.46 3.4 1.26 4.83L2 22l5.3-1.39c1.4.77 3 1.21 4.71 1.21 5.52 0 10-4.48 10-10s-4.48-10-10-10zm0 18.33c-1.57 0-3.1-.42-4.43-1.21l-.32-.19-3.29.86.88-3.21-.21-.33c-.87-1.39-1.33-3.01-1.33-4.68 0-4.6 3.74-8.33 8.33-8.33s8.33 3.74 8.33 8.33-3.74 8.33-8.33 8.33zm4.56-6.2c-.25-.13-1.47-.72-1.7-.8-.23-.08-.39-.13-.56.13-.17.25-.64.8-.78.96-.14.17-.29.19-.54.06-.25-.13-1.05-.39-1.99-1.28-.74-.66-1.23-1.47-1.38-1.72-.15-.25-.02-.39.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.82-.2-.48-.4-.41-.56-.42-.14 0-.31-.01-.47-.01-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1s.9 2.43 1.03 2.6c.13.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.11-.23-.17-.48-.3z"/></svg>
+        <span>+54 9 3544 631553</span>
+      </div>
+      <!-- Repetición para efecto infinito -->
+      <div class="marquee-item">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.805.249 2.227.412.56.216.96.474 1.38.894.42.42.678.82.894 1.38.163.422.358 1.057.412 2.227.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.249 1.805-.412 2.227-.216.56-.474.96-.894 1.38-.42.42-.82.678-1.38.894-.422.163-1.057.358-2.227.412-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.805-.249-2.227-.412-.56-.216-.96-.474-1.38-.894-.42-.42-.678-.82-.894-1.38-.163-.422-.358-1.057-.412-2.227-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.054-1.17.249-1.805.412-2.227.216-.56.474-.96.894-1.38.42-.42.82-.678 1.38-.894.422-.163 1.057-.358 2.227-.412 1.266-.058 1.646-.07 4.85-.07ZM12 0C8.741 0 8.333.014 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.741 0 12s.014 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126s1.337 1.078 2.126 1.384c.766.296 1.636.499 2.913.558C8.333 23.986 8.741 24 12 24s3.667-.014 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384s1.078-1.337 1.384-2.126c.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.014-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126s-1.337-1.078-2.126-1.384c-.765-.296-1.636-.499-2.913-.558C15.667.012 15.259 0 12 0Zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324ZM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881Z"/></svg>
+        <span>@zyskn.vintage</span>
+      </div>
+      <div class="marquee-item">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.01 2.01c-5.52 0-10 4.48-10 10 0 1.75.46 3.4 1.26 4.83L2 22l5.3-1.39c1.4.77 3 1.21 4.71 1.21 5.52 0 10-4.48 10-10s-4.48-10-10-10zm0 18.33c-1.57 0-3.1-.42-4.43-1.21l-.32-.19-3.29.86.88-3.21-.21-.33c-.87-1.39-1.33-3.01-1.33-4.68 0-4.6 3.74-8.33 8.33-8.33s8.33 3.74 8.33 8.33-3.74 8.33-8.33 8.33zm4.56-6.2c-.25-.13-1.47-.72-1.7-.8-.23-.08-.39-.13-.56.13-.17.25-.64.8-.78.96-.14.17-.29.19-.54.06-.25-.13-1.05-.39-1.99-1.28-.74-.66-1.23-1.47-1.38-1.72-.15-.25-.02-.39.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.82-.2-.48-.4-.41-.56-.42-.14 0-.31-.01-.47-.01-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1s.9 2.43 1.03 2.6c.13.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.11-.23-.17-.48-.3z"/></svg>
+        <span>+54 9 3544 631553</span>
+      </div>
+    </div>
+  </div>
 
   <header id="header">
     <div class="header-content">
@@ -326,109 +345,127 @@
       <div id="productsGrid" class="products-grid"></div>
     </section>
 
-    <section id="contact" style="padding: 5rem 2rem; background: var(--gray-bg); text-align: center;">
-      <h2 class="section-title">¿DUDAS?</h2>
-      <div class="social-icons-footer" style="display:flex; gap:30px; justify-content:center; margin-top:20px;">
-        <div style="text-align:center;">
-          <a href="https://wa.me/5493544631553" target="_blank" style="width:60px; height:60px; border-radius:50%; background:#000; display:flex; align-items:center; justify-content:center; color:#fff; transition:0.3s; margin:0 auto 8px auto;" onmouseover="this.style.background='#25D366'" onmouseout="this.style.background='#000'">
-            <svg viewBox="0 0 24 24" fill="currentColor" style="width:28px; height:28px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.94 3.659 1.437 5.634 1.437h.005c6.554 0 11.89-5.335 11.893-11.893a11.817 11.817 0 00-3.479-8.387z"/></svg>
+    <section id="contact" style="padding: 4rem 2rem; background: #f9f9f9; text-align: center;">
+      <h2 style="font-size: 2.2rem; font-weight: 900; text-transform: uppercase; margin-bottom: 2rem;">¿DUDAS?</h2>
+      <div style="display: flex; gap: 2.5rem; justify-content: center; align-items: center;">
+        <style>
+          .contact-icon-btn {
+            width: 70px; height: 70px; border-radius: 50%; background: #000; 
+            display: flex; align-items: center; justify-content: center; color: #fff; 
+            margin: 0 auto 0.8rem auto; transition: all 0.3s ease;
+          }
+          .contact-icon-btn svg { width: 32px; height: 32px; transition: all 0.3s ease; }
+          
+          /* Hover Effects */
+          .contact-item:hover .icon-wa-btn { background: #25D366; transform: scale(1.1); }
+          .contact-item:hover .icon-ig-btn { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); transform: scale(1.1); }
+        </style>
+
+        <div class="contact-item" style="text-align: center;">
+          <a href="https://wa.me/5493544631553" target="_blank" class="contact-icon-btn icon-wa-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.01 2.01c-5.52 0-10 4.48-10 10 0 1.75.46 3.4 1.26 4.83L2 22l5.3-1.39c1.4.77 3 1.21 4.71 1.21 5.52 0 10-4.48 10-10s-4.48-10-10-10zm0 18.33c-1.57 0-3.1-.42-4.43-1.21l-.32-.19-3.29.86.88-3.21-.21-.33c-.87-1.39-1.33-3.01-1.33-4.68 0-4.6 3.74-8.33 8.33-8.33s8.33 3.74 8.33 8.33-3.74 8.33-8.33 8.33zm4.56-6.2c-.25-.13-1.47-.72-1.7-.8-.23-.08-.39-.13-.56.13-.17.25-.64.8-.78.96-.14.17-.29.19-.54.06-.25-.13-1.05-.39-1.99-1.28-.74-.66-1.23-1.47-1.38-1.72-.15-.25-.02-.39.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.82-.2-.48-.4-.41-.56-.42-.14 0-.31-.01-.47-.01-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1s.9 2.43 1.03 2.6c.13.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.11-.23-.17-.48-.3z"/></svg>
           </a>
-          <span style="font-size:12px; font-weight:600; color:#000;">WHATSAPP</span>
+          <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">WHATSAPP</p>
         </div>
-        <div style="text-align:center;">
-          <a href="https://instagram.com/zyskn.vtg" target="_blank" style="width:60px; height:60px; border-radius:50%; background:#000; display:flex; align-items:center; justify-content:center; color:#fff; transition:0.3s; margin:0 auto 8px auto;" onmouseover="this.style.background='linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)'" onmouseout="this.style.background='#000'">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:28px; height:28px;"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"></circle></svg>
+        <div class="contact-item" style="text-align: center;">
+          <a href="https://instagram.com/zyskn.vintage" target="_blank" class="contact-icon-btn icon-ig-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.805.249 2.227.412.56.216.96.474 1.38.894.42.42.678.82.894 1.38.163.422.358 1.057.412 2.227.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.249 1.805-.412 2.227-.216.56-.474.96-.894 1.38-.42.42-.82.678-1.38.894-.422.163-1.057.358-2.227.412-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.805-.249-2.227-.412-.56-.216-.96-.474-1.38-.894-.42-.42-.678-.82-.894-1.38-.163-.422-.358-1.057-.412-2.227-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.054-1.17.249-1.805.412-2.227.216-.56.474-.96.894-1.38.42-.42.82-.678 1.38-.894.422-.163 1.057-.358 2.227-.412 1.266-.058 1.646-.07 4.85-.07ZM12 0C8.741 0 8.333.014 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.741 0 12s.014 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126s1.337 1.078 2.126 1.384c.766.296 1.636.499 2.913.558C8.333 23.986 8.741 24 12 24s3.667-.014 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384s1.078-1.337 1.384-2.126c.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.014-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126s-1.337-1.078-2.126-1.384c-.765-.296-1.636-.499-2.913-.558C15.667.012 15.259 0 12 0Zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324ZM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881Z"/></svg>
           </a>
-          <span style="font-size:12px; font-weight:600; color:#000;">INSTAGRAM</span>
+          <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">INSTAGRAM</p>
         </div>
       </div>
     </section>
-  </main>
 
-  <footer>
-    <div class="footer-container">
-      <div class="footer-brand">
-        <h2>ZYSKN ★</h2>
-        <hr>
-        <p>Curated Vintage & Streetwear. Córdoba, Argentina.</p>
+    <footer style="background: #000; color: #fff; padding: 3rem 2rem; border-top: 1px solid #333;">
+      <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end;">
+        <div style="text-align: left;">
+          <h2 style="font-size: 1.4rem; font-weight: 900; letter-spacing: -0.02em; text-transform: uppercase; margin-bottom: 0.5rem;">ZYSKN ★</h2>
+          <div style="width: 100%; height: 1px; background: rgba(255,255,255,0.2); margin-bottom: 0.8rem;"></div>
+          <p style="font-size: 0.75rem; color: #aaa; text-transform: uppercase; letter-spacing: 0.05em;">Curated Vintage & Streetwear. Córdoba, Argentina.</p>
+        </div>
+        <div style="text-align: right;">
+          <p style="font-size: 0.7rem; color: #666; text-transform: uppercase; letter-spacing: 0.1em;">© 2026 ZYSKN. TODOS LOS DERECHOS RESERVADOS.</p>
+        </div>
       </div>
-      <div class="footer-divider"></div>
-      <div class="footer-rights">
-        <p>&copy; 2026 ZYSKN. TODOS LOS DERECHOS RESERVADOS.</p>
-      </div>
-    </div>
-  </footer>
+    </footer>
+  </main>
 
   <!-- AUTH MODAL -->
   <div class="modal" id="authModal" onclick="closeAuthModalIfOutside(event)">
     <div class="modal-content auth-modal-content">
       <button class="modal-close" onclick="closeAuthModal()">✕</button>
-      <h2 id="authTitle">INICIAR SESIÓN</h2>
-
-      <div class="auth-form" id="loginForm">
-        <div class="form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="tu@email.com"></div>
-        <div class="form-group"><label>Contraseña</label><input type="password" id="loginPass" placeholder="••••••••"></div>
-        <button class="btn" onclick="handleLogin()" style="width:100%; background:#000; color:#fff; border:none">ENTRAR</button>
-        <p class="auth-toggle" onclick="toggleAuthForm('register')">¿No tienes cuenta? Regístrate aquí</p>
+      <div id="loginForm">
+        <h2 style="font-weight:900; text-transform:uppercase; margin-bottom:1.5rem;">INICIAR SESIÓN</h2>
+        <div class="auth-form">
+          <div class="form-group"><label>Email</label><input type="email" placeholder="tu@email.com"></div>
+          <div class="form-group"><label>Contraseña</label><input type="password" placeholder="********"></div>
+          <button class="btn" style="width:100%; background:#000; color:#fff; margin-top:1rem;">ENTRAR</button>
+          <p class="auth-toggle" onclick="toggleAuth('register')">¿No tienes cuenta? Regístrate</p>
+        </div>
       </div>
-
-      <div class="auth-form" id="registerForm" style="display:none">
-        <div class="form-group"><label>Nombre</label><input type="text" id="regName" placeholder="Tu nombre"></div>
-        <div class="form-group"><label>Email</label><input type="email" id="regEmail" placeholder="tu@email.com"></div>
-        <div class="form-group"><label>Contraseña</label><input type="password" id="regPass" placeholder="Mínimo 6 caracteres"></div>
-        <button class="btn" onclick="handleRegister()" style="width:100%; background:#000; color:#fff; border:none">CREAR CUENTA</button>
-        <p class="auth-toggle" onclick="toggleAuthForm('login')">¿Ya tienes cuenta? Inicia sesión</p>
-      </div>
-
-      <div id="profileSection" style="display:none; padding-top:1rem">
-        <p id="profileName" style="font-weight:700; margin-bottom:1rem"></p>
-        <button class="btn" onclick="handleLogout()" style="width:100%; background:var(--red); color:#fff; border:none">CERRAR SESIÓN</button>
+      <div id="registerForm" style="display:none;">
+        <h2 style="font-weight:900; text-transform:uppercase; margin-bottom:1.5rem;">CREAR CUENTA</h2>
+        <div class="auth-form">
+          <div class="form-group"><label>Nombre Completo</label><input type="text" placeholder="Juan Pérez"></div>
+          <div class="form-group"><label>Email</label><input type="email" placeholder="tu@email.com"></div>
+          <div class="form-group"><label>Contraseña</label><input type="password" placeholder="********"></div>
+          <button class="btn" style="width:100%; background:#000; color:#fff; margin-top:1rem;">REGISTRARME</button>
+          <p class="auth-toggle" onclick="toggleAuth('login')">¿Ya tienes cuenta? Inicia sesión</p>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- PRODUCT MODAL -->
   <div class="modal" id="productModal" onclick="closeModalIfOutside(event)">
-    <div class="modal-content" style="display:grid; grid-template-columns:1fr 1fr; gap:2rem">
+    <div class="modal-content">
       <button class="modal-close" onclick="closeModal()">✕</button>
-      <div style="overflow:hidden"><img id="modalImage" src="" style="width:100%; height:100%; object-fit:cover"></div>
-      <div>
-        <h2 id="modalName"></h2><div id="modalPrice" style="font-weight:700; margin:1rem 0; font-size:1.5rem"></div>
-        <p id="modalDesc" style="color:#666; margin-bottom:1.5rem"></p>
-        <div id="sizeOptions" style="display:flex; gap:0.5rem; margin-bottom:1.5rem"></div>
-        <button class="btn" onclick="addToCartFromModal()" style="width:100%; background:#000; color:#fff; border:none">AGREGAR AL CARRITO</button>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem;">
+        <div class="product-image"><img id="modalImage" src="" alt=""></div>
+        <div class="product-info">
+          <h2 id="modalName" style="font-weight:900; text-transform:uppercase; margin-bottom:0.5rem;"></h2>
+          <p id="modalPrice" style="font-weight:700; font-size:1.2rem; margin-bottom:1rem;"></p>
+          <p id="modalDesc" style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.5rem;"></p>
+          <div style="margin-bottom:1.5rem;">
+            <p style="font-size:0.65rem; font-weight:700; text-transform:uppercase; margin-bottom:0.5rem;">Seleccionar Talle</p>
+            <div id="sizeOptions" style="display:flex; gap:0.5rem;"></div>
+          </div>
+          <button class="btn" onclick="addToCartFromModal()" style="width:100%; background:#000; color:#fff;">AGREGAR AL CARRITO</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- CART -->
   <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
   <div class="cart-sidebar" id="cartSidebar">
-    <div style="padding:1.5rem; border-bottom:1px solid #000; display:flex; justify-content:space-between"><h3>TU CARRITO</h3><button onclick="toggleCart()" style="background:none; border:none; cursor:pointer; font-size:1.5rem">✕</button></div>
-
-    <!-- CONTENEDOR CON SCROLL -->
-    <div style="flex:1; overflow-y:auto; display:flex; flex-direction:column">
-      <div id="cartItems" style="padding:1rem"></div>
-
-      <!-- FORMULARIO DE DATOS -->
-      <div id="cartDataForm" style="padding:1.5rem; border-top:1px solid #eee; background:#fcfcfc; display:none">
-        <h4 style="font-size:0.8rem; margin-bottom:1rem; text-transform:uppercase">Datos para el Envío</h4>
-        <div class="form-group"><label>Nombre y Apellido</label><input type="text" id="orderName"></div>
-        <div class="form-group"><label>Ubicación</label><input type="text" id="orderLocation"></div>
-        <div class="form-group"><label>Correo</label><input type="email" id="orderEmail"></div>
-        <div class="form-group"><label>Dirección de Correo Argentino</label><input type="text" id="orderShippingAddr"></div>
+    <div style="padding:1.5rem; border-bottom:1px solid #000; display:flex; justify-content:space-between; align-items:center">
+      <h2 style="font-size:1.2rem; font-weight:900; text-transform:uppercase;">TU CARRITO</h2>
+      <button onclick="toggleCart()" style="background:none; border:none; font-size:1.2rem; cursor:pointer">✕</button>
+    </div>
+    
+    <div style="flex:1; overflow-y:auto; padding:1.5rem;">
+      <div id="cartItems"></div>
+      
+      <div id="cartDataForm" style="margin-top:2rem; border-top:1px solid #eee; padding-top:1.5rem; display:none;">
+        <p style="font-size:0.7rem; font-weight:700; text-transform:uppercase; margin-bottom:1rem; border-bottom:1px solid #000; display:inline-block;">Datos de Envío</p>
+        <div class="form-group"><label>Nombre Completo</label><input type="text" id="orderName"></div>
+        <div class="form-group"><label>Localidad / Ciudad</label><input type="text" id="orderLocation"></div>
+        <div class="form-group"><label>Email</label><input type="email" id="orderEmail"></div>
+        <div class="form-group"><label>Sucursal Correo Argentino</label><input type="text" id="orderShippingAddr" placeholder="Ej: Sucursal Centro"></div>
         <div class="form-group"><label>DNI</label><input type="text" id="orderDni"></div>
-        <div class="form-group"><label>Celular</label><input type="tel" id="orderPhone"></div>
-  </div>
+        <div class="form-group"><label>Celular</label><input type="text" id="orderPhone"></div>
+      </div>
     </div>
 
     <div style="padding:1.5rem; border-top:1px solid #000; background:#fff">
       <div style="display:flex; justify-content:space-between; margin-bottom:1rem; font-weight:700"><span>TOTAL:</span><span id="cartTotal">$0</span></div>
-      <div style="background:#FFD700; color:#000; padding:0.75rem 1rem; margin-bottom:0.75rem; font-size:0.78rem; font-weight:700; text-transform:uppercase; border:1px solid #b8a000; display:flex; align-items:flex-start; gap:0.5rem; line-height:1.4;">
-        <span style="font-size:1rem; flex-shrink:0;">&#9888;</span>
+      
+      <!-- BLOQUE DE ADVERTENCIA AMARILLO -->
+      <div style="background:#FFD700; color:#000; padding:1.2rem; margin-bottom:1.5rem; font-size:1.1rem; font-weight:900; text-transform:uppercase; display:flex; align-items:center; gap:1rem; border:2px solid #000;">
+        <span style="font-size:1.5rem;">&#9888;</span>
         <span>No borrar texto generado</span>
       </div>
-      <button class="btn" onclick="shareOnWhatsApp()" style="width:100%; background:#25D366; color:#fff; border:none">COMPLETAR PEDIDO POR WHATSAPP</button>
+      
+      <button class="btn" onclick="shareOnWhatsApp()" style="width:100%; background:#25D366; color:#fff; border:none; padding:1.2rem; font-size:1.1rem; font-weight:900;">COMPLETAR PEDIDO POR WHATSAPP</button>
     </div>
   </div>
 
@@ -437,114 +474,35 @@
       {id:'t1', section:'arriba', category:'remeras', name:'VINTAGE TEE 01', price:25000, desc:'Remera 90s Cotton Blend. Estado 9/10.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['S','M','L']},
       {id:'t2', section:'arriba', category:'chombas', name:'RETRO POLO NAVY', price:32000, desc:'Polo Lacoste vintage original.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['M','L']},
       {id:'t3', section:'arriba', category:'hoodies', name:'CHAMPION HOODIE', price:45000, desc:'Hoodie heavyweight Champion.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['L','XL']},
-      {id:'b1', section:'abajo', category:'jeans', name:'LEVIS 501 VINTAGE', price:55000, desc:'Levis 501 original denim oscuro.', img:'https://images.unsplash.com/photo-1542272604-787c62d465d1?auto=format&fit=crop&w=800&q=80', sizes:['32','34']}
+      {id:'t4', section:'arriba', category:'camisas', name:'FLANNEL SHIRT', price:28000, desc:'Camisa de franela a cuadros.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['M','L','XL']},
+      {id:'b1', section:'abajo', category:'pantalones', name:'CARGO PANTS KHAKI', price:38000, desc:'Pantalón cargo vintage.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['30','32','34']},
+      {id:'b2', section:'abajo', category:'jeans', name:'LEVIS 501 DENIM', price:42000, desc:'Levis 501 clásicos.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['32','34','36']},
+      {id:'b3', section:'abajo', category:'bermudas', name:'CHINO SHORTS', price:22000, desc:'Bermudas tipo chino.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['30','32']}
     ];
 
     let cart = [];
     let currentProduct = null;
     let selectedSize = null;
-    let currentUser = null;
 
-    // BASE DE DATOS LOCAL
-    function getUsersDB() { return JSON.parse(localStorage.getItem('zyskn_users')) || []; }
-    function saveUserDB(users) { localStorage.setItem('zyskn_users', JSON.stringify(users)); }
-
-    function init() { 
-      renderProducts(products); 
-      setupScrollListener(); 
-      checkAuthStatus();
+    function init() {
+      renderProducts(products);
+      setupScrollListener();
     }
 
-    // AUTH LOGIC
-    function checkAuthStatus() {
-      const savedUser = JSON.parse(localStorage.getItem('zyskn_current_user'));
-      if(savedUser) {
-        currentUser = savedUser;
-        document.getElementById('userAuth').textContent = `HOLA, ${currentUser.name.split(' ')[0].toUpperCase()}`;
-      } else {
-        document.getElementById('userAuth').textContent = 'LOGIN';
-      }
-    }
-
-    function openAuthModal() {
-      const modal = document.getElementById('authModal');
-      modal.classList.add('active');
-      if(currentUser) {
-        document.getElementById('authTitle').textContent = 'MI PERFIL';
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('registerForm').style.display = 'none';
-        document.getElementById('profileSection').style.display = 'block';
-        document.getElementById('profileName').textContent = `Logueado como: ${currentUser.email}`;
-      } else {
-        toggleAuthForm('login');
-      }
-    }
-
-    function closeAuthModal() { document.getElementById('authModal').classList.remove('active'); }
-    function closeAuthModalIfOutside(e) { if(e.target.id==='authModal') closeAuthModal(); }
-
-    function toggleAuthForm(type) {
-      const login = document.getElementById('loginForm');
-      const register = document.getElementById('registerForm');
-      const title = document.getElementById('authTitle');
-      if(type === 'login') {
-        login.style.display = 'block'; register.style.display = 'none'; title.textContent = 'INICIAR SESIÓN';
-      } else {
-        login.style.display = 'none'; register.style.display = 'block'; title.textContent = 'CREAR CUENTA';
-      }
-    }
-
-    function handleRegister() {
-      const name = document.getElementById('regName').value;
-      const email = document.getElementById('regEmail').value;
-      const pass = document.getElementById('regPass').value;
-      if(!name || !email || pass.length < 6) { alert('Completa todos los datos (contraseña min 6 caracteres)'); return; }
-
-      let users = getUsersDB();
-      if(users.find(u => u.email === email)) { alert('Este email ya está registrado'); return; }
-
-      users.push({name, email, pass});
-      saveUserDB(users);
-      alert('Registro exitoso. Ya puedes iniciar sesión.');
-      toggleAuthForm('login');
-    }
-
-    function handleLogin() {
-      const email = document.getElementById('loginEmail').value;
-      const pass = document.getElementById('loginPass').value;
-      let users = getUsersDB();
-      const user = users.find(u => u.email === email && u.pass === pass);
-
-      if(user) {
-        currentUser = user;
-        localStorage.setItem('zyskn_current_user', JSON.stringify(user));
-        checkAuthStatus();
-        closeAuthModal();
-      } else {
-        alert('Email o contraseña incorrectos');
-      }
-    }
-
-    function handleLogout() {
-      localStorage.removeItem('zyskn_current_user');
-      currentUser = null;
-      checkAuthStatus();
-      closeAuthModal();
-    }
-
-    // PRODUCT RENDER
-    function renderProducts(items) {
-      document.getElementById('productsGrid').innerHTML = items.map(p => `
+    function renderProducts(list) {
+      const grid = document.getElementById('productsGrid');
+      grid.innerHTML = list.map(p=>`
         <div class="product-card" onclick="openModal('${p.id}')">
-          <div class="product-image"><img src="${p.img}"></div>
-          <div style="padding:0.5rem"><div style="font-size:0.8rem; font-weight:600">${p.name}</div><div style="font-weight:700">$${p.price.toLocaleString('es-AR')}</div></div>
+          <div class="product-image"><img src="${p.img}" alt="${p.name}"></div>
+          <p style="font-size:0.75rem; font-weight:700; text-transform:uppercase; margin-bottom:0.2rem">${p.name}</p>
+          <p style="font-size:0.85rem; font-weight:900">$${p.price.toLocaleString('es-AR')}</p>
         </div>
       `).join('');
     }
 
     function showMainCategory(s, e) { if(e) e.preventDefault(); renderProducts(s==='todo'?products:products.filter(p=>p.section===s)); scrollToSection('shop'); }
     function filterProducts(c) { renderProducts(products.filter(p=>p.category===c)); scrollToSection('shop'); }
-
+    
     function openModal(id) {
       currentProduct = products.find(p=>p.id===id); selectedSize = null;
       document.getElementById('modalName').textContent = currentProduct.name;
@@ -554,26 +512,26 @@
       document.getElementById('sizeOptions').innerHTML = currentProduct.sizes.map(s=>`<button onclick="setS('${s}', this)" style="padding:0.5rem 1rem; border:1px solid #000; background:#fff; cursor:pointer; font-size:0.75rem">${s}</button>`).join('');
       document.getElementById('productModal').classList.add('active');
     }
-
+    
     function setS(s, btn) {
       selectedSize = s;
       document.querySelectorAll('#sizeOptions button').forEach(b=>b.style.background='#fff');
       btn.style.background = '#eee';
     }
-
+    
     function closeModal() { document.getElementById('productModal').classList.remove('active'); }
     function closeModalIfOutside(e) { if(e.target.id==='productModal') closeModal(); }
     function toggleCart() { document.getElementById('cartSidebar').classList.toggle('active'); document.getElementById('cartOverlay').classList.toggle('active'); }
-
+    
     function addToCartFromModal() {
       if(!selectedSize){alert('Selecciona talle'); return;}
       cart.push({...currentProduct, size:selectedSize}); updateCartUI(); closeModal();
     }
-
+    
     function updateCartUI() {
       const badge = document.getElementById('cartBadge');
       badge.textContent = cart.length; badge.style.display = cart.length?'flex':'none';
-
+      
       const form = document.getElementById('cartDataForm');
       form.style.display = cart.length > 0 ? 'block' : 'none';
 
@@ -590,10 +548,10 @@
       cart.splice(index, 1);
       updateCartUI();
     }
-
+    
     function shareOnWhatsApp() {
       if(cart.length === 0) { alert('El carrito está vacío'); return; }
-
+      
       const name = document.getElementById('orderName').value;
       const location = document.getElementById('orderLocation').value;
       const email = document.getElementById('orderEmail').value;
@@ -619,17 +577,26 @@
       t += `- Sucursal Correo Argentino: ${shipping}\n`;
       t += `- DNI: ${dni}\n`;
       t += `- Celular: ${phone}\n\n`;
-
+      
       t += `PRODUCTOS:\n`;
       cart.forEach(i=>t+=`- ${i.name} (${i.size})\n`);
       t += `\nTOTAL: $${cart.reduce((s,i)=>s+i.price,0).toLocaleString('es-AR')}`;
-
+      
       window.open(`https://wa.me/5493544631553?text=${encodeURIComponent(t)}`, '_blank');
     }
-
+    
     function setupScrollListener() { window.addEventListener('scroll', () => { const h=document.getElementById('header'); if(window.scrollY>50) h.classList.add('scrolled'); else h.classList.remove('scrolled'); }); }
     function scrollToSection(id) { document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
     function scrollToTop() { window.scrollTo({top:0, behavior:'smooth'}); }
+    
+    // AUTH FUNCTIONS
+    function openAuthModal() { document.getElementById('authModal').classList.add('active'); }
+    function closeAuthModal() { document.getElementById('authModal').classList.remove('active'); }
+    function closeAuthModalIfOutside(e) { if(e.target.id==='authModal') closeAuthModal(); }
+    function toggleAuth(type) {
+      document.getElementById('loginForm').style.display = type === 'login' ? 'block' : 'none';
+      document.getElementById('registerForm').style.display = type === 'register' ? 'block' : 'none';
+    }
 
     init();
   </script>
