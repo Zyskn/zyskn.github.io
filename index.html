@@ -342,19 +342,66 @@
   .logo-slogan { 
     display: none; 
   }
-  .nav-container {
-    gap: 1rem;
-  }
-  .nav-main { 
+.hamburger {
     display: flex;
-    gap: 1.2rem;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Firefox */
-    flex-shrink: 1;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 30px;
+    height: 30px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 1100;
   }
-  .nav-main::-webkit-scrollbar { 
-    display: none; /* Chrome/Safari */
+  
+  .hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: #000;
+    transition: all 0.3s ease;
+  }
+  
+  .hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+  }
+  
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+  }
+
+  .nav-container {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 280px;
+    height: 100vh;
+    background: #fff;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+    transition: right 0.3s ease;
+    z-index: 1000;
+    padding-top: 80px;
+  }
+  
+  .nav-container.active {
+    right: 0;
+  }
+  
+  .nav-main {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 25px;
+  }
+  
+  .nav-item a {
+    font-size: 18px;
+    color: #000;
   }
   .nav-main a {
     font-size: 0.8rem;
@@ -854,6 +901,25 @@
     }
     
     function scrollToTop() { window.scrollTo({top:0, behavior:'smooth'}); }
+    // MENÚ HAMBURGER
+const hamburger = document.getElementById('hamburger');
+const navContainer = document.getElementById('navContainer');
+const navLinks = document.querySelectorAll('.nav-item a');
+
+if(hamburger && navContainer) {
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navContainer.classList.toggle('active');
+    document.body.style.overflow = navContainer.classList.contains('active') ? 'hidden' : '';
+  });
+}
+
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('active');
+    navContainer.classList.remove('active');
+    document.body.style.overflow = '';
+  });
     init();
   </script>
 </body>
