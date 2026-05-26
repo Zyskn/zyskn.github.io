@@ -8,7 +8,7 @@ public_folder: "/images/uploads"
 
 collections:
     - name: "productos"
-    label: "DROP 01"
+    label: "Productos"
     folder: "_productos"
     create: true
     slug: "{{title}}"
@@ -26,4 +26,4 @@ collections:
             - {label: "Talle", name: "size", widget: "string"}
             - {label: "Estado", name: "status", widget: "select", options: ["Disponible", "Reservado", "Vendido"], default: "Disponible"}
             - {label: "Descripción", name: "body", widget: "markdown", required: false}
-            - {label: "Link WhatsApp", name: "link", widget: "string", default: "https://wa.me/54"}
+            - {label: "Stock", name: "stock", widget: "number", default: 1, value_type: "int"}
