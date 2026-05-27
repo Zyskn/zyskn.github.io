@@ -64,7 +64,8 @@
 .social-links { display:flex; justify-content:center; gap:60px; }
 .social-item { display:flex; flex-direction:column; align-items:center; gap:16px; text-decoration:none; color:#000; }
 .social-circle { width:60px; height:60px; background:#000; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:var(--transition); }
-.social-circle svg { width:24px; height:24px; fill:#fff; }
+.social-circle svg { width:24px; height:24px; fill:#fff; display: block; }
+.social-item.wa .social-circle svg { transform: translateY(1px); } /* Ajuste fino para centrar WhatsApp */
 .social-item:hover .social-circle { transform:scale(1.1); }
 .social-item.wa:hover .social-circle { background:var(--whatsapp); }
 .social-item.ig:hover .social-circle { background:var(--instagram); }
@@ -82,53 +83,37 @@
       pointer-events: none;
     }
 
- @keyframes flyToCart {
-  0% {
-    transform: translate(0, 0) scale(1);
-    opacity: 1;
-  }
-  50% {
-    /* Efecto de arco: sube un poco antes de bajar al carrito */
-    transform: translate(calc(var(--target-x) * 0.5), calc(var(--target-y) * 0.5 - 50px)) scale(0.8);
-    opacity: 0.8;
-  }
-  100% {
-    transform: translate(var(--target-x), var(--target-y)) scale(0.1);
-    opacity: 0;
-  }
-}
+    @keyframes fadeOutOverlay {
+      0% { opacity: 1; }
+      100% { opacity: 0; }
+    }
 
-.fly-item {
-  position: fixed;
-  z-index: 9999;
-  pointer-events: none;
-  transition: none;
-  border-radius: 50%; /* Opcional: para que el rastro sea circular */
-  background: #000; /* Color que combine con tu diseño */
-  animation: flyToCart 0.8s cubic-bezier(0.42, 0, 0.58, 1) forwards;
-}
+    /* ANIMACIÓN VUELO AL CARRITO */
+    @keyframes flyToCart {
+      0% { transform: translate(0, 0) scale(1); opacity: 1; }
+      50% { transform: translate(calc(var(--target-x) * 0.5), calc(var(--target-y) * 0.5 - 50px)) scale(0.8); opacity: 0.8; }
+      100% { transform: translate(var(--target-x), var(--target-y)) scale(0.1); opacity: 0; }
+    }
+    .fly-item {
+      position: fixed; z-index: 9999; pointer-events: none; border-radius: 50%; background: #000;
+      animation: flyToCart 0.8s cubic-bezier(0.42, 0, 0.58, 1) forwards;
+    }
 
-/* Tus estilos originales mantenidos */
-@keyframes fadeOutOverlay {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
-}
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      color: #000;
+      line-height: 1.4;
+      overflow-x: hidden;
+      position: relative;
+      animation: contentShine 0.4s ease-out forwards;
+      scroll-behavior: smooth;
+    }
 
-body {
-  font-family: 'Inter', sans-serif;
-  background: #fff;
-  color: #000;
-  line-height: 1.4;
-  overflow-x: hidden;
-  position: relative;
-  animation: contentShine 0.4s ease-out forwards;
-  scroll-behavior: smooth;
-}
-
-@keyframes contentShine {
-  0% { filter: brightness(0.5); }
-  100% { filter: brightness(1); }
-}
+    @keyframes contentShine {
+      0% { filter: brightness(0.5); }
+      100% { filter: brightness(1); }
+    }
 
     .top-bar {
   background: var(--red);
@@ -410,24 +395,6 @@ header.scrolled { padding: 1.2rem 3rem; }
       display: flex; align-items: center; justify-content: center;
       font-size: 0.65rem; font-weight: 700;
     }
-  position: absolute; 
-  top: -6px; 
-  right: -6px;
-  background: #FF3B30;
-  color: #fff;
-  width: 16px; 
-  height: 16px; 
-  border-radius: 50%;
-  display: none;
-  align-items: center; 
-  justify-content: center;
-  font-size: 0.65rem; 
-  font-weight: 700;
-}
-
-.cart-badge.show {
-  display: flex;
-}
 
     .hamburger { display: none; }
 
@@ -465,44 +432,11 @@ header.scrolled { padding: 1.2rem 3rem; }
       }
       .nav-main.active { right: 0; }
       .nav-item { padding: 1rem 0; border-bottom: 1px solid #eee; width: 100%; }
-      .nav-main a { font-size: 1.1rem; }
-      .sub-nav-wrapper { position: static; display: flex; opacity: 1; transform: none; box-shadow: none; border: none; padding: 0.5rem 0 0 1rem; pointer-events: auto; }
-
-      .nav-container { gap: 0.5rem; flex-grow: 0; position: static; }
-      .nav-icons { order: 2; gap: 0.5rem; margin-left: auto; }
-      .icon-btn svg { width: 20px; height: 20px; }
-      .auth-status { font-size: 0.75rem; order: 1; margin-right: 0.5rem; }
-      .search-wrapper { order: 0; position: static; }
-      .cart-icon { order: 2; }
-
-      .search-input-container {
-        position: absolute; top: 0; right: 0; width: 0; height: 100%;
-        background: #fff; padding: 0; margin: 0; z-index: 2002;
-        display: flex; align-items: center; justify-content: flex-start;
-        transition: width 0.4s var(--transition);
-      }
-      header.searching .search-input-container { width: 100%; padding: 0 1rem; }
-      header.searching .search-input-container input { 
-        width: calc(100% - 40px); 
-        border-radius: 0; border: none; 
-        border-bottom: 2px solid var(--celeste); 
-        padding: 0.5rem 0;
-        font-size: 1rem;
-      }
-
-      .search-close-btn {
-        display: none;
-        width: 40px; height: 40px;
-        align-items: center; justify-content: center;
-        font-size: 1.5rem; font-weight: 300;
-        cursor: pointer;
-      }
-      header.searching .search-close-btn { display: flex; }
-    }
-
-    @media (max-width: 600px) {
-      .logo { font-size: 1.5rem; }
-      .logo-slogan { font-size: 0.7rem; }
+      .sub-nav-wrapper { position: static; opacity: 1; visibility: visible; transform: none; width: 100%; box-shadow: none; padding: 0; background: none; display: none; }
+      /* En móviles el hover no activa el menú, lo haremos por JS */
+      .nav-item:hover .sub-nav-wrapper { display: none; }
+      .nav-item.active-mobile .sub-nav-wrapper { display: block; }
+      .sub-nav-item { padding: 0.8rem 1rem; }
     }
 
     section { padding: 6rem 2rem; max-width: var(--container-max); margin: 0 auto; }
@@ -522,10 +456,6 @@ header.scrolled { padding: 1.2rem 3rem; }
     .form-group { margin-bottom: 1rem; text-align: left; }
     .form-group label { display: block; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.3rem; }
     .form-group input { width: 100%; padding: 0.6rem; border: 1px solid #000; font-size: 0.8rem; outline: none; }
-    .contact-icon-btn { width: 70px; height: 70px; border-radius: 50%; background: #000; display: flex; align-items: center; justify-content: center; color: #fff; margin: 0 auto 0.8rem auto; transition: all 0.3s ease; }
-    .contact-icon-btn svg { width: 32px; height: 32px; transition: all 0.3s ease; }
-    .contact-item:hover .icon-wa-btn { background: var(--whatsapp); transform: scale(1.1); }
-    .contact-item:hover .icon-ig-btn { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); transform: scale(1.1); }
     .notification { position: fixed; bottom: 2rem; right: 2rem; background: #000; color: #fff; padding: 1rem 2rem; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; z-index: 3000; display: none; animation: slideIn 0.3s ease-out; }
     @keyframes slideIn { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     @media (max-width: 600px) { .products-grid { grid-template-columns: 1fr; } footer > div { flex-direction: column !important; align-items: flex-start !important; gap: 1rem; } }
@@ -639,7 +569,7 @@ header.scrolled { padding: 1.2rem 3rem; }
   </svg>
   LOGIN
 </button>
-          <button class="icon-btn cart-icon" onclick="scrollToSection('cart-section')">
+          <button class="icon-btn cart-icon" id="cart-icon" onclick="scrollToSection('cart-section')">
             <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
             <span class="cart-badge" id="cartBadge" style="display: none;">0</span>
           </button>
@@ -670,7 +600,7 @@ header.scrolled { padding: 1.2rem 3rem; }
 
     <section id="nuevo-section" style="background: #fff; border-bottom: 1px solid #000;">
       <h2 class="section-title" style="color: var(--red);">NUEVO</h2>
-      <div id="nuevoProductsGrid" class="products-grid"></div>
+      <div id="newProductsGrid" class="products-grid"></div>
     </section>
 
     <section id="product-detail">
@@ -685,7 +615,7 @@ header.scrolled { padding: 1.2rem 3rem; }
             <p style="font-size:0.75rem; font-weight:700; text-transform:uppercase; margin-bottom:0.8rem;">Seleccionar Talle</p>
             <div id="detailSizes" style="display:flex; gap:0.8rem; flex-wrap: wrap;"></div>
           </div>
-          <button class="btn" onclick="addToCartFromDetail()" style="width:100%; background:#000; color:#fff; padding:1.2rem; font-size:1rem;">AGREGAR AL CARRITO</button>
+          <button class="btn" onclick="addToCartFromDetail(event)" style="width:100%; background:#000; color:#fff; padding:1.2rem; font-size:1rem;">AGREGAR AL CARRITO</button>
           <p onclick="scrollToSection('shop')" style="margin-top:1.5rem; font-size:0.8rem; text-decoration:underline; cursor:pointer; font-weight:600;">VOLVER A LA TIENDA</p>
         </div>
       </div>
@@ -829,9 +759,9 @@ header.scrolled { padding: 1.2rem 3rem; }
     </footer>
   </main>
 
- <script>
+  <script>
     const products = [
-      {id:'t1', section:'arriba', category:'remeras', name:'Remera roja Overzise, price:25000, desc:'Remera 90s Cotton Blend. Estado 9/10.', img:'//images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['S','M','L'], isNew: true},
+      {id:'t1', section:'arriba', category:'remeras', name:'VINTAGE TEE 01', price:25000, desc:'Remera 90s Cotton Blend. Estado 9/10.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['S','M','L'], isNew: true},
       {id:'t2', section:'arriba', category:'chombas', name:'RETRO POLO NAVY', price:32000, desc:'Polo Lacoste vintage original.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['M','L'], isNew: true},
       {id:'t3', section:'arriba', category:'hoodies', name:'CHAMPION HOODIE', price:45000, desc:'Hoodie heavyweight Champion.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['L','XL']},
       {id:'t4', section:'arriba', category:'camisas', name:'FLANNEL SHIRT', price:28000, desc:'Camisa de franela a cuadros.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['M','L','XL']},
@@ -844,7 +774,8 @@ header.scrolled { padding: 1.2rem 3rem; }
     let currentProduct = null;
     let selectedSize = null;
 
-    function animateToCart(event, cartSelector ) {
+    // ANIMACIÓN VUELO AL CARRITO
+    function animateToCart(event, cartSelector) {
       const button = event.currentTarget;
       const cartEl = document.querySelector(cartSelector);
       if (!cartEl) return;
@@ -853,8 +784,6 @@ header.scrolled { padding: 1.2rem 3rem; }
       flyer.className = 'fly-item';
       flyer.style.width = '15px';
       flyer.style.height = '15px';
-      flyer.style.background = '#000';
-      flyer.style.borderRadius = '50%';
       
       const rect = button.getBoundingClientRect();
       flyer.style.left = `${rect.left + rect.width / 2}px`;
@@ -871,7 +800,6 @@ header.scrolled { padding: 1.2rem 3rem; }
 
       flyer.addEventListener('animationend', () => {
         flyer.remove();
-        // Efecto visual en el carrito al recibir el item
         cartEl.style.transform = 'scale(1.3)';
         setTimeout(() => cartEl.style.transform = 'scale(1)', 200);
       });
@@ -954,6 +882,9 @@ header.scrolled { padding: 1.2rem 3rem; }
 
     function showMainCategory(s, e) { 
       if(e) e.preventDefault(); 
+      // En móviles, si tiene submenú, no redirigimos al tocar el padre
+      if (window.innerWidth <= 1024 && (s === 'arriba' || s === 'abajo')) return;
+      
       renderProducts(s==='todo'?products:products.filter(p=>p.section===s), 'productsGrid'); 
       scrollToSection('shop'); 
     }
@@ -983,12 +914,16 @@ header.scrolled { padding: 1.2rem 3rem; }
       btn.style.background = '#eee';
     }
 
-    function addToCartFromDetail() {
+    function addToCartFromDetail(event) {
       if(!selectedSize){alert('Selecciona talle'); return;}
       cart.push({...currentProduct, size:selectedSize}); 
       updateCartUI(); 
+      
+      // DISPARAR ANIMACIÓN
+      animateToCart(event, '#cart-icon');
+      
       showNotification('Producto añadido al carrito');
-      scrollToSection('cart-section');
+      setTimeout(() => scrollToSection('cart-section'), 800);
     }
 
     function updateCartUI() {
@@ -1085,6 +1020,7 @@ function shareOnWhatsApp() {
 
     function scrollToSection(id) { 
       const el = document.getElementById(id);
+      if(!el) return;
       const headerOffset = document.getElementById('header').offsetHeight;
       const elementPosition = el.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
@@ -1096,7 +1032,28 @@ function shareOnWhatsApp() {
     const hamburger = document.getElementById('hamburger');
     const navMain = document.getElementById('navMain');
     const navOverlay = document.getElementById('nav-overlay');
-    const navLinks = document.querySelectorAll('.nav-item a, .sub-nav-item');
+    const navLinks = document.querySelectorAll('.nav-item > a, .sub-nav-item');
+
+    // Manejo de menús desplegables en móviles
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+      const link = item.querySelector('a');
+      if (item.querySelector('.sub-nav-wrapper')) {
+        link.addEventListener('click', (e) => {
+          if (window.innerWidth <= 1024) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Cerrar otros menús abiertos
+            navItems.forEach(otherItem => {
+              if (otherItem !== item) otherItem.classList.remove('active-mobile');
+            });
+            
+            item.classList.toggle('active-mobile');
+          }
+        });
+      }
+    });
 
     if(hamburger && navMain) {
       hamburger.addEventListener('click', () => {
@@ -1117,7 +1074,12 @@ function shareOnWhatsApp() {
     }
 
     navLinks.forEach(link => {
-      link.addEventListener('click', () => {
+      link.addEventListener('click', (e) => {
+        // En móviles, si el link es ARRIBA o ABAJO (tienen submenú), NO cerramos el menú lateral
+        if (window.innerWidth <= 1024 && link.parentElement.querySelector('.sub-nav-wrapper')) {
+          return;
+        }
+        
         hamburger.classList.remove('active');
         navMain.classList.remove('active');
         if(navOverlay) navOverlay.classList.remove('active');
