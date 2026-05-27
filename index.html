@@ -347,7 +347,46 @@
 .cart-badge.show {
   display: flex;
 }
+/* Dropdown de usuario */
+.user-menu-wrapper {
+  position: relative;
+}
 
+.user-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  min-width: 180px;
+  z-index: 1000;
+}
+
+.user-dropdown.show {
+  display: block;
+}
+
+.user-dropdown a {
+  display: block;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: #000;
+  font-size: 0.9rem;
+}
+
+.user-dropdown a:hover {
+  background: #f5f5f5;
+}
+
+.user-dropdown hr {
+  margin: 4px 0;
+  border: none;
+  border-top: 1px solid #eee;
+}
+    
     .hamburger { display: none; }
 
     /* =====================================================
@@ -526,13 +565,22 @@
               <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
             </button>
           </div>
-          <button id="userAuth" class="icon-btn auth-status" onclick="scrollToSection('account-section')">
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-    <circle cx="12" cy="7" r="4"></circle>
-  </svg>
-  LOGIN
-</button>
+          <div class="user-menu-wrapper">
+  <button id="userAuth" class="icon-btn auth-status">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+      <circle cx="12" cy="7" r="4"></circle>
+    </svg>
+    LOGIN
+  </button>
+  <div class="user-dropdown" id="userDropdown">
+    <a href="#perfil">Mi perfil</a>
+    <a href="#pedidos">Mis pedidos</a>
+    <a href="#favoritos">Favoritos</a>
+    <hr>
+    <a href="#" onclick="logout()">Cerrar sesión</a>
+  </div>
+</div>
           <button class="icon-btn cart-icon" onclick="scrollToSection('cart-section')">
             <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
             <span class="cart-badge" id="cartBadge" style="display: none;">0</span>
@@ -980,8 +1028,83 @@ function shareOnWhatsApp() {
         document.body.style.overflow = '';
       });
     });
+// Dropdown de usuario
+const authBtn = document.getElementById('userAuth');
+const dropdown = document.getElementById('userDropdown');
 
+authBtn.addEventListener('click', function(e) {
+  e.stopPropagation();
+  const user = localStorage.getItem('user');
+  
+  if (user) {
+    dropdown.classList.toggle('show');
+  } else {
+    openLoginModal();
+  }
+});
+
+document.addEventListener('click', function() {
+  dropdown.classList.remove('show');
+});
+
+function logout() {
+  localStorage.removeItem('user');
+  location.reload();
+}
+
+function checkUserStatus() {
+  const user = JSON.parse(localStorage.getItem('user'));
+  if (user) {
+    authBtn.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+    CUENTA
+    `;
+    }
+
+    function openLoginModal() {
+      document.getElementById('loginModal').classList.add('show');
+    }
+
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.remove('show');
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      
+      localStorage.setItem('user', JSON.stringify({
+        name: email.split('@')[0],
+        email: email
+      }));
+      
+      closeLoginModal();
+      location.reload();
+    });
+
+    document.getElementById('loginModal').addEventListener('click', function(e) {
+      if (e.target === this) closeLoginModal();
+    });
+
+    checkUserStatus();
     init();
   </script>
+
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <span class="close" onclick="closeLoginModal()">&times;</span>
+      <h2>TU CUENTA. TUS REGLAS.</h2>
+      <p class="modal-subtitle">Trackeá pedidos, guardá favoritos, comprá más rápido</p>
+      <form id="loginForm">
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPassword" placeholder="Contraseña" required>
+        <button type="submit">INICIAR SESIÓN</button>
+      </form>
+      <p>¿Todavía no sos parte? <a href="#" onclick="showRegister()">Registrate gratis</a></p>
+    </div>
+  </div>
 </body>
 </html>
