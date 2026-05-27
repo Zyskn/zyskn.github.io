@@ -133,13 +133,19 @@
   fill: #fff;
   display: block;
   flex-shrink: 0;
-}
-.marquee-item:nth-child(2) svg {
-  transform: translateY(-1.5px);
+  position: relative;
+  top: 0;
 }
 .marquee-item span { 
   color: #fff;
   line-height: 1;
+  position: relative;
+  top: 1px;
+}
+a[href*="wa.me"] svg,
+a[href*="whatsapp"] svg,
+a[href*="3544"] svg {
+  transform: translateY(-2px) !important;
 }
 @keyframes marquee-infinite {
   0% { transform: translateX(0); }
