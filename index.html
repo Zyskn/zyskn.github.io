@@ -301,14 +301,6 @@
       background: #fff;
     }
 
-    .search-close-btn {
-      position: absolute;
-      right: 1rem;
-      font-size: 1.2rem;
-      cursor: pointer;
-      opacity: 0.5;
-    }
-
     .nav-icons { display: flex; gap: 1.5rem; align-items: center; flex-shrink: 0; }
     .icon-btn {
       background: none; border: none; cursor: pointer;
@@ -348,11 +340,12 @@
     .hamburger {
       display: none;
       flex-direction: column;
-      gap: 5px;
+      gap: 4px;
       background: none;
       border: none;
       cursor: pointer;
       padding: 0.5rem;
+      z-index: 1001;
     }
     .hamburger span {
       width: 24px;
@@ -360,8 +353,12 @@
       background: #000;
       transition: var(--transition);
     }
+    .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
 
-    #nav-overlay {
+    .nav-overlay {
+      display: none;
       position: fixed;
       top: 0;
       left: 0;
@@ -369,26 +366,98 @@
       height: 100%;
       background: rgba(0, 0, 0, 0.5);
       z-index: 1999;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s var(--transition), visibility 0.3s var(--transition);
     }
-    #nav-overlay.active {
-      opacity: 1;
-      visibility: visible;
+    .nav-overlay.active { display: block; }
+
+    @media (max-width: 1024px) {
+      header { padding: 1.5rem 1rem; }
+      header.scrolled { padding: 1rem; }
+      .logo { font-size: 1.8rem; }
+      .nav-container { gap: 1rem; }
+      .nav-main {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: #fff;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 5rem 2rem 2rem;
+        gap: 0;
+        transition: right 0.4s var(--transition);
+        z-index: 2000;
+        border-left: 1px solid #000;
+        overflow-y: auto;
+      }
+      .nav-main.active { right: 0; }
+      .nav-item { width: 100%; padding: 1rem 0; border-bottom: 1px solid #eee; }
+      .nav-item::after { display: none; }
+      .sub-nav-wrapper {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        width: 100%;
+        box-shadow: none;
+        border: none;
+        margin-top: 0.5rem;
+        padding: 0 0 0 1rem;
+        background: transparent;
+        backdrop-filter: none;
+        pointer-events: auto;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+      .nav-item.active .sub-nav-wrapper { max-height: 500px; }
+      .sub-nav-item { opacity: 1; transform: none; padding: 0.5rem 0; }
+      .sub-nav-item::before { display: none; }
+      .sub-nav-item:hover { padding-left: 0; background: transparent; }
+      .hamburger { display: flex; }
+      header.searching .nav-main { transform: none; opacity: 1; }
+      header.searching .search-input-container { width: 200px; }
     }
 
-    section { padding: 5rem 2rem; }
-    .section-title { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 900; text-transform: uppercase; text-align: center; margin-bottom: 3rem; letter-spacing: -0.02em; }
+    section { padding: 4rem 2rem; }
+    .section-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 3rem;
+      letter-spacing: -0.02em;
+    }
 
-    .hero { background: #000; color: #fff; min-height: 90vh; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; }
-    .hero-content h1 { font-size: clamp(3rem, 10vw, 8rem); font-weight: 900; text-transform: uppercase; letter-spacing: -0.04em; margin-bottom: 2rem; }
+    .hero {
+      height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=2000&q=80') center/cover;
+      color: #fff;
+    }
+    .hero h1 {
+      font-size: clamp(3rem, 10vw, 8rem);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      margin-bottom: 2rem;
+    }
     .btn {
-      display: inline-block; padding: 1rem 3rem; border: 2px solid #fff; background: transparent; color: #fff;
-      font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer;
-      transition: var(--transition); text-decoration: none;
+      padding: 1rem 2.5rem;
+      background: #fff;
+      color: #000;
+      border: none;
+      font-weight: 900;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      display: inline-block;
     }
-    .btn:hover { background: #fff; color: #000; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
 
     .products-grid {
       display: grid;
@@ -399,54 +468,60 @@
     }
 
     .product-card { cursor: pointer; }
-    .product-image { 
-      background: #f5f5f5; 
-      aspect-ratio: 3/4; 
-      margin-bottom: 1rem; 
-      position: relative; 
+    .product-image {
+      aspect-ratio: 3/4;
+      background: var(--gray-bg);
+      margin-bottom: 1rem;
+      position: relative;
       overflow: hidden;
     }
-    .product-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s var(--transition); }
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s var(--transition);
+    }
     .product-card:hover .product-image img { transform: scale(1.05); }
 
     .wishlist-btn {
       position: absolute;
       top: 1rem;
       right: 1rem;
-      background: rgba(255,255,255,0.9);
+      background: #fff;
       border: none;
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
       transition: var(--transition);
     }
-    .wishlist-btn svg { width: 20px; height: 20px; fill: none; stroke: #000; stroke-width: 2; }
-    .wishlist-btn.active svg { fill: var(--red); stroke: var(--red); }
     .wishlist-btn:hover { transform: scale(1.1); }
+    .wishlist-btn svg { width: 18px; height: 18px; fill: #000; }
+    .wishlist-btn.active svg { fill: var(--red); }
 
-    #product-detail { display: none; padding: 4rem 2rem; max-width: 1400px; margin: 0 auto; }
+    #product-detail {
+      display: none;
+      max-width: var(--container-max);
+      margin: 0 auto;
+    }
     #product-detail.active { display: block; }
 
-    #cart-section { display: block; padding: 4rem 2rem; }
     .cart-container { max-width: 800px; margin: 0 auto; }
-
     .coupon-box {
       display: flex;
       gap: 0.5rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
     .coupon-box input {
       flex: 1;
-      padding: 0.8rem 1rem;
-      border: 2px solid #000;
+      padding: 0.8rem;
+      border: 1px solid #000;
       font-family: inherit;
-      font-weight: 600;
+      font-size: 0.85rem;
       text-transform: uppercase;
-      font-size: 0.8rem;
     }
     .coupon-box button {
       padding: 0.8rem 1.5rem;
@@ -455,39 +530,56 @@
       border: none;
       font-weight: 700;
       cursor: pointer;
-      text-transform: uppercase;
-      font-size: 0.8rem;
     }
     .coupon-applied {
-      background: var(--yellow);
-      padding: 0.8rem 1rem;
-      margin-bottom: 1rem;
-      font-size: 0.8rem;
+      display: none;
+      padding: 0.8rem;
+      background: #e8f5e9;
+      border: 1px solid #4caf50;
+      color: #2e7d32;
+      font-size: 0.85rem;
       font-weight: 700;
       text-transform: uppercase;
-      display: none;
+      margin-bottom: 1rem;
     }
     .coupon-applied.show { display: block; }
 
-    .form-group { margin-bottom: 1.5rem; }
-    .form-group label { display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em; }
-    .form-group input, .form-group textarea {
-      width: 100%; padding: 1rem; border: 1px solid #000; background: #fff; font-family: inherit;
-      font-size: 0.9rem; outline: none; transition: var(--transition);
+    .yellow-warning {
+      background: var(--yellow);
+      border: 2px solid #ffc107;
+      padding: 1rem;
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
     }
-    .form-group input:focus, .form-group textarea:focus { border-color: var(--blue); }
 
-    .yellow-warning { background: var(--yellow); padding: 1rem; margin: 1.5rem 0; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      font-family: inherit;
+      font-size: 0.9rem;
+    }
 
     .modal {
+      display: none;
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       background: rgba(0,0,0,0.8);
-      z-index: 3000;
-      display: none;
+      z-index: 5000;
       align-items: center;
       justify-content: center;
       padding: 2rem;
@@ -497,15 +589,15 @@
       background: #fff;
       max-width: 600px;
       width: 100%;
-      max-height: 80vh;
+      max-height: 90vh;
       overflow-y: auto;
       padding: 3rem;
       position: relative;
     }
     .modal-close {
       position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
+      top: 1rem;
+      right: 1rem;
       background: none;
       border: none;
       font-size: 2rem;
@@ -513,101 +605,89 @@
       line-height: 1;
     }
 
+    .contact-item { text-align: center; }
+    .contact-icon-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      transition: var(--transition);
+    }
+    .contact-icon-btn:hover { transform: scale(1.1); }
+    .contact-icon-btn svg { width: 28px; height: 28px; fill: #fff; }
+    .icon-wa-btn { background: var(--whatsapp); }
+    .icon-ig-btn { background: var(--instagram); }
+
     #notification {
       position: fixed;
-      top: 120px;
+      top: 100px;
       right: 2rem;
       background: #000;
       color: #fff;
-      padding: 1rem 2rem;
+      padding: 1rem 1.5rem;
       font-size: 0.85rem;
       font-weight: 700;
       text-transform: uppercase;
-      z-index: 5000;
+      z-index: 6000;
       display: none;
-      animation: slideIn 0.3s var(--transition);
-    }
-    @keyframes slideIn {
-      from { transform: translateX(400px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-
-    .contact-icon-btn {
-      width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: transform 0.2s var(--transition), box-shadow 0.2s var(--transition);
-      color: #fff; text-decoration: none;
-    }
-    .contact-icon-btn svg { width: 36px; height: 36px; }
-    .contact-icon-btn:hover { transform: scale(1.1); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
-    .icon-wa-btn { background: var(--whatsapp); }
-    .icon-ig-btn { background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); }
-
-    @media (max-width: 1024px) {
-      .hamburger { display: flex; }
-      .nav-main {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 80%;
-        max-width: 400px;
-        height: 100vh;
-        background: #fff;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 6rem 2rem 2rem;
-        gap: 0;
-        transition: right 0.4s var(--transition);
-        box-shadow: -10px 0 30px rgba(0,0,0,0.1);
-        z-index: 2001;
-      }
-      .nav-main.active { right: 0; }
-      .nav-item { width: 100%; padding: 0; border-bottom: 1px solid #eee; }
-      .nav-item a { display: block; padding: 1.5rem 0; }
-      .sub-nav-wrapper {
-        position: static;
-        opacity: 1;
-        visibility: visible;
-        transform: none;
-        width: 100%;
-        box-shadow: none;
-        border: none;
-        padding: 0 0 0 1rem;
-        margin: 0;
-        background: transparent;
-      }
-      .sub-nav-item { opacity: 1; transform: none; }
     }
 
     @media (max-width: 768px) {
-      header { padding: 1.5rem 1.5rem; }
-      header.scrolled { padding: 1rem 1.5rem; }
-      .logo { font-size: 1.8rem; }
       .products-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
       .product-detail-grid { grid-template-columns: 1fr !important; }
+      section { padding: 2rem 1rem; }
     }
   </style>
 </head>
 <body>
   <div id="supreme-overlay"></div>
-  <div id="notification"></div>
-  <div id="nav-overlay"></div>
+  <div id="nav-overlay" class="nav-overlay"></div>
 
   <div class="top-bar">
     <div class="marquee-content">
       <div class="marquee-item">
-        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
         <span>ENVÍOS A TODO EL PAÍS</span>
       </div>
       <div class="marquee-item">
-        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-        <span>PRENDAS ÚNICAS</span>
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        <span>STOCK LIMITADO - ARCHIVE PIECES</span>
       </div>
       <div class="marquee-item">
-        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-        <span>EST. 2024</span>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <span>PRENDAS ÚNICAS SELECCIONADAS</span>
       </div>
     </div>
   </div>
+
+  <header id="header">
+    <div class="header-content">
+      <div class="logo-section" onclick="scrollToTop()">
+        <div class="logo">ZYSKN ★</div>
+        <div class="logo-slogan">EST. 2024</div>
+      </div>
+
+      <div class="nav-container">
+        <nav class="nav-main" id="navMain">
+          <div class="nav-item"><a onclick="showMainCategory('todo', event)">SHOP</a></div>
+          <div class="nav-item nav-item-new"><a onclick="scrollToSection('nuevo-section')">NUEVO</a></div>
+          <div class="nav-item"><a onclick="scrollToSection('favs')">FAVS</a></div>
+          <div class="nav-item"><a onclick="scrollToSection('rebajas')">REBAJAS</a></div>
+          <div class="nav-item">
+            <a onclick="showMainCategory('arriba', event)">ARRIBA</a>
+            <div class="sub-nav-wrapper">
+              <div class="sub-nav-item" onclick="filterProducts('remeras')">Remeras</div>
+              <div class="sub-nav-item" onclick="filterProducts('chombas')">Chombas</div>
+              <div class="sub-nav-item" onclick="filterProducts('camisas')">Camisas</div>
+              <div class="sub-nav-item" onclick="filterProducts('hoodies')">Hoodies</div>
+              <div class="sub-nav-item" onclick="filterProducts('sweaters')">Sweaters</div>
+              <div class="sub-nav-item" onclick="filterProducts('rompevientos')">Rompevientos</div>
+              <div class="sub-nav-item" onclick="filterProducts('camperas')">Camperas</div>
+            </div>
+          </div>
           <div class="nav-item">
             <a onclick="showMainCategory('abajo', event)">ABAJO</a>
             <div class="sub-nav-wrapper">
@@ -618,6 +698,7 @@
               <div class="sub-nav-item" onclick="filterProducts('mallas')">Mallas</div>
             </div>
           </div>
+          <div class="nav-item"><a onclick="scrollToSection('nosotros')">NOSOTROS</a></div>
           <div class="nav-item"><a onclick="scrollToSection('contact')">CONTACTO</a></div>
         </nav>
 
@@ -647,13 +728,12 @@
             <span class="cart-badge" id="cartBadge">0</span>
           </button>
           <button class="hamburger" id="hamburger">
-            <span></span><span></span><span></span>
+            <span></span><span></span>
           </button>
         </div>
       </div>
     </div>
   </header>
-
   <main>
     <section class="hero">
       <div class="hero-content">
@@ -702,6 +782,7 @@
       <h2 class="section-title">VISTOS RECIENTEMENTE</h2>
       <div id="recentlyViewedGrid" class="products-grid"></div>
     </section>
+
     <section id="cart-section">
       <div class="cart-container">
         <h2 class="section-title" style="text-align:center;">TU CARRITO</h2>
@@ -736,7 +817,6 @@
         </div>
       </div>
     </section>
-
     <section id="faq-section" style="background: #fff; border-top: 1px solid #000;">
       <h2 class="section-title">FAQ.</h2>
       <div style="max-width: 800px; margin: 0 auto;">
@@ -768,7 +848,7 @@
 
         <div style="margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
           <h3 style="font-size: 1rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem;">¿CÓMO VERIFICO EL ESTADO DE UNA PRENDA?</h3>
-          <p style="font-size: 0.9rem; color: var(--text-muted);">Utilizamos una escala de 10/10 (perfecta) a 8/10 (buen estado con mínimo uso). Cada prenda incluye descripción detallada del estado. Podés contactarnos por WhatsApp para fotos adicionales o consultas específicas.</p>
+          <p style="font-size: 0.9rem; color: var(--text-muted);">Utilizamos una escala de 10/10 a 8/10. Cada prenda incluye descripción detallada del estado. Podés contactarnos por WhatsApp para fotos adicionales o consultas específicas.</p>
         </div>
 
         <div style="margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
@@ -782,6 +862,7 @@
         </div>
       </div>
     </section>
+
     <section id="account-section" style="background:#f9f9f9; border-top:1px solid #000;">
       <div style="max-width: 400px; margin: 0 auto; text-align:center;">
         <h2 class="section-title">MI CUENTA</h2>
@@ -790,10 +871,15 @@
           <div class="form-group"><label>Contraseña</label><input type="password" id="loginPass" placeholder="********"></div>
           <button class="btn" onclick="handleAuth('login')" style="width:100%; background:#000; color:#fff;">ENTRAR</button>
           <p style="font-size: 0.7rem; color: #666; margin-top: 1.5rem; cursor: pointer; text-decoration: underline;" onclick="toggleAuthView('register')">¿No tienes cuenta? Regístrate</p>
+          <p style="font-size: 0.7rem; color: #666; margin-top: 0.5rem; cursor: pointer; text-decoration: underline;" onclick="forgotPassword()">¿Olvidaste tu contraseña?</p>
         </div>
         <div id="registerForm" style="display:none;">
           <div class="form-group"><label>Nombre Completo</label><input type="text" id="regName" placeholder="Juan Pérez"></div>
-          <div class="form-group"><label>Email</label><input type="email" id="regEmail" placeholder="tu@email.com"></div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="regEmail" placeholder="tu@email.com" onblur="validateEmail(this)">
+            <p id="emailError" style="font-size:0.7rem; color:var(--red); margin-top:0.3rem; display:none;">Email inválido</p>
+          </div>
           <div class="form-group"><label>Contraseña</label><input type="password" id="regPass" placeholder="********"></div>
           <button class="btn" onclick="handleAuth('register')" style="width:100%; background:#000; color:#fff;">REGISTRARME</button>
           <p style="font-size: 0.7rem; color: #666; margin-top: 1.5rem; cursor: pointer; text-decoration: underline;" onclick="toggleAuthView('login')">¿Ya tienes cuenta? Inicia sesión</p>
@@ -801,10 +887,29 @@
         <div id="profileView" style="display:none;">
           <p style="font-weight:700; text-transform:uppercase; margin-bottom:1rem;">¡Bienvenido de nuevo!</p>
           <p id="userDisplay" style="font-size:0.9rem; margin-bottom:2rem;"></p>
-          <button class="btn" onclick="handleAuth('logout')" style="width:100%; background:#000; color:#fff;">CERRAR SESIÓN</button>
+          <div id="addressesSection" style="margin-top:2rem; text-align:left;">
+            <h3 style="font-size:0.9rem; font-weight:900; text-transform:uppercase; margin-bottom:1rem; border-bottom:1px solid #000; display:inline-block;">MIS DIRECCIONES</h3>
+            <div id="addressesList" style="margin-bottom:1.5rem;"></div>
+            <button class="btn" onclick="showAddressForm()" style="width:100%; background:#000; color:#fff; font-size:0.8rem;">+ AGREGAR DIRECCIÓN</button>
+          </div>
+          <div id="addressForm" style="display:none; margin-top:1.5rem; text-align:left;">
+            <div class="form-group"><label>Alias</label><input type="text" id="addrAlias" placeholder="Casa, Trabajo"></div>
+            <div class="form-group"><label>Calle</label><input type="text" id="addrStreet" placeholder="Av. Colón"></div>
+            <div class="form-group"><label>Número</label><input type="text" id="addrNumber" placeholder="1234"></div>
+            <div class="form-group"><label>Piso/Depto</label><input type="text" id="addrFloor" placeholder="5B"></div>
+            <div class="form-group"><label>Ciudad</label><input type="text" id="addrCity" placeholder="Córdoba"></div>
+            <div class="form-group"><label>CP</label><input type="text" id="addrCP" placeholder="5000"></div>
+            <button class="btn" onclick="saveAddress()" style="width:100%; background:#000; color:#fff;">GUARDAR</button>
+          </div>
+          <div id="ordersSection" style="margin-top:2rem; text-align:left;">
+            <h3 style="font-size:0.9rem; font-weight:900; text-transform:uppercase; margin-bottom:1rem; border-bottom:1px solid #000; display:inline-block;">HISTORIAL DE PEDIDOS</h3>
+            <div id="ordersList"></div>
+          </div>
+          <button class="btn" onclick="handleAuth('logout')" style="width:100%; background:#000; color:#fff; margin-top:2rem;">CERRAR SESIÓN</button>
         </div>
       </div>
     </section>
+
     <section id="contact" style="background: #fff; text-align: center; border-top: 1px solid #000;">
       <h2 class="section-title">NUESTRAS REDES</h2>
       <div style="display: flex; gap: 2.5rem; justify-content: center; align-items: center;">
@@ -816,7 +921,7 @@
         </div>
         <div class="contact-item">
           <a href="https://instagram.com/zyskn.vtg" target="_blank" class="contact-icon-btn icon-ig-btn">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.805.249 2.227.412.56.216.96.474 1.38.894.42.42.678.82.894 1.38.163.422.358 1.057.412 2.227.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.249 1.805-.412 2.227-.216.56-.474.96-.894 1.38-.42.42-.82.678-1.38.894-.422.163-1.057.358-2.227.412-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.805-.249-2.227-.412-.56-.216-.96-.474-1.38-.894-.42-.42-.678-.82-.894-1.38-.163-.422-.358-1.057-.412-2.227-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.054-1.17.249-1.805.412-2.227.216-.56.474-.96.894-1.38.42-.42.82-.678 1.38-.894.422-.163 1.057-.358 2.227-.412 1.266-.058 1.646-.07 4.85-.07ZM12 0C8.741 0 8.333.014 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.741 0 12s.014 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126s1.337 1.078 2.126 1.384c.766.296 1.636.499 2.913.558C8.333 23.986 8.741 24 12 24s3.667-.014 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384s1.078-1.337 1.384-2.126c.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.014-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126s-1.337-1.078-2.126-1.384c-.765-.296-1.636-.499-2.913-.558C15.667.012 15.259 0 12 0Zm0 5.838a6.162 0 1 0 0 12.324 6.162 0 0-12.324ZM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.406-11.845a1.44 0 1 0 0 2.881 1.44 0 0 0 0-2.881Z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.805.249 2.227.412.56.216.96.474 1.38.894.42.42.678.82.894 1.38.163.422.358 1.057.412 2.227.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.249 1.805-.412 2.227-.216.56-.474.96-.894 1.38-.42.42-.82.678-1.38.894-.422.163-1.057.358-2.227.412-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.805-.249-2.227-.412-.56-.216-.96-.474-1.38-.894-.42-.42-.678-.82-.894-1.38-.163-.422-.358-1.057-.412-2.227-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.054-1.17.249-1.805.412-2.227.216-.56.474-.96.894-1.38.42-.42.82-.678 1.38-.894.422-.163 1.057-.358 2.227-.412 1.266-.058 1.646-.07 4.85-.07ZM12 0C8.741 0 8.333.014 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.741 0 12s.014 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126s1.337 1.078 2.126 1.384c.766.296 1.636.499 2.913.558C8.333 23.986 8.741 24 12 24s3.667-.014 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384s1.078-1.337 1.384-2.126c.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.014-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126s-1.337-1.078-2.126-1.384c-.765-.296-1.636-.499-2.913-.558C15.667.012 15.259 0 12 0Zm0 5.838a6.162 0 1 0 0 12.324 6.162 6.162 0 0-12.324ZM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.406-11.845a1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881Z"/></svg>
           </a>
           <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">INSTAGRAM</p>
         </div>
@@ -848,499 +953,557 @@
     </div>
   </div>
 
+  <div id="notification"></div>
   <script>
     const products = [
-      {id:'t1', section:'arriba', category:'remeras', name:'VINTAGE TEE 01', price:25000, desc:'Remera 90s Cotton Blend. Estado 9/10.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['S','M','L'], isNew: true},
-      {id:'t2', section:'arriba', category:'chombas', name:'RETRO POLO NAVY', price:32000, desc:'Polo Lacoste vintage original.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['M','L'], isNew: true},
-      {id:'t3', section:'arriba', category:'hoodies', name:'CHAMPION HOODIE', price:45000, desc:'Hoodie heavyweight Champion.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['L','XL']},
-      {id:'t4', section:'arriba', category:'camisas', name:'FLANNEL SHIRT', price:28000, desc:'Camisa de franela a cuadros.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['M','L','XL']},
-      {id:'b1', section:'abajo', category:'pantalones', name:'CARGO PANTS KHAKI', price:38000, desc:'Pantalón cargo vintage.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['30','32','34'], isNew: true},
-      {id:'b2', section:'abajo', category:'jeans', name:'LEVIS 501 DENIM', price:42000, desc:'Levis 501 clásicos.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['32','34','36']},
-      {id:'b3', section:'abajo', category:'bermudas', name:'CHINO SHORTS', price:22000, desc:'Bermudas tipo chino.', img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80', sizes:['30','32']}
+      {id:1,name:"LEVI'S 501 '97",price:45,desc:"Jean vintage original. Denim pesado 14oz. Estado 9/10. Talle 32x34.",img:"https://images.unsplash.com/photo-1542272604-787c3835535d?w=800",sizes:["30","32","34"],isNew:true},
+      {id:2,name:"NIKE JACKET ACG",price:85,desc:"Rompevientos ACG años 90. Impermeable. Estado 8.5/10. Color azul/negro.",img:"https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800",sizes:["M","L"],isNew:true},
+      {id:3,name:"HARLEY TEE '94",price:35,desc:"Remera oficial Harley Davidson. Single stitch. Estado 9/10. Estampa perfecta.",img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800",sizes:["L","XL"],isNew:false},
+      {id:4,name:"CARHARTT WORK PANTS",price:55,desc:"Pantalón carpintero Carhartt. Canvas resistente. Estado 8/10. Talle 34x32.",img:"https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=800",sizes:["32","34","36"],isNew:false},
+      {id:5,name:"POLO SPORT CAP",price:25,desc:"Gorra Polo Sport Ralph Lauren. Años 90. Estado 9.5/10. Ajuste perfecto.",img:"https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800",sizes:["U"],isNew:false},
+      {id:6,name:"CHAMPION HOODIE",price:40,desc:"Buzo Champion Reverse Weave. Made in USA. Estado 8/10. Gris jaspeado.",img:"https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800",sizes:["M","L","XL"],isNew:true},
+      {id:7,name:"TOMMY HILFIGER SHIRT",price:30,desc:"Camisa Tommy Hilfiger. Cuadros clásicos. Estado 9/10. 100% algodón.",img:"https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800",sizes:["M","L"],isNew:false},
+      {id:8,name:"ADIDAS TRACK TOP",price:38,desc:"Campera Adidas trefoil. Azul marino. Estado 8.5/10. Años 80.",img:"https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=800",sizes:["S","M","L"],isNew:false}
     ];
 
-    let cart = JSON.parse(localStorage.getItem('zyskn_cart')) || [];
-    let wishlist = JSON.parse(localStorage.getItem('zyskn_wishlist')) || [];
-    let viewedProducts = JSON.parse(localStorage.getItem('zyskn_viewed')) || [];
-    let appliedCoupon = JSON.parse(localStorage.getItem('zyskn_coupon')) || null;
-    let currentProduct = null;
+    let cart = JSON.parse(localStorage.getItem('z_cart')) || [];
+    let wishlist = JSON.parse(localStorage.getItem('z_wish')) || [];
+    let selectedSizes = {};
+    let currentUser = JSON.parse(localStorage.getItem('z_user')) || null;
+    let coupon = null;
+    let selectedProduct = null;
     let selectedSize = null;
+    let recentlyViewed = JSON.parse(localStorage.getItem('z_recent')) || [];
+    let userAddresses = JSON.parse(localStorage.getItem('z_addresses')) || [];
+    let orderHistory = JSON.parse(localStorage.getItem('z_orders')) || [];
 
-    const coupons = {
-      'ZYSKN10': { type: 'percent', value: 10, name: 'ZYSKN10 - 10% OFF' },
-      'ENVIOGRATIS': { type: 'shipping', value: 3000, min: 50000, name: 'ENVÍO GRATIS' }
+    const WHATSAPP_NUMBER = '5493544631553';
+    const COUPONS = {
+      'ZYSKN10': {type: 'percent', value: 10},
+      'VINTAGE15': {type: 'percent', value: 15},
+      'FIRST20': {type: 'fixed', value: 20}
     };
 
-    function init() {
-      renderProducts(products, 'productsGrid');
-      renderProducts(products.filter(p=>p.isNew), 'nuevoProductsGrid');
-      renderRecentlyViewed();
-      setupScrollListener();
-      updateCartUI();
-      updateWishlistUI();
-      if(appliedCoupon) showCouponApplied();
-    }
+    function saveCart() { localStorage.setItem('z_cart', JSON.stringify(cart)); }
+    function saveWish() { localStorage.setItem('z_wish', JSON.stringify(wishlist)); }
+    function saveUser() { localStorage.setItem('z_user', JSON.stringify(currentUser)); }
+    function saveRecent() { localStorage.setItem('z_recent', JSON.stringify(recentlyViewed)); }
+    function saveAddresses() { localStorage.setItem('z_addresses', JSON.stringify(userAddresses)); }
+    function saveOrders() { localStorage.setItem('z_orders', JSON.stringify(orderHistory)); }
 
-    function saveCart() {
-      localStorage.setItem('zyskn_cart', JSON.stringify(cart));
-    }
-
-    function saveWishlist() {
-      localStorage.setItem('zyskn_wishlist', JSON.stringify(wishlist));
-    }
-
-    function saveViewed() {
-      localStorage.setItem('zyskn_viewed', JSON.stringify(viewedProducts));
-    }
-
-    function toggleSearch() {
-      const header = document.getElementById('header');
-      const input = document.getElementById('searchInput');
-      header.classList.toggle('searching');
-      if(header.classList.contains('searching')) {
-        setTimeout(() => input.focus(), 100);
-      }
-    }
-
-    function handleSearch(e) {
-      if(e.key === 'Enter') {
-        const query = e.target.value.toLowerCase();
-        const filtered = products.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
-        renderProducts(filtered, 'productsGrid');
-        scrollToSection('shop');
-        toggleSearch();
-        e.target.value = '';
-      }
-    }
-
-    function showNotification(msg) {
+    function showNotification(msg, type = 'success') {
       const n = document.getElementById('notification');
-      n.textContent = msg; n.style.display = 'block';
-      setTimeout(() => { n.style.display = 'none'; }, 3000);
+      n.textContent = msg;
+      n.className = `notification ${type} show`;
+      setTimeout(() => n.classList.remove('show'), 3000);
     }
-    function handleAuth(type) {
-      if(type === 'login') {
-        const email = document.getElementById('loginEmail').value;
-        if(!email) { alert('Ingresa tu email'); return; }
-        document.getElementById('userAuth').innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> MI PERFIL';
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('profileView').style.display = 'block';
-        document.getElementById('userDisplay').textContent = `SESIÓN INICIADA COMO: ${email.toUpperCase()}`;
-        showNotification('Sesión iniciada correctamente');
-      } else if(type === 'register') {
-        const name = document.getElementById('regName').value;
-        if(!name) { alert('Ingresa tu nombre'); return; }
-        document.getElementById('userAuth').innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> MI PERFIL';
-        document.getElementById('registerForm').style.display = 'none';
-        document.getElementById('profileView').style.display = 'block';
-        document.getElementById('userDisplay').textContent = `CUENTA CREADA: ${name.toUpperCase()}`;
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const headerOffset = 100;
+      const elementPosition = el.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({top: offsetPosition, behavior: 'smooth'});
+      closeHamburger();
+    }
+
+    function toggleHamburger() {
+      document.getElementById('hamburgerIcon').classList.toggle('active');
+      document.getElementById('sideMenu').classList.toggle('active');
+      document.getElementById('menuOverlay').classList.toggle('active');
+    }
+
+    function closeHamburger() {
+      document.getElementById('hamburgerIcon').classList.remove('active');
+      document.getElementById('sideMenu').classList.remove('active');
+      document.getElementById('menuOverlay').classList.remove('active');
+    }
+
+    function validateEmail(input) {
+      const email = input.value;
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const errorEl = document.getElementById('emailError');
+      if (!regex.test(email) && email.length > 0) {
+        errorEl.style.display = 'block';
+        return false;
+      }
+      errorEl.style.display = 'none';
+      return true;
+    }
+
+    function toggleAuthView(view) {
+      document.getElementById('loginForm').style.display = view === 'login'? 'block' : 'none';
+      document.getElementById('registerForm').style.display = view === 'register'? 'block' : 'none';
+    }
+
+    function handleAuth(action) {
+      if (action === 'register') {
+        const name = document.getElementById('regName').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const pass = document.getElementById('regPass').value;
+
+        if (!name ||!email ||!pass) {
+          showNotification('Completá todos los campos', 'error');
+          return;
+        }
+
+        if (!validateEmail(document.getElementById('regEmail'))) {
+          showNotification('Email inválido', 'error');
+          return;
+        }
+
+        currentUser = {name, email, id: Date.now()};
+        saveUser();
         showNotification('Cuenta creada con éxito');
-      } else if(type === 'logout') {
-        document.getElementById('userAuth').innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> LOGIN';
-        document.getElementById('profileView').style.display = 'none';
-        document.getElementById('loginForm').style.display = 'block';
+        updateAuthUI();
+      }
+
+      if (action === 'login') {
+        const email = document.getElementById('loginEmail').value.trim();
+        const pass = document.getElementById('loginPass').value;
+
+        if (!email ||!pass) {
+          showNotification('Completá todos los campos', 'error');
+          return;
+        }
+
+        currentUser = {email, name: email.split('@')[0], id: Date.now()};
+        saveUser();
+        showNotification('Bienvenido de vuelta');
+        updateAuthUI();
+      }
+
+      if (action === 'logout') {
+        currentUser = null;
+        saveUser();
         showNotification('Sesión cerrada');
+        updateAuthUI();
       }
     }
 
-    function renderProducts(list, gridId) {
-      const grid = document.getElementById(gridId);
-      if(!grid) return;
-      grid.innerHTML = list.map(p => `
-        <div class="product-card">
-          <div class="product-image" onclick="showProductDetail('${p.id}')">
-            <img src="${p.img}" alt="${p.name}">
-            <button class="wishlist-btn ${wishlist.includes(p.id)? 'active' : ''}" onclick="event.stopPropagation(); toggleWishlist('${p.id}')">
-              <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-            </button>
-          </div>
-          <div style="display:flex; justify-content:space-between; align-items:flex-start;" onclick="showProductDetail('${p.id}')">
-            <div>
-              <h3 style="font-size:0.85rem; font-weight:900; text-transform:uppercase;">${p.name}</h3>
-              <p style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">${p.category}</p>
-            </div>
-            <p style="font-size:0.85rem; font-weight:700;">$${p.price.toLocaleString('es-AR')}</p>
-          </div>
+    function forgotPassword() {
+      const email = prompt('Ingresá tu email para recuperar la contraseña:');
+      if (email) showNotification('Te enviamos un email de recuperación');
+    }
+
+    function updateAuthUI() {
+      const loginForm = document.getElementById('loginForm');
+      const registerForm = document.getElementById('registerForm');
+      const profileView = document.getElementById('profileView');
+      const userDisplay = document.getElementById('userDisplay');
+
+      if (currentUser) {
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'none';
+        profileView.style.display = 'block';
+        userDisplay.textContent = currentUser.name || currentUser.email;
+        renderAddresses();
+        renderOrders();
+      } else {
+        loginForm.style.display = 'block';
+        registerForm.style.display = 'none';
+        profileView.style.display = 'none';
+      }
+    }
+
+    function showAddressForm() {
+      document.getElementById('addressForm').style.display = 'block';
+    }
+
+    function saveAddress() {
+      const addr = {
+        id: Date.now(),
+        alias: document.getElementById('addrAlias').value,
+        street: document.getElementById('addrStreet').value,
+        number: document.getElementById('addrNumber').value,
+        floor: document.getElementById('addrFloor').value,
+        city: document.getElementById('addrCity').value,
+        cp: document.getElementById('addrCP').value
+      };
+
+      if (!addr.alias ||!addr.street ||!addr.number ||!addr.city) {
+        showNotification('Completá los campos obligatorios', 'error');
+        return;
+      }
+
+      userAddresses.push(addr);
+      saveAddresses();
+      renderAddresses();
+      document.getElementById('addressForm').style.display = 'none';
+      showNotification('Dirección guardada');
+    }
+
+    function renderAddresses() {
+      const list = document.getElementById('addressesList');
+      if (userAddresses.length === 0) {
+        list.innerHTML = '<p style="font-size:0.8rem; color:#666;">No tenés direcciones guardadas</p>';
+        return;
+      }
+
+      list.innerHTML = userAddresses.map(addr => `
+        <div style="border:1px solid #ddd; padding:1rem; margin-bottom:0.8rem; font-size:0.85rem;">
+          <strong>${addr.alias}</strong><br>
+          ${addr.street} ${addr.number} ${addr.floor}<br>
+          ${addr.city}, CP ${addr.cp}
+          <button onclick="deleteAddress(${addr.id})" style="float:right; background:none; border:none; color:var(--red); cursor:pointer; font-size:0.7rem;">ELIMINAR</button>
         </div>
       `).join('');
     }
 
-    function showMainCategory(s, e) {
-      if(e) e.preventDefault();
-      renderProducts(s==='todo'?products:products.filter(p=>p.section===s), 'productsGrid');
-      scrollToSection('shop');
+    function deleteAddress(id) {
+      userAddresses = userAddresses.filter(a => a.id!== id);
+      saveAddresses();
+      renderAddresses();
     }
 
-    function filterProducts(c) {
-      renderProducts(products.filter(p=>p.category===c), 'productsGrid');
-      scrollToSection('shop');
-    }
-
-    function showProductDetail(id) {
-      currentProduct = products.find(p=>p.id===id);
-      selectedSize = null;
-
-      if(!viewedProducts.includes(id)) {
-        viewedProducts.unshift(id);
-        if(viewedProducts.length > 4) viewedProducts.pop();
-        saveViewed();
-        renderRecentlyViewed();
+    function renderOrders() {
+      const list = document.getElementById('ordersList');
+      if (orderHistory.length === 0) {
+        list.innerHTML = '<p style="font-size:0.8rem; color:#666;">No tenés pedidos aún</p>';
+        return;
       }
 
-      document.getElementById('detailName').textContent = currentProduct.name;
-      document.getElementById('detailPrice').textContent = `$${currentProduct.price.toLocaleString('es-AR')}`;
-      document.getElementById('detailDesc').textContent = currentProduct.desc;
-      document.getElementById('detailImage').src = currentProduct.img;
-      document.getElementById('detailSizes').innerHTML = currentProduct.sizes.map(s=>`
-        <button onclick="setS('${s}', this)" style="padding:0.8rem 1.5rem; border:1px solid #000; background:#fff; cursor:pointer; font-size:0.8rem; font-weight:700;">${s}</button>
+      list.innerHTML = orderHistory.slice(-5).reverse().map(order => `
+        <div style="border:1px solid #ddd; padding:1rem; margin-bottom:0.8rem; font-size:0.85rem;">
+          <strong>Pedido #${order.id}</strong> - $${order.total}<br>
+          <span style="color:#666;">${order.date}</span><br>
+          ${order.items.length} items
+        </div>
       `).join('');
-      document.getElementById('product-detail').classList.add('active');
+    }
+    function renderProducts(gridId, productsArray) {
+      const grid = document.getElementById(gridId);
+      grid.innerHTML = productsArray.map(p => {
+        const inWish = wishlist.includes(p.id);
+        return `
+          <div class="product-card">
+            ${p.isNew? '<div class="new-badge">NUEVO</div>' : ''}
+            <div class="product-img" onclick="showProductDetail(${p.id})">
+              <img src="${p.img}" alt="${p.name}" loading="lazy">
+              <button class="wish-btn ${inWish? 'active' : ''}" onclick="event.stopPropagation(); toggleWish(${p.id})">
+                <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              </button>
+            </div>
+            <div class="product-details">
+              <h3 class="product-name">${p.name}</h3>
+              <p class="product-price">$${p.price}</p>
+              <p class="product-desc">${p.desc}</p>
+              <div class="size-selector">
+                ${p.sizes.map(s => `<button class="size-btn ${selectedSizes[p.id] === s? 'active' : ''}" onclick="selectSize(${p.id}, '${s}')">${s}</button>`).join('')}
+              </div>
+              <button class="btn btn-add" onclick="addToCart(${p.id})">AGREGAR AL CARRITO</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectSize(productId, size) {
+      selectedSizes[productId] = size;
+      renderProducts('productsGrid', products);
+      renderProducts('nuevoProductsGrid', products.filter(p => p.isNew));
+      if (selectedProduct && selectedProduct.id === productId) {
+        selectedSize = size;
+        renderDetailSizes();
+      }
+    }
+
+    function showProductDetail(productId) {
+      selectedProduct = products.find(p => p.id === productId);
+      selectedSize = selectedSizes[productId] || null;
+
+      document.getElementById('detailImage').src = selectedProduct.img;
+      document.getElementById('detailImage').alt = selectedProduct.name;
+      document.getElementById('detailName').textContent = selectedProduct.name;
+      document.getElementById('detailPrice').textContent = `$${selectedProduct.price}`;
+      document.getElementById('detailDesc').textContent = selectedProduct.desc;
+
+      renderDetailSizes();
+      addToRecentlyViewed(productId);
       scrollToSection('product-detail');
     }
 
-    function renderRecentlyViewed() {
-      const section = document.getElementById('recently-viewed');
-      const grid = document.getElementById('recentlyViewedGrid');
-      if(viewedProducts.length === 0) {
-        section.style.display = 'none';
-        return;
-      }
-      section.style.display = 'block';
-      const viewedItems = viewedProducts.map(id => products.find(p => p.id === id)).filter(Boolean);
-      renderProducts(viewedItems, 'recentlyViewedGrid');
+    function renderDetailSizes() {
+      const sizesEl = document.getElementById('detailSizes');
+      sizesEl.innerHTML = selectedProduct.sizes.map(s => `
+        <button class="size-btn ${selectedSize === s? 'active' : ''}" onclick="selectedSize='${s}'; renderDetailSizes()">${s}</button>
+      `).join('');
     }
 
-    function setS(s, btn) {
-      selectedSize = s;
-      document.querySelectorAll('#detailSizes button').forEach(b=>b.style.background='#fff');
-      btn.style.background = '#eee';
+    function addToCart(productId) {
+      const product = products.find(p => p.id === productId);
+      const size = selectedSizes[productId];
+
+      if (!size) {
+        showNotification('Seleccioná un talle', 'error');
+        return;
+      }
+
+      const existingItem = cart.find(item => item.id === productId && item.size === size);
+
+      if (existingItem) {
+        existingItem.qty++;
+      } else {
+        cart.push({...product, size, qty: 1});
+      }
+
+      saveCart();
+      updateCartCount();
+      showNotification('Agregado al carrito');
     }
 
     function addToCartFromDetail() {
-      if(!selectedSize){alert('Selecciona talle'); return;}
-      const existingItem = cart.find(i => i.id === currentProduct.id && i.size === selectedSize);
-      if(existingItem) {
-        existingItem.qty = (existingItem.qty || 1) + 1;
-      } else {
-        cart.push({...currentProduct, size:selectedSize, qty: 1});
+      if (!selectedSize) {
+        showNotification('Seleccioná un talle', 'error');
+        return;
       }
-      saveCart();
-      updateCartUI();
-      showNotification('Producto añadido al carrito');
-      scrollToSection('cart-section');
+      selectedSizes[selectedProduct.id] = selectedSize;
+      addToCart(selectedProduct.id);
     }
 
-    function toggleWishlist(productId) {
+    function toggleWish(productId) {
       const index = wishlist.indexOf(productId);
-      if(index > -1) {
+      if (index > -1) {
         wishlist.splice(index, 1);
         showNotification('Eliminado de favoritos');
       } else {
         wishlist.push(productId);
         showNotification('Agregado a favoritos');
       }
-      saveWishlist();
-      updateWishlistUI();
-      renderProducts(products, 'productsGrid');
-      renderProducts(products.filter(p=>p.isNew), 'nuevoProductsGrid');
-      renderRecentlyViewed();
+      saveWish();
+      renderProducts('productsGrid', products);
+      renderProducts('nuevoProductsGrid', products.filter(p => p.isNew));
+      updateWishCount();
     }
 
-    function updateWishlistUI() {
-      const badge = document.getElementById('wishlistBadge');
-      badge.textContent = wishlist.length;
-      if(wishlist.length > 0) {
-        badge.classList.add('show');
-      } else {
-        badge.classList.remove('show');
+    function updateCartCount() {
+      const count = cart.reduce((sum, item) => sum + item.qty, 0);
+      document.getElementById('cartCount').textContent = count;
+      document.getElementById('cartCount').style.display = count > 0? 'flex' : 'none';
+      renderCart();
+    }
+
+    function updateWishCount() {
+      document.getElementById('wishCount').textContent = wishlist.length;
+      document.getElementById('wishCount').style.display = wishlist.length > 0? 'flex' : 'none';
+    }
+
+    function renderCart() {
+      const cartItems = document.getElementById('cartItems');
+      const cartEmpty = document.getElementById('cartEmptyMsg');
+      const cartCheckout = document.getElementById('cartCheckoutArea');
+
+      if (cart.length === 0) {
+        cartItems.innerHTML = '';
+        cartEmpty.style.display = 'block';
+        cartCheckout.style.display = 'none';
+        return;
       }
-    }
 
-    function openWishlist() {
-      const modal = document.getElementById('wishlistModal');
-      const itemsContainer = document.getElementById('wishlistItems');
-      const emptyMsg = document.getElementById('wishlistEmpty');
+      cartEmpty.style.display = 'none';
+      cartCheckout.style.display = 'block';
 
-      if(wishlist.length === 0) {
-        itemsContainer.innerHTML = '';
-        emptyMsg.style.display = 'block';
-      } else {
-        emptyMsg.style.display = 'none';
-        const wishlistProducts = wishlist.map(id => products.find(p => p.id === id)).filter(Boolean);
-        itemsContainer.innerHTML = wishlistProducts.map(p => `
-          <div style="display:flex; gap:1rem; margin-bottom:1.5rem; padding-bottom:1.5rem; border-bottom:1px solid #eee;">
-            <img src="${p.img}" alt="${p.name}" style="width:80px; height:100px; object-fit:cover;">
-            <div style="flex:1; text-align:left;">
-              <h3 style="font-size:0.9rem; font-weight:900; text-transform:uppercase; margin-bottom:0.3rem;">${p.name}</h3>
-              <p style="font-size:0.85rem; font-weight:700; margin-bottom:0.8rem;">$${p.price.toLocaleString('es-AR')}</p>
-              <button class="btn" onclick="addWishlistToCart('${p.id}')" style="background:#000; color:#fff; padding:0.5rem 1rem; font-size:0.75rem; margin-top:0;">AGREGAR AL CARRITO</button>
+      cartItems.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <img src="${item.img}" alt="${item.name}" class="cart-item-img">
+          <div class="cart-item-info">
+            <p class="cart-item-name">${item.name}</p>
+            <p class="cart-item-details">Talle: ${item.size} | $${item.price} c/u</p>
+            <div class="cart-item-qty">
+              <button onclick="updateQty(${item.id}, '${item.size}', -1)">-</button>
+              <span>${item.qty}</span>
+              <button onclick="updateQty(${item.id}, '${item.size}', 1)">+</button>
             </div>
-            <button onclick="toggleWishlist('${p.id}')" style="background:none; border:none; font-size:1.5rem; cursor:pointer; align-self:flex-start;">×</button>
           </div>
-        `).join('');
-      }
-      modal.classList.add('show');
+          <button class="cart-item-remove" onclick="removeFromCart(${item.id}, '${item.size}')">×</button>
+        </div>
+      `).join('');
+
+      updateCartTotal();
     }
 
-    function closeWishlist() {
-      document.getElementById('wishlistModal').classList.remove('show');
+    function updateQty(productId, size, change) {
+      const item = cart.find(i => i.id === productId && i.size === size);
+      if (item) {
+        item.qty += change;
+        if (item.qty <= 0) {
+          removeFromCart(productId, size);
+        } else {
+          saveCart();
+          renderCart();
+        }
+      }
     }
 
-    function addWishlistToCart(productId) {
-      const product = products.find(p => p.id === productId);
-      if(product) {
-        currentProduct = product;
-        selectedSize = product.sizes[0];
-        addToCartFromDetail();
-        closeWishlist();
-      }
+    function removeFromCart(productId, size) {
+      cart = cart.filter(i =>!(i.id === productId && i.size === size));
+      saveCart();
+      updateCartCount();
+      showNotification('Eliminado del carrito');
     }
 
     function applyCoupon() {
       const code = document.getElementById('couponInput').value.trim().toUpperCase();
-      if(!code) {
-        alert('Ingresá un código');
-        return;
+      if (!code) return;
+
+      if (COUPONS[code]) {
+        coupon = COUPONS[code];
+        document.getElementById('couponApplied').textContent = `Cupón ${code} aplicado: ${coupon.type === 'percent'? coupon.value + '% OFF' : '$' + coupon.value + ' OFF'}`;
+        showNotification('Cupón aplicado');
+        updateCartTotal();
+      } else {
+        showNotification('Cupón inválido', 'error');
       }
-
-      const coupon = coupons[code];
-      if(!coupon) {
-        alert('Código inválido');
-        return;
-      }
-
-      const subtotal = cart.reduce((s,i)=>s+(i.price * (i.qty || 1)),0);
-
-      if(coupon.min && subtotal < coupon.min) {
-        alert(`Este cupón requiere compra mínima de $${coupon.min.toLocaleString('es-AR')}`);
-        return;
-      }
-
-      appliedCoupon = {code,...coupon};
-      localStorage.setItem('zyskn_coupon', JSON.stringify(appliedCoupon));
-      showCouponApplied();
-      updateCartUI();
-      showNotification('Cupón aplicado');
     }
 
-    function showCouponApplied() {
-      const div = document.getElementById('couponApplied');
-      div.textContent = `✓ ${appliedCoupon.name} APLICADO`;
-      div.classList.add('show');
-      document.getElementById('couponInput').value = '';
-    }
-
-    function removeCoupon() {
-      appliedCoupon = null;
-      localStorage.removeItem('zyskn_coupon');
-      document.getElementById('couponApplied').classList.remove('show');
-      updateCartUI();
-    }
-
-    function calculateTotal() {
-      const subtotal = cart.reduce((s,i)=>s+(i.price * (i.qty || 1)),0);
+    function updateCartTotal() {
+      let subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
       let discount = 0;
 
-      if(appliedCoupon) {
-        if(appliedCoupon.type === 'percent') {
-          discount = subtotal * (appliedCoupon.value / 100);
-        } else if(appliedCoupon.type === 'shipping') {
-          discount = appliedCoupon.value;
-        }
-      }
-
-      return { subtotal, discount, total: subtotal - discount };
-    }
-    function updateCartUI() {
-      const items = document.getElementById('cartItems');
-      const emptyMsg = document.getElementById('cartEmptyMsg');
-      const checkoutArea = document.getElementById('cartCheckoutArea');
-
-      if(cart.length === 0) {
-        items.innerHTML = '';
-        emptyMsg.style.display = 'block';
-        checkoutArea.style.display = 'none';
-        document.getElementById('cartBadge').textContent = '0';
-        document.getElementById('cartBadge').classList.remove('show');
-        return;
-      }
-
-      emptyMsg.style.display = 'none';
-      checkoutArea.style.display = 'block';
-
-      items.innerHTML = cart.map((i, idx) => `
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; padding-bottom:1.5rem; border-bottom:1px solid #eee;">
-          <div style="display:flex; gap:1rem; align-items:center; flex:1;">
-            <img src="${i.img}" alt="${i.name}" style="width:70px; height:85px; object-fit:cover;">
-            <div style="text-align:left;">
-              <h4 style="font-size:0.85rem; font-weight:900; text-transform:uppercase; margin-bottom:0.2rem;">${i.name}</h4>
-              <p style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">TALLE: ${i.size}</p>
-              <div style="display:flex; align-items:center; gap:0.8rem; margin-top:0.5rem;">
-                <button onclick="updateQty(${idx}, -1)" style="width:28px; height:28px; border:1px solid #000; background:#fff; cursor:pointer; font-weight:900;">-</button>
-                <span style="font-weight:700; min-width:20px; text-align:center;">${i.qty || 1}</span>
-                <button onclick="updateQty(${idx}, 1)" style="width:28px; height:28px; border:1px solid #000; background:#fff; cursor:pointer; font-weight:900;">+</button>
-              </div>
-            </div>
-          </div>
-          <div style="text-align:right;">
-            <p style="font-weight:700; margin-bottom:0.5rem;">$${(i.price * (i.qty || 1)).toLocaleString('es-AR')}</p>
-            <button onclick="removeFromCart(${idx})" style="background:none; border:none; color:var(--red); cursor:pointer; font-size:0.7rem; text-transform:uppercase; font-weight:700;">Eliminar</button>
-          </div>
-        </div>
-      `).join('');
-
-      const { subtotal, discount, total } = calculateTotal();
-
-      document.getElementById('cartSubtotal').textContent = `$${subtotal.toLocaleString('es-AR')}`;
-      document.getElementById('cartTotal').textContent = `$${total.toLocaleString('es-AR')}`;
-
-      const totalQty = cart.reduce((sum, i) => sum + (i.qty || 1), 0);
-      const badge = document.getElementById('cartBadge');
-      badge.textContent = totalQty;
-      if(totalQty > 0) {
-        badge.classList.add('show');
-      } else {
-        badge.classList.remove('show');
-      }
-
-      if(appliedCoupon && discount > 0) {
-        const discountRow = document.getElementById('cartSubtotal').parentElement;
-        if(!document.getElementById('discountRow')) {
-          const row = document.createElement('div');
-          row.id = 'discountRow';
-          row.style.cssText = 'display:flex; justify-content:space-between; margin-bottom:0.5rem; font-size:0.9rem; color:var(--red);';
-          row.innerHTML = `<span>Descuento (${appliedCoupon.code}):</span><span>-$${discount.toLocaleString('es-AR')}</span>`;
-          discountRow.after(row);
+      if (coupon) {
+        if (coupon.type === 'percent') {
+          discount = subtotal * (coupon.value / 100);
         } else {
-          document.getElementById('discountRow').innerHTML = `<span>Descuento (${appliedCoupon.code}):</span><span>-$${discount.toLocaleString('es-AR')}</span>`;
+          discount = coupon.value;
         }
-      } else {
-        const existing = document.getElementById('discountRow');
-        if(existing) existing.remove();
       }
-    }
 
-    function updateQty(idx, change) {
-      if(!cart[idx].qty) cart[idx].qty = 1;
-      cart[idx].qty += change;
-      if(cart[idx].qty < 1) {
-        cart.splice(idx, 1);
-      }
-      saveCart();
-      updateCartUI();
-    }
-
-    function removeFromCart(idx) {
-      cart.splice(idx, 1);
-      saveCart();
-      updateCartUI();
-      showNotification('Producto eliminado');
+      const total = Math.max(0, subtotal - discount);
+      document.getElementById('cartSubtotal').textContent = `$${subtotal}`;
+      document.getElementById('cartTotal').textContent = `$${total}`;
     }
 
     function shareOnWhatsApp() {
-      if(cart.length === 0) { alert('Carrito vacío'); return; }
+      const name = document.getElementById('orderName').value.trim();
+      const dni = document.getElementById('orderDni').value.trim();
+      const phone = document.getElementById('orderPhone').value.trim();
+      const email = document.getElementById('orderEmail').value.trim();
+      const location = document.getElementById('orderLocation').value.trim();
+      const shipping = document.getElementById('orderShippingAddr').value.trim();
 
-      const name = document.getElementById('orderName').value;
-      const dni = document.getElementById('orderDni').value;
-      const phone = document.getElementById('orderPhone').value;
-      const email = document.getElementById('orderEmail').value;
-      const location = document.getElementById('orderLocation').value;
-      const shipping = document.getElementById('orderShippingAddr').value;
-
-      if(!name || !dni || !phone || !location) {
-        alert('Completa todos los datos obligatorios');
+      if (!name ||!dni ||!phone ||!location) {
+        showNotification('Completá los datos obligatorios', 'error');
         return;
       }
 
-      const { subtotal, discount, total } = calculateTotal();
-      let msg = `*PEDIDO ZYSKN*%0A%0A`;
-      msg += `*DATOS:*%0A`;
-      msg += `Nombre: ${name}%0A`;
-      msg += `DNI: ${dni}%0A`;
-      msg += `Celular: ${phone}%0A`;
-      if(email) msg += `Email: ${email}%0A`;
-      msg += `Ubicación: ${location}%0A`;
-      if(shipping) msg += `Envío: ${shipping}%0A`;
-      msg += `%0A*PRODUCTOS:*%0A`;
-
-      cart.forEach(i => {
-        msg += `• ${i.name} - Talle ${i.size} x${i.qty || 1} - $${(i.price * (i.qty || 1)).toLocaleString('es-AR')}%0A`;
-      });
-
-      msg += `%0A*RESUMEN:*%0A`;
-      msg += `Subtotal: $${subtotal.toLocaleString('es-AR')}%0A`;
-      if(discount > 0) msg += `Descuento (${appliedCoupon.code}): -$${discount.toLocaleString('es-AR')}%0A`;
-      msg += `*TOTAL: $${total.toLocaleString('es-AR')}*`;
-
-      window.open(`https://wa.me/5493544631553?text=${msg}`, '_blank');
-    }
-
-    function scrollToSection(id) {
-      const element = document.getElementById(id);
-      if(element) {
-        const headerHeight = document.querySelector('header').offsetHeight;
-        const elementPosition = element.offsetTop - headerHeight - 20;
-        window.scrollTo({ top: elementPosition, behavior: 'smooth' });
+      if (cart.length === 0) {
+        showNotification('El carrito está vacío', 'error');
+        return;
       }
-    }
 
-    function setupScrollListener() {
-      const hamburger = document.getElementById('hamburger');
-      const nav = document.querySelector('nav.nav-main');
-      const overlay = document.querySelector('.nav-overlay');
-      const navItems = document.querySelectorAll('.nav-item');
+      let msg = `*NUEVO PEDIDO ZYSKN*%0A%0A`;
+      msg += `*Cliente:* ${name}%0A`;
+      msg += `*DNI:* ${dni}%0A`;
+      msg += `*Celular:* ${phone}%0A`;
+      msg += `*Email:* ${email || 'No especificado'}%0A`;
+      msg += `*Ubicación:* ${location}%0A`;
+      msg += `*Envío:* ${shipping || 'A coordinar'}%0A%0A`;
+      msg += `*PRODUCTOS:*%0A`;
 
-      hamburger.addEventListener('click', () => {
-        nav.classList.toggle('active');
-        overlay.classList.toggle('active');
-        hamburger.classList.toggle('active');
+      cart.forEach(item => {
+        msg += `• ${item.name} - Talle ${item.size} x${item.qty} - $${item.price * item.qty}%0A`;
       });
 
-      overlay.addEventListener('click', () => {
-        nav.classList.remove('active');
-        overlay.classList.remove('active');
-        hamburger.classList.remove('active');
-      });
-
-      navItems.forEach(item => {
-        if(item.querySelector('.sub-nav-wrapper')) {
-          item.addEventListener('click', (e) => {
-            if(window.innerWidth < 1024) {
-              e.preventDefault();
-              item.classList.toggle('active');
-            }
-          });
-        }
-      });
-
-      window.addEventListener('scroll', () => {
-        const header = document.getElementById('header');
-        if(window.scrollY > 50) {
-          header.classList.add('scrolled');
-        } else {
-          header.classList.remove('scrolled');
-        }
-      });
-    }
-
-    function toggleAuthView(view) {
-      if(view === 'register') {
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('registerForm').style.display = 'block';
-      } else {
-        document.getElementById('registerForm').style.display = 'none';
-        document.getElementById('loginForm').style.display = 'block';
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      let discount = 0;
+      if (coupon) {
+        discount = coupon.type === 'percent'? subtotal * (coupon.value / 100) : coupon.value;
       }
+      const total = subtotal - discount;
+
+      msg += `%0A*Subtotal:* $${subtotal}%0A`;
+      if (discount > 0) msg += `*Descuento:* -$${discount}%0A`;
+      msg += `*TOTAL:* $${total}%0A`;
+
+      const order = {
+        id: Date.now(),
+        date: new Date().toLocaleString('es-AR'),
+        items: cart,
+        total: total,
+        status: 'Pendiente'
+      };
+      orderHistory.push(order);
+      saveOrders();
+
+      cart = [];
+      coupon = null;
+      saveCart();
+      updateCartCount();
+
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
+      showNotification('Pedido enviado por WhatsApp');
+      scrollToSection('shop');
     }
 
-    window.onclick = function(event) {
+    function openWishlist() {
       const modal = document.getElementById('wishlistModal');
-      if (event.target == modal) {
-        modal.classList.remove('show');
+      const itemsEl = document.getElementById('wishlistItems');
+      const emptyEl = document.getElementById('wishlistEmpty');
+
+      if (wishlist.length === 0) {
+        itemsEl.style.display = 'none';
+        emptyEl.style.display = 'block';
+      } else {
+        itemsEl.style.display = 'block';
+        emptyEl.style.display = 'none';
+        itemsEl.innerHTML = wishlist.map(id => {
+          const p = products.find(prod => prod.id === id);
+          return `
+            <div style="display:flex; gap:1rem; margin-bottom:1rem; padding-bottom:1rem; border-bottom:1px solid #eee;">
+              <img src="${p.img}" style="width:80px; height:100px; object-fit:cover;">
+              <div style="flex:1; text-align:left;">
+                <p style="font-weight:700; text-transform:uppercase; font-size:0.9rem;">${p.name}</p>
+                <p style="color:var(--red); font-weight:700;">$${p.price}</p>
+                <button class="btn" onclick="showProductDetail(${p.id}); closeWishlist()" style="background:#000; color:#fff; padding:0.5rem 1rem; font-size:0.7rem; margin-top:0.5rem;">VER PRODUCTO</button>
+              </div>
+              <button onclick="toggleWish(${p.id})" style="background:none; border:none; cursor:pointer; font-size:1.5rem;">×</button>
+            </div>
+          `;
+        }).join('');
       }
+      modal.classList.add('active');
     }
 
-    document.addEventListener('DOMContentLoaded', init);
+    function closeWishlist() {
+      document.getElementById('wishlistModal').classList.remove('active');
+    }
+
+    function addToRecentlyViewed(productId) {
+      recentlyViewed = recentlyViewed.filter(id => id!== productId);
+      recentlyViewed.unshift(productId);
+      recentlyViewed = recentlyViewed.slice(0, 4);
+      saveRecent();
+      renderRecentlyViewed();
+    }
+
+    function renderRecentlyViewed() {
+      const section = document.getElementById('recently-viewed');
+      const grid = document.getElementById('recentlyViewedGrid');
+
+      if (recentlyViewed.length === 0) {
+        section.style.display = 'none';
+        return;
+      }
+
+      section.style.display = 'block';
+      const viewedProducts = recentlyViewed.map(id => products.find(p => p.id === id)).filter(Boolean);
+      renderProducts('recentlyViewedGrid', viewedProducts);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderProducts('productsGrid', products);
+      renderProducts('nuevoProductsGrid', products.filter(p => p.isNew));
+      updateCartCount();
+      updateWishCount();
+      updateAuthUI();
+      renderRecentlyViewed();
+    });
+
+    document.addEventListener('click', (e) => {
+      const modal = document.getElementById('wishlistModal');
+      if (e.target === modal) closeWishlist();
+    });
   </script>
 </body>
 </html>
