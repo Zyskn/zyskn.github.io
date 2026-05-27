@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
 
   <title>ZYSKN ★ | EST. 2024 - Ropa Streetwear Córdoba</title>
   <meta name="description" content="ZYSKN ★ | EST. 2024. Tienda online de ropa streetwear y vintage en Córdoba, Argentina. Envíos a todo el país. Próximamente.">
@@ -30,6 +31,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -53,6 +55,7 @@
       animation: fadeOutOverlay 0.4s ease-in-out forwards;
       pointer-events: none;
     }
+    
 
     @keyframes fadeOutOverlay {
       0% { opacity: 1; }
@@ -324,11 +327,18 @@
     .icon-btn:hover { transform: scale(1.1); }
     .search-icon { color: var(--blue); }
     .cart-icon { color: var(--red); }
+    
 
     .auth-status { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; cursor: pointer; color: #000; }
     .auth-status:hover { opacity: 0.7; }
 
     .cart-badge {
+      position: absolute; top: -2px; right: -2px;
+      background: #000; color: #fff;
+      width: 16px; height: 16px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem; font-weight: 700;
+    }
   position: absolute; 
   top: -6px; 
   right: -6px;
@@ -447,6 +457,7 @@
         padding: 0.5rem 0;
         font-size: 1rem;
       }
+      
 
       .search-close-btn {
         display: none;
@@ -488,6 +499,7 @@
     @keyframes slideIn { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     @media (max-width: 600px) { .products-grid { grid-template-columns: 1fr; } footer > div { flex-direction: column !important; align-items: flex-start !important; gap: 1rem; } }
     .yellow-warning { background: var(--yellow); padding: 1rem; border-radius: 4px; border: 1px solid #ffeeba; color: #856404; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; text-align: center; margin-bottom: 1rem; }
+    
 
     /* Ocultar cruz en PC */
     @media (min-width: 1025px) {
@@ -565,13 +577,6 @@
               <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
             </button>
           </div>
-          <button id="userAuth" class="icon-btn auth-status" onclick="scrollToSection('account-section')">
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-    <circle cx="12" cy="7" r="4"></circle>
-  </svg>
-  LOGIN
-</button>
           <div class="user-menu-wrapper">
   <button id="userAuth" class="icon-btn auth-status">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -588,6 +593,13 @@
     <a href="#" onclick="logout()">Cerrar sesión</a>
   </div>
 </div>
+          <button id="userAuth" class="icon-btn auth-status" onclick="scrollToSection('account-section')">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+    <circle cx="12" cy="7" r="4"></circle>
+  </svg>
+  LOGIN
+</button>
           <button class="icon-btn cart-icon" onclick="scrollToSection('cart-section')">
             <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
             <span class="cart-badge" id="cartBadge" style="display: none;">0</span>
@@ -941,6 +953,7 @@ function shareOnWhatsApp() {
     alert('El carrito está vacío'); 
     return; 
   }
+  
 
   const nombre = document.getElementById('orderName').value.trim();
   const localidad = document.getElementById('orderLocation').value.trim();
@@ -948,15 +961,18 @@ function shareOnWhatsApp() {
   const sucursal = document.getElementById('orderShippingAddr').value.trim();
   const dni = document.getElementById('orderDni').value.trim();
   const celular = document.getElementById('orderPhone').value.trim();
+  
 
   if (!nombre || !localidad || !dni || !celular) { 
     alert('Completá Nombre, Ciudad, DNI y Celular'); 
     return; 
   }
+  
 
   const now = new Date();
   const fecha = now.toLocaleDateString('es-AR');
   const hora = now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+  
 
   let t = `Holaa! ZYSKN ★, Te envío mi nuevo pedido!.%0A`;
   t += `Fecha: ${fecha} | Hora: ${hora}%0A%0A`;
@@ -968,6 +984,7 @@ function shareOnWhatsApp() {
   t += `- Ubicación: ${localidad}%0A`;
   t += `- Sucursal Correo: ${sucursal || 'Coordinar'}%0A%0A`;
   t += `*PRODUCTOS:*%0A`;
+  
 
   let total = 0;
   cart.forEach(i => {
@@ -976,15 +993,19 @@ function shareOnWhatsApp() {
     const subtotal = price * qty;
     const nombreProd = i.name || i.title || 'Producto';
     const talle = i.size || i.talle || '';
+    
 
     t += `• ${nombreProd} ${talle ? `(Talle ${talle})` : ''} x${qty} - $${subtotal.toLocaleString('es-AR')}%0A`;
     total += subtotal;
   });
+  
 
   t += `%0A*TOTAL: $${total.toLocaleString('es-AR')}*%0A`;
+  
 
   window.open(`https://wa.me/5493544631553?text=${t}`, '_blank');
 }
+    
 
     function setupScrollListener() { 
       window.addEventListener('scroll', () => { 
@@ -1001,6 +1022,7 @@ function shareOnWhatsApp() {
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
       window.scrollTo({ top: offsetPosition, behavior: "smooth" });
     }
+    
 
     function scrollToTop() { window.scrollTo({top:0, behavior:'smooth'}); }
 
@@ -1035,7 +1057,8 @@ function shareOnWhatsApp() {
         document.body.style.overflow = '';
       });
     });
-// Dropdown de usuario
+<!-- Dropdown de usuario -->
+<script>
 const authBtn = document.getElementById('userAuth');
 const dropdown = document.getElementById('userDropdown');
 
@@ -1069,49 +1092,54 @@ function checkUserStatus() {
       </svg>
     CUENTA
     `;
-    }
+  }
+}
+</script>
 
-    function openLoginModal() {
-      document.getElementById('loginModal').classList.add('show');
-    }
+<div class="modal" id="loginModal">
+  <div class="modal-content">
+    <span class="close" onclick="closeLoginModal()">&times;</span>
+    <h2>TU CUENTA. TUS REGLAS.</h2>
+    <p class="modal-subtitle">Trackeá pedidos, guardá favoritos, comprá más rápido</p>
+    <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email" required>
+      <input type="password" id="loginPassword" placeholder="Contraseña" required>
+      <button type="submit">INICIAR SESIÓN</button>
+    </form>
+    <p>¿Todavía no sos parte? <a href="#" onclick="showRegister()">Registrate gratis</a></p>
+  </div>
+</div>
 
-    function closeLoginModal() {
-      document.getElementById('loginModal').classList.remove('show');
-    }
+<script>
+  function openLoginModal() {
+    document.getElementById('loginModal').classList.add('show');
+  }
 
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const email = document.getElementById('loginEmail').value;
-      
-      localStorage.setItem('user', JSON.stringify({
-        name: email.split('@')[0],
-        email: email
-      }));
-      
-      closeLoginModal();
-      location.reload();
-    });
+  function closeLoginModal() {
+    document.getElementById('loginModal').classList.remove('show');
+  }
 
-    document.getElementById('loginModal').addEventListener('click', function(e) {
-      if (e.target === this) closeLoginModal();
-    });
+  document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
 
-    checkUserStatus();
+    localStorage.setItem('user', JSON.stringify({
+      name: email.split('@')[0],
+      email: email
+    }));
+
+    closeLoginModal();
+    location.reload();
+  });
+
+  document.getElementById('loginModal').addEventListener('click', function(e) {
+    if (e.target === this) closeLoginModal();
+  });
+
+  checkUserStatus();
+  init();
+</script>
     init();
   </script>
-
-  <div class="modal" id="loginModal">
-    <div class="modal-content">
-      <span class="close" onclick="closeLoginModal()">&times;</span>
-      <h2>TU CUENTA. TUS REGLAS.</h2>
-      <p class="modal-subtitle">Trackeá pedidos, guardá favoritos, comprá más rápido</p>
-      <form id="loginForm">
-        <input type="email" id="loginEmail" placeholder="Email" required>
-        <input type="password" id="loginPassword" placeholder="Contraseña" required>
-        <button type="submit">INICIAR SESIÓN</button>
-      </form>
-      <p>¿Todavía no sos parte? <a href="#" onclick="showRegister()">Registrate gratis</a></p>
-    </div>
-  </div>
 </body>
 </html>
