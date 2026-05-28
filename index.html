@@ -156,7 +156,7 @@ footer#contact {
   letter-spacing: 0.5px;
   padding: 0 !important;
   line-height: 1 !important;
-  transition: transform 0.3s ease;
+  transition: transform 0.15s ease;
 }
 
 .top-bar .marquee-content {
@@ -1224,12 +1224,17 @@ function shareOnWhatsApp() {
     function setupScrollListener() { 
   const h = document.getElementById('header');
   const topBar = document.querySelector('.top-bar');
+  const isMobile = () => window.innerWidth <= 640;
+  
   window.addEventListener('scroll', () => { 
-    const isMobile = window.innerWidth <= 640;
-    const topBarHeight = isMobile ? 28 : 32;
-    if(window.scrollY > 20) {
+    const mobile = isMobile();
+    const topBarHeight = mobile ? 28 : 32;
+    const threshold = mobile ? 10 : 5; // PC se oculta casi al instante
+    
+    if(window.scrollY > threshold) {
       h.classList.add('scrolled');
       topBar.style.transform = 'translateY(-100%)';
+      // en móvil y PC, la blanca queda pegada arriba
       h.style.setProperty('top', '0px', 'important');
     } else {
       h.classList.remove('scrolled');
