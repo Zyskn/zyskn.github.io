@@ -1016,15 +1016,14 @@ header.scrolled { padding: 1.2rem 3rem; }
 
     function showMainCategory(s, e) { 
   if(e) e.preventDefault(); 
-  // En móviles, si tiene submenú, no redirigimos al tocar el padre
   if (window.innerWidth <= 1024 && (s === 'arriba' || s === 'abajo')) return;
-  
   renderProducts(s==='todo'?products:products.filter(p=>p.section===s), 'productsGrid'); 
-  
-  // Solo scroll en móvil
-  if (window.innerWidth <= 1024) {
-    scrollToSection('shop');
-  }
+  scrollToSection('shop');
+}
+
+function filterProducts(c) { 
+  renderProducts(products.filter(p=>p.category===c), 'productsGrid'); 
+  scrollToSection('shop');
 }
 
     function filterProducts(c) { 
