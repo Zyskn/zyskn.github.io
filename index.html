@@ -894,6 +894,7 @@ header.scrolled { padding: 1.2rem 3rem; }
     let cart = [];
     let currentProduct = null;
     let selectedSize = null;
+    let scrollY = 0;
 
     // ANIMACIÓN VUELO AL CARRITO
     function animateToCart(event, cartSelector) {
@@ -938,12 +939,13 @@ header.scrolled { padding: 1.2rem 3rem; }
   const input = document.getElementById('searchInput');
   header.classList.toggle('searching');
   
-  // FIX: al cerrar búsqueda, asegurarse que el menú móvil quede cerrado
   if(!header.classList.contains('searching')) {
     document.getElementById('navMain')?.classList.remove('active');
     document.getElementById('hamburger')?.classList.remove('active');
     document.getElementById('nav-overlay')?.classList.remove('active');
-    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
   } else {
     setTimeout(() => input.focus(), 100);
   }
@@ -1160,7 +1162,10 @@ function shareOnWhatsApp() {
     hamburger?.classList.remove('active');
     navMain.classList.remove('active');
     navOverlay?.classList.remove('active');
-    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, scrollY);
   }
 
   // Espera a que termine la animación y hace scroll
@@ -1197,23 +1202,39 @@ function shareOnWhatsApp() {
       }
     });
 
-    if(hamburger && navMain) {
-      hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('active');
-        navMain.classList.toggle('active');
-        if(navOverlay) navOverlay.classList.toggle('active');
-        document.body.style.overflow = navMain.classList.contains('active') ? 'hidden' : '';
-      });
+    iif(hamburger && navMain) {
+  hamburger.addEventListener('click', () => {
+    const isOpening = !navMain.classList.contains('active');
+    
+    hamburger.classList.toggle('active');
+    navMain.classList.toggle('active');
+    if(navOverlay) navOverlay.classList.toggle('active');
+    
+    if(isOpening) {
+      scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+    } else {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      window.scrollTo(0, scrollY);
     }
+  });
+}
 
     if(navOverlay) {
-      navOverlay.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        navMain.classList.remove('active');
-        navOverlay.classList.remove('active');
-        document.body.style.overflow = '';
-      });
-    }
+  navOverlay.addEventListener('click', () => {
+    hamburger.classList.remove('active');
+    navMain.classList.remove('active');
+    navOverlay.classList.remove('active');
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, scrollY);
+  });
+}
 
     navLinks.forEach(link => {
       link.addEventListener('click', (e) => {
