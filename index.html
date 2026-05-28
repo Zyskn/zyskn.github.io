@@ -1026,13 +1026,6 @@ function filterProducts(c) {
   scrollToSection('shop');
 }
 
-    function filterProducts(c) { 
-  renderProducts(products.filter(p=>p.category===c), 'productsGrid'); 
-  if (window.innerWidth <= 1024) {
-    scrollToSection('shop');
-  }
-}
-
     function showProductDetail(id) {
       currentProduct = products.find(p=>p.id===id);
       selectedSize = null;
