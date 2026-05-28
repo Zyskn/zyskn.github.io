@@ -103,16 +103,15 @@
       animation: flyToCart 0.8s cubic-bezier(0.42, 0, 0.58, 1) forwards;
     }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #fff;
-      color: #000;
-      line-height: 1.4;
-      overflow-x: hidden;
-      position: relative;
-      animation: contentShine 0.4s ease-out forwards;
-      scroll-behavior: smooth;
-    }
+   body {
+  font-family: 'Inter', sans-serif;
+  background: #fff;
+  color: #000;
+  line-height: 1.4;
+  overflow-x: hidden;
+  position: relative;
+  animation: contentShine 0.4s ease-out forwards;
+}
 
     @keyframes contentShine {
       0% { filter: brightness(0.5); }
@@ -1088,36 +1087,35 @@ function shareOnWhatsApp() {
       }); 
     }
 
-    function scrollToSection(id) { 
-      const el = document.getElementById(id);
-      if(!el) return;
-      
-      // Cerrar menú móvil si está abierto
-      const hamburger = document.getElementById('hamburger');
-      const navMain = document.getElementById('navMain');
-      const navOverlay = document.getElementById('nav-overlay');
-      
-      if (navMain && navMain.classList.contains('active')) {
-        if (hamburger) hamburger.classList.remove('active');
-        if (navMain) navMain.classList.remove('active');
-        if (navOverlay) navOverlay.classList.remove('active');
-        document.body.style.overflow = '';
-      }
+  function scrollToSection(id) { 
+  const el = document.getElementById(id);
+  if(!el) return;
+  
+  const hamburger = document.getElementById('hamburger');
+  const navMain = document.getElementById('navMain');
+  const navOverlay = document.getElementById('nav-overlay');
+  const isMenuOpen = navMain && navMain.classList.contains('active');
+  
+  // Cierra menú si está abierto
+  if (isMenuOpen) {
+    hamburger?.classList.remove('active');
+    navMain.classList.remove('active');
+    navOverlay?.classList.remove('active');
+    document.body.style.overflow = '';
+  }
 
-      // Retraso para permitir que el menú se cierre y el DOM se estabilice
-      setTimeout(() => {
-        const header = document.getElementById('header');
-        // En móviles, el header suele ser más pequeño o pegajoso. 
-        // Añadimos un margen extra (padding) para que la sección no quede pegada arriba.
-        const headerOffset = (header ? header.offsetHeight : 0) + 20; 
-        
-        const rect = el.getBoundingClientRect();
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const offsetPosition = rect.top + scrollTop - headerOffset;
-        
-        window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-      }, 300);
-    }
+  // Espera a que termine la animación
+  setTimeout(() => {
+    const header = document.getElementById('header');
+    const headerHeight = header ? header.offsetHeight : 0;
+    // +35px en móvil, +20px en desktop
+    const extra = window.innerWidth <= 1024 ? 35 : 20;
+    
+    const top = el.getBoundingClientRect().top + window.pageYOffset - headerHeight - extra;
+    
+    window.scrollTo({ top, behavior: "smooth" });
+  }, isMenuOpen ? 420 : 50);
+}
 
     function scrollToTop() { window.scrollTo({top:0, behavior:'smooth'}); }
 
