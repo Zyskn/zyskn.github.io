@@ -645,33 +645,33 @@ header.scrolled { padding: 1.2rem 3rem; }
 
       <div id="navContainer" class="nav-container">
         <nav class="nav-main" id="navMain">
-          <div class="nav-item"><a onclick="showMainCategory('todo', event)">TODO</a></div>
-          <div class="nav-item nav-item-new"><a onclick="scrollToSection('nuevo-section')">NEW</a></div>
-          <div class="nav-item">
-            <a onclick="showMainCategory('arriba', event)">ARRIBA</a>
-            <div class="sub-nav-wrapper">
-              <div class="sub-nav-item" onclick="filterProducts('remeras')">Remeras</div>
-              <div class="sub-nav-item" onclick="filterProducts('Casacas deportivas')">Casacas deportivas</div>
-              <div class="sub-nav-item" onclick="filterProducts('chombas')">Chombas</div>
-              <div class="sub-nav-item" onclick="filterProducts('camisas')">Camisas</div>
-              <div class="sub-nav-item" onclick="filterProducts('hoodies')">Hoodies</div>
-              <div class="sub-nav-item" onclick="filterProducts('sweaters')">Sweaters</div>
-              <div class="sub-nav-item" onclick="filterProducts('rompevientos')">Rompevientos</div>
-              <div class="sub-nav-item" onclick="filterProducts('camperas')">Camperas</div>
-            </div>
-          </div>
-          <div class="nav-item">
-            <a onclick="showMainCategory('abajo', event)">ABAJO</a>
-            <div class="sub-nav-wrapper">
-              <div class="sub-nav-item" onclick="filterProducts('pantalones')">Pantalones Cargo</div>
-              <div class="sub-nav-item" onclick="filterProducts('jeans')">Jeans</div>
-              <div class="sub-nav-item" onclick="filterProducts('bermudas')">Bermudas Cargo</div>
-              <div class="sub-nav-item" onclick="filterProducts('shorts')">Shorts</div>
-              <div class="sub-nav-item" onclick="filterProducts('mallas')">Mallas</div>
-            </div>
-          </div>
-          <div class="nav-item"><a onclick="scrollToSection('contact')">CONTACTO</a></div>
-        </nav>
+  <div class="nav-item"><a href="javascript:void(0)" onclick="showMainCategory('todo')">TODO</a></div>
+  <div class="nav-item nav-item-new"><a href="javascript:void(0)" onclick="scrollToSection('nuevo-section')">NEW</a></div>
+  <div class="nav-item">
+    <a href="javascript:void(0)" onclick="showMainCategory('arriba')">ARRIBA</a>
+    <div class="sub-nav-wrapper">
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('remeras'); return false;">Remeras</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('Casacas deportivas'); return false;">Casacas deportivas</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('chombas'); return false;">Chombas</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('camisas'); return false;">Camisas</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('hoodies'); return false;">Hoodies</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('sweaters'); return false;">Sweaters</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('rompevientos'); return false;">Rompevientos</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('camperas'); return false;">Camperas</a>
+    </div>
+  </div>
+  <div class="nav-item">
+    <a href="javascript:void(0)" onclick="showMainCategory('abajo')">ABAJO</a>
+    <div class="sub-nav-wrapper">
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('pantalones'); return false;">Pantalones Cargo</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('jeans'); return false;">Jeans</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('bermudas'); return false;">Bermudas Cargo</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('shorts'); return false;">Shorts</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('mallas'); return false;">Mallas</a>
+    </div>
+  </div>
+  <div class="nav-item"><a href="javascript:void(0)" onclick="scrollToSection('contact')">CONTACTO</a></div>
+</nav>
 
         <div class="nav-icons">
           <div class="search-wrapper">
