@@ -126,24 +126,50 @@ footer#contact {
   100% { filter: brightness(1); }
 }
 
-/* --- FIX SCROLL MÓVIL Y PC (para que no tape el header) --- */
+/* --- FIX SCROLL MÓVIL Y PC --- */
 #account-section,
 #contact,
 #cart-section,
 #shop,
 #nuevo-section,
 #product-detail {
-  scroll-margin-top: 0px;
+  scroll-margin-top: 0;
 }
 
-@media (max-width: 1024px) {
-  #account-section,
-  #contact,
-  #cart-section,
-  #shop,
-  #nuevo-section,
-  #product-detail {
-    scroll-margin-top: 85px;
+/* HEADER ESTILO NIKE - MÓVIL */
+@media (max-width: 640px) {
+  header {
+    padding: 1.6rem 1.2rem !important;
+    min-height: 76px;
+  }
+  header.scrolled {
+    padding: 1.2rem 1.2rem !important;
+  }
+  .logo {
+    font-size: 2.1rem !important;
+  }
+  .logo-slogan {
+    display: none !important;
+  }
+  .header-content {
+    gap: 1.2rem !important;
+  }
+  .icon-btn svg,
+  .search-icon svg,
+  .cart-icon svg,
+  .auth-status svg {
+    width: 26px !important;
+    height: 26px !important;
+  }
+  .nav-icons {
+    gap: 1rem !important;
+  }
+  .hamburger {
+    width: 30px !important;
+    height: 22px !important;
+  }
+  .nav-main {
+    padding-top: 7rem !important;
   }
 }
 
@@ -1173,7 +1199,7 @@ function shareOnWhatsApp() {
   setTimeout(() => {
     const headerHeight = document.getElementById('header').offsetHeight;
     const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
-    const extraMargin = isMobile ? 15 : -45;
+    const extraMargin = isMobile ? 30 : -45;
     const offsetPosition = elementPosition - headerHeight - extraMargin;
 
     if (isMobile) {
