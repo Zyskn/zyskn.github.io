@@ -1109,7 +1109,7 @@ function shareOnWhatsApp() {
         const header = document.getElementById('header');
         // En móviles, el header suele ser más pequeño o pegajoso. 
         // Añadimos un margen extra (padding) para que la sección no quede pegada arriba.
-        const headerOffset = (header ? header.offsetHeight : 0) 0; 
+        const headerOffset = (header ? header.offsetHeight : 0) - 0; 
         
         const rect = el.getBoundingClientRect();
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
