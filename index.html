@@ -654,24 +654,24 @@ header.scrolled { padding: 1.2rem 3rem; }
   <div class="nav-item">
     <a href="javascript:void(0)" onclick="showMainCategory('arriba')">ARRIBA</a>
     <div class="sub-nav-wrapper">
-      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('remeras'); return false;">Remeras</a>
-      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('Casacas deportivas'); return false;">Casacas deportivas</a>
-      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('chombas'); return false;">Chombas</a>
-      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('camisas'); return false;">Camisas</a>
-      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('hoodies'); return false;">Hoodies</a>
-      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('sweaters'); return false;">Sweaters</a>
-      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('rompevientos'); return false;">Rompevientos</a>
-      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('camperas'); return false;">Camperas</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('remeras')">Remeras</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('Casacas deportivas')">Casacas deportivas</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('chombas')">Chombas</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('camisas')">Camisas</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('hoodies')">Hoodies</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('sweaters')">Sweaters</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('rompevientos')">Rompevientos</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('camperas')">Camperas</a>
     </div>
   </div>
   <div class="nav-item">
     <a href="javascript:void(0)" onclick="showMainCategory('abajo')">ABAJO</a>
     <div class="sub-nav-wrapper">
-      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('pantalones'); return false;">Pantalones Cargo</a>
-      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('jeans'); return false;">Jeans</a>
-      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('bermudas'); return false;">Bermudas Cargo</a>
-      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('shorts'); return false;">Shorts</a>
-      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('mallas'); return false;">Mallas</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('pantalones')">Pantalones Cargo</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('jeans')">Jeans</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('bermudas')">Bermudas Cargo</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('shorts')">Shorts</a>
+      <a href="javascript:void(0)" class="sub-nav-item" onclick="filterProducts('mallas')">Mallas</a>
     </div>
   </div>
   <div class="nav-item"><a href="javascript:void(0)" onclick="scrollToSection('contact')">CONTACTO</a></div>
@@ -1173,7 +1173,7 @@ function shareOnWhatsApp() {
   setTimeout(() => {
     const headerHeight = document.getElementById('header').offsetHeight;
     const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
-    const extraMargin = isMobile ? 20 : 140;
+    const extraMargin = isMobile ? 0 : 0;
     const offsetPosition = elementPosition - headerHeight - extraMargin;
 
     if (isMobile) {
