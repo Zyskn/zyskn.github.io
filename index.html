@@ -136,73 +136,87 @@ footer#contact {
   scroll-margin-top: 0;
 }
 
-/* HEADER MÓVIL - COMPACTO CON LÍNEA ROJA */
+/* Oculto en desktop */
+.top-bar { display: none !important; }
+
+/* HEADER MÓVIL CON TOP-BAR ROJO */
 @media (max-width: 640px) {
+  /* TOP BAR ROJO CON TEXTO */
+  .top-bar {
+    display: flex !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1001;
+    height: 28px !important;
+    min-height: 28px !important;
+    background: #ff0000 !important;
+    color: #fff !important;
+    font-size: 0.7rem !important;
+    font-weight: 600 !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 1rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    border: none !important;
+  }
+
   header {
+    position: fixed;
+    top: 28px !important; /* empuja el header debajo del top-bar */
+    left: 0;
+    right: 0;
+    z-index: 1000;
     padding: 0.9rem 0.9rem !important;
     min-height: 58px;
-    border-top: 3px solid #ff0000 !important;
-    background: #fff !important;
+    border-top: none !important;
   }
+  
   header.scrolled {
     padding: 0.75rem 0.9rem !important;
-    border-top: 3px solid #ff0000 !important;
+    top: 28px !important;
   }
-  .logo {
-    font-size: 1.65rem !important;
-    font-weight: 900;
-  }
+  
+  .logo { font-size: 1.65rem !important; font-weight: 900; }
   .logo-slogan { display: none !important; }
+  .header-content { gap: 0.5rem !important; }
   
-  .header-content {
-    gap: 0.5rem !important;
-    justify-content: space-between !important;
-  }
-  
-  /* ICONOS MÁS JUNTOS */
   .nav-icons {
     gap: 0.3rem !important;
-    display: flex !important;
-    align-items: center !important;
   }
-  .icon-btn, .auth-status, .search-icon, .cart-icon {
+  
+  .icon-btn, .auth-status {
     padding: 0.5rem !important;
-    margin: 0 !important;
   }
+  
   .icon-btn svg,
-  .search-icon svg,
-  .cart-icon svg,
   .auth-status svg {
     width: 22px !important;
     height: 22px !important;
-    display: block !important;
   }
 
-  /* HAMBURGUESA ||| ARREGLADA */
+  /* HAMBURGUESA */
   .hamburger {
     width: 24px !important;
     height: 18px !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
-    margin-right: 0.3rem !important;
   }
+  
   .hamburger span {
     display: block !important;
     width: 100% !important;
     height: 2.5px !important;
     background: #000 !important;
-    border-radius: 2px !important;
-    transition: all 0.3s !important;
   }
 
-  .nav-main { padding-top: 5.2rem !important; }
-  .top-bar { display: none !important; }
+  .nav-main { 
+    padding-top: calc(28px + 58px + 16px) !important; 
+  } /* 28px top-bar + header */
 }
-.top-bar {
   background: var(--red);
   color: #fff;
   padding: 9px 0;
