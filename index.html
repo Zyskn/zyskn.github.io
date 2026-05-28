@@ -103,7 +103,7 @@
       animation: flyToCart 0.8s cubic-bezier(0.42, 0, 0.58, 1) forwards;
     }
 
-   body {
+  body {
   font-family: 'Inter', sans-serif;
   background: #fff;
   color: #000;
@@ -113,12 +113,33 @@
   animation: contentShine 0.4s ease-out forwards;
 }
 
-    @keyframes contentShine {
-      0% { filter: brightness(0.5); }
-      100% { filter: brightness(1); }
-    }
+@keyframes contentShine {
+  0% { filter: brightness(0.5); }
+  100% { filter: brightness(1); }
+}
 
-    .top-bar {
+/* --- FIX SCROLL MÓVIL Y PC (para que no tape el header) --- */
+#account-section,
+#contact,
+#cart-section,
+#shop,
+#nuevo-section,
+#product-detail {
+  scroll-margin-top: 100px;
+}
+
+@media (max-width: 1024px) {
+  #account-section,
+  #contact,
+  #cart-section,
+  #shop,
+  #nuevo-section,
+  #product-detail {
+    scroll-margin-top: 85px; /* bajalo a 70 si querés que baje más */
+  }
+}
+
+.top-bar {
   background: var(--red);
   color: #fff;
   padding: 9px 0;
@@ -134,6 +155,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 .marquee-content {
   display: inline-block;
   animation: marquee-infinite 25s linear infinite;
@@ -1104,17 +1126,10 @@ function shareOnWhatsApp() {
     document.body.style.overflow = '';
   }
 
-  // Espera a que termine la animación
+  // Espera a que termine la animación y hace scroll
   setTimeout(() => {
-    const header = document.getElementById('header');
-    const headerHeight = header ? header.offsetHeight : 0;
-    // +35px en móvil, +20px en desktop
-    const extra = window.innerWidth <= 1024 ? 10 : 20;
-    
-    const top = el.getBoundingClientRect().top + window.pageYOffset - headerHeight - extra;
-    
-    window.scrollTo({ top, behavior: "smooth" });
-  }, isMenuOpen ? 420 : 50);
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, isMenuOpen ? 350 : 50);
 }
 
     function scrollToTop() { window.scrollTo({top:0, behavior:'smooth'}); }
