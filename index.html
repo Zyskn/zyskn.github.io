@@ -220,7 +220,6 @@ header.scrolled { padding: 0.7rem 3rem !important; }
     min-height: 58px;
   }
   header.scrolled {
-  top: 28px !important;
   padding: 0.75rem 0.9rem !important;
   }
   .logo { font-size: 1.65rem !important; }
@@ -1239,20 +1238,14 @@ function shareOnWhatsApp() {
     if(window.scrollY > threshold) {
       h.classList.add('scrolled');
       topBar.style.transform = 'translateY(-100%)';
-
-      if (!mobile) {
-        h.style.setProperty('top', '0px', 'important');
-      }
+      h.style.setProperty('top', '0px', 'important');
     } else {
       h.classList.remove('scrolled');
       topBar.style.transform = 'translateY(0)';
-
-      if (!mobile) {
-        h.style.setProperty('top', '32px', 'important');
-      }
+      h.style.setProperty('top', mobile ? '28px' : '32px', 'important');
     }
   }); 
-    }
+}
 
  function scrollToSection(id) { 
   const el = document.getElementById(id);
