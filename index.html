@@ -1224,6 +1224,9 @@ function shareOnWhatsApp() {
       
       if (!mobile) {
         h.style.setProperty('top', '0px', 'important');
+      } else {
+        // En móvil limpiamos el inline style para que mande el CSS
+        h.style.removeProperty('top');
       }
     } else {
       h.classList.remove('scrolled');
@@ -1231,6 +1234,9 @@ function shareOnWhatsApp() {
       
       if (!mobile) {
         h.style.setProperty('top', '32px', 'important');
+      } else {
+        // En móvil también limpiamos acá
+        h.style.removeProperty('top');
       }
     }
   }); 
