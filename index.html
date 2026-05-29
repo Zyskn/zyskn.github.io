@@ -213,14 +213,15 @@ header.scrolled { padding: 0.7rem 3rem !important; }
   }
   header {
     position: fixed !important;
-    top: 28px;
+    top: 28px !important;  /* ← agregale el !important */
     left: 0; right: 0;
     z-index: 2999;
     padding: 0.9rem !important;
     min-height: 58px;
   }
+  main { padding-top: 86px; }  /* ← agregá esta línea nueva */
   header.scrolled {
-  padding: 0.75rem 0.9rem !important;
+    padding: 0.75rem 0.9rem !important;
   }
   .logo { font-size: 1.65rem !important; }
   .logo-slogan { display: none !important; }
@@ -579,47 +580,6 @@ header.scrolled { padding: 1.2rem 3rem; }
       .search-icon svg { width: 22px; height: 22px; }
       .cart-icon svg { width: 22px; height: 22px; }
     }
-
-   @media (max-width: 640px) {
-      header { padding: 1.3rem 1rem; }
-      header.scrolled { padding: 1rem 1rem; }
-      .logo { font-size: 1.8rem; }
-      .logo-slogan { font-size: 0.7rem; }
-      .header-content { padding: 0; gap: 1rem; }
-  
-  @media (max-width: 640px) {
-  header {
-    position: fixed !important;
-    top: 28px;
-    padding: 1.3rem 1rem;
-  }
-  
-  header.scrolled {
-    top: 28px !important;
-    padding: 1rem 1rem;
-  }
-  
-  .logo { font-size: 1.8rem; }
-  .logo-slogan { font-size: 0.7rem; }
-  .header-content { padding: 0; gap: 1rem; }
-   }
-
-      .nav-main { padding: 5.5rem 1.3rem 2rem; }
-      .nav-item > a { padding: 1.2rem 1.1rem; font-size: 1rem; font-weight: 600; }
-      .sub-nav-item { padding: 1rem 2rem; font-size: 0.9rem; font-weight: 600; }
-      header.searching .search-input-container { width: 160px; }
-      .search-input-container input { font-size: 0.75rem; padding: 0.55rem 0.9rem; }
-      .icon-btn { padding: 0.65rem; }
-      .icon-btn svg { width: 24px; height: 24px; }
-      .auth-status { font-size: 0.75rem; display: flex; align-items: center; justify-content: center; padding: 0.55rem 0.6rem; white-space: nowrap; }
-      .auth-status svg { width: 24px; height: 24px; margin-right: 0.3rem; }
-      .search-icon svg { width: 24px; height: 24px; }
-      .cart-icon svg { width: 24px; height: 24px; }
-      .nav-icons { gap: 0.7rem; }
-      .hamburger { width: 28px; height: 20px; }
-      .hamburger span { height: 3px; }
-    }
-
     section { padding: 6rem 2rem; max-width: var(--container-max); margin: 0 auto; }
     .hero { height: 80vh; min-height: 500px; background: linear-gradient(135deg, #000 0%, #333 100%); display: flex; align-items: center; justify-content: center; color: #fff; text-align: center; max-width: 100%; }
     .hero h1 { font-size: clamp(2rem, 7vw, 4.5rem); font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; }
