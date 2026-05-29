@@ -985,9 +985,9 @@ body { padding-top: 0; }
     function init() {
   renderProducts(products, 'productsGrid');
   renderProducts(products.filter(p=>p.isNew), 'newProductsGrid');
-  // setupScrollListener(); // <- comentado para que quede fijo
+  setupScrollListener(); // ACTIVO
   updateCartUI();
-    }
+}
 
     function toggleSearch() {
   const header = document.getElementById('header');
