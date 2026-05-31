@@ -368,35 +368,17 @@ header.scrolled { padding: 1.2rem 3rem; }
   position: relative;
   opacity: 0;
   transform: translateY(-4px);
-  display: block; /* FUERZA QUE OCUPE TODA LA LÍNEA */
+  display: block;
   width: 100%;
   text-align: left;
 }
 
-/* BLOQUE NEGRO A LA IZQUIERDA EN HOVER */
-.sub-nav-item::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 0;
-  height: 100%;
-  background: #000;
-  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 .sub-nav-item:hover {
   background: rgba(0, 0, 0, 0.04);
-  padding-left: 2rem;
+  padding-left: 1.5rem;
   color: #000;
   font-weight: 700;
 }
-
-.sub-nav-item:hover::before {
-  width: 4px;
-}
-
-/* EFECTO CASCADA: entran uno por uno */
 .nav-item:hover .sub-nav-item {
   opacity: 1;
   transform: translateY(0);
