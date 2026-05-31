@@ -1,30 +1,33 @@
 backend:
-  name: github
-  repo: Zyskn/zyskn.github.io
+  name: git-gateway
   branch: main
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
 
 collections:
-    - name: "productos"
+  - name: "productos"
     label: "Productos"
     folder: "_productos"
     create: true
     slug: "{{title}}"
     fields:
-            - {label: "Nombre", name: "title", widget: "string"}           # El título del producto
-            - label: "Galería de fotos"                                    # Bloque de imágenes
+      - {label: "Nombre", name: "title", widget: "string"}
+      - label: "Galería de fotos"
         name: "images"
-        widget: "list"                                               # Permite varias
-        field: {label: Foto, name: image, widget: image}
-        allow_add_remove: true                                       # Botón + para agregar foto
-        max: 9                                                       # Tope 9 fotos
-        required: false                                              # No obliga a subir
-        hint: "Subí entre 1 y 9 fotos. La primera será la portada"   # Texto de ayuda
-            - {label: "Precio", name: "price", widget: "number"}           # Solo números
-            - {label: "Talle", name: "size", widget: "string"}             # S, M, L, XL
-            - {label: "Color", name: "color", widget: "string", required: false, hint: "Ej: Negro, Blanco"} # Color
-            - {label: "Estado", name: "status", widget: "select", options: ["Disponible", "Reservado", "Vendido"], default: "Disponible"} # Dropdown
-            - {label: "Descripción", name: "body", widget: "markdown", required: false} # Texto largo
-            - {label: "Stock", name: "stock", widget: "number", default: 1, value_type: "int"} # Cantidad
+        widget: "list"
+        field: {label: "Foto", name: "image", widget: "image"}
+        allow_add_remove: true
+        max: 9
+        required: false
+        hint: "Subí entre 1 y 9 fotos. La primera será la portada"
+      - {label: "Precio", name: "price", widget: "number"}
+      - {label: "Talle", name: "size", widget: "string"}
+      - {label: "Color", name: "color", widget: "string", required: false, hint: "Ej: Negro, Blanco"}
+      - label: "Estado"
+        name: "status"
+        widget: "select"
+        options: ["Disponible", "Reservado", "Vendido"]
+        default: "Disponible"
+      - {label: "Descripción", name: "body", widget: "markdown", required: false}
+      - {label: "Stock", name: "stock", widget: "number", default: 1, value_type: "int"}   
