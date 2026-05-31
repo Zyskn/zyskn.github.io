@@ -274,22 +274,38 @@ header.scrolled { padding: 1.2rem 3rem; }
     }
 
     .nav-item { position: relative; padding: 1.5rem 0; }
-    .nav-main a {
-      font-size: 0.95rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: #000;
-      cursor: pointer;
-      position: relative;
-      padding-bottom: 0.25rem;
-      border-bottom: 2px solid transparent;
-      transition: border-color 0.3s var(--transition);
-      white-space: nowrap;
-    }
-    .nav-main a:hover { border-bottom-color: #000; }
+   .nav-main a {
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #000;
+  cursor: pointer;
+  position: relative;
+  padding-bottom: 0.25rem;
+  white-space: nowrap;
+}
 
-    .nav-item-new a { color: var(--red) !important; font-weight: 900 !important; }
+.nav-main a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: currentColor;
+  transition: width 0.3s ease;
+}
+
+.nav-main a:hover::after {
+  width: 100%;
+}
+
+.nav-item-new a { 
+  color: var(--red) !important; 
+  font-weight: 900 !important; 
+}
+
 .nav-item {
   position: relative;
 }
