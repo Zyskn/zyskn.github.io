@@ -194,20 +194,17 @@ footer#contact {
 /* HEADER PC MÁS CHICO */
 header#header {
   position: fixed !important;
+header {
+  position: sticky;
   top: 32px;
   left: 0; right: 0;
   z-index: 2000;
   background: #ffffff;
   border-bottom: 1px solid #000;
   transition: top 0.3s ease, padding 0.12s ease !important;
+  transition: top 0.12s ease, padding 0.12s ease !important;
   padding: 1rem 3rem !important;
 }
-
-/* === FIX SCROLL PC === */
-body { padding-top: 110px !important; }
-body.scrolled-down .top-bar { transform: translateY(-100%) !important; }
-body.scrolled-down header#header { top: 0 !important; }
-body.scrolled-down { padding-top: 78px !important; }
 header.scrolled { padding: 0.7rem 3rem !important; }
 .logo { font-size: 2rem !important; }
 .logo-slogan { font-size: 0.75rem !important; }
@@ -608,6 +605,18 @@ header.scrolled { padding: 1.2rem 3rem; }
   .search-close-btn { display: none !important; }
 }
 
+/* === FORZAR HEADER FIJO === */
+.top-bar { position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; z-index: 3000 !important; }
+header#header { position: fixed !important; top: 28px !important; left: 0 !important; right: 0 !important; z-index: 2999 !important; background: #fff !important; }
+body { padding-top: 86px !important; }
+
+/* ...todo tu CSS anterior... */
+/* ===== PC: como estaba (se esconde la roja) ===== */
+.top-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 3000; height: 32px; }
+header#header { position: sticky; top: 32px; z-index: 2000; background: #fff; }
+body { padding-top: 0; }
+
+/* ===== MÓVIL: fijo siempre ===== */
 /* ===== MÓVIL: header fijo y ajustes ===== */
 @media (max-width: 1024px) {
   .top-bar { 
@@ -621,6 +630,9 @@ header.scrolled { padding: 1.2rem 3rem; }
 
   header#header { 
     position: fixed !important; 
+    top: 28px !important; 
+    left: 0 !important; 
+    right: 0 !important; 
     top: 28px !important;
     left: 0; right: 0;
     z-index: 2999 !important;
@@ -629,18 +641,35 @@ header.scrolled { padding: 1.2rem 3rem; }
     background: #fff !important;
     transition: top 0.3s ease !important;
   }
-  
+  .header-content { padding: 0 !important; gap: 6px !important; }
+  body { padding-top: 84px !important; }
+
  body { padding-top: 86px !important; }
 body.scrolled-down .top-bar { transform: translateY(-100%) !important; }
 body.scrolled-down header#header { top: 0 !important; }
+  body { padding-top: 86px !important; }
+
+  body.scrolled-down .top-bar {
+    transform: translateY(-100%) !important;
+  }
+
+  body.scrolled-down header#header {
+    top: 0 !important;
+  }
+
+  body { padding-top: 86px !important; }
+}
 
 .header-content { padding: 0 !important; gap: 6px !important; }
-  
+  .header-content { padding: 0 !important; gap: 6px !important; }
+
   .nav-icons { 
     gap: 2px !important; 
     display: flex !important;
     align-items: center !important;
   }
+  .header-content { padding: 0 !important; gap: 6px !important; }
+  .nav-icons { gap: 2px !important; display: flex !important; align-items: center !important; }
 
   .icon-btn, #userAuth, .hamburger {
     width: 38px !important;
@@ -651,6 +680,9 @@ body.scrolled-down header#header { top: 0 !important; }
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    width: 38px !important; height: 38px !important; min-width: 38px !important;
+    padding: 0 !important; margin: 0 !important;
+    display: flex !important; align-items: center !important; justify-content: center !important;
   }
 
   .icon-btn svg, #userAuth svg {
@@ -658,7 +690,9 @@ body.scrolled-down header#header { top: 0 !important; }
     height: 21px !important;
   }
 
+  .icon-btn svg, #userAuth svg { width: 21px !important; height: 21px !important; }
   #userAuth { font-size: 0 !important; }
+  #userAuth svg { margin: 0 !important; }
 
   .hamburger {
     flex-direction: column !important;
@@ -670,8 +704,11 @@ body.scrolled-down header#header { top: 0 !important; }
     height: 2.5px !important;
     display: block !important;
   }
+  .hamburger { flex-direction: column !important; gap: 4px !important; }
+  .hamburger span { width: 20px !important; height: 2.5px !important; }
 }
     
+
 </style>
 </head>
 <body>
@@ -1011,18 +1048,9 @@ body.scrolled-down header#header { top: 0 !important; }
         cartEl.style.transform = 'scale(1.3)';
         setTimeout(() => cartEl.style.transform = 'scale(1)', 200);
       });
-    
+    }
 
-    
-function init() {
-  renderProducts(products, 'productsGrid');
-  renderProducts(products.filter(p=>p.isNew), 'newProductsGrid');
-  setupScrollListener();
-  updateCartUI();
-}
-
-
-function setupScrollListener() { 
+    function setupScrollListener() { 
   let lastScroll = 0;
   window.addEventListener('scroll', () => {
     const current = window.scrollY;
@@ -1030,13 +1058,44 @@ function setupScrollListener() {
       document.body.classList.add('scrolled-down');
     } else {
       document.body.classList.remove('scrolled-down');
+    function init() {
+  renderProducts(products, 'productsGrid');
+  renderProducts(products.filter(p=>p.isNew), 'newProductsGrid');
+  // setupScrollListener(); // <- comentado para que quede fijo
+  updateCartUI();
     }
     lastScroll = current <= 0 ? 0 : current;
   });
+
+    function toggleSearch() {
+  const header = document.getElementById('header');
+  const input = document.getElementById('searchInput');
+  header.classList.toggle('searching');
+
+  if(!header.classList.contains('searching')) {
+    document.getElementById('navMain')?.classList.remove('active');
+    document.getElementById('hamburger')?.classList.remove('active');
+    document.getElementById('nav-overlay')?.classList.remove('active');
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+  } else {
+    setTimeout(() => input.focus(), 100);
+  }
 }
 
+    function handleSearch(e) {
+      if(e.key === 'Enter') {
+        const query = e.target.value.toLowerCase();
+        const filtered = products.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
+        renderProducts(filtered, 'productsGrid');
+        scrollToSection('shop');
+        toggleSearch();
+        e.target.value = '';
+      }
+    }
 
-function showNotification(msg) {
+    function showNotification(msg) {
       const n = document.getElementById('notification');
       n.textContent = msg; n.style.display = 'block';
       setTimeout(() => { n.style.display = 'none'; }, 3000);
@@ -1212,7 +1271,34 @@ function shareOnWhatsApp() {
   window.open(`https://wa.me/5493544631553?text=${t}`, '_blank');
 }
 
-     function scrollToSection(id) { 
+    function setupScrollListener() { 
+  const h = document.getElementById('header');
+  const topBar = document.querySelector('.top-bar');
+  const isMobile = () => window.innerWidth <= 1024;
+
+  // En móvil dejamos todo fijo, no escondemos nada
+  if (isMobile()) {
+    h.style.setProperty('position', 'fixed', 'important');
+    h.style.setProperty('top', '28px', 'important');
+    topBar.style.transform = 'translateY(0)';
+    return;
+  }
+
+  // Desktop sigue igual que antes
+  window.addEventListener('scroll', () => { 
+    if(window.scrollY > 5) {
+      h.classList.add('scrolled');
+      topBar.style.transform = 'translateY(-100%)';
+      h.style.setProperty('top', '0px', 'important');
+    } else {
+      h.classList.remove('scrolled');
+      topBar.style.transform = 'translateY(0)';
+      h.style.setProperty('top', '32px', 'important');
+    }
+  }); 
+}
+
+ function scrollToSection(id) { 
   const el = document.getElementById(id);
   if(!el) return;
 
