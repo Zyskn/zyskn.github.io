@@ -600,53 +600,86 @@ header.scrolled { padding: 1.2rem 3rem; }
     @media (min-width: 1025px) {
   .search-close-btn { display: none !important; }
 }
-    
-/* ===== PC (más de 1024px) ===== */
-.top-bar {
-  position: relative;
-  height: 32px;
-  z-index: 3000;
-}
-header#header {
-  position: relative;
-  background: #fff;
-  z-index: 2000;
-}
+
+/* === FORZAR HEADER FIJO === */
+.top-bar { position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; z-index: 3000 !important; }
+header#header { position: fixed !important; top: 28px !important; left: 0 !important; right: 0 !important; z-index: 2999 !important; background: #fff !important; }
+body { padding-top: 86px !important; }
+
+/* ...todo tu CSS anterior... */
+/* ===== PC: como estaba (se esconde la roja) ===== */
+.top-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 3000; height: 32px; }
+header#header { position: sticky; top: 32px; z-index: 2000; background: #fff; }
 body { padding-top: 0; }
 
-/* ===== MÓVIL (hasta 1024px) ===== */
+/* ===== MÓVIL: fijo siempre ===== */
 @media (max-width: 1024px) {
-  .top-bar {
-    position: fixed !important;
-    top: 0 !important; left: 0 !important; right: 0 !important;
-    height: 28px !important;
+  .top-bar { 
+    position: fixed !important; 
+    top: 0 !important; 
+    left: 0; right: 0;
+    height: 28px !important; 
     z-index: 3000 !important;
     transition: transform 0.3s ease !important;
   }
-  header#header {
-    position: fixed !important;
-    top: 28px !important; left: 0 !important; right: 0 !important;
+
+  header#header { 
+    position: fixed !important; 
+    top: 28px !important; 
+    left: 0 !important; 
+    right: 0 !important; 
+    top: 28px !important;
+    left: 0; right: 0;
     z-index: 2999 !important;
-    background: #fff !important;
+    padding: 8px 10px !important; 
     min-height: 56px !important;
-    padding: 8px 10px !important;
+    background: #fff !important;
     transition: top 0.3s ease !important;
   }
+  .header-content { padding: 0 !important; gap: 6px !important; }
   body { padding-top: 84px !important; }
 
-  body.scrolled-down .top-bar { transform: translateY(-100%) !important; }
-  body.scrolled-down header#header { top: 0 !important; }
+  body.scrolled-down .top-bar {
+    transform: translateY(-100%) !important;
+  }
 
+  body.scrolled-down header#header {
+    top: 0 !important;
+  }
+
+  body { padding-top: 86px !important; }
+}
+
+  .nav-icons { 
+    gap: 2px !important; 
+    display: flex !important;
+    align-items: center !important;
+  }
   .header-content { padding: 0 !important; gap: 6px !important; }
-  .nav-icons { display: flex !important; align-items: center !important; gap: 2px !important; }
+  .nav-icons { gap: 2px !important; display: flex !important; align-items: center !important; }
 
   .icon-btn, #userAuth, .hamburger {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     width: 38px !important; height: 38px !important; min-width: 38px !important;
     padding: 0 !important; margin: 0 !important;
     display: flex !important; align-items: center !important; justify-content: center !important;
   }
+
+  .icon-btn svg, #userAuth svg {
+    width: 21px !important;
+    height: 21px !important;
+  }
+
   .icon-btn svg, #userAuth svg { width: 21px !important; height: 21px !important; }
   #userAuth { font-size: 0 !important; }
+  #userAuth svg { margin: 0 !important; }
 
   .hamburger {
     flex-direction: column !important;
@@ -654,17 +687,19 @@ body { padding-top: 0; }
     gap: 4px !important;
   }
   .hamburger span {
-    display: block !important;
     width: 20px !important;
     height: 2.5px !important;
+    display: block !important;
   }
+  .hamburger { flex-direction: column !important; gap: 4px !important; }
+  .hamburger span { width: 20px !important; height: 2.5px !important; }
 }
 
-/* ocultar hamburger en PC */
-@media (min-width: 1025px) {
-  .hamburger { display: none !important; }
-}
-    
+/* HEADER SIEMPRE FIJO */
+.top-bar { position: fixed !important; top: 0 !important; left:0; right:0; z-index:3000 !important; }
+header#header { position: fixed !important; top:28px !important; left:0; right:0; z-index:2999 !important; }
+body { padding-top:84px !important; }
+
 </style>
 </head>
 <body>
