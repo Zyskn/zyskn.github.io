@@ -192,13 +192,14 @@ footer#contact {
 .top-bar .marquee-content > span { opacity: 0.7; margin: 0 15px !important; }
 
 /* HEADER PC MÁS CHICO */
-header {
-  position: sticky;
+header#header {
+  position: fixed !important;
   top: 32px;
+  left: 0; right: 0;
   z-index: 2000;
   background: #ffffff;
   border-bottom: 1px solid #000;
-  transition: top 0.12s ease, padding 0.12s ease !important;
+  transition: top 0.3s ease, padding 0.12s ease !important;
   padding: 1rem 3rem !important;
 }
 header.scrolled { padding: 0.7rem 3rem !important; }
@@ -623,16 +624,11 @@ header.scrolled { padding: 1.2rem 3rem; }
     transition: top 0.3s ease !important;
   }
   
-  body { padding-top: 86px !important; }
+ body { padding-top: 86px !important; }
+body.scrolled-down .top-bar { transform: translateY(-100%) !important; }
+body.scrolled-down header#header { top: 0 !important; }
 
-  body.scrolled-down .top-bar {
-    transform: translateY(-100%) !important;
-  }
-  body.scrolled-down header#header {
-    top: 0 !important;
-  }
-
-  .header-content { padding: 0 !important; gap: 6px !important; }
+.header-content { padding: 0 !important; gap: 6px !important; }
   
   .nav-icons { 
     gap: 2px !important; 
@@ -1011,32 +1007,18 @@ header.scrolled { padding: 1.2rem 3rem; }
       });
     }
 
-    function init() {
-  renderProducts(products, 'productsGrid');
-  renderProducts(products.filter(p=>p.isNew), 'newProductsGrid');
-  // setupScrollListener(); // <- comentado para que quede fijo
-  updateCartUI();
+    function setupScrollListener() { 
+  let lastScroll = 0;
+  window.addEventListener('scroll', () => {
+    const current = window.scrollY;
+    if (current > lastScroll && current > 50) {
+      document.body.classList.add('scrolled-down');
+    } else {
+      document.body.classList.remove('scrolled-down');
     }
-
-    function toggleSearch() {
-  const header = document.getElementById('header');
-  const input = document.getElementById('searchInput');
-  header.classList.toggle('searching');
-
-  if(!header.classList.contains('searching')) {
-    document.getElementById('navMain')?.classList.remove('active');
-    document.getElementById('hamburger')?.classList.remove('active');
-    document.getElementById('nav-overlay')?.classList.remove('active');
-    document.body.style.position = '';
-    document.body.style.top = '';
-    document.body.style.width = '';
-  } else {
-    setTimeout(() => input.focus(), 100);
-  }
+    lastScroll = current <= 0 ? 0 : current;
+  });
 }
-
-    function handleSearch(e) {
-      if(e.key === 'Enter') {
         const query = e.target.value.toLowerCase();
         const filtered = products.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
         renderProducts(filtered, 'productsGrid');
