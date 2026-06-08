@@ -699,7 +699,11 @@ body { padding-top: 0; }
   .hamburger { flex-direction: column !important; gap: 4px !important; }
   .hamburger span { width: 20px !important; height: 2.5px !important; }
 }
-
+@media (min-width: 1025px) {
+  .hamburger {
+    display: none !important;
+  }
+}
 </style>
 </head>
 <body>
