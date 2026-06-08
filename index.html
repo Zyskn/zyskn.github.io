@@ -601,18 +601,41 @@ header.scrolled { padding: 1.2rem 3rem; }
   .search-close-btn { display: none !important; }
 }
 
-/* === FORZAR HEADER FIJO === */
-.top-bar { position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; z-index: 3000 !important; }
-header#header { position: fixed !important; top: 28px !important; left: 0 !important; right: 0 !important; z-index: 2999 !important; background: #fff !important; }
+/* === HEADER FIJO EN PC Y MÓVIL === */
+.top-bar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 3000 !important;
+  height: 32px;
+  transition: transform 0.3s ease !important;
+}
 
-/* ...todo tu CSS anterior... */
-/* ===== PC: como estaba (se esconde la roja) ===== */
-.top-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 3000; height: 32px; }
-header#header { position: sticky; top: 32px; z-index: 2000; background: #fff; }
-body { padding-top: 0; }
+header#header {
+  position: fixed !important;
+  top: 32px !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 2999 !important;
+  background: #fff !important;
+  border-bottom: 1px solid #000;
+  transition: top 0.3s ease !important;
+  padding: 1rem 3rem !important;
+}
 
-/* ===== MÓVIL: fijo siempre ===== */
-/* ===== MÓVIL: header fijo y ajustes ===== */
+body {
+  padding-top: 90px !important; /* 32px + 58px aprox */
+}
+
+/* === ESCONDER BARRA ROJA AL SCROLL EN TODAS LAS PANTALLAS === */
+body.scrolled-down .top-bar {
+  transform: translateY(-100%) !important;
+}
+
+body.scrolled-down header#header {
+  top: 0 !important;
+}
 @media (max-width: 1024px) {
   .top-bar { 
     position: fixed !important; 
