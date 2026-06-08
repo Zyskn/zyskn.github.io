@@ -618,7 +618,8 @@ body { padding-top: 0; }
   .top-bar { 
     position: fixed !important; 
     top: 0 !important; 
-    left: 0; right: 0;
+    left: 0; 
+    right: 0;
     height: 28px !important; 
     z-index: 3000 !important;
     transition: transform 0.3s ease !important;
@@ -628,20 +629,19 @@ body { padding-top: 0; }
     position: fixed !important; 
     top: 28px !important; 
     left: 0 !important; 
-    right: 0 !important; 
-    top: 28px !important;
-    left: 0; right: 0;
+    right: 0 !important;
     z-index: 2999 !important;
     padding: 8px 10px !important; 
     min-height: 56px !important;
     background: #fff !important;
     transition: top 0.3s ease !important;
   }
-  .header-content { padding: 0 !important; gap: 6px !important; }
-  body { padding-top: 84px !important; }
   
-  body { padding-top: 86px !important; }
+  .header-content { padding: 0 !important; gap: 6px !important; }
+  
+  body { padding-top: 84px !important; }
 
+  /* Al hacer scroll */
   body.scrolled-down .top-bar {
     transform: translateY(-100%) !important;
   }
@@ -649,7 +649,7 @@ body { padding-top: 0; }
   body.scrolled-down header#header {
     top: 0 !important;
   }
-
+  
   body { padding-top: 86px !important; }
 }
 
@@ -1402,23 +1402,32 @@ function shareOnWhatsApp() {
 }
 
     navLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        // En móviles, si el link es ARRIBA o ABAJO (tienen submenú), NO cerramos el menú lateral
-        if (window.innerWidth <= 1024 && link.parentElement.querySelector('.sub-nav-wrapper')) {
-          return;
-        }
+    link.addEventListener('click', (e) => {
+      // En móviles, si el link es ARRIBA o ABAJO (tienen submenú), NO cerramos el menú lateral
+      if (window.innerWidth <= 1024 && link.parentElement.querySelector('.sub-nav-wrapper')) {
+        return;
+      }
 
-        hamburger.classList.remove('active');
-        navMain.classList.remove('active');
-        if(navOverlay) navOverlay.classList.remove('active');
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.width = '';
-        window.scrollTo(0, scrollY);
-      });
+      hamburger.classList.remove('active');
+      navMain.classList.remove('active');
+      if(navOverlay) navOverlay.classList.remove('active');
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      window.scrollTo(0, scrollY);
     });
+  });
 
-    init();
-  </script>
+  // === OCULTAR BARRA ROJA AL HACER SCROLL ===
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 50) {
+      document.body.classList.add('scrolled-down');
+    } else {
+      document.body.classList.remove('scrolled-down');
+    }
+  });
+
+  init();
+</script>
 </body>
 </html>
