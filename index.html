@@ -900,22 +900,34 @@ body.scrolled-down header#header {
     </section>
 
     <section id="product-detail">
-      <div class="product-detail-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start;">
-        <div class="product-image" style="background:#f5f5f5; aspect-ratio:4/5;"><img id="detailImage" src="" alt="" style="width:100%; height:100%; object-fit:cover;"></div>
-        <div class="product-info" style="text-align:left;">
-          <h2 id="detailName" style="font-size:2.5rem; font-weight:900; text-transform:uppercase; margin-bottom:0.5rem;"></h2>
-          <p id="detailPrice" style="font-weight:700; font-size:1.8rem; margin-bottom:0.5rem; color:var(--red);"></p>
-          <p style="font-size: 0.7rem; font-weight: 900; color: var(--red); text-transform: uppercase; margin-bottom: 1.5rem; letter-spacing: 0.05em;">★ UNICA UNIDAD DISPONIBLE</p>
-          <p id="detailDesc" style="font-size:1rem; color:var(--text-muted); margin-bottom:2rem; line-height:1.6;"></p>
-          <div style="margin-bottom:2rem;">
-            <p style="font-size:0.75rem; font-weight:700; text-transform:uppercase; margin-bottom:0.8rem;">Seleccionar Talle</p>
-            <div id="detailSizes" style="display:flex; gap:0.8rem; flex-wrap: wrap;"></div>
-          </div>
-          <button class="btn" onclick="addToCartFromDetail(event)" style="width:100%; background:#000; color:#fff; padding:1.2rem; font-size:1rem;">AGREGAR AL CARRITO</button>
-          <p onclick="scrollToSection('shop')" style="margin-top:1.5rem; font-size:0.8rem; text-decoration:underline; cursor:pointer; font-weight:600;">VOLVER A LA TIENDA</p>
-        </div>
+  <div class="product-detail-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start;">
+    <div class="product-image" style="background:#f5f5f5; aspect-ratio:4/5;"><img id="detailImage" src="" alt="" style="width:100%; height:100%; object-fit:cover;"></div>
+    <div class="product-info" style="text-align:left;">
+      <h2 id="detailName" style="font-size:2.5rem; font-weight:900; text-transform:uppercase; margin-bottom:0.5rem;"></h2>
+      <p id="detailPrice" style="font-weight:700; font-size:1.8rem; margin-bottom:0.5rem; color:var(--red);"></p>
+      
+      <p id="detailDesc" style="font-size:1rem; color:var(--text-muted); margin-bottom:1.5rem; line-height:1.6;"></p>
+      
+      <!-- DATOS DEL PRODUCTO - ESTO TE FALTA -->
+      <div id="detailSpecs" style="margin-bottom:1.5rem; font-size:0.85rem; line-height:1.8;">
+        <div style="display:flex; gap:8px;"><strong>Talle:</strong> <span id="detailTalle"></span></div>
+        <div style="display:flex; gap:8px;"><strong>Medidas:</strong> <span id="detailMedidas"></span></div>
+        <div style="display:flex; gap:8px;"><strong>Estado:</strong> <span id="detailEstado"></span></div>
       </div>
-    </section>
+      
+      <div style="background:var(--yellow); padding:0.8rem; border-radius:4px; border:1px solid #ffeeba; color:#856404; font-size:0.7rem; font-weight:700; text-transform:uppercase; text-align:center; margin-bottom:2rem;">
+        ★ UNICA UNIDAD DISPONIBLE - GUIARSE POR MEDIDAS, NO POR TALLE
+      </div>
+      
+      <div style="margin-bottom:2rem;">
+        <p style="font-size:0.75rem; font-weight:700; text-transform:uppercase; margin-bottom:0.8rem;">Seleccionar Talle</p>
+        <div id="detailSizes" style="display:flex; gap:0.8rem; flex-wrap: wrap;"></div>
+      </div>
+      <button class="btn" onclick="addToCartFromDetail(event)" style="width:100%; background:#000; color:#fff; padding:1.2rem; font-size:1rem;">AGREGAR AL CARRITO</button>
+      <p onclick="scrollToSection('shop')" style="margin-top:1.5rem; font-size:0.8rem; text-decoration:underline; cursor:pointer; font-weight:600;">VOLVER A LA TIENDA</p>
+    </div>
+  </div>
+</section>
 
     <section id="shop">
       <h2 class="section-title">CURATED PIECES</h2>
