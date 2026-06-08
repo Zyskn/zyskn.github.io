@@ -136,60 +136,72 @@ footer#contact {
   scroll-margin-top: 0;
 }
 
-/* ===== TOP-BAR VISIBLE EN PC Y MÓVIL - REEMPLAZO COMPLETO ===== */
+/* ===== TOP-BAR CON FLECHAS ===== */
 .top-bar {
   display: flex !important;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 3000;
-  height: 32px;
-  background: #9b0000 !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 3000 !important;
+  height: 32px !important;
   background: var(--red) !important;
   color: #fff !important;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  font-size: 0.78rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 0 !important;
-  line-height: 1 !important;
-  transition: transform 0.15s ease;
+  align-items: center !important;
+  justify-content: space-between !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  padding: 0 20px !important;
+  transition: transform 0.3s ease !important;
 }
 
-.top-bar .marquee-content {
+.top-bar-arrow {
+  background: none !important;
+  border: none !important;
+  color: #fff !important;
+  cursor: pointer !important;
+  padding: 4px 12px !important;
   display: flex !important;
   align-items: center !important;
-  height: 100% !important;
-  width: max-content;
-  animation: marquee-infinite 25s linear infinite;
-  gap: 30px !important;
+  opacity: 0.6 !important;
+  transition: opacity 0.2s !important;
+  flex-shrink: 0;
 }
 
+.top-bar-arrow:hover {
+  opacity: 1 !important;
+}
+
+.top-bar-content {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 1;
+}
+
+.top-bar-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
+.top-bar-link img,
+.top-bar-link svg {
+  width: 16px !important;
+  height: 16px !important;
+  flex-shrink: 0;
+}
+
+/* ELIMINAR MARQUEE VIEJO */
+.top-bar .marquee,
+.top-bar .marquee-content,
 @keyframes marquee-infinite {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  display: none !important;
 }
-
-/* centra el texto y anula tus top:3px inline */
-.top-bar a,
-.top-bar a span,
-.top-bar a img,
-.top-bar .marquee-content span {
-  position: static !important;
-  top: 0 !important;
-  transform: none !important;
-  margin: 0 !important;
-  line-height: 1 !important;
-  display: flex !important;
-  align-items: center !important;
-}
-.top-bar a { gap: 6px !important; color: #fff !important; text-decoration: none !important; }
-.top-bar a img { width: 14px !important; height: 14px !important; }
-.top-bar .marquee-content > span { opacity: 0.7; margin: 0 15px !important; }
 
 /* HEADER PC MÁS CHICO */
 header {
@@ -463,8 +475,27 @@ header.scrolled { padding: 1.2rem 3rem; }
     }
     #nav-overlay.active { display: block; }
 
-    @media (max-width: 1024px) {
-  .top-bar { height: 28px !important; font-size: 0.7rem !important; }
+   @media (max-width: 1024px) {
+  .top-bar { 
+    height: 28px !important; 
+    font-size: 0.65rem !important;
+    padding: 0 10px !important;
+  }
+
+  .top-bar-arrow {
+    padding: 4px 8px !important;
+  }
+
+  .top-bar-arrow svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  .top-bar-link img,
+  .top-bar-link svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
 
   header { 
     position: fixed !important;
@@ -480,7 +511,7 @@ header.scrolled { padding: 1.2rem 3rem; }
   .logo-slogan { font-size: 0.62rem; margin-top: 0.1rem; }
   .header-content { padding: 0; gap: 1rem; }
   .logo-section { flex-shrink: 0; }
-
+}
       .hamburger {
   display: flex; flex-direction: column; justify-content: space-between; align-items: center;
   width: 26px; height: 20px; background: none; border: none;
@@ -736,44 +767,27 @@ body.scrolled-down header#header {
   <div id="nav-overlay"></div>
 
 <div class="top-bar">
-  <div class="marquee">
-    <div class="marquee-content">
+  <button class="top-bar-arrow left" onclick="changeTopBarMessage(-1)" aria-label="Anterior">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+  </button>
 
-      <!-- COPIA 1 - Instagram -->
-  <a href="https://instagram.com/zyskn.vtg" target="_blank" style="display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:inherit;">
-    <img src="https://cdn.simpleicons.org/instagram/FFFFFF" alt="Instagram" style="width:18px; height:18px; flex-shrink:0; position:relative; top:3px;">
-    <span style="position:relative; top:4px;">ZYSKN.VTG</span>
-  </a>
-
-  <span style="margin:0 20px; position:relative; top:-0.5px; opacity:0.7;">·</span>
-
-  <!-- WhatsApp -->
-  <a href="https://wa.me/5493544631553" target="_blank" style="display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:inherit;">
-    <img src="https://cdn.simpleicons.org/whatsapp/FFFFFF" alt="WhatsApp" style="width:18px; height:18px; flex-shrink:0; position:relative; top:3px;">
-    <span style="position:relative; top:4px;">+54 9 3544 631553</span>
-  </a>
-
-  <!-- DIVISOR ENTRE COPIAS -->
- <span style="margin:0 20px; position:relative; top:-0.5px; opacity:0.7;">·</span>
-
-  <!-- COPIA 2 - Instagram -->
-  <a href="https://instagram.com/zyskn.vtg" target="_blank" style="display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:inherit;">
-    <img src="https://cdn.simpleicons.org/instagram/FFFFFF" alt="Instagram" style="width:18px; height:18px; flex-shrink:0; position:relative; top:3px;">
-    <span style="position:relative; top:4px;">ZYSKN.VTG</span>
-  </a>
-
-  <span style="margin:0 20px; position:relative; top:-0.5px; opacity:0.7;">·</span>
-
-  <!-- WhatsApp -->
-  <a href="https://wa.me/5493544631553" target="_blank" style="display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:inherit;">
-    <img src="https://cdn.simpleicons.org/whatsapp/FFFFFF" alt="WhatsApp" style="width:18px; height:18px; flex-shrink:0; position:relative; top:3px;">
-    <span style="position:relative; top:4px;">+54 9 3544 631553</span>
-  </a>
-</div>
+  <div id="topBarContent" class="top-bar-content">
+    <a href="https://instagram.com/zyskn.vtg" target="_blank" class="top-bar-link">
+      <img src="https://cdn.simpleicons.org/instagram/FFFFFF" alt="Instagram">
+      <span>ZYSKN.VTG</span>
+    </a>
   </div>
+
+  <button class="top-bar-arrow right" onclick="changeTopBarMessage(1)" aria-label="Siguiente">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </button>
 </div>
 
-  <header id="header">
+<header id="header">
     <div class="header-content">
       <div class="logo-section" onclick="scrollToTop()">
         <span class="logo">ZYSKN ★</span>
@@ -1356,6 +1370,37 @@ function shareOnWhatsApp() {
       requestAnimationFrame(animation);
     }
   }, isMenuOpen ? 350 : 50);
+}
+// === TOP BAR CON FLECHAS ===
+const topBarMessages = [
+  {
+    html: `<a href="https://instagram.com/zyskn.vtg" target="_blank" class="top-bar-link">
+      <img src="https://cdn.simpleicons.org/instagram/FFFFFF" alt="Instagram">
+      <span>ZYSKN.VTG</span>
+    </a>`
+  },
+  {
+    html: `<a href="https://wa.me/5493544631553" target="_blank" class="top-bar-link">
+      <img src="https://cdn.simpleicons.org/whatsapp/FFFFFF" alt="WhatsApp">
+      <span>+54 9 3544 631553</span>
+    </a>`
+  },
+  {
+    html: `<div class="top-bar-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+        <path d="M21 10c0 7-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+        <circle cx="12" cy="10" r="3"></circle>
+      </svg>
+      <span>CÓRDOBA, ARGENTINA</span>
+    </div>`
+  }
+];
+
+let currentTopBarMsg = 0;
+
+function changeTopBarMessage(dir) {
+  currentTopBarMsg = (currentTopBarMsg + dir + topBarMessages.length) % topBarMessages.length;
+  document.getElementById('topBarContent').innerHTML = topBarMessages[currentTopBarMsg].html;
 }
 
     function scrollToTop() { window.scrollTo({top:0, behavior:'smooth'}); }
