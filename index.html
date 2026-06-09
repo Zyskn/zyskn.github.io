@@ -39,7 +39,6 @@
   --text-muted: #666;
   --blue: #3B82F6;
   --red: #D00000;
-  --red: #E60000;
   --whatsapp: #25D366;
   --instagram: #E4405F;
   --celeste: #87CEEB;
@@ -543,8 +542,27 @@ header.searching .nav-main.active { transform: translate3d(0,0,0); }
       .search-wrapper { display: flex; align-items: center; }
       header.searching .search-input-container { width: 170px; margin-right: 0.6rem; }
       .search-input-container input { font-size: 0.67rem; padding: 0.5rem 1rem; }
-      .search-close-btn { display: flex; align-items: center; justify-content: center; width: 20px; height: 20px; cursor: pointer; color: #000; font-size: 1rem; }
+      .search-close-btn { 
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-52%); /* -52% lo sube 1px para igualar la lupa */
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #000;
+  font-size: 20px;
+  line-height: 1;
+  z-index: 5;
+}
 
+.search-input-container input {
+  padding-right: 34px !important;
+  height: 34px; /* iguala la altura de la lupa */
+}
       .icon-btn { padding: 0.6rem; }
       .icon-btn svg { width: 22px; height: 22px; }
       .auth-status { font-size: 0.65rem; display: flex; align-items: center; justify-content: center; padding: 0.5rem 0.6rem; white-space: nowrap; }
