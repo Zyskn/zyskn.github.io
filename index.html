@@ -703,42 +703,6 @@ body.scrolled-down header#header {
     gap: 6px !important; 
   }
   
-  .nav-icons { 
-    gap: 2px !important; 
-    display: flex !important;
-    align-items: center !important;
-  }
-
-  .icon-btn, #userAuth {
-    width: 38px !important;
-    height: 38px !important;
-    min-width: 38px !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-
-  .icon-btn svg, #userAuth svg {
-    width: 21px !important;
-    height: 21px !important;
-  }
-  
-  #userAuth { font-size: 0 !important; }
-  #userAuth svg { margin: 0 !important; }
-
-  .hamburger {
-    flex-direction: column !important;
-    justify-content: center !important;
-    gap: 4px !important;
-  }
-  .hamburger span {
-    width: 20px !important;
-    height: 2.5px !important;
-    display: block !important;
-  }
-  
   body { 
     padding-top: 84px !important;
     background: #fff;
@@ -766,7 +730,55 @@ body.scrolled-down header#header {
     pointer-events: none;
   }
 }
+    top: 0 !important;
+  }
+  
+  .header-content { padding: 0 !important; gap: 6px !important; }
+  
+  .nav-icons { 
+    gap: 2px !important; 
+    display: flex !important;
+    align-items: center !important;
+  }
+  .header-content { padding: 0 !important; gap: 6px !important; }
+  .nav-icons { gap: 2px !important; display: flex !important; align-items: center !important; }
 
+  .icon-btn, #userAuth {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 38px !important; height: 38px !important; min-width: 38px !important;
+    padding: 0 !important; margin: 0 !important;
+    display: flex !important; align-items: center !important; justify-content: center !important;
+  }
+
+  .icon-btn svg, #userAuth svg {
+    width: 21px !important;
+    height: 21px !important;
+  }
+
+  .icon-btn svg, #userAuth svg { width: 21px !important; height: 21px !important; }
+  #userAuth { font-size: 0 !important; }
+  #userAuth svg { margin: 0 !important; }
+
+  .hamburger {
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 4px !important;
+  }
+  .hamburger span {
+    width: 20px !important;
+    height: 2.5px !important;
+    display: block !important;
+  }
+  .hamburger { flex-direction: column !important; gap: 4px !important; }
+  .hamburger span { width: 20px !important; height: 2.5px !important; }
+}
 @media (min-width: 1025px) {
   .hamburger {
     display: none !important;
@@ -1342,7 +1354,55 @@ function shareOnWhatsApp() {
   const topBar = document.querySelector('.top-bar');
   const isMobile = () => window.innerWidth <= 1024;
 
-  if (isMobile) {
+  // En móvil dejamos todo fijo, no escondemos nada
+  if (isMobile()) {
+    h.style.setProperty('position', 'fixed', 'important');
+    h.style.setProperty('top', '28px', 'important');
+    topBar.style.transform = 'translateY(0)';
+    return;
+  }
+
+  // Desktop sigue igual que antes
+  window.addEventListener('scroll', () => { 
+    if(window.scrollY > 5) {
+      h.classList.add('scrolled');
+      topBar.style.transform = 'translateY(-100%)';
+      h.style.setProperty('top', '0px', 'important');
+    } else {
+      h.classList.remove('scrolled');
+      topBar.style.transform = 'translateY(0)';
+      h.style.setProperty('top', '32px', 'important');
+    }
+  }); 
+}
+
+ function scrollToSection(id) { 
+  const el = document.getElementById(id);
+  if(!el) return;
+
+  const hamburger = document.getElementById('hamburger');
+  const navMain = document.getElementById('navMain');
+  const navOverlay = document.getElementById('nav-overlay');
+  const isMenuOpen = navMain && navMain.classList.contains('active');
+  const isMobile = window.innerWidth <= 1024;
+
+  if (isMenuOpen) {
+    hamburger?.classList.remove('active');
+    navMain.classList.remove('active');
+    navOverlay?.classList.remove('active');
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, scrollY);
+  }
+
+  setTimeout(() => {
+    const headerHeight = document.getElementById('header').offsetHeight;
+    const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
+    const extraMargin = isMobile ? 15 : -45;
+    const offsetPosition = elementPosition - headerHeight - extraMargin;
+
+    if (isMobile) {
       // MÓVIL: smooth nativo (ya anda bien)
       window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
     } else {
@@ -1366,75 +1426,75 @@ function shareOnWhatsApp() {
 
         if (timeElapsed < duration) requestAnimationFrame(animation);
       }
-      
+
       requestAnimationFrame(animation);
     }
-  }
+  }, isMenuOpen ? 350 : 50);
+}
 
-  function scrollToTop() { window.scrollTo({top:0, behavior:'smooth'}); }
+    function scrollToTop() { window.scrollTo({top:0, behavior:'smooth'}); }
 
-  const hamburger = document.getElementById('hamburger');
-  const navMain = document.getElementById('navMain');
-  const navOverlay = document.getElementById('nav-overlay');
-  const navLinks = document.querySelectorAll('.nav-item > a, .sub-nav-item');
-  let scrollY = 0; // agregá esta línea arriba para guardar la posición
+    const hamburger = document.getElementById('hamburger');
+    const navMain = document.getElementById('navMain');
+    const navOverlay = document.getElementById('nav-overlay');
+    const navLinks = document.querySelectorAll('.nav-item > a, .sub-nav-item');
 
-  // Manejo de menús desplegables en móviles
-  const navItems = document.querySelectorAll('.nav-item');
-  navItems.forEach(item => {
-    const link = item.querySelector('a');
-    if (item.querySelector('.sub-nav-wrapper')) {
-      link.addEventListener('click', (e) => {
-        if (window.innerWidth <= 1024) {
-          e.preventDefault();
-          e.stopPropagation();
+    // Manejo de menús desplegables en móviles
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+      const link = item.querySelector('a');
+      if (item.querySelector('.sub-nav-wrapper')) {
+        link.addEventListener('click', (e) => {
+          if (window.innerWidth <= 1024) {
+            e.preventDefault();
+            e.stopPropagation();
 
-          // Cerrar otros menús abiertos
-          navItems.forEach(otherItem => {
-            if (otherItem !== item) otherItem.classList.remove('active-mobile');
-          });
+            // Cerrar otros menús abiertos
+            navItems.forEach(otherItem => {
+              if (otherItem !== item) otherItem.classList.remove('active-mobile');
+            });
 
-          item.classList.toggle('active-mobile');
-        }
-      });
-    }
-  });
-
-  if(hamburger && navMain) {
-    hamburger.addEventListener('click', () => {
-      const isOpening = !navMain.classList.contains('active');
-
-      hamburger.classList.toggle('active');
-      navMain.classList.toggle('active');
-      if(navOverlay) navOverlay.classList.toggle('active');
-
-      if(isOpening) {
-        scrollY = window.scrollY;
-        document.body.style.position = 'fixed';
-        document.body.style.top = `-${scrollY}px`;
-        document.body.style.width = '100%';
-      } else {
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.width = '';
-        window.scrollTo(0, scrollY);
+            item.classList.toggle('active-mobile');
+          }
+        });
       }
     });
-  }
 
-  if(navOverlay) {
-    navOverlay.addEventListener('click', () => {
-      hamburger.classList.remove('active');
-      navMain.classList.remove('active');
-      navOverlay.classList.remove('active');
+    if(hamburger && navMain) {
+  hamburger.addEventListener('click', () => {
+    const isOpening = !navMain.classList.contains('active');
+
+    hamburger.classList.toggle('active');
+    navMain.classList.toggle('active');
+    if(navOverlay) navOverlay.classList.toggle('active');
+
+    if(isOpening) {
+      scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+    } else {
       document.body.style.position = '';
       document.body.style.top = '';
       document.body.style.width = '';
       window.scrollTo(0, scrollY);
-    });
-  }
+    }
+  });
+}
 
-  navLinks.forEach(link => {
+    if(navOverlay) {
+  navOverlay.addEventListener('click', () => {
+    hamburger.classList.remove('active');
+    navMain.classList.remove('active');
+    navOverlay.classList.remove('active');
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, scrollY);
+  });
+}
+
+    navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
       // En móviles, si el link es ARRIBA o ABAJO (tienen submenú), NO cerramos el menú lateral
       if (window.innerWidth <= 1024 && link.parentElement.querySelector('.sub-nav-wrapper')) {
