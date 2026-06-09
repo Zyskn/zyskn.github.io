@@ -465,16 +465,6 @@ header.scrolled { padding: 1.2rem 3rem; }
 
     @media (max-width: 1024px) {
   .top-bar { height: 28px !important; font-size: 0.7rem !important; }
-
-  header { 
-    position: fixed !important;
-    top: 28px !important;
-    left: 0; right: 0;
-    z-index: 2999;
-    padding: 0.9rem 1.2rem !important;
-    min-height: 58px;
-    background: #fff !important;
-  }
   header.scrolled { padding: 0.75rem 1.2rem !important; }
   .logo { font-size: 1.45rem; }
   .logo-slogan { font-size: 0.62rem; margin-top: 0.1rem; }
@@ -651,13 +641,14 @@ header.scrolled { padding: 1.2rem 3rem; }
 
 header#header {
   position: fixed !important;
-  top: 32px !important;
+  top: 0 !important; /* ahora siempre está arriba */
   left: 0 !important;
   right: 0 !important;
   z-index: 2999 !important;
   background: #fff !important;
   border-bottom: 1px solid #000;
-  transition: top 0.3s ease !important;
+  transform: translateY(32px); /* lo empujamos para abajo */
+  transition: transform 0.3s ease !important;
   padding: 1rem 3rem !important;
 }
 
@@ -671,31 +662,43 @@ body.scrolled-down .top-bar {
 }
 
 body.scrolled-down header#header {
-  top: 0 !important;
+  transform: translateY(0) !important;
 }
 
 /* === FIX MÓVIL === */
 @media (max-width: 1024px) {
   .top-bar { 
-    position: fixed !important; 
-    top: 0 !important; 
-    left: 0; 
-    right: 0;
     height: 28px !important; 
-    z-index: 3000 !important;
     transition: transform 0.15s ease !important;
   }
 
   header#header { 
-    position: fixed !important; 
-    top: 28px !important; 
-    left: 0 !important; 
-    right: 0 !important;
-    z-index: 2999 !important;
     padding: 8px 10px !important; 
     min-height: 56px !important;
-    background: #fff !important;
-    transition: top 0.15s ease !important;
+    transform: translateY(28px);
+    transition: transform 0.15s ease !important;
+  }
+  
+  body { 
+    padding-top: 84px !important;
+  }
+
+  body.scrolled-down .top-bar {
+    transform: translateY(-100%) !important;
+  }
+  
+  body.scrolled-down header#header {
+    transform: translateY(0) !important;
+  }
+  
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 28px;
+    background: #9b0000;
+    z-index: 2997;
+    pointer-events: none;
   }
   
   .header-content { 
@@ -703,45 +706,11 @@ body.scrolled-down header#header {
     gap: 6px !important; 
   }
   
-  body { 
-    padding-top: 84px !important;
-    background: #fff;
-  }
-
-  /* Al hacer scroll */
-  body.scrolled-down .top-bar {
-    transform: translateY(-100%) !important;
-  }
-  
-  body.scrolled-down header#header {
-    top: 0 !important;
-  }
-  
-  /* FIX: barra roja fija atrás para tapar el gap blanco */
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 28px;
-    background: #9b0000;
-    z-index: 2997;
-    pointer-events: none;
-  }
-}
-    top: 0 !important;
-  }
-  
-  .header-content { padding: 0 !important; gap: 6px !important; }
-  
   .nav-icons { 
     gap: 2px !important; 
     display: flex !important;
     align-items: center !important;
   }
-  .header-content { padding: 0 !important; gap: 6px !important; }
-  .nav-icons { gap: 2px !important; display: flex !important; align-items: center !important; }
 
   .icon-btn, #userAuth {
     width: 38px !important;
@@ -752,9 +721,6 @@ body.scrolled-down header#header {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    width: 38px !important; height: 38px !important; min-width: 38px !important;
-    padding: 0 !important; margin: 0 !important;
-    display: flex !important; align-items: center !important; justify-content: center !important;
   }
 
   .icon-btn svg, #userAuth svg {
@@ -762,9 +728,7 @@ body.scrolled-down header#header {
     height: 21px !important;
   }
 
-  .icon-btn svg, #userAuth svg { width: 21px !important; height: 21px !important; }
   #userAuth { font-size: 0 !important; }
-  #userAuth svg { margin: 0 !important; }
 
   .hamburger {
     flex-direction: column !important;
@@ -776,8 +740,6 @@ body.scrolled-down header#header {
     height: 2.5px !important;
     display: block !important;
   }
-  .hamburger { flex-direction: column !important; gap: 4px !important; }
-  .hamburger span { width: 20px !important; height: 2.5px !important; }
 }
 @media (min-width: 1025px) {
   .hamburger {
