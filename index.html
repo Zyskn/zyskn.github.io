@@ -1237,7 +1237,17 @@ body.scrolled-down header#header {
         e.target.value = '';
       }
     }
-
+function mobileSearch(query){
+      const q = query.trim().toLowerCase();
+      if(!q) return;
+      const filtered = products.filter(p => 
+        p.name.toLowerCase().includes(q) || 
+        p.category.toLowerCase().includes(q)
+      );
+      renderProducts(filtered, 'productsGrid');
+      document.getElementById('hamburger')?.click();
+      setTimeout(() => scrollToSection('shop'), 350);
+    }
     function showNotification(msg) {
       const n = document.getElementById('notification');
       n.textContent = msg; n.style.display = 'block';
