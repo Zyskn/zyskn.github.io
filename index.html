@@ -1178,12 +1178,12 @@ body.scrolled-down header#header {
     let selectedSize = null;
     let scrollY = 0;
     let reservations = JSON.parse(localStorage.getItem('zysk_res')||'{}');
-const RESERVE_TIME = 5*60*1000;
+const RESERVE_TIME = 3*60*1000;
 function saveRes(){localStorage.setItem('zysk_res',JSON.stringify(reservations))}
 function reserve(id){reservations[id]=Date.now()+RESERVE_TIME;saveRes()}
 function isRes(id){if(!reservations[id])return false;if(Date.now()>reservations[id]){delete reservations[id];saveRes();return false}return true}
 function timeLeft(id){return Math.max(0,Math.floor((reservations[id]-Date.now())/1000))}
-function startReserveTimer(){setInterval(()=>{let changed=false;Object.keys(reservations).forEach(id=>{if(Date.now()>reservations[id]){delete reservations[id];cart=cart.filter(i=>i.id!==id);changed=true;showNotification('RESERVA FINALIZADA')}});if(changed){saveRes();updateCartUI();renderProducts(products,'productsGrid');renderProducts(products.filter(p=>p.isNew),'newProductsGrid')}},1000)}
+function startReserveTimer(){setInterval(()=>{let c=!1;Object.keys(reservations).forEach(i=>{if(Date.now()>reservations[i]){delete reservations[i];cart=cart.filter(p=>p.id!==i);c=!0;showNotification('RESERVA FINALIZADA')}});if(c){saveRes();renderProducts(products,'productsGrid');renderProducts(products.filter(p=>p.isNew),'newProductsGrid')}updateCartUI()},1000)}
     // ANIMACIÓN VUELO AL CARRITO
     function animateToCart(event, cartSelector) {
       const button = event.currentTarget;
@@ -1348,7 +1348,7 @@ function filterProducts(c) {
   if(isRes(currentProduct.id)){const m=String(Math.ceil(timeLeft(currentProduct.id)/60)).padStart(2,'0');alert('RESERVA ACTIVA · LIBERA EN '+m+':00');return}
   if(cart.find(i=>i.id===currentProduct.id)){alert('Ya en carrito');return}
   cart.push({...currentProduct,size:selectedSize});reserve(currentProduct.id);updateCartUI();
-  animateToCart(event,'#cart-icon');showNotification('RESERVA CONFIRMADA · 05:00');setTimeout(()=>scrollToSection('cart-section'),800);
+  animateToCart(event,'#cart-icon');showNotification('RESERVA CONFIRMADA · 03:00');setTimeout(()=>scrollToSection('cart-section'),800);
 }
 
     function updateCartUI() {
