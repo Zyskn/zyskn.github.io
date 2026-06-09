@@ -1183,7 +1183,7 @@ function saveRes(){localStorage.setItem('zysk_res',JSON.stringify(reservations))
 function reserve(id){reservations[id]=Date.now()+RESERVE_TIME;saveRes()}
 function isRes(id){if(!reservations[id])return false;if(Date.now()>reservations[id]){delete reservations[id];saveRes();return false}return true}
 function timeLeft(id){return Math.max(0,Math.floor((reservations[id]-Date.now())/1000))}
-function startReserveTimer(){setInterval(()=>{let changed=false;Object.keys(reservations).forEach(id=>{if(Date.now()>reservations[id]){delete reservations[id];cart=cart.filter(i=>i.id!==id);changed=true;showNotification('RESERVA EXPIRADA')}});if(changed){saveRes();updateCartUI();renderProducts(products,'productsGrid');renderProducts(products.filter(p=>p.isNew),'newProductsGrid')}},1000)}
+function startReserveTimer(){setInterval(()=>{let changed=false;Object.keys(reservations).forEach(id=>{if(Date.now()>reservations[id]){delete reservations[id];cart=cart.filter(i=>i.id!==id);changed=true;showNotification('RESERVA FINALIZADA')}});if(changed){saveRes();updateCartUI();renderProducts(products,'productsGrid');renderProducts(products.filter(p=>p.isNew),'newProductsGrid')}},1000)}
     // ANIMACIÓN VUELO AL CARRITO
     function animateToCart(event, cartSelector) {
       const button = event.currentTarget;
@@ -1345,17 +1345,17 @@ function filterProducts(c) {
 
     function addToCartFromDetail(event) {
   if(!selectedSize){alert('Selecciona talle');return}
-  if(isRes(currentProduct.id)){alert('Ya está reservado. Te quedan '+Math.ceil(timeLeft(currentProduct.id)/60)+' min');return}
+  if(isRes(currentProduct.id)){const m=String(Math.ceil(timeLeft(currentProduct.id)/60)).padStart(2,'0');alert('RESERVA ACTIVA · LIBERA EN '+m+':00');return}
   if(cart.find(i=>i.id===currentProduct.id)){alert('Ya en carrito');return}
   cart.push({...currentProduct,size:selectedSize});reserve(currentProduct.id);updateCartUI();
-  animateToCart(event,'#cart-icon');showNotification('RESERVADO 5:00');setTimeout(()=>scrollToSection('cart-section'),800);
+  animateToCart(event,'#cart-icon');showNotification('RESERVA CONFIRMADA · 05:00');setTimeout(()=>scrollToSection('cart-section'),800);
 }
 
     function updateCartUI() {
   const badge=document.getElementById('cartBadge');badge.textContent=cart.length;badge.style.display=cart.length?'flex':'none';
   const checkout=document.getElementById('cartCheckoutArea');const empty=document.getElementById('cartEmptyMsg');
   if(cart.length===0){checkout.style.display='none';empty.style.display='block';document.getElementById('cartItems').innerHTML=''}
-  else{checkout.style.display='block';empty.style.display='none';document.getElementById('cartItems').innerHTML=cart.map((i,idx)=>{const t=timeLeft(i.id);const m=Math.floor(t/60);const s=(t%60).toString().padStart(2,'0');return`<div style="margin-bottom:1rem;font-size:.9rem;border-bottom:1px solid #eee;padding-bottom:1rem;display:flex;justify-content:space-between;align-items:center"><div><span style="font-weight:600">${i.name} (${i.size}) - $${i.price.toLocaleString('es-AR')}</span><div class="reservation-timer">⏱ RESERVADO ${m}:${s} — SE LIBERA SI NO COMPRÁS</div></div><button onclick="removeFromCart(${idx})" style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:900;font-size:1.2rem">✕</button></div>`}).join('')}
+  else{checkout.style.display='block';empty.style.display='none';document.getElementById('cartItems').innerHTML=cart.map((i,idx)=>{const t=timeLeft(i.id);const m=Math.floor(t/60);const s=(t%60).toString().padStart(2,'0');return`<div style="margin-bottom:1rem;font-size:.9rem;border-bottom:1px solid #eee;padding-bottom:1rem;display:flex;justify-content:space-between;align-items:center"><div><span style="font-weight:600">${i.name} (${i.size}) - $${i.price.toLocaleString('es-AR')}</span><div class="reservation-timer">RESERVA ACTIVA ${m}:${s}</div></div><button onclick="removeFromCart(${idx})" style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:900;font-size:1.2rem">✕</button></div>`}).join('')}
   document.getElementById('cartTotal').textContent=`$${cart.reduce((s,i)=>s+i.price,0).toLocaleString('es-AR')}`;
 }
 
