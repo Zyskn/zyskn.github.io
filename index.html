@@ -843,6 +843,10 @@ body.scrolled-down header#header {
     display: none !important;
   }
 }
+.product-card.reserved{opacity:.55;pointer-events:none;position:relative;filter:grayscale(1)}
+.product-card.reserved::after{content:'RESERVADO';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#000;color:#fff;padding:8px 14px;font-size:.7rem;font-weight:900;letter-spacing:1.5px;z-index:3;border:2px solid #fff}
+.reservation-timer{color:var(--red);font-weight:900;font-size:.7rem;margin-top:4px;letter-spacing:.5px;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 </style>
 </head>
 <body>
@@ -1167,7 +1171,13 @@ body.scrolled-down header#header {
     let currentProduct = null;
     let selectedSize = null;
     let scrollY = 0;
-
+    let reservations = JSON.parse(localStorage.getItem('zysk_res')||'{}');
+const RESERVE_TIME = 5*60*1000;
+function saveRes(){localStorage.setItem('zysk_res',JSON.stringify(reservations))}
+function reserve(id){reservations[id]=Date.now()+RESERVE_TIME;saveRes()}
+function isRes(id){if(!reservations[id])return false;if(Date.now()>reservations[id]){delete reservations[id];saveRes();return false}return true}
+function timeLeft(id){return Math.max(0,Math.floor((reservations[id]-Date.now())/1000))}
+function startReserveTimer(){setInterval(()=>{let changed=false;Object.keys(reservations).forEach(id=>{if(Date.now()>reservations[id]){delete reservations[id];cart=cart.filter(i=>i.id!==id);changed=true;showNotification('RESERVA EXPIRADA')}});if(changed){saveRes();updateCartUI();renderProducts(products,'productsGrid');renderProducts(products.filter(p=>p.isNew),'newProductsGrid')}},1000)}
     // ANIMACIÓN VUELO AL CARRITO
     function animateToCart(event, cartSelector) {
       const button = event.currentTarget;
@@ -1204,7 +1214,8 @@ body.scrolled-down header#header {
   renderProducts(products.filter(p=>p.isNew), 'newProductsGrid');
   // setupScrollListener(); // <- comentado para que quede fijo
   updateCartUI();
-    }
+  startReserveTimer();
+}
 
     function toggleSearch() {
   const header = document.getElementById('header');
@@ -1284,21 +1295,9 @@ function mobileSearch(query){
     }
 
     function renderProducts(list, gridId) {
-      const grid = document.getElementById(gridId);
-      if(!grid) return;
-      grid.innerHTML = list.map(p => `
-        <div class="product-card" onclick="showProductDetail('${p.id}')">
-          <div class="product-image"><img src="${p.img}" alt="${p.name}"></div>
-          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-            <div>
-              <h3 style="font-size:0.85rem; font-weight:900; text-transform:uppercase;">${p.name}</h3>
-              <p style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">${p.category}</p>
-            </div>
-            <p style="font-size:0.85rem; font-weight:700;">$${p.price.toLocaleString('es-AR')}</p>
-          </div>
-        </div>
-      `).join('');
-    }
+  const grid=document.getElementById(gridId);if(!grid)return;
+  grid.innerHTML=list.map(p=>{const r=isRes(p.id);return`<div class="product-card ${r?'reserved':''}" onclick="${r?'':'showProductDetail(\''+p.id+'\')'}"><div class="product-image"><img src="${p.img}" alt="${p.name}"></div><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><h3 style="font-size:.85rem;font-weight:900;text-transform:uppercase">${p.name}</h3><p style="font-size:.75rem;color:var(--text-muted);text-transform:uppercase">${p.category}</p></div><p style="font-size:.85rem;font-weight:700">$${p.price.toLocaleString('es-AR')}</p></div></div>`}).join('');
+}
 
     function showMainCategory(s, e) { 
   if(e) e.preventDefault(); 
@@ -1339,41 +1338,23 @@ function filterProducts(c) {
     }
 
     function addToCartFromDetail(event) {
-      if(!selectedSize){alert('Selecciona talle'); return;}
-      cart.push({...currentProduct, size:selectedSize}); 
-      updateCartUI(); 
-
-      // DISPARAR ANIMACIÓN
-      animateToCart(event, '#cart-icon');
-
-      showNotification('Producto añadido al carrito');
-      setTimeout(() => scrollToSection('cart-section'), 800);
-    }
+  if(!selectedSize){alert('Selecciona talle');return}
+  if(isRes(currentProduct.id)){alert('Ya está reservado. Te quedan '+Math.ceil(timeLeft(currentProduct.id)/60)+' min');return}
+  if(cart.find(i=>i.id===currentProduct.id)){alert('Ya en carrito');return}
+  cart.push({...currentProduct,size:selectedSize});reserve(currentProduct.id);updateCartUI();
+  animateToCart(event,'#cart-icon');showNotification('RESERVADO 5:00');setTimeout(()=>scrollToSection('cart-section'),800);
+}
 
     function updateCartUI() {
-      const badge = document.getElementById('cartBadge');
-      badge.textContent = cart.length; 
-      badge.style.display = cart.length ? 'flex' : 'none';
-      const checkoutArea = document.getElementById('cartCheckoutArea');
-      const emptyMsg = document.getElementById('cartEmptyMsg');
-      if(cart.length === 0) {
-        checkoutArea.style.display = 'none';
-        emptyMsg.style.display = 'block';
-        document.getElementById('cartItems').innerHTML = '';
-      } else {
-        checkoutArea.style.display = 'block';
-        emptyMsg.style.display = 'none';
-        document.getElementById('cartItems').innerHTML = cart.map((i, index)=>`
-          <div style="margin-bottom:1rem; font-size:0.9rem; border-bottom:1px solid #eee; padding-bottom:1rem; display:flex; justify-content:space-between; align-items:center">
-            <span style="font-weight:600;">${i.name} (${i.size}) - $${i.price.toLocaleString('es-AR')}</span>
-            <button onclick="removeFromCart(${index})" style="background:none; border:none; color:var(--red); cursor:pointer; font-weight:900; font-size:1.2rem; padding:0 10px">✕</button>
-          </div>
-        `).join('');
-      }
-      document.getElementById('cartTotal').textContent = `$${cart.reduce((s,i)=>s+i.price,0).toLocaleString('es-AR')}`;
-    }
+  const badge=document.getElementById('cartBadge');badge.textContent=cart.length;badge.style.display=cart.length?'flex':'none';
+  const checkout=document.getElementById('cartCheckoutArea');const empty=document.getElementById('cartEmptyMsg');
+  if(cart.length===0){checkout.style.display='none';empty.style.display='block';document.getElementById('cartItems').innerHTML=''}
+  else{checkout.style.display='block';empty.style.display='none';document.getElementById('cartItems').innerHTML=cart.map((i,idx)=>{const t=timeLeft(i.id);const m=Math.floor(t/60);const s=(t%60).toString().padStart(2,'0');return`<div style="margin-bottom:1rem;font-size:.9rem;border-bottom:1px solid #eee;padding-bottom:1rem;display:flex;justify-content:space-between;align-items:center"><div><span style="font-weight:600">${i.name} (${i.size}) - $${i.price.toLocaleString('es-AR')}</span><div class="reservation-timer">⏱ RESERVADO ${m}:${s} — SE LIBERA SI NO COMPRÁS</div></div><button onclick="removeFromCart(${idx})" style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:900;font-size:1.2rem">✕</button></div>`}).join('')}
+  document.getElementById('cartTotal').textContent=`$${cart.reduce((s,i)=>s+i.price,0).toLocaleString('es-AR')}`;
+}
 
     function removeFromCart(index) {
+      delete reservations[cart[index].id]; saveRes();
       cart.splice(index, 1);
       updateCartUI();
       showNotification('Producto eliminado');
@@ -1431,9 +1412,9 @@ function shareOnWhatsApp() {
 
   t += `%0A*TOTAL: $${total.toLocaleString('es-AR')}*%0A`;
 
+  cart.forEach(i=>delete reservations[i.id]);saveRes();cart=[];updateCartUI();
   window.open(`https://wa.me/5493544631553?text=${t}`, '_blank');
 }
-
     function setupScrollListener() { 
   const h = document.getElementById('header');
   const topBar = document.querySelector('.top-bar');
