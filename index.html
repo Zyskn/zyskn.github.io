@@ -856,7 +856,15 @@ body.scrolled-down header#header {
   .product-card.reserved .product-image{filter:none;opacity:1}
   .product-card.reserved::after{padding:6px 10px;font-size:.65rem;letter-spacing:1px}
   .product-card.sold::after{padding:6px 10px;font-size:.65rem;letter-spacing:1px}
-  }
+}
+
+/* === PREMIUM UPGRADE === */
+.product-card{transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.product-card:hover{transform:translateY(-6px)}
+.product-image img{transition:transform .7s cubic-bezier(.16,1,.3,1),filter .5s}
+.product-card:hover .product-image img{transform:scale(1.08);filter:brightness(1.03)}
+.product-card.reserved::after,.product-card.sold::after{background:rgba(0,0,0,.45)!important;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15)!important;padding:8px 14px!important}
+#detailImage{transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .25s}
 </style>
 </head>
 <body>
@@ -1006,7 +1014,15 @@ body.scrolled-down header#header {
 
     <section id="product-detail">
   <div class="product-detail-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start;">
-    <div class="product-image" style="background:#f5f5f5; aspect-ratio:4/5;"><img id="detailImage" src="" alt="" style="width:100%; height:100%; object-fit:cover;"></div>
+    <div>
+      <div style="position:relative;background:#f5f5f5;aspect-ratio:4/5;overflow:hidden;cursor:zoom-in;border-radius:2px" onclick="zoomImage()">
+        <img id="detailImage" src="" style="width:100%;height:100%;object-fit:cover;transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .25s">
+        <button id="prevBtn" onclick="event.stopPropagation();changePhoto(-1)" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#000;border:none;width:44px;height:44px;border-radius:50%;font-size:24px;cursor:pointer;display:none;z-index:2;box-shadow:0 8px 24px rgba(0,0,0,.12);transition:all .2s">‹</button>
+        <button id="nextBtn" onclick="event.stopPropagation();changePhoto(1)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#000;border:none;width:44px;height:44px;border-radius:50%;font-size:24px;cursor:pointer;display:none;z-index:2;box-shadow:0 8px 24px rgba(0,0,0,.12);transition:all .2s">›</button>
+      </div>
+      <div id="thumbs" style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap"></div>
+    </div>
+    
     <div class="product-info" style="text-align:left;">
       <h2 id="detailName" style="font-size:2.5rem; font-weight:900; text-transform:uppercase; margin-bottom:0.5rem;"></h2>
       <p id="detailPrice" style="font-weight:700; font-size:1.8rem; margin-bottom:0.5rem; color:var(--red);"></p>
@@ -1190,17 +1206,37 @@ if(url.has('vender')){
   window.history.replaceState({}, '', '/');
 }
 
-let cart = [];
 let currentProduct = null;
+let currentPhotos = [];
+let currentPhotoIndex = 0;
+let zoomed = false;
 let selectedSize = null;
 let scrollY = 0;
 let reservations = JSON.parse(localStorage.getItem('zysk_res')||'{}');
+let cart = JSON.parse(localStorage.getItem('zysk_cart')||'[]');
 const RESERVE_TIME = 3*60*1000;
 function saveRes(){localStorage.setItem('zysk_res',JSON.stringify(reservations))}
 function reserve(id){reservations[id]=Date.now()+RESERVE_TIME;saveRes()}
 function isRes(id){if(!reservations[id])return false;if(Date.now()>reservations[id]){delete reservations[id];saveRes();return false}return true}
 function timeLeft(id){return Math.max(0,Math.floor((reservations[id]-Date.now())/1000))}
-function startReserveTimer(){setInterval(()=>{let c=!1;Object.keys(reservations).forEach(i=>{if(Date.now()>reservations[i]){delete reservations[i];cart=cart.filter(p=>p.id!==i);c=!0;showNotification('RESERVA FINALIZADA')}});if(c){saveRes();renderProducts(products,'productsGrid');renderProducts(products.filter(p=>p.isNew),'newProductsGrid')}updateCartUI()},1000)}
+function startReserveTimer(){setInterval(()=>{
+  let c=!1;
+  Object.keys(reservations).forEach(i=>{
+    if(Date.now()>reservations[i]){
+      delete reservations[i];
+      cart=cart.filter(p=>p.id!==i);
+      c=!0;
+      showNotification('RESERVA FINALIZADA')
+    }
+  });
+  if(c){
+    saveRes();
+    localStorage.setItem('zysk_cart', JSON.stringify(cart));
+    renderProducts(products,'productsGrid');
+    renderProducts(products.filter(p=>p.isNew),'newProductsGrid')
+  }
+  updateCartUI()
+},1000)}
 
 // LIMPIAR ADMIN VIEJO
 localStorage.removeItem('zysk_admin');
@@ -1392,55 +1428,64 @@ function filterProducts(c) {
     function showProductDetail(id) {
   currentProduct = products.find(p=>p.id===id);
   selectedSize = null;
+  currentPhotos = [currentProduct.img, currentProduct.img2].filter(Boolean);
+  currentPhotoIndex = 0;
+  zoomed = false;
+
   document.getElementById('detailName').textContent = currentProduct.name;
   document.getElementById('detailPrice').textContent = `$${currentProduct.price.toLocaleString('es-AR')}`;
   document.getElementById('detailDesc').innerHTML = currentProduct.desc;
-  document.getElementById('detailImage').src = currentProduct.img;
+  document.getElementById('detailImage').src = currentPhotos[0];
+  document.getElementById('detailImage').style.transform = 'scale(1)';
   document.getElementById('detailTalle').textContent = currentProduct.talle || 'Consultar';
   document.getElementById('detailMedidas').textContent = currentProduct.medidas || 'Consultar';
   document.getElementById('detailEstado').textContent = currentProduct.estado || '10/10';
-  
-  document.getElementById('detailSizes').innerHTML = currentProduct.sizes.map(s=>`
-    <button onclick="setS('${s}', this)" style="padding:0.8rem 1.5rem; border:1px solid #000; background:#fff; cursor:pointer; font-size:0.8rem; font-weight:700;">${s}</button>
-  `).join('');
-  
+
+  document.getElementById('detailSizes').innerHTML = currentProduct.sizes.map(s=>`<button onclick="setS('${s}',this)" style="padding:.8rem 1.5rem;border:1px solid #000;background:#fff;cursor:pointer;font-size:.8rem;font-weight:700">${s}</button>`).join('');
+
+  const hasMultiple = currentPhotos.length > 1;
+  document.getElementById('prevBtn').style.display = hasMultiple? 'block' : 'none';
+  document.getElementById('nextBtn').style.display = hasMultiple? 'block' : 'none';
+  document.getElementById('thumbs').innerHTML = currentPhotos.map((src,i)=>`<img src="${src}" onclick="currentPhotoIndex=${i};changePhoto(0)" style="width:62px;height:78px;object-fit:cover;cursor:pointer;border:2px solid ${i===0?'#000':'transparent'};opacity:${i===0?1:.55};transition:.2s;border-radius:2px">`).join('');
+
   const infoDiv = document.querySelector('#product-detail .product-info');
-  const oldBanner = infoDiv.querySelector('.status-banner');
-  if(oldBanner) oldBanner.remove();
-  
+  const oldBanner = infoDiv.querySelector('.status-banner'); if(oldBanner) oldBanner.remove();
   const btn = infoDiv.querySelector('.btn');
-  const isSold = currentProduct.sold;
-  const isReserved = isRes(currentProduct.id);
-  
+  const isSold = currentProduct.sold; const isReserved = isRes(currentProduct.id);
+
   if(isSold || isReserved){
-    const text = isSold ? 'SIN STOCK' : 'RESERVADO';
-    const color = isSold ? '#000' : '#D00000';
-    infoDiv.insertAdjacentHTML('afterbegin', `<div class="status-banner" style="background:${color};color:#fff;padding:12px;text-align:center;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:1.5rem;">${text}</div>`);
-    btn.disabled = true;
-    btn.style.opacity = '0.4';
-    btn.style.cursor = 'not-allowed';
-    btn.textContent = text;
-  } else {
-    btn.disabled = false;
-    btn.style.opacity = '1';
-    btn.style.cursor = 'pointer';
-    btn.textContent = 'AGREGAR AL CARRITO';
-  }
+    const text = isSold? 'SIN STOCK' : 'RESERVADO';
+    const color = isSold? '#000' : '#D00000';
+    infoDiv.insertAdjacentHTML('afterbegin', `<div class="status-banner" style="background:${color};color:#fff;padding:12px;text-align:center;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:1.5rem">${text}</div>`);
+    btn.disabled = true; btn.style.opacity = '.4'; btn.style.cursor = 'not-allowed'; btn.textContent = text;
+  } else { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; btn.textContent = 'AGREGAR AL CARRITO'; }
 
   if(adminMode){
-    infoDiv.insertAdjacentHTML('beforeend', `
-      <div style="margin-top:2rem;padding:1rem;background:#f0f0f0;border:2px dashed #000;">
-        <p style="font-size:0.7rem;font-weight:900;margin-bottom:0.8rem;text-transform:uppercase;">PANEL ADMIN</p>
-        <button onclick="openManager()" style="padding:0.7rem 1rem;background:#25D366;color:#fff;border:none;margin-bottom:0.8rem;width:100%;font-size:0.7rem;font-weight:700;cursor:pointer;">ABRIR GESTOR PRODUCTOS</button>
-        <button onclick="adminVender('${currentProduct.id}')" style="padding:0.7rem 1rem;background:#000;color:#fff;border:none;margin-right:0.5rem;font-size:0.7rem;font-weight:700;cursor:pointer;">MARCAR VENDIDO</button>
-        <button onclick="adminReservar('${currentProduct.id}')" style="padding:0.7rem 1rem;background:#D00000;color:#fff;border:none;margin-right:0.5rem;font-size:0.7rem;font-weight:700;cursor:pointer;">RESERVAR</button>
-        <button onclick="adminLiberar('${currentProduct.id}')" style="padding:0.7rem 1rem;background:#fff;color:#000;border:1px solid #000;font-size:0.7rem;font-weight:700;cursor:pointer;">DISPONIBLE</button>
-        <button onclick="sessionStorage.clear();location.reload()" style="padding:0.7rem 1rem;background:#666;color:#fff;border:none;margin-top:0.5rem;width:100%;font-size:0.7rem;font-weight:700;cursor:pointer;">CERRAR SESIÓN ADMIN</button>
-      </div>
-    `);
+    infoDiv.insertAdjacentHTML('beforeend', `<div style="margin-top:2rem;padding:1rem;background:#f0f0;border:2px dashed #000"><p style="font-size:.7rem;font-weight:900;margin-bottom:.8rem;text-transform:uppercase">PANEL ADMIN</p><button onclick="openManager()" style="padding:.7rem 1rem;background:#25D366;color:#fff;border:none;margin-bottom:.8rem;width:100%;font-size:.7rem;font-weight:700;cursor:pointer">ABRIR GESTOR</button><button onclick="adminVender('${currentProduct.id}')" style="padding:.7rem 1rem;background:#000;color:#fff;border:none;margin-right:.5rem;font-size:.7rem;font-weight:700">VENDIDO</button><button onclick="adminReservar('${currentProduct.id}')" style="padding:.7rem 1rem;background:#D00000;color:#fff;border:none;margin-right:.5rem;font-size:.7rem;font-weight:700">RESERVAR</button><button onclick="adminLiberar('${currentProduct.id}')" style="padding:.7rem 1rem;background:#fff;color:#000;border:1px solid #000;font-size:.7rem;font-weight:700">DISPONIBLE</button></div>`);
   }
   document.getElementById('product-detail').classList.add('active');
   scrollToSection('product-detail');
+}
+
+function changePhoto(dir){
+  const img = document.getElementById('detailImage');
+  img.style.opacity = '0';
+  setTimeout(()=>{
+    currentPhotoIndex = (currentPhotoIndex + dir + currentPhotos.length) % currentPhotos.length;
+    img.src = currentPhotos[currentPhotoIndex];
+    img.style.opacity = '1';
+    document.querySelectorAll('#thumbs img').forEach((t,i)=>{
+      t.style.opacity = i===currentPhotoIndex? '1' : '0.55';
+      t.style.borderColor = i===currentPhotoIndex? '#000' : 'transparent';
+    });
+  },180);
+}
+
+function zoomImage(){
+  const img = document.getElementById('detailImage');
+  zoomed =!zoomed;
+  img.style.transform = zoomed? 'scale(1.85)' : 'scale(1)';
+  img.parentElement.style.cursor = zoomed? 'zoom-out' : 'zoom-in';
 }
 
     function setS(s, btn) {
