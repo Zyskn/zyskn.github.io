@@ -500,15 +500,18 @@ header.searching .nav-main {
   box-shadow: -5px 0 20px rgba(0,0,0,0.1);
   overflow-y: auto;
   gap: 0;
-  z-index: 999;
+  z-index: 3005;
   transform: translate3d(100%,0,0);
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
 }
-      .nav-main.active {
+.nav-main.active {
   transform: translate3d(0,0,0);
   pointer-events: auto;
 }
+/* evita que la búsqueda lo esconda en móvil */
+header.searching .nav-main { transform: translate3d(100%,0,0); }
+header.searching .nav-main.active { transform: translate3d(0,0,0); }
       .nav-item { padding: 0; border-bottom: 1px solid #f0f0f0; width: 100%; margin: 0; }
       .nav-item > a { display: block; padding: 1.1rem 1.2rem; font-size: 0.92rem; font-weight: 600; }
       .nav-item::after { display: none; }
