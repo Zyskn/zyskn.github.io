@@ -487,6 +487,20 @@ header.searching .nav-main {
   .header-content { padding: 0; gap: 1rem; }
   .logo-section { flex-shrink: 0; }
 
+  /* === PEGÁ ACÁ === */
+  .nav-icons .search-wrapper {
+    display: none !important;
+  }
+  
+  .nav-icons { 
+    width: 114px !important;
+    justify-content: space-between !important;
+  }
+  
+  .mobile-search { 
+    display: block !important; 
+  }
+
       .hamburger {
   display: flex; flex-direction: column; justify-content: space-between; align-items: center;
   width: 26px; height: 20px; background: none; border: none;
@@ -761,16 +775,20 @@ body.scrolled-down header#header {
     gap: 6px !important; 
   }
   
-  .nav-icons { 
+  /* MÓVIL SIN LUPA - solo 3 iconos */
+.nav-icons { 
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  width: 152px !important; /* 4 iconos × 34px + espacios */
+  width: 114px !important; /* 3 iconos × 34px */
   gap: 0 !important;
   flex-shrink: 0 !important;
 }
 
-.nav-icons .search-wrapper,
+.nav-icons .search-wrapper {
+  display: none !important;
+}
+
 .nav-icons #userAuth,
 .nav-icons #cart-icon,
 .nav-icons .hamburger {
@@ -877,6 +895,10 @@ body.scrolled-down header#header {
 
       <div id="navContainer" class="nav-container">
         <nav class="nav-main" id="navMain">
+  <!-- BUSCADOR MÓVIL -->
+  <div class="mobile-search" style="display:none; width:100%; padding:0 1.5rem 0; border-bottom:1px solid #eee; margin-bottom:1rem;">
+    <input type="text" placeholder="BUSCAR PRENDA..." onkeyup="if(event.key==='Enter'){document.getElementById('searchInput').value=this.value; handleSearch(event); document.getElementById('hamburger').click();}" style="width:100%; padding:0.9rem 1rem; border:2px solid #000; font-size:0.8rem; text-transform:uppercase; font-weight:700; outline:none;">
+  </div>
   <div class="nav-item"><a href="javascript:void(0)" onclick="showMainCategory('todo')">TODO</a></div>
   <div class="nav-item nav-item-new"><a href="javascript:void(0)" onclick="scrollToSection('nuevo-section')">NEW</a></div>
   <div class="nav-item">
