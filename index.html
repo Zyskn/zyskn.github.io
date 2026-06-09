@@ -478,7 +478,8 @@ header.searching .nav-main {
       .hamburger {
   display: flex; flex-direction: column; justify-content: space-between; align-items: center;
   width: 26px; height: 20px; background: none; border: none;
-  cursor: pointer; padding: 0; z-index: 2001; flex-shrink: 0;
+  cursor: pointer; padding: 0; z-index: 3010; /* <- 2001 por 3010 */
+  flex-shrink: 0;
 }
 .hamburger span { display: block; height: 3px; width: 100%; background: #000; border-radius: 2px; transition: all 0.3s ease; }
 .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
