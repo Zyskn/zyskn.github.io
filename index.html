@@ -557,11 +557,11 @@ header.searching .nav-main.active { transform: translate3d(0,0,0); }
       .search-wrapper { display: flex; align-items: center; }
       /* FIX BÚSQUEDA MÓVIL - que no empuje ni haga burbuja */
 header.searching .search-wrapper {
-  position: absolute !important;
-  right: 116px !important;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
-  z-index: 3001 !important;
+  position: fixed !important;
+  left: 50% !important;
+  top: -8px !important;
+  transform: translateX(-50%) !important;
+  z-index: 9999 !important;
 }
 
 header.searching .search-input-container { 
