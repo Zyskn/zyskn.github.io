@@ -843,10 +843,15 @@ body.scrolled-down header#header {
     display: none !important;
   }
 }
-.product-card.reserved{opacity:.55;pointer-events:none;position:relative;filter:grayscale(1)}
+.product-card.reserved{position:relative;cursor:pointer}
+.product-card.reserved .product-image{filter:grayscale(1);opacity:.55}
 .product-card.reserved::after{content:'RESERVADO';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#000;color:#fff;padding:8px 14px;font-size:.7rem;font-weight:900;letter-spacing:1.5px;z-index:3;border:2px solid #fff}
 .reservation-timer{color:var(--red);font-weight:900;font-size:.7rem;margin-top:4px;letter-spacing:.5px;animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+@media (max-width:768px){
+  .product-card.reserved .product-image{filter:none;opacity:1}
+  .product-card.reserved::after{content:'SIN STOCK';padding:6px 10px;font-size:.65rem;letter-spacing:1px}
 </style>
 </head>
 <body>
@@ -1296,7 +1301,7 @@ function mobileSearch(query){
 
     function renderProducts(list, gridId) {
   const grid=document.getElementById(gridId);if(!grid)return;
-  grid.innerHTML=list.map(p=>{const r=isRes(p.id);return`<div class="product-card ${r?'reserved':''}" onclick="${r?'':'showProductDetail(\''+p.id+'\')'}"><div class="product-image"><img src="${p.img}" alt="${p.name}"></div><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><h3 style="font-size:.85rem;font-weight:900;text-transform:uppercase">${p.name}</h3><p style="font-size:.75rem;color:var(--text-muted);text-transform:uppercase">${p.category}</p></div><p style="font-size:.85rem;font-weight:700">$${p.price.toLocaleString('es-AR')}</p></div></div>`}).join('');
+  grid.innerHTML=list.map(p=>{const r=isRes(p.id);return`<div class="product-card ${r?'reserved':''}" onclick="showProductDetail('${p.id}')"><div class="product-image"><img src="${p.img}" alt="${p.name}"></div><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><h3 style="font-size:.85rem;font-weight:900;text-transform:uppercase">${p.name}</h3><p style="font-size:.75rem;color:var(--text-muted);text-transform:uppercase">${p.category}</p></div><p style="font-size:.85rem;font-weight:700">$${p.price.toLocaleString('es-AR')}</p></div></div>`}).join('');
 }
 
     function showMainCategory(s, e) { 
