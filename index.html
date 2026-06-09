@@ -1213,17 +1213,10 @@ const ADMIN_PASS = "100599ru"; // <-- CAMBIA ESTO AHORA
 function checkAdmin() {
   if (sessionStorage.getItem('zysk_admin') === '1') return true;
   const params = new URLSearchParams(location.search);
-  if (params.has('admin')) {
-    const pass = prompt('🔒 ZYSKN ADMIN\nContraseña:');
-    if (pass === ADMIN_PASS) {
-      sessionStorage.setItem('zysk_admin', '1');
-      history.replaceState({}, '', location.pathname);
-      return true;
-    } else {
-      alert('Contraseña incorrecta');
-      history.replaceState({}, '', location.pathname);
-      return false;
-    }
+  if (params.get('admin') === ADMIN_PASS) {
+    sessionStorage.setItem('zysk_admin', '1');
+    history.replaceState({}, '', location.pathname);
+    return true;
   }
   return false;
 }
