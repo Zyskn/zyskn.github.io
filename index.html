@@ -1162,48 +1162,48 @@ body.scrolled-down header#header {
     }
 
     function handleAuth(type) {
-      if(type === 'login') {
-        const email = document.getElementById('loginEmail').value;
-        if(!email) { alert('Ingresa tu email'); return; }
-        document.getElementById('userAuth').textContent = 'MI PERFIL';
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('profileView').style.display = 'block';
-        document.getElementById('userDisplay').textContent = `SESIÓN INICIADA COMO: ${email.toUpperCase()}`;
-        showNotification('Sesión iniciada correctamente');
-      } else if(type === 'register') {
-        const name = document.getElementById('regName').value;
-        if(!name) { alert('Ingresa tu nombre'); return; }
-        document.getElementById('userAuth').textContent = 'MI PERFIL';
-        document.getElementById('registerForm').style.display = 'none';
-        document.getElementById('profileView').style.display = 'block';
-        document.getElementById('userDisplay').textContent = `CUENTA CREADA: ${name.toUpperCase()}`;
-        showNotification('Cuenta creada con éxito');
-      } else if(type === 'logout') {
-        document.getElementById('userAuth').textContent = 'LOGIN';
-        document.getElementById('profileView').style.display = 'none';
-        document.getElementById('loginForm').style.display = 'block';
-        showNotification('Sesión cerrada');
-      }
-    }
+  if(type === 'login') {
+    const email = document.getElementById('loginEmail').value;
+    if(!email) { alert('Ingresa tu email'); return; }
+    document.getElementById('userAuth').textContent = 'MI PERFIL';
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('profileView').style.display = 'block';
+    document.getElementById('userDisplay').textContent = `SESIÓN INICIADA COMO: ${email.toUpperCase()}`;
+    showNotification('Sesión iniciada correctamente');
+  } else if(type === 'register') {
+    const name = document.getElementById('regName').value;
+    if(!name) { alert('Ingresa tu nombre'); return; }
+    document.getElementById('userAuth').textContent = 'MI PERFIL';
+    document.getElementById('registerForm').style.display = 'none';
+    document.getElementById('profileView').style.display = 'block';
+    document.getElementById('userDisplay').textContent = `CUENTA CREADA: ${name.toUpperCase()}`;
+    showNotification('Cuenta creada con éxito');
+  } else if(type === 'logout') {
+    document.getElementById('userAuth').textContent = 'LOGIN';
+    document.getElementById('profileView').style.display = 'none';
+    document.getElementById('loginForm').style.display = 'block';
+    showNotification('Sesión cerrada');
+  }
+}
 
-    function renderProducts(list, gridId) {
-      const grid = document.getElementById(gridId);
-      if(!grid) return;
-      grid.innerHTML = list.map(p => `
-        <div class="product-card" onclick="showProductDetail('${p.id}')">
-          <div class="product-image"><img src="${p.img}" alt="${p.name}"></div>
-          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-            <div>
-              <h3 style="font-size:0.85rem; font-weight:900; text-transform:uppercase;">${p.name}</h3>
-              <p style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">${p.category}</p>
-            </div>
-            <p style="font-size:0.85rem; font-weight:700;">$${p.price.toLocaleString('es-AR')}</p>
-          </div>
+function renderProducts(list, gridId) {
+  const grid = document.getElementById(gridId);
+  if(!grid) return;
+  grid.innerHTML = list.map(p => `
+    <div class="product-card" onclick="showProductDetail('${p.id}')">
+      <div class="product-image"><img src="${p.img}" alt="${p.name}"></div>
+      <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+        <div>
+          <h3 style="font-size:0.85rem; font-weight:900; text-transform:uppercase;">${p.name}</h3>
+          <p style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">${p.category}</p>
         </div>
-      `).join('');
-    }
+        <p style="font-size:0.85rem; font-weight:700;">$${p.price.toLocaleString('es-AR')}</p>
+      </div>
+    </div>
+  `).join('');
+}
 
-    function showMainCategory(s, e) { 
+function showMainCategory(s, e) { 
   if(e) e.preventDefault(); 
   if (window.innerWidth <= 1024 && (s === 'arriba' || s === 'abajo')) return;
   renderProducts(s==='todo'?products:products.filter(p=>p.section===s), 'productsGrid'); 
@@ -1215,15 +1215,13 @@ function filterProducts(c) {
   scrollToSection('shop');
 }
 
-    function showProductDetail(id) {
+function showProductDetail(id) {
   currentProduct = products.find(p=>p.id===id);
   selectedSize = null;
   document.getElementById('detailName').textContent = currentProduct.name;
   document.getElementById('detailPrice').textContent = `$${currentProduct.price.toLocaleString('es-AR')}`;
   document.getElementById('detailDesc').innerHTML = currentProduct.desc;
   document.getElementById('detailImage').src = currentProduct.img;
-  
-  // AGREGÁ ESTAS 3 LÍNEAS:
   document.getElementById('detailTalle').textContent = currentProduct.talle || 'Consultar';
   document.getElementById('detailMedidas').textContent = currentProduct.medidas || 'Consultar';
   document.getElementById('detailEstado').textContent = currentProduct.estado || '10/10';
@@ -1235,57 +1233,54 @@ function filterProducts(c) {
   scrollToSection('product-detail');
 }
 
-    function setS(s, btn) {
-      selectedSize = s;
-      document.querySelectorAll('#detailSizes button').forEach(b=>b.style.background='#fff');
-      btn.style.background = '#eee';
-    }
+function setS(s, btn) {
+  selectedSize = s;
+  document.querySelectorAll('#detailSizes button').forEach(b=>b.style.background='#fff');
+  btn.style.background = '#eee';
+}
 
-    function addToCartFromDetail(event) {
-      if(!selectedSize){alert('Selecciona talle'); return;}
-      cart.push({...currentProduct, size:selectedSize}); 
-      updateCartUI(); 
+function addToCartFromDetail(event) {
+  if(!selectedSize){alert('Selecciona talle'); return;}
+  cart.push({...currentProduct, size:selectedSize}); 
+  updateCartUI(); 
+  animateToCart(event, '#cart-icon');
+  showNotification('Producto añadido al carrito');
+  setTimeout(() => scrollToSection('cart-section'), 800);
+}
 
-      // DISPARAR ANIMACIÓN
-      animateToCart(event, '#cart-icon');
+function updateCartUI() {
+  const badge = document.getElementById('cartBadge');
+  badge.textContent = cart.length; 
+  badge.style.display = cart.length ? 'flex' : 'none';
+  const checkoutArea = document.getElementById('cartCheckoutArea');
+  const emptyMsg = document.getElementById('cartEmptyMsg');
+  if(cart.length === 0) {
+    checkoutArea.style.display = 'none';
+    emptyMsg.style.display = 'block';
+    document.getElementById('cartItems').innerHTML = '';
+  } else {
+    checkoutArea.style.display = 'block';
+    emptyMsg.style.display = 'none';
+    document.getElementById('cartItems').innerHTML = cart.map((i, index)=>`
+      <div style="margin-bottom:1rem; font-size:0.9rem; border-bottom:1px solid #eee; padding-bottom:1rem; display:flex; justify-content:space-between; align-items:center">
+        <span style="font-weight:600;">${i.name} (${i.size}) - $${i.price.toLocaleString('es-AR')}</span>
+        <button onclick="removeFromCart(${index})" style="background:none; border:none; color:var(--red); cursor:pointer; font-weight:900; font-size:1.2rem; padding:0 10px">✕</button>
+      </div>
+    `).join('');
+  }
+  document.getElementById('cartTotal').textContent = `$${cart.reduce((s,i)=>s+i.price,0).toLocaleString('es-AR')}`;
+}
 
-      showNotification('Producto añadido al carrito');
-      setTimeout(() => scrollToSection('cart-section'), 800);
-    }
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  updateCartUI();
+  showNotification('Producto eliminado');
+}
 
-    function updateCartUI() {
-      const badge = document.getElementById('cartBadge');
-      badge.textContent = cart.length; 
-      badge.style.display = cart.length ? 'flex' : 'none';
-      const checkoutArea = document.getElementById('cartCheckoutArea');
-      const emptyMsg = document.getElementById('cartEmptyMsg');
-      if(cart.length === 0) {
-        checkoutArea.style.display = 'none';
-        emptyMsg.style.display = 'block';
-        document.getElementById('cartItems').innerHTML = '';
-      } else {
-        checkoutArea.style.display = 'block';
-        emptyMsg.style.display = 'none';
-        document.getElementById('cartItems').innerHTML = cart.map((i, index)=>`
-          <div style="margin-bottom:1rem; font-size:0.9rem; border-bottom:1px solid #eee; padding-bottom:1rem; display:flex; justify-content:space-between; align-items:center">
-            <span style="font-weight:600;">${i.name} (${i.size}) - $${i.price.toLocaleString('es-AR')}</span>
-            <button onclick="removeFromCart(${index})" style="background:none; border:none; color:var(--red); cursor:pointer; font-weight:900; font-size:1.2rem; padding:0 10px">✕</button>
-          </div>
-        `).join('');
-      }
-      document.getElementById('cartTotal').textContent = `$${cart.reduce((s,i)=>s+i.price,0).toLocaleString('es-AR')}`;
-    }
-
-    function removeFromCart(index) {
-      cart.splice(index, 1);
-      updateCartUI();
-      showNotification('Producto eliminado');
-    }
-
-    function toggleAuthView(type) {
-      document.getElementById('loginForm').style.display = type === 'login' ? 'block' : 'none';
-      document.getElementById('registerForm').style.display = type === 'register' ? 'block' : 'none';
-    }
+function toggleAuthView(type) {
+  document.getElementById('loginForm').style.display = type === 'login' ? 'block' : 'none';
+  document.getElementById('registerForm').style.display = type === 'register' ? 'block' : 'none';
+}
 
 function shareOnWhatsApp() {
   if (cart.length === 0) { 
@@ -1337,130 +1332,146 @@ function shareOnWhatsApp() {
   window.open(`https://wa.me/5493544631553?text=${t}`, '_blank');
 }
 
-    function setupScrollListener() { 
-  const h = document.getElementById('header');
-  const topBar = document.querySelector('.top-bar');
-  const isMobile = () => window.innerWidth <= 1024;
-
-  if (isMobile) {
-      // MÓVIL: smooth nativo (ya anda bien)
-      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-    } else {
-      // PC: scroll personalizado más suave
-      const start = window.pageYOffset;
-      const distance = offsetPosition - start;
-      const duration = 1000; // 1 segundo, súper suave
-      let startTime = null;
-
-      function easeInOutCubic(t) {
-        return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
-      }
-
-      function animation(currentTime) {
-        if (startTime === null) startTime = currentTime;
-        const timeElapsed = currentTime - startTime;
-        const progress = Math.min(timeElapsed / duration, 1);
-        const ease = easeInOutCubic(progress);
-
-        window.scrollTo(0, start + distance * ease);
-
-        if (timeElapsed < duration) requestAnimationFrame(animation);
-      }
-      
-      requestAnimationFrame(animation);
-    }
-  }
-
-  function scrollToTop() { window.scrollTo({top:0, behavior:'smooth'}); }
+// === SCROLL TO SECTION CON OFFSET ===
+function scrollToSection(id) { 
+  const el = document.getElementById(id);
+  if(!el) return;
 
   const hamburger = document.getElementById('hamburger');
   const navMain = document.getElementById('navMain');
   const navOverlay = document.getElementById('nav-overlay');
-  const navLinks = document.querySelectorAll('.nav-item > a, .sub-nav-item');
-  let scrollY = 0; // agregá esta línea arriba para guardar la posición
+  const isMenuOpen = navMain && navMain.classList.contains('active');
+  const isMobile = window.innerWidth <= 1024;
+  
+  const headerHeight = document.getElementById('header').offsetHeight + 32;
+  const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
+  const offsetPosition = elementPosition - headerHeight;
 
-  // Manejo de menús desplegables en móviles
-  const navItems = document.querySelectorAll('.nav-item');
-  navItems.forEach(item => {
-    const link = item.querySelector('a');
-    if (item.querySelector('.sub-nav-wrapper')) {
-      link.addEventListener('click', (e) => {
-        if (window.innerWidth <= 1024) {
-          e.preventDefault();
-          e.stopPropagation();
+  if (isMenuOpen) {
+    const y = window.scrollY;
+    hamburger?.classList.remove('active');
+    navMain.classList.remove('active');
+    navOverlay?.classList.remove('active');
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, y);
+  }
 
-          // Cerrar otros menús abiertos
-          navItems.forEach(otherItem => {
-            if (otherItem !== item) otherItem.classList.remove('active-mobile');
-          });
+  if (isMobile) {
+    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+  } else {
+    const start = window.pageYOffset;
+    const distance = offsetPosition - start;
+    const duration = 1000;
+    let startTime = null;
 
-          item.classList.toggle('active-mobile');
-        }
-      });
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
     }
-  });
 
-  if(hamburger && navMain) {
-    hamburger.addEventListener('click', () => {
-      const isOpening = !navMain.classList.contains('active');
+    function animation(currentTime) {
+      if (startTime === null) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const progress = Math.min(timeElapsed / duration, 1);
+      const ease = easeInOutCubic(progress);
 
-      hamburger.classList.toggle('active');
-      navMain.classList.toggle('active');
-      if(navOverlay) navOverlay.classList.toggle('active');
+      window.scrollTo(0, start + distance * ease);
 
-      if(isOpening) {
-        scrollY = window.scrollY;
-        document.body.style.position = 'fixed';
-        document.body.style.top = `-${scrollY}px`;
-        document.body.style.width = '100%';
-      } else {
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.width = '';
-        window.scrollTo(0, scrollY);
-      }
-    });
+      if (timeElapsed < duration) requestAnimationFrame(animation);
+    }
+    
+    requestAnimationFrame(animation);
   }
+}
 
-  if(navOverlay) {
-    navOverlay.addEventListener('click', () => {
-      hamburger.classList.remove('active');
-      navMain.classList.remove('active');
-      navOverlay.classList.remove('active');
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      window.scrollTo(0, scrollY);
-    });
-  }
+function scrollToTop() { 
+  window.scrollTo({top:0, behavior:'smooth'}); 
+}
 
-  navLinks.forEach(link => {
+const hamburger = document.getElementById('hamburger');
+const navMain = document.getElementById('navMain');
+const navOverlay = document.getElementById('nav-overlay');
+const navLinks = document.querySelectorAll('.nav-item > a, .sub-nav-item');
+let scrollY = 0;
+
+const navItems = document.querySelectorAll('.nav-item');
+navItems.forEach(item => {
+  const link = item.querySelector('a');
+  if (item.querySelector('.sub-nav-wrapper')) {
     link.addEventListener('click', (e) => {
-      // En móviles, si el link es ARRIBA o ABAJO (tienen submenú), NO cerramos el menú lateral
-      if (window.innerWidth <= 1024 && link.parentElement.querySelector('.sub-nav-wrapper')) {
-        return;
+      if (window.innerWidth <= 1024) {
+        e.preventDefault();
+        e.stopPropagation();
+        navItems.forEach(otherItem => {
+          if (otherItem !== item) otherItem.classList.remove('active-mobile');
+        });
+        item.classList.toggle('active-mobile');
       }
+    });
+  }
+});
 
-      hamburger.classList.remove('active');
-      navMain.classList.remove('active');
-      if(navOverlay) navOverlay.classList.remove('active');
+if(hamburger && navMain) {
+  hamburger.addEventListener('click', () => {
+    const isOpening = !navMain.classList.contains('active');
+
+    hamburger.classList.toggle('active');
+    navMain.classList.toggle('active');
+    if(navOverlay) navOverlay.classList.toggle('active');
+
+    if(isOpening) {
+      scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+    } else {
       document.body.style.position = '';
       document.body.style.top = '';
       document.body.style.width = '';
       window.scrollTo(0, scrollY);
-    });
-  });
-
-  // === OCULTAR BARRA ROJA AL HACER SCROLL ===
-  window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 50) {
-      document.body.classList.add('scrolled-down');
-    } else {
-      document.body.classList.remove('scrolled-down');
     }
   });
+}
 
-  init();
+if(navOverlay) {
+  navOverlay.addEventListener('click', () => {
+    hamburger.classList.remove('active');
+    navMain.classList.remove('active');
+    navOverlay.classList.remove('active');
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, scrollY);
+  });
+}
+
+navLinks.forEach(link => {
+  link.addEventListener('click', (e) => {
+    if (window.innerWidth <= 1024 && link.parentElement.querySelector('.sub-nav-wrapper')) {
+      return;
+    }
+
+    hamburger.classList.remove('active');
+    navMain.classList.remove('active');
+    if(navOverlay) navOverlay.classList.remove('active');
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, scrollY);
+  });
+});
+
+// === OCULTAR BARRA ROJA AL HACER SCROLL ===
+window.addEventListener('scroll', () => {
+  if (window.pageYOffset > 50) {
+    document.body.classList.add('scrolled-down');
+  } else {
+    document.body.classList.remove('scrolled-down');
+  }
+});
+
+init();
 </script>
 </body>
 </html>
