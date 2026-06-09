@@ -1302,7 +1302,7 @@ function mobileSearch(query){
 
     function renderProducts(list, gridId) {
   const grid=document.getElementById(gridId);if(!grid)return;
-  grid.innerHTML=list.map(p=>{const r=isRes(p.id);return`<div class="product-card ${r?'reserved':''}" onclick="showProductDetail('${p.id}')"><div class="product-image"><img src="${p.img}" alt="${p.name}"></div><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><h3 style="font-size:.85rem;font-weight:900;text-transform:uppercase">${p.name}</h3><p style="font-size:.75rem;color:var(--text-muted);text-transform:uppercase">${p.category}</p></div><p style="font-size:.85rem;font-weight:700">$${p.price.toLocaleString('es-AR')}</p></div></div>`}).join('');
+  grid.innerHTML=list.map(p=>{const r=isRes(p.id);return`<div class="product-card ${r?'reserved':''}" onclick="showProductDetail('${p.id}')"><div class="product-image"><img src="${p.img}" alt="${p.name}" onmouseenter="this.src='${p.img2||p.img}'" onmouseleave="this.src='${p.img}'" style="transition:.3s"></div><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><h3 style="font-size:.85rem;font-weight:900;text-transform:uppercase">${p.name}</h3><p style="font-size:.75rem;color:var(--text-muted);text-transform:uppercase">${p.category}</p></div><p style="font-size:.85rem;font-weight:700">$${p.price.toLocaleString('es-AR')}</p></div></div>`}).join('');
 }
 
     function showMainCategory(s, e) { 
