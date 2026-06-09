@@ -424,6 +424,7 @@ header.searching .nav-main {
       display: flex;
       align-items: center;
       justify-content: flex-end;
+      position: relative;
     }
 
     header.searching .search-input-container {
@@ -541,14 +542,14 @@ header.searching .nav-main.active { transform: translate3d(0,0,0); }
       .nav-icons { gap: 0.6rem; display: flex; align-items: center; }
       .search-wrapper { display: flex; align-items: center; }
       header.searching .search-input-container { 
-  width: 150px; 
-  margin-right: 36px;
+  width: 130px; 
+  margin-right: 52px;
   overflow: visible !important;
 }
       .search-input-container input { font-size: 0.67rem; padding: 0.5rem 1rem; }
       .search-close-btn { 
   position: absolute;
-  left: calc(100% + 6px);
+  right: -28px;
   top: 50%;
   transform: translateY(-50%);
   width: 22px;
@@ -560,7 +561,7 @@ header.searching .nav-main.active { transform: translate3d(0,0,0); }
   color: #000;
   font-size: 18px;
   line-height: 1;
-  z-index: 5;
+  z-index: 2;
 }
 
 .search-input-container input {
