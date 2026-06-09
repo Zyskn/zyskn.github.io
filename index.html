@@ -745,15 +745,32 @@ body.scrolled-down header#header {
   }
   
   .nav-icons { 
-    gap: 2px !important; 
-    display: flex !important;
-    align-items: center !important;
-  }
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 152px !important; /* 4 iconos × 34px + espacios */
+  gap: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+.nav-icons .search-wrapper,
+.nav-icons #userAuth,
+.nav-icons #cart-icon,
+.nav-icons .hamburger {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
 
   .icon-btn, #userAuth {
-    width: 38px !important;
-    height: 38px !important;
-    min-width: 38px !important;
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
     padding: 0 !important;
     margin: 0 !important;
     display: flex !important;
@@ -762,8 +779,8 @@ body.scrolled-down header#header {
   }
 
   .icon-btn svg, #userAuth svg {
-    width: 21px !important;
-    height: 21px !important;
+    width: 20px !important;
+    height: 20px !important;
   }
 
   #userAuth { font-size: 0 !important; }
