@@ -662,10 +662,10 @@ header#header {
 }
 
 body {
-  padding-top: 90px !important; /* 32px + 58px aprox */
+  padding-top: 90px !important;
 }
 
-/* === ESCONDER BARRA ROJA AL SCROLL EN TODAS LAS PANTALLAS === */
+/* === ESCONDER BARRA ROJA AL SCROLL EN PC === */
 body.scrolled-down .top-bar {
   transform: translateY(-100%) !important;
 }
@@ -673,6 +673,8 @@ body.scrolled-down .top-bar {
 body.scrolled-down header#header {
   top: 0 !important;
 }
+
+/* === FIX MÓVIL === */
 @media (max-width: 1024px) {
   .top-bar { 
     position: fixed !important; 
@@ -681,7 +683,7 @@ body.scrolled-down header#header {
     right: 0;
     height: 28px !important; 
     z-index: 3000 !important;
-    transition: transform 0.3s ease !important;
+    transition: transform 0.15s ease !important;
   }
 
   header#header { 
@@ -693,19 +695,41 @@ body.scrolled-down header#header {
     padding: 8px 10px !important; 
     min-height: 56px !important;
     background: #fff !important;
-    transition: top 0.3s ease !important;
+    transition: top 0.15s ease !important;
   }
   
-  .header-content { padding: 0 !important; gap: 6px !important; }
+  .header-content { 
+    padding: 0 !important; 
+    gap: 6px !important; 
+  }
   
-  body { padding-top: 84px !important; }
+  body { 
+    padding-top: 84px !important;
+    background: #fff;
+  }
 
   /* Al hacer scroll */
   body.scrolled-down .top-bar {
     transform: translateY(-100%) !important;
   }
-
+  
   body.scrolled-down header#header {
+    top: 0 !important;
+  }
+  
+  /* FIX: barra roja fija atrás para tapar el gap blanco */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 28px;
+    background: #9b0000;
+    z-index: 2997;
+    pointer-events: none;
+  }
+}
     top: 0 !important;
   }
   
