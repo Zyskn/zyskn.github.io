@@ -900,9 +900,12 @@ body.scrolled-down header#header {
       <div id="navContainer" class="nav-container">
         <nav class="nav-main" id="navMain">
   <!-- BUSCADOR MÓVIL -->
-  <div class="mobile-search" style="display:none; width:100%; padding:0 1.5rem 0; border-bottom:1px solid #eee; margin-bottom:1rem;">
-    <input type="text" placeholder="BUSCAR PRENDA..." onkeyup="if(event.key==='Enter'){mobileSearch(this.value); this.value=''}" style="width:100%; padding:0.85rem 1.2rem; border:2px solid #87CEEB; border-radius:50px; background:#F0F9FF; font-size:0.8rem; text-transform:uppercase; font-weight:700; outline:none; color:#000;"
+  <div class="mobile-search" style="display:none; width:100%; padding:0; margin-bottom:1.8rem;">
+  <div style="position:relative; border-bottom:1px solid #000;">
+    <svg style="position:absolute; left:0; top:50%; transform:translateY(-50%); width:14px; height:14px; stroke:#000; opacity:0.6;" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" placeholder="Buscar" onkeyup="if(event.key==='Enter'){mobileSearch(this.value); this.value=''}" style="width:100%; padding:1.1rem 0 1.1rem 22px; border:none; background:transparent; font-size:0.72rem; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; outline:none; color:#000;">
   </div>
+</div>
   <div class="nav-item"><a href="javascript:void(0)" onclick="showMainCategory('todo')">TODO</a></div>
   <div class="nav-item nav-item-new"><a href="javascript:void(0)" onclick="scrollToSection('nuevo-section')">NEW</a></div>
   <div class="nav-item">
