@@ -1177,7 +1177,19 @@ body.scrolled-down header#header {
  {id:'t1',section:'arriba',category:'polares',name:'POLAR COLUMBIA 90s',price:90000,desc:'<strong>Columbia Sportswear</strong> Snap-T Fleece <strong>90s</strong>. Pullover <strong>half-snap</strong> con <strong>4 botones a presión</strong>. Cuello alto reforzado en <strong>nylon azul rey</strong>. Bolsillo canguro frontal con <strong>cierre YKK</strong>. <strong>Patch Columbia bordado</strong> original. <strong>Jaretas ajustables</strong> en cintura. <strong>Fleece 300g</strong> sin pilling ni desgaste. Colorway <strong>petróleo/azul rey</strong>. Fit <strong>boxy oversize</strong> ideal para layering.',talle:'XL',medidas:'Ancho 70cm | Largo 74cm',estado:'10/10 - Impecable',img:'polar-columbia-90s.jpeg',sizes:['L'],isNew:true}
 ];
 
-    let cart = [];
+// SISTEMA VENDER 1-CLICK
+const vendidos = JSON.parse(localStorage.getItem('zysk_vendidos')||'{}');
+products.forEach(p => { if(vendidos[p.id]) p.sold = true });
+const url = new URLSearchParams(window.location.search);
+if(url.has('vender')){
+  const id = url.get('vender');
+  vendidos[id] = true;
+  localStorage.setItem('zysk_vendidos', JSON.stringify(vendidos));
+  alert('✅ MARCADO COMO VENDIDO');
+  window.history.replaceState({}, '', '/');
+}
+
+let cart = [];
     let currentProduct = null;
     let selectedSize = null;
     let scrollY = 0;
@@ -1328,8 +1340,6 @@ function filterProducts(c) {
   document.getElementById('detailPrice').textContent = `$${currentProduct.price.toLocaleString('es-AR')}`;
   document.getElementById('detailDesc').innerHTML = currentProduct.desc;
   document.getElementById('detailImage').src = currentProduct.img;
-  
-  // AGREGÁ ESTAS 3 LÍNEAS:
   document.getElementById('detailTalle').textContent = currentProduct.talle || 'Consultar';
   document.getElementById('detailMedidas').textContent = currentProduct.medidas || 'Consultar';
   document.getElementById('detailEstado').textContent = currentProduct.estado || '10/10';
@@ -1337,6 +1347,30 @@ function filterProducts(c) {
   document.getElementById('detailSizes').innerHTML = currentProduct.sizes.map(s=>`
     <button onclick="setS('${s}', this)" style="padding:0.8rem 1.5rem; border:1px solid #000; background:#fff; cursor:pointer; font-size:0.8rem; font-weight:700;">${s}</button>
   `).join('');
+  
+  const infoDiv = document.querySelector('#product-detail .product-info');
+  const oldBanner = infoDiv.querySelector('.status-banner');
+  if(oldBanner) oldBanner.remove();
+  
+  const btn = infoDiv.querySelector('.btn');
+  const isSold = currentProduct.sold;
+  const isReserved = isRes(currentProduct.id);
+  
+  if(isSold || isReserved){
+    const text = isSold ? 'SIN STOCK' : 'RESERVADO';
+    const color = isSold ? '#000' : '#D00000';
+    infoDiv.insertAdjacentHTML('afterbegin', `<div class="status-banner" style="background:${color};color:#fff;padding:12px;text-align:center;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:1.5rem;">${text}</div>`);
+    btn.disabled = true;
+    btn.style.opacity = '0.4';
+    btn.style.cursor = 'not-allowed';
+    btn.textContent = text;
+  } else {
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+    btn.textContent = 'AGREGAR AL CARRITO';
+  }
+  
   document.getElementById('product-detail').classList.add('active');
   scrollToSection('product-detail');
 }
@@ -1421,6 +1455,12 @@ function shareOnWhatsApp() {
   });
 
   t += `%0A*TOTAL: $${total.toLocaleString('es-AR')}*%0A`;
+
+  // --- ESTAS 4 LÍNEAS SON LAS NUEVAS ---
+  t += `%0A%0A_VENDER:_%0A`;
+  cart.forEach(i => {
+    t += `${i.name}: https://zyskn.github.io/?vender=${i.id}%0A`;
+  });
 
   cart.forEach(i=> reservations[i.id] = Date.now() + 600000);saveRes();
   renderProducts(products,'productsGrid');renderProducts(products.filter(p=>p.isNew),'newProductsGrid');
