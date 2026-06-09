@@ -272,11 +272,20 @@ header.scrolled { padding: 1.2rem 3rem; }
       transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       flex-shrink: 0;
     }
-header.searching .nav-main {
-  transform: translateX(-40px);
-  pointer-events: none;
+@media (min-width: 1025px) {
+  header.searching .nav-main {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0.92;
+    gap: 2.2rem;
+  }
+  header.searching .nav-container {
+    justify-content: flex-end;
+  }
 }
-    .nav-item { position: relative; padding: 1.5rem 0; }
    .nav-main a {
   font-size: 0.95rem;
   font-weight: 600;
