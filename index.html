@@ -434,15 +434,18 @@ header.searching .nav-main {
 
     .search-input-container input {
       width: 100%;
-      padding: 0.7rem 1.2rem;
-      border: 2px solid var(--celeste);
-      border-radius: 50px;
+      padding: 0.7rem 0;
+      border: none;
+      border-bottom: 1px solid #000;
+      border-radius: 0;
       outline: none;
       font-family: inherit;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       text-transform: uppercase;
-      font-weight: 700;
-      background: #fff;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      background: transparent;
+      color: #000;
     }
 
     .nav-icons { display: flex; gap: 1.5rem; align-items: center; flex-shrink: 0; }
@@ -578,8 +581,8 @@ header.searching .search-input-container {
 }
 
 header.searching .search-input-container input {
-  border: 2px solid #87CEEB !important;
-  background: #fff !important;
+  border-bottom: 1px solid #000 !important;
+  background: transparent !important;
 }
       .search-input-container input { font-size: 0.67rem; padding: 0.5rem 1rem; }
       .search-close-btn { 
@@ -903,7 +906,7 @@ body.scrolled-down header#header {
   <div class="mobile-search" style="display:none; width:100%; padding:0; margin-bottom:1.8rem;">
   <div style="position:relative; border-bottom:1px solid #000;">
     <svg style="position:absolute; left:0; top:50%; transform:translateY(-50%); width:14px; height:14px; stroke:#000; opacity:0.6;" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-    <input type="text" placeholder="Buscar" onkeyup="if(event.key==='Enter'){mobileSearch(this.value); this.value=''}" style="width:100%; padding:1.1rem 0 1.1rem 22px; border:none; background:transparent; font-size:0.72rem; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; outline:none; color:#000;">
+   <input type="text" placeholder="Buscar" onkeyup="if(event.key==='Enter'){this.blur(); mobileSearch(this.value); this.value=''}" style="width:100%; padding:1.1rem 0 1.1rem 22px; border:none; background:transparent; font-size:0.72rem; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; outline:none; color:#000;">
   </div>
 </div>
   <div class="nav-item"><a href="javascript:void(0)" onclick="showMainCategory('todo')">TODO</a></div>
@@ -939,7 +942,7 @@ body.scrolled-down header#header {
         <div class="nav-icons">
           <div class="search-wrapper">
             <div class="search-input-container">
-              <input type="text" id="searchInput" placeholder="BUSCAR PRENDA..." onkeyup="handleSearch(event)">
+              <input type="text" id="searchInput" placeholder="Buscar" onkeyup="handleSearch(event)">
               <div class="search-close-btn" onclick="toggleSearch()">✕</div>
             </div>
             <button class="icon-btn search-icon" onclick="toggleSearch()">
@@ -1229,6 +1232,7 @@ body.scrolled-down header#header {
 
     function handleSearch(e) {
       if(e.key === 'Enter') {
+        e.target.blur();
         const query = e.target.value.toLowerCase();
         const filtered = products.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
         renderProducts(filtered, 'productsGrid');
