@@ -1202,17 +1202,39 @@ function isRes(id){if(!reservations[id])return false;if(Date.now()>reservations[
 function timeLeft(id){return Math.max(0,Math.floor((reservations[id]-Date.now())/1000))}
 function startReserveTimer(){setInterval(()=>{let c=!1;Object.keys(reservations).forEach(i=>{if(Date.now()>reservations[i]){delete reservations[i];cart=cart.filter(p=>p.id!==i);c=!0;showNotification('RESERVA FINALIZADA')}});if(c){saveRes();renderProducts(products,'productsGrid');renderProducts(products.filter(p=>p.isNew),'newProductsGrid')}updateCartUI()},1000)}
 
-// MODO ADMIN
-const isAdmin = new URLSearchParams(location.search).has('admin');
-if(isAdmin) localStorage.setItem('zysk_admin','1');
-const adminMode = isAdmin || localStorage.getItem('zysk_admin')==='1';
+// LIMPIAR ADMIN VIEJO
+localStorage.removeItem('zysk_admin');
+localStorage.removeItem('zysk_admin_time');
 
-function adminVender(id){ vendidos[id]=true; localStorage.setItem('zysk_vendidos', JSON.stringify(vendidos)); alert('✅ VENDIDO'); location.reload(); }
-function adminReservar(id){ reservations[id]=Date.now()+86400000; saveRes(); alert('🔒 RESERVADO 24hs'); location.reload(); }
-function adminLiberar(id){ delete vendidos[id]; delete reservations[id]; localStorage.setItem('zysk_vendidos', JSON.stringify(vendidos)); saveRes(); alert('✓ DISPONIBLE'); location.reload(); }
+// --- PANEL ADMIN SEGURO ---
+let adminMode = false;
+const ADMIN_PASS = "100599Ru!"; // <-- CAMBIA ESTO AHORA
+
+function checkAdmin() {
+  if (sessionStorage.getItem('zysk_admin') === '1') return true;
+  const params = new URLSearchParams(location.search);
+  if (params.has('admin')) {
+    const pass = prompt('🔒 ZYSKN ADMIN\nContraseña:');
+    if (pass === ADMIN_PASS) {
+      sessionStorage.setItem('zysk_admin', '1');
+      history.replaceState({}, '', location.pathname);
+      return true;
+    } else {
+      alert('Contraseña incorrecta');
+      history.replaceState({}, '', location.pathname);
+      return false;
+    }
+  }
+  return false;
+}
+adminMode = checkAdmin();
+
+function adminVender(id){ if(!adminMode) return; vendidos[id]=true; localStorage.setItem('zysk_vendidos', JSON.stringify(vendidos)); alert('✅ VENDIDO'); location.reload(); }
+function adminReservar(id){ if(!adminMode) return; reservations[id]=Date.now()+86400000; saveRes(); alert('🔒 RESERVADO 24hs'); location.reload(); }
+function adminLiberar(id){ if(!adminMode) return; delete vendidos[id]; delete reservations[id]; localStorage.setItem('zysk_vendidos', JSON.stringify(vendidos)); saveRes(); alert('✓ DISPONIBLE'); location.reload(); }
     // GESTOR PRODUCTOS
 function saveProducts(){ localStorage.setItem('zysk_products', JSON.stringify(products)); location.reload(); }
-function openManager(){
+function openManager(){ if(!adminMode) return alert('No autorizado');
   document.body.insertAdjacentHTML('beforeend', `<div id="mgr" style="position:fixed;inset:0;background:#000;z-index:99999;overflow:auto;padding:20px;color:#fff;font-family:Inter;"><div style="max-width:1000px;margin:0 auto;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h2 style="font-size:24px;font-weight:900;">GESTOR PRODUCTOS</h2><span onclick="document.getElementById('mgr').remove()" style="font-size:32px;cursor:pointer;">×</span></div><button onclick="addProd()" style="background:#25D366;color:#fff;border:none;padding:12px 20px;font-weight:700;margin-right:10px;cursor:pointer;">+ NUEVO</button><button onclick="exportProds()" style="background:#fff;color:#000;border:none;padding:12px 20px;font-weight:700;cursor:pointer;">EXPORTAR JSON</button><div id="plist" style="margin-top:20px;"></div></div>`);
   renderList();
 }
@@ -1221,14 +1243,15 @@ function renderList(){
 }
 function addProd(){ editProd(-1); }
 function editProd(i){
-  const p = i===-1? {id:'p'+Date.now(),section:'arriba',category:'polares',name:'',price:0,desc:'',talle:'',medidas:'',estado:'10/10',img:'',sizes:['M'],isNew:true} : products[i];
-  document.body.insertAdjacentHTML('beforeend', `<div id="form" style="position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:100000;display:flex;align-items:center;justify-content:center;padding:20px;"><div style="background:#fff;color:#000;padding:30px;max-width:600px;width:100%;max-height:90vh;overflow:auto;"><h3 style="margin-bottom:20px;font-weight:900;">${i===-1?'NUEVO':'EDITAR'} PRODUCTO</h3><input id="f_name" placeholder="Nombre" value="${p.name}" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #000;"><input id="f_price" type="number" placeholder="Precio" value="${p.price}" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #000;"><input id="f_img" placeholder="foto.jpg" value="${p.img}" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #000;"><select id="f_cat" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #000;"><option ${p.category==='polares'?'selected':''}>polares</option><option ${p.category==='remeras'?'selected':''}>remeras</option><option ${p.category==='hoodies'?'selected':''}>hoodies</option><option ${p.category==='camperas'?'selected':''}>camperas</option><option ${p.category==='pantalones'?'selected':''}>pantalones</option><option ${p.category==='jeans'?'selected':''}>jeans</option></select><input id="f_talle" placeholder="Talle (XL)" value="${p.talle}" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #000;"><input id="f_med" placeholder="Medidas" value="${p.medidas}" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #000;"><textarea id="f_desc" placeholder="Descripción HTML" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #000;height:100px;">${p.desc}</textarea><label style="display:flex;align-items:center;gap:10px;margin-bottom:20px;"><input type="checkbox" id="f_new" ${p.isNew?'checked':''}> ES NUEVO</label><button onclick="saveProd(${i})" style="background:#000;color:#fff;border:none;padding:12px 20px;font-weight:700;margin-right:10px;cursor:pointer;">GUARDAR</button><button onclick="document.getElementById('form').remove()" style="background:#ccc;border:none;padding:12px 20px;cursor:pointer;">CANCELAR</button></div></div>`);
+  const p = i===-1? {id:'p'+Date.now(),section:'arriba',category:'polares',name:'',price:0,desc:'',talle:'',medidas:'',estado:'10/10',img:'',img2:'',sizes:['M'],isNew:true} : products[i];
+  document.body.insertAdjacentHTML('beforeend', `<div id="form" style="position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:100000;display:flex;align-items:center;justify-content:center;padding:20px;"><div style="background:#fff;color:#000;padding:30px;max-width:600px;width:100%;max-height:90vh;overflow:auto;"><h3 style="margin-bottom:20px;font-weight:900;">${i===-1?'NUEVO':'EDITAR'} PRODUCTO</h3><input id="f_name" placeholder="Nombre" value="${p.name}" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #000;"><input id="f_price" type="number" placeholder="Precio" value="${p.price}" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #000;"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;"><div><label style="font-size:10px;font-weight:700;">FOTO PRINCIPAL</label><input id="f_img" placeholder="foto1.jpg" value="${p.img||''}" style="width:100%;padding:10px;border:1px solid #000;"></div><div><label style="font-size:10px;font-weight:700;">FOTO HOVER</label><input id="f_img2" placeholder="foto2.jpg" value="${p.img2||''}" style="width:100%;padding:10px;border:1px solid #000;"></div></div><select id="f_cat" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #000;"><option ${p.category==='polares'?'selected':''}>polares</option><option ${p.category==='remeras'?'selected':''}>remeras</option><option ${p.category==='hoodies'?'selected':''}>hoodies</option><option ${p.category==='camperas'?'selected':''}>camperas</option><option ${p.category==='pantalones'?'selected':''}>pantalones</option><option ${p.category==='jeans'?'selected':''}>jeans</option></select><input id="f_talle" placeholder="Talle (XL)" value="${p.talle}" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #000;"><input id="f_med" placeholder="Medidas" value="${p.medidas}" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #000;"><textarea id="f_desc" placeholder="Descripción HTML" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #000;height:100px;">${p.desc}</textarea><label style="display:flex;align-items:center;gap:10px;margin-bottom:20px;"><input type="checkbox" id="f_new" ${p.isNew?'checked':''}> ES NUEVO</label><button onclick="saveProd(${i})" style="background:#000;color:#fff;border:none;padding:12px 20px;font-weight:700;margin-right:10px;cursor:pointer;">GUARDAR</button><button onclick="document.getElementById('form').remove()" style="background:#ccc;border:none;padding:12px 20px;cursor:pointer;">CANCELAR</button></div></div>`);
 }
 function saveProd(i){
   const p = i===-1? {id:'p'+Date.now()} : products[i];
   p.name = document.getElementById('f_name').value;
   p.price = parseInt(document.getElementById('f_price').value);
   p.img = document.getElementById('f_img').value;
+  p.img2 = document.getElementById('f_img2').value;
   p.category = document.getElementById('f_cat').value;
   p.talle = document.getElementById('f_talle').value;
   p.medidas = document.getElementById('f_med').value;
@@ -1419,6 +1442,7 @@ function filterProducts(c) {
         <button onclick="adminVender('${currentProduct.id}')" style="padding:0.7rem 1rem;background:#000;color:#fff;border:none;margin-right:0.5rem;font-size:0.7rem;font-weight:700;cursor:pointer;">MARCAR VENDIDO</button>
         <button onclick="adminReservar('${currentProduct.id}')" style="padding:0.7rem 1rem;background:#D00000;color:#fff;border:none;margin-right:0.5rem;font-size:0.7rem;font-weight:700;cursor:pointer;">RESERVAR</button>
         <button onclick="adminLiberar('${currentProduct.id}')" style="padding:0.7rem 1rem;background:#fff;color:#000;border:1px solid #000;font-size:0.7rem;font-weight:700;cursor:pointer;">DISPONIBLE</button>
+        <button onclick="sessionStorage.clear();location.reload()" style="padding:0.7rem 1rem;background:#666;color:#fff;border:none;margin-top:0.5rem;width:100%;font-size:0.7rem;font-weight:700;cursor:pointer;">CERRAR SESIÓN ADMIN</button>
       </div>
     `);
   }
