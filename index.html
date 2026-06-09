@@ -867,10 +867,13 @@ body.scrolled-down header#header {
 #detailImage{transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .25s}
 
 #prevBtn:hover, #nextBtn:hover {
-  opacity: 1 !important;
+  opacity: 1!important;
   transform: translateY(-50%) scale(1.15);
   text-shadow: 0 4px 20px rgba(0,0,0,0.7);
 }
+#prevBtn, #nextBtn { opacity: 0; pointer-events: none; transition: opacity.3s; }
+#zoomContainer:hover #prevBtn, #zoomContainer:hover #nextBtn { opacity:.85; pointer-events: auto; }
+@media (max-width: 1024px) { #prevBtn, #nextBtn { opacity:.85!important; pointer-events: auto!important; } }
 </style>
 </head>
 <body>
@@ -1021,7 +1024,7 @@ body.scrolled-down header#header {
     <section id="product-detail">
   <div class="product-detail-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start;">
     <div>
-      <div style="position:relative;background:#f5f5f5;aspect-ratio:4/5;overflow:hidden;cursor:zoom-in;border-radius:2px" onclick="zoomImage()">
+      <div id="zoomContainer" style="position:relative;background:#f5f5f5;aspect-ratio:4/5;overflow:hidden;cursor:zoom-in;border-radius:2px" onclick="zoomImage()">
         <img id="detailImage" src="" style="width:100%;height:100%;object-fit:cover;transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .25s">
         <button id="prevBtn" onclick="event.stopPropagation();changePhoto(-1)" style="position:absolute;left:18px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.9);font-size:42px;font-weight:200;cursor:pointer;display:none;z-index:3;padding:0;line-height:1;text-shadow:0 2px 12px rgba(0,0,0,0.5);transition:all .25s cubic-bezier(.16,1,.3,1);opacity:.85">‹</button>
 <button id="nextBtn" onclick="event.stopPropagation();changePhoto(1)" style="position:absolute;right:18px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.9);font-size:42px;font-weight:200;cursor:pointer;display:none;z-index:3;padding:0;line-height:1;text-shadow:0 2px 12px rgba(0,0,0,0.5);transition:all .25s cubic-bezier(.16,1,.3,1);opacity:.85">›</button>
@@ -1446,7 +1449,6 @@ function filterProducts(c) {
   document.getElementById('detailTalle').textContent = currentProduct.talle || 'Consultar';
   document.getElementById('detailMedidas').textContent = currentProduct.medidas || 'Consultar';
   document.getElementById('detailEstado').textContent = currentProduct.estado || '10/10';
-
   document.getElementById('detailSizes').innerHTML = currentProduct.sizes.map(s=>`<button onclick="setS('${s}',this)" style="padding:.8rem 1.5rem;border:1px solid #000;background:#fff;cursor:pointer;font-size:.8rem;font-weight:700">${s}</button>`).join('');
 
   const hasMultiple = currentPhotos.length > 1;
@@ -1454,21 +1456,28 @@ function filterProducts(c) {
   document.getElementById('nextBtn').style.display = hasMultiple? 'block' : 'none';
   document.getElementById('thumbs').innerHTML = currentPhotos.map((src,i)=>`<img src="${src}" onclick="currentPhotoIndex=${i};changePhoto(0)" style="width:62px;height:78px;object-fit:cover;cursor:pointer;border:2px solid ${i===0?'#000':'transparent'};opacity:${i===0?1:.55};transition:.2s;border-radius:2px">`).join('');
 
+  const zc = document.getElementById('zoomContainer');
+  let sx = 0, lt = 0;
+  zc.ontouchstart = e => sx = e.touches[0].clientX;
+  zc.ontouchend = e => {
+    const dx = e.changedTouches[0].clientX - sx;
+    if(Math.abs(dx) > 50 && currentPhotos.length>1) changePhoto(dx<0?1:-1);
+    const now = Date.now();
+    if(now - lt < 300) zoomImage();
+    lt = now;
+  };
+
   const infoDiv = document.querySelector('#product-detail .product-info');
   const oldBanner = infoDiv.querySelector('.status-banner'); if(oldBanner) oldBanner.remove();
   const btn = infoDiv.querySelector('.btn');
   const isSold = currentProduct.sold; const isReserved = isRes(currentProduct.id);
-
   if(isSold || isReserved){
     const text = isSold? 'SIN STOCK' : 'RESERVADO';
     const color = isSold? '#000' : '#D00000';
     infoDiv.insertAdjacentHTML('afterbegin', `<div class="status-banner" style="background:${color};color:#fff;padding:12px;text-align:center;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:1.5rem">${text}</div>`);
     btn.disabled = true; btn.style.opacity = '.4'; btn.style.cursor = 'not-allowed'; btn.textContent = text;
   } else { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; btn.textContent = 'AGREGAR AL CARRITO'; }
-
-  if(adminMode){
-    infoDiv.insertAdjacentHTML('beforeend', `<div style="margin-top:2rem;padding:1rem;background:#f0f0;border:2px dashed #000"><p style="font-size:.7rem;font-weight:900;margin-bottom:.8rem;text-transform:uppercase">PANEL ADMIN</p><button onclick="openManager()" style="padding:.7rem 1rem;background:#25D366;color:#fff;border:none;margin-bottom:.8rem;width:100%;font-size:.7rem;font-weight:700;cursor:pointer">ABRIR GESTOR</button><button onclick="adminVender('${currentProduct.id}')" style="padding:.7rem 1rem;background:#000;color:#fff;border:none;margin-right:.5rem;font-size:.7rem;font-weight:700">VENDIDO</button><button onclick="adminReservar('${currentProduct.id}')" style="padding:.7rem 1rem;background:#D00000;color:#fff;border:none;margin-right:.5rem;font-size:.7rem;font-weight:700">RESERVAR</button><button onclick="adminLiberar('${currentProduct.id}')" style="padding:.7rem 1rem;background:#fff;color:#000;border:1px solid #000;font-size:.7rem;font-weight:700">DISPONIBLE</button></div>`);
-  }
+  if(adminMode){ infoDiv.insertAdjacentHTML('beforeend', `<div style="margin-top:2rem;padding:1rem;background:#f0;border:2px dashed #000"><p style="font-size:.7rem;font-weight:900;margin-bottom:.8rem;text-transform:uppercase">PANEL ADMIN</p><button onclick="openManager()" style="padding:.7rem 1rem;background:#25D366;color:#fff;border:none;margin-bottom:.8rem;width:100%;font-size:.7rem;font-weight:700;cursor:pointer">ABRIR GESTOR</button><button onclick="adminVender('${currentProduct.id}')" style="padding:.7rem 1rem;background:#000;color:#fff;border:none;margin-right:.5rem;font-size:.7rem;font-weight:700">VENDIDO</button><button onclick="adminReservar('${currentProduct.id}')" style="padding:.7rem 1rem;background:#D00000;color:#fff;border:none;margin-right:.5rem;font-size:.7rem;font-weight:700">RESERVAR</button><button onclick="adminLiberar('${currentProduct.id}')" style="padding:.7rem 1rem;background:#fff;color:#000;border:1px solid #000;font-size:.7rem;font-weight:700">DISPONIBLE</button></div>`); }
   document.getElementById('product-detail').classList.add('active');
   scrollToSection('product-detail');
 }
@@ -1489,11 +1498,55 @@ function changePhoto(dir){
 
 function zoomImage(){
   const img = document.getElementById('detailImage');
+  const container = img.parentElement;
   zoomed =!zoomed;
-  img.style.transform = zoomed? 'scale(1.85)' : 'scale(1)';
-  img.parentElement.style.cursor = zoomed? 'zoom-out' : 'zoom-in';
-}
 
+  if(zoomed){
+    img.style.transform = 'scale(2.2)';
+    container.style.cursor = 'grab';
+    let isDown = false, startX, startY, tx = 0, ty = 0;
+
+    const down = e => {
+      isDown = true;
+      startX = (e.touches?.[0]?.clientX || e.clientX) - tx;
+      startY = (e.touches?.[0]?.clientY || e.clientY) - ty;
+      container.style.cursor = 'grabbing';
+    };
+    const move = e => {
+      if(!isDown) return;
+      e.preventDefault();
+      const x = (e.touches?.[0]?.clientX || e.clientX) - startX;
+      const y = (e.touches?.[0]?.clientY || e.clientY) - startY;
+      tx = Math.max(-150, Math.min(150, x));
+      ty = Math.max(-150, Math.min(150, y));
+      img.style.transform = `scale(2.2) translate(${tx/6}px, ${ty/6}px)`;
+    };
+    const up = () => { isDown = false; container.style.cursor = 'grab'; };
+
+    container.addEventListener('mousedown', down);
+    container.addEventListener('mousemove', move);
+    container.addEventListener('mouseup', up);
+    container.addEventListener('mouseleave', up);
+    container.addEventListener('touchstart', down, {passive:false});
+    container.addEventListener('touchmove', move, {passive:false});
+    container.addEventListener('touchend', up);
+
+    container._zoomHandlers = {down, move, up};
+  } else {
+    img.style.transform = 'scale(1)';
+    container.style.cursor = 'zoom-in';
+    if(container._zoomHandlers){
+      const h = container._zoomHandlers;
+      container.removeEventListener('mousedown', h.down);
+      container.removeEventListener('mousemove', h.move);
+      container.removeEventListener('mouseup', h.up);
+      container.removeEventListener('mouseleave', h.up);
+      container.removeEventListener('touchstart', h.down);
+      container.removeEventListener('touchmove', h.move);
+      container.removeEventListener('touchend', h.up);
+    }
+  }
+}
     function setS(s, btn) {
       selectedSize = s;
       document.querySelectorAll('#detailSizes button').forEach(b=>b.style.background='#fff');
