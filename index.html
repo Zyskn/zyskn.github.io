@@ -846,12 +846,16 @@ body.scrolled-down header#header {
 .product-card.reserved{position:relative;cursor:pointer}
 .product-card.reserved .product-image{filter:grayscale(1);opacity:.55}
 .product-card.reserved::after{content:'RESERVADO';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#000;color:#fff;padding:8px 14px;font-size:.7rem;font-weight:900;letter-spacing:1.5px;z-index:3;border:2px solid #fff}
+.product-card.sold{position:relative;cursor:not-allowed;pointer-events:none}
+.product-card.sold .product-image{filter:grayscale(1);opacity:.4}
+.product-card.sold::after{content:'SIN STOCK';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#000;color:#fff;padding:8px 14px;font-size:.7rem;font-weight:900;letter-spacing:1.5px;z-index:3;border:2px solid #fff}
 .reservation-timer{color:var(--red);font-weight:900;font-size:.7rem;margin-top:4px;letter-spacing:.5px;animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 
 @media (max-width:768px){
   .product-card.reserved .product-image{filter:none;opacity:1}
-  .product-card.reserved::after{content:'SIN STOCK';padding:6px 10px;font-size:.65rem;letter-spacing:1px}
+  .product-card.reserved::after{padding:6px 10px;font-size:.65rem;letter-spacing:1px}
+  .product-card.sold::after{padding:6px 10px;font-size:.65rem;letter-spacing:1px}
   }
 </style>
 </head>
@@ -1302,7 +1306,7 @@ function mobileSearch(query){
 
     function renderProducts(list, gridId) {
   const grid=document.getElementById(gridId);if(!grid)return;
-  grid.innerHTML=list.map(p=>{const r=isRes(p.id);return`<div class="product-card ${r?'reserved':''}" onclick="showProductDetail('${p.id}')"><div class="product-image"><img src="${p.img}" alt="${p.name}" onmouseenter="this.src='${p.img2||p.img}'" onmouseleave="this.src='${p.img}'" style="transition:.3s"></div><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><h3 style="font-size:.85rem;font-weight:900;text-transform:uppercase">${p.name}</h3><p style="font-size:.75rem;color:var(--text-muted);text-transform:uppercase">${p.category}</p></div><p style="font-size:.85rem;font-weight:700">$${p.price.toLocaleString('es-AR')}</p></div></div>`}).join('');
+  grid.innerHTML=list.map(p=>{const r=isRes(p.id);const s=p.sold;return`<div class="product-card ${r?'reserved':''} ${s?'sold':''}" onclick="${s?'':'showProductDetail(\''+p.id+'\')'}"><div class="product-image"><img src="${p.img}" alt="${p.name}" onmouseenter="this.src='${p.img2||p.img}'" onmouseleave="this.src='${p.img}'" style="transition:.3s"></div><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><h3 style="font-size:.85rem;font-weight:900;text-transform:uppercase">${p.name}</h3><p style="font-size:.75rem;color:var(--text-muted);text-transform:uppercase">${p.category}</p></div><p style="font-size:.85rem;font-weight:700">$${p.price.toLocaleString('es-AR')}</p></div>`}).join('');
 }
 
     function showMainCategory(s, e) { 
@@ -1418,8 +1422,11 @@ function shareOnWhatsApp() {
 
   t += `%0A*TOTAL: $${total.toLocaleString('es-AR')}*%0A`;
 
-  cart.forEach(i=>delete reservations[i.id]);saveRes();cart=[];updateCartUI();
+  cart.forEach(i=> reservations[i.id] = Date.now() + 600000);saveRes();
+  renderProducts(products,'productsGrid');renderProducts(products.filter(p=>p.isNew),'newProductsGrid');
+  cart=[];updateCartUI();
   window.open(`https://wa.me/5493544631553?text=${t}`, '_blank');
+  showNotification('PEDIDO ENVIADO - RESERVADO 10 MIN');
 }
     function setupScrollListener() { 
   const h = document.getElementById('header');
