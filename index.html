@@ -276,6 +276,18 @@ header.searching .nav-main {
   transform: translateX(-40px);
   pointer-events: none;
 }
+
+/* NUEVO - centrado entre logo y barra */
+@media (min-width: 1025px) {
+  header.searching .nav-main {
+    position: absolute;
+    left: calc(50% - 85px); /* 85px = mitad del buscador, ajustalo */
+    top: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 1;
+  }
+}
     .nav-item { position: relative; padding: 1.5rem 0; }
    .nav-main a {
   font-size: 0.95rem;
