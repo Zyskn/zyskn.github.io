@@ -103,7 +103,7 @@ footer#contact {
     /* ANIMACIÓN VUELO AL CARRITO */
     @keyframes flyToCart {
       0% { transform: translate(0, 0) scale(1); opacity: 1; }
-      50% { transform: translate(calc(var(--target-x) * 0.5), calc(var(--target-y) * 0.5 - 50px)) scale(0.8); opacity: 0.8; }
+      50% { transform: translate(calc(var(--target-x) * 0.5), calc(var(--target-y) * 0.5 - 50px)) scale(0.8); }
       100% { transform: translate(var(--target-x), var(--target-y)) scale(0.1); opacity: 0; }
     }
     .fly-item {
@@ -863,6 +863,17 @@ body.scrolled-down header#header {
 #prevBtn, #nextBtn { opacity: 0; pointer-events: none; transition: opacity.3s; }
 #zoomContainer:hover #prevBtn, #zoomContainer:hover #nextBtn { opacity:.85; pointer-events: auto; }
 @media (max-width: 1024px) { #prevBtn, #nextBtn { opacity:.85!important; pointer-events: auto!important; } }
+    
+    header#header {
+  border-bottom: none !important;
+  box-shadow: 0 1px 0 #000 !important;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.top-bar, header#header {
+  transition: transform 0.2s ease !important;
+}
+    
 </style>
 </head>
 <body>
@@ -1386,13 +1397,13 @@ function mobileSearch(query){
     function showMainCategory(s, e) { 
   if(e) e.preventDefault(); 
   if (window.innerWidth <= 1024 && (s === 'arriba' || s === 'abajo')) return;
-  if (window.pageYOffset > 20) document.body.classList.add('scrolled-down');
+  document.body.classList.add('scrolled-down');
   renderProducts(s==='todo'?products:products.filter(p=>p.section===s), 'productsGrid'); 
   scrollToSection('shop');
 }
 
 function filterProducts(c) { 
-  if (window.pageYOffset > 20) document.body.classList.add('scrolled-down');
+  document.body.classList.add('scrolled-down');
   renderProducts(products.filter(p=>p.category===c), 'productsGrid'); 
   scrollToSection('shop');
 }
@@ -1607,6 +1618,7 @@ function shareOnWhatsApp() {
  function scrollToSection(id) { 
   const el = document.getElementById(id);
   if(!el) return;
+   if (window.pageYOffset > 5) document.body.classList.add('scrolled-down');
 
   const hamburger = document.getElementById('hamburger');
   const navMain = document.getElementById('navMain');
@@ -1745,7 +1757,7 @@ function shareOnWhatsApp() {
 
     window.addEventListener('scroll', () => {
   const y = window.pageYOffset;
-  if (y > 80) {
+  if (y > 20) {
     document.body.classList.add('scrolled-down');
   } else if (y < 5) {
     document.body.classList.remove('scrolled-down');
