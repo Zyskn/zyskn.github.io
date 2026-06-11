@@ -1386,11 +1386,13 @@ function mobileSearch(query){
     function showMainCategory(s, e) { 
   if(e) e.preventDefault(); 
   if (window.innerWidth <= 1024 && (s === 'arriba' || s === 'abajo')) return;
+  if (window.pageYOffset > 20) document.body.classList.add('scrolled-down');
   renderProducts(s==='todo'?products:products.filter(p=>p.section===s), 'productsGrid'); 
   scrollToSection('shop');
 }
 
 function filterProducts(c) { 
+  if (window.pageYOffset > 20) document.body.classList.add('scrolled-down');
   renderProducts(products.filter(p=>p.category===c), 'productsGrid'); 
   scrollToSection('shop');
 }
@@ -1601,32 +1603,6 @@ function shareOnWhatsApp() {
   window.open(`https://wa.me/5493544631553?text=${t}`, '_blank');
   showNotification('PEDIDO ENVIADO - RESERVADO 10 MIN');
 }
-    function setupScrollListener() { 
-  const h = document.getElementById('header');
-  const topBar = document.querySelector('.top-bar');
-  const isMobile = () => window.innerWidth <= 1024;
-
-  // En móvil dejamos todo fijo, no escondemos nada
-  if (isMobile()) {
-    h.style.setProperty('position', 'fixed', 'important');
-    h.style.setProperty('top', '28px', 'important');
-    topBar.style.transform = 'translateY(0)';
-    return;
-  }
-
-  // Desktop sigue igual que antes
-  window.addEventListener('scroll', () => { 
-    if(window.scrollY > 5) {
-      h.classList.add('scrolled');
-      topBar.style.transform = 'translateY(-100%)';
-      h.style.setProperty('top', '0px', 'important');
-    } else {
-      h.classList.remove('scrolled');
-      topBar.style.transform = 'translateY(0)';
-      h.style.setProperty('top', '32px', 'important');
-    }
-  }); 
-}
 
  function scrollToSection(id) { 
   const el = document.getElementById(id);
@@ -1767,15 +1743,15 @@ function shareOnWhatsApp() {
     });
   });
 
-  // === OCULTAR BARRA ROJA AL HACER SCROLL ===
-  window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 50) {
-      document.body.classList.add('scrolled-down');
-    } else {
-      document.body.classList.remove('scrolled-down');
-    }
-  });
-
+    window.addEventListener('scroll', () => {
+  const y = window.pageYOffset;
+  if (y > 80) {
+    document.body.classList.add('scrolled-down');
+  } else if (y < 5) {
+    document.body.classList.remove('scrolled-down');
+  }
+}, { passive: true });
+    
   init();
 </script>
 </body>
