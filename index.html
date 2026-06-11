@@ -158,16 +158,19 @@ footer#contact {
   line-height: 1 !important;
   transition: transform 0.15s ease;
 }
+
 .top-bar .marquee-content {
   display: flex !important;
   align-items: center !important;
+  height: 100% !important;
+  width: max-content;
+  animation: marquee-infinite 25s linear infinite;
   gap: 30px !important;
-  white-space: nowrap;
-  animation: marquee-single 18s linear infinite;
 }
-@keyframes marquee-single {
-  0% { transform: translateX(100vw); }
-  100% { transform: translateX(-100%); }
+
+@keyframes marquee-infinite {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 /* centra el texto y anula tus top:3px inline */
@@ -200,6 +203,14 @@ header {
 header.scrolled { padding: 0.7rem 3rem !important; }
 .logo { font-size: 2rem !important; }
 .logo-slogan { font-size: 0.75rem !important; }
+.marquee-content {
+  display: flex;
+  width: max-content;
+  gap: 0;
+  animation: marquee-infinite 25s linear infinite;
+  will-change: transform;
+  padding-left: 0;
+}
 .marquee-item {
   display: inline-flex;
   align-items: center;
@@ -875,20 +886,48 @@ body.scrolled-down header#header {
   <div id="notification" class="notification"></div>
   <div id="nav-overlay"></div>
 
-  <div class="top-bar">
-  <div class="marquee-content">
-    <span>CORDOBA</span>
-    <span style="opacity:.7;">·</span>
-    <span>@ZYSKN.VTG</span>
-    <span style="opacity:.7;">·</span>
-    <span>ENVIOS A TODO EL PAIS</span>
+<div class="top-bar">
+  <div class="marquee">
+    <div class="marquee-content">
+
+      <!-- COPIA 1 - Instagram -->
+  <a href="https://instagram.com/zyskn.vtg" target="_blank" style="display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:inherit;">
+    <img src="https://cdn.simpleicons.org/instagram/FFFFFF" alt="Instagram" style="width:18px; height:18px; flex-shrink:0; position:relative; top:3px;">
+    <span style="position:relative; top:4px;">ZYSKN.VTG</span>
+  </a>
+
+  <span style="margin:0 20px; position:relative; top:-0.5px; opacity:0.7;">·</span>
+
+  <!-- WhatsApp -->
+  <a href="https://wa.me/5493544631553" target="_blank" style="display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:inherit;">
+    <img src="https://cdn.simpleicons.org/whatsapp/FFFFFF" alt="WhatsApp" style="width:18px; height:18px; flex-shrink:0; position:relative; top:3px;">
+    <span style="position:relative; top:4px;">+54 9 3544 631553</span>
+  </a>
+
+  <!-- DIVISOR ENTRE COPIAS -->
+ <span style="margin:0 20px; position:relative; top:-0.5px; opacity:0.7;">·</span>
+
+  <!-- COPIA 2 - Instagram -->
+  <a href="https://instagram.com/zyskn.vtg" target="_blank" style="display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:inherit;">
+    <img src="https://cdn.simpleicons.org/instagram/FFFFFF" alt="Instagram" style="width:18px; height:18px; flex-shrink:0; position:relative; top:3px;">
+    <span style="position:relative; top:4px;">ZYSKN.VTG</span>
+  </a>
+
+  <span style="margin:0 20px; position:relative; top:-0.5px; opacity:0.7;">·</span>
+
+  <!-- WhatsApp -->
+  <a href="https://wa.me/5493544631553" target="_blank" style="display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:inherit;">
+    <img src="https://cdn.simpleicons.org/whatsapp/FFFFFF" alt="WhatsApp" style="width:18px; height:18px; flex-shrink:0; position:relative; top:3px;">
+    <span style="position:relative; top:4px;">+54 9 3544 631553</span>
+  </a>
+</div>
   </div>
 </div>
-  
+
   <header id="header">
     <div class="header-content">
       <div class="logo-section" onclick="scrollToTop()">
-        <span class="logo">ZYSKN</span>
+        <span class="logo">ZYSKN ★</span>
         <span class="logo-slogan">Curated Vintage</span>
       </div>
 
@@ -1148,7 +1187,7 @@ body.scrolled-down header#header {
     <footer style="background: #000; color: #fff; padding: 60px 0; border-top: 1px solid #111;">
       <div class="container" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px;">
         <div style="text-align: left;">
-          <h2 style="font-size: 1.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 10px;">ZYSKN</h2>
+          <h2 style="font-size: 1.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 10px;">ZYSKN ★</h2>
           <p style="font-size: 0.75rem; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">CURATED VINTAGE & STREETWEAR. CÓRDOBA, ARGENTINA.</p>
         </div>
         <div style="text-align: right; padding-bottom: 4px;">
@@ -1238,7 +1277,7 @@ function openManager(){ if(!adminMode) return alert('No autorizado');
   renderList();
 }
 function renderList(){
-  document.getElementById('plist').innerHTML = products.map((p,i)=>`<div style="display:grid;grid-template-columns:80px 1fr auto;gap:15px;align-items:center;padding:15px;background:#111;margin-bottom:10px;"><img src="${p.img}" style="width:80px;height:100px;object-fit:cover;"><div><div style="font-weight:700;">${p.name}</div><div style="font-size:12px;opacity:0.7;">$${p.price.toLocaleString('es-AR')} · ${p.category} · ${p.talle}</div></div><button onclick="editProd(${i})" style="background:#333;color:#fff;border:none;padding:8px 12px;margin-right:5px;cursor:pointer;">EDITAR</button><button onclick="delProd(${i})" style="background:#A30000;color:#fff;border:none;padding:8px 12px;cursor:pointer;">BORRAR</button></div></div>`).join('');
+  document.getElementById('plist').innerHTML = products.map((p,i)=>`<div style="display:grid;grid-template-columns:80px 1fr auto;gap:15px;align-items:center;padding:15px;background:#111;margin-bottom:10px;"><img src="${p.img}" style="width:80px;height:100px;object-fit:cover;"><div><div style="font-weight:700;">${p.name}</div><div style="font-size:12px;opacity:0.7;">$${p.price.toLocaleString('es-AR')} · ${p.category} · ${p.talle}</div></div><button onclick="editProd(${i})" style="background:#333;color:#fff;border:none;padding:8px 12px;margin-right:5px;cursor:pointer;">EDITAR</button><button onclick="delProd(${i})" style="background:#D00000;color:#fff;border:none;padding:8px 12px;cursor:pointer;">BORRAR</button></div></div>`).join('');
 }
 function addProd(){ editProd(-1); }
 function editProd(i){
@@ -1434,7 +1473,7 @@ function filterProducts(c) {
   const isSold = currentProduct.sold; const isReserved = isRes(currentProduct.id);
   if(isSold || isReserved){
     const text = isSold? 'SIN STOCK' : 'RESERVADO';
-    const color = isSold? '#000' : '#A30000';
+    const color = isSold? '#000' : '#D00000';
     infoDiv.insertAdjacentHTML('afterbegin', `<div class="status-banner" style="background:${color};color:#fff;padding:12px;text-align:center;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:1.5rem">${text}</div>`);
     btn.disabled = true; btn.style.opacity = '.4'; btn.style.cursor = 'not-allowed'; btn.textContent = text;
   } else { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; btn.textContent = 'AGREGAR AL CARRITO'; }
@@ -1564,7 +1603,7 @@ function shareOnWhatsApp() {
   const fecha = now.toLocaleDateString('es-AR');
   const hora = now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
 
-  let t = `Holaa! ZYSKN, Te envío mi nuevo pedido!.%0A`;
+  let t = `Holaa! ZYSKN ★, Te envío mi nuevo pedido!.%0A`;
   t += `Fecha: ${fecha} | Hora: ${hora}%0A%0A`;
   t += `*DATOS DEL CLIENTE:*%0A`;
   t += `- Nombre: ${nombre}%0A`;
