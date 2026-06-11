@@ -574,10 +574,7 @@ header.searching .search-wrapper {
 header.searching .search-input-container { 
   width: 150px !important; 
   margin-right: 0 !important;
-  background: #fff !important;
-  border-radius: 50px !important;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.15) !important;
-  overflow: visible !important;
+  overflow: hidden !important;
 }
 
 header.searching .search-input-container input {
@@ -717,14 +714,14 @@ header.searching .search-input-container input {
 
 header#header {
   position: fixed !important;
-  top: 0 !important; /* ahora siempre está arriba */
+  top: 32px !important; /* ahora baja con top, no con transform */
   left: 0 !important;
   right: 0 !important;
   z-index: 2999 !important;
   background: #fff !important;
   border-bottom: 1px solid #000;
-  transform: translateY(32px); /* lo empujamos para abajo */
-  transition: transform 0.3s ease !important;
+  box-shadow: 0 0 0 1px #000; /* sella el pixel blanco */
+  transition: top 0.3s ease !important;
   padding: 1rem 3rem !important;
 }
 
@@ -738,7 +735,7 @@ body.scrolled-down .top-bar {
 }
 
 body.scrolled-down header#header {
-  transform: translateY(0) !important;
+  top: 0 !important;
 }
 
 /* === FIX MÓVIL === */
@@ -749,10 +746,10 @@ body.scrolled-down header#header {
   }
 
   header#header { 
+    top: 28px !important;
     padding: 8px 10px !important; 
     min-height: 56px !important;
-    transform: translateY(28px);
-    transition: transform 0.15s ease !important;
+    transition: top 0.15s ease !important;
   }
   
   body { 
@@ -765,16 +762,6 @@ body.scrolled-down header#header {
   
   body.scrolled-down header#header {
     transform: translateY(0) !important;
-  }
-  
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    height: 28px;
-    background: #A30000;
-    z-index: 2997;
-    pointer-events: none;
   }
   
   .header-content { 
