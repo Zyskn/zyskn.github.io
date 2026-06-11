@@ -103,7 +103,7 @@ footer#contact {
     /* ANIMACIÓN VUELO AL CARRITO */
     @keyframes flyToCart {
       0% { transform: translate(0, 0) scale(1); opacity: 1; }
-      50% { transform: translate(calc(var(--target-x) * 0.5), calc(var(--target-y) * 0.5 - 50px)) scale(0.8); }
+      50% { transform: translate(calc(var(--target-x) * 0.5), calc(var(--target-y) * 0.5 - 50px)) scale(0.8); opacity: 0.8; }
       100% { transform: translate(var(--target-x), var(--target-y)) scale(0.1); opacity: 0; }
     }
     .fly-item {
@@ -265,6 +265,17 @@ header.searching .nav-main {
   pointer-events: none;
 }
 
+/* NUEVO - centrado entre logo y barra */
+@media (min-width: 1025px) {
+  header.searching .nav-main {
+    position: absolute;
+    left: calc(50% - 210px); /* 85px = mitad del buscador, ajustalo */
+    top: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 1;
+  }
+}
     .nav-item { position: relative; padding: 1.5rem 0; }
    .nav-main a {
   font-size: 0.95rem;
@@ -847,35 +858,11 @@ body.scrolled-down header#header {
 #prevBtn:hover, #nextBtn:hover {
   opacity: 1!important;
   transform: translateY(-50%) scale(1.15);
-  text-shadow: 0 4px 20px rgba(0,0,0.7);
+  text-shadow: 0 4px 20px rgba(0,0,0,0.7);
 }
 #prevBtn, #nextBtn { opacity: 0; pointer-events: none; transition: opacity.3s; }
 #zoomContainer:hover #prevBtn, #zoomContainer:hover #nextBtn { opacity:.85; pointer-events: auto; }
 @media (max-width: 1024px) { #prevBtn, #nextBtn { opacity:.85!important; pointer-events: auto!important; } }
-    
-header#header {
-  border-bottom: none !important;
-  box-shadow: 0 1px 0 #000 !important;
-  will-change: transform;
-  backface-visibility: hidden;
-  min-height: 90px !important;
-  display: flex !important;
-  align-items: center !important;
-}
-.top-bar, header#header {
-  transition: transform 0.2s ease !important;
-}
-
-/* FIX: menú se oculta sin achicar header */
-header.searching .nav-main {
-  opacity: 0 !important;
-  transform: translateX(-40px) !important;
-  pointer-events: none !important;
-}
-@media (max-width: 1024px) { 
-  header#header { min-height: 84px !important; } 
-}
-    
 </style>
 </head>
 <body>
@@ -1399,13 +1386,11 @@ function mobileSearch(query){
     function showMainCategory(s, e) { 
   if(e) e.preventDefault(); 
   if (window.innerWidth <= 1024 && (s === 'arriba' || s === 'abajo')) return;
-  document.body.classList.add('scrolled-down');
   renderProducts(s==='todo'?products:products.filter(p=>p.section===s), 'productsGrid'); 
   scrollToSection('shop');
 }
 
 function filterProducts(c) { 
-  document.body.classList.add('scrolled-down');
   renderProducts(products.filter(p=>p.category===c), 'productsGrid'); 
   scrollToSection('shop');
 }
@@ -1616,11 +1601,36 @@ function shareOnWhatsApp() {
   window.open(`https://wa.me/5493544631553?text=${t}`, '_blank');
   showNotification('PEDIDO ENVIADO - RESERVADO 10 MIN');
 }
+    function setupScrollListener() { 
+  const h = document.getElementById('header');
+  const topBar = document.querySelector('.top-bar');
+  const isMobile = () => window.innerWidth <= 1024;
+
+  // En móvil dejamos todo fijo, no escondemos nada
+  if (isMobile()) {
+    h.style.setProperty('position', 'fixed', 'important');
+    h.style.setProperty('top', '28px', 'important');
+    topBar.style.transform = 'translateY(0)';
+    return;
+  }
+
+  // Desktop sigue igual que antes
+  window.addEventListener('scroll', () => { 
+    if(window.scrollY > 5) {
+      h.classList.add('scrolled');
+      topBar.style.transform = 'translateY(-100%)';
+      h.style.setProperty('top', '0px', 'important');
+    } else {
+      h.classList.remove('scrolled');
+      topBar.style.transform = 'translateY(0)';
+      h.style.setProperty('top', '32px', 'important');
+    }
+  }); 
+}
 
  function scrollToSection(id) { 
   const el = document.getElementById(id);
   if(!el) return;
-   if (window.pageYOffset > 5) document.body.classList.add('scrolled-down');
 
   const hamburger = document.getElementById('hamburger');
   const navMain = document.getElementById('navMain');
@@ -1757,15 +1767,15 @@ function shareOnWhatsApp() {
     });
   });
 
-    window.addEventListener('scroll', () => {
-  const y = window.pageYOffset;
-  if (y > 20) {
-    document.body.classList.add('scrolled-down');
-  } else if (y < 5) {
-    document.body.classList.remove('scrolled-down');
-  }
-}, { passive: true });
-    
+  // === OCULTAR BARRA ROJA AL HACER SCROLL ===
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 50) {
+      document.body.classList.add('scrolled-down');
+    } else {
+      document.body.classList.remove('scrolled-down');
+    }
+  });
+
   init();
 </script>
 </body>
