@@ -265,17 +265,6 @@ header.searching .nav-main {
   pointer-events: none;
 }
 
-/* NUEVO - centrado entre logo y barra */
-@media (min-width: 1025px) {
-  header.searching .nav-main {
-    position: absolute;
-    left: calc(50% - 210px); /* 85px = mitad del buscador, ajustalo */
-    top: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    opacity: 1;
-  }
-}
     .nav-item { position: relative; padding: 1.5rem 0; }
    .nav-main a {
   font-size: 0.95rem;
@@ -858,20 +847,33 @@ body.scrolled-down header#header {
 #prevBtn:hover, #nextBtn:hover {
   opacity: 1!important;
   transform: translateY(-50%) scale(1.15);
-  text-shadow: 0 4px 20px rgba(0,0,0,0.7);
+  text-shadow: 0 4px 20px rgba(0,0,0.7);
 }
 #prevBtn, #nextBtn { opacity: 0; pointer-events: none; transition: opacity.3s; }
 #zoomContainer:hover #prevBtn, #zoomContainer:hover #nextBtn { opacity:.85; pointer-events: auto; }
 @media (max-width: 1024px) { #prevBtn, #nextBtn { opacity:.85!important; pointer-events: auto!important; } }
     
-    header#header {
+header#header {
   border-bottom: none !important;
   box-shadow: 0 1px 0 #000 !important;
   will-change: transform;
   backface-visibility: hidden;
+  min-height: 90px !important;
+  display: flex !important;
+  align-items: center !important;
 }
 .top-bar, header#header {
   transition: transform 0.2s ease !important;
+}
+
+/* FIX: menú se oculta sin achicar header */
+header.searching .nav-main {
+  opacity: 0 !important;
+  transform: translateX(-40px) !important;
+  pointer-events: none !important;
+}
+@media (max-width: 1024px) { 
+  header#header { min-height: 84px !important; } 
 }
     
 </style>
