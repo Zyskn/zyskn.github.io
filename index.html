@@ -1206,7 +1206,7 @@ let selectedSize = null;
 let scrollY = 0;
 let reservations = JSON.parse(localStorage.getItem('zysk_res')||'{}');
 let cart = JSON.parse(localStorage.getItem('zysk_cart')||'[]');
-const RESERVE_TIME = 3*60*1000;
+const RESERVE_TIME = 5*60*1000;
 function saveRes(){localStorage.setItem('zysk_res',JSON.stringify(reservations))}
 function reserve(id){reservations[id]=Date.now()+RESERVE_TIME;saveRes()}
 function isRes(id){if(!reservations[id])return false;if(Date.now()>reservations[id]){delete reservations[id];saveRes();return false}return true}
