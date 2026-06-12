@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
   <title>ZYSKN | EST. 2026 - Ropa Streetwear Córdoba</title>
-  <meta name="description" content="ZYSKN | EST. 2026. Tienda online de ropa streetwear y vintage en Córdoba, Argentina. Envíos a todo el país. Próximamente.">
+  <meta name="description" content="ZYSKN EST. 2026 — Vintage curado y streetwear en Córdoba, Argentina. Polar Columbia 90s, remeras oversize, cargos y hoodies únicos. Piezas 10/10 con envío a todo el país.">
   <meta name="keywords" content="ZYSKN, ropa streetwear, vintage, Córdoba, Argentina, tienda online, remeras oversize, chombas, camisas, buzos canguros, hoodies canguros, camperas, pantalones cargos, jeans, bermudas cargo, todo de marca, 2026">
   <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/favicon.png">
@@ -1267,22 +1267,35 @@ function startReserveTimer(){setInterval(()=>{
 localStorage.removeItem('zysk_admin');
 localStorage.removeItem('zysk_admin_time');
 
-// --- PANEL ADMIN SEGURO ---
+// --- PANEL ADMIN SEGURO - FIX INFORME VALORACIÓN ---
 let adminMode = false;
-const ADMIN_PASS = "100599ru"; // <-- CAMBIA ESTO AHORA
 
-function checkAdmin() {
+// REEMPLAZÁ ESTE HASH por el de tu nueva clave
+// Andá a https://emn178.github.io/online-tools/sha256.html
+// Escribí tu clave nueva (ej: Zyskn2026!Seguro) y copiá el hash
+const ADMIN_HASH = "c22d5462cc9a2b89209cb539f0d7ccf0ebf0de1506aea336acd01086a8e86571"; // hash de "keroyshyra99"
+
+async function checkAdmin() {
   if (sessionStorage.getItem('zysk_admin') === '1') return true;
-  const params = new URLSearchParams(location.search);
-  if (params.get('admin') === ADMIN_PASS) {
+  
+  // YA NO lee ?admin= de la URL
+  const pass = prompt('Clave admin ZYSKN:');
+  if (!pass) return false;
+  
+  const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pass));
+  const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2,'0')).join('');
+  
+  if (hashHex === ADMIN_HASH) {
     sessionStorage.setItem('zysk_admin', '1');
-    history.replaceState({}, '', location.pathname);
+    location.hash = ''; // limpia cualquier resto
     return true;
   }
   return false;
 }
-adminMode = checkAdmin();
 
+// inicializa sin bloquear la carga
+checkAdmin().then(ok => { adminMode = ok; });
+    
 function adminVender(id){ if(!adminMode) return; vendidos[id]=true; localStorage.setItem('zysk_vendidos', JSON.stringify(vendidos)); alert('✅ VENDIDO'); location.reload(); }
 function adminReservar(id){ if(!adminMode) return; reservations[id]=Date.now()+86400000; saveRes(); alert('🔒 RESERVADO 24hs'); location.reload(); }
 function adminLiberar(id){ if(!adminMode) return; delete vendidos[id]; delete reservations[id]; localStorage.setItem('zysk_vendidos', JSON.stringify(vendidos)); saveRes(); alert('✓ DISPONIBLE'); location.reload(); }
