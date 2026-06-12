@@ -896,9 +896,13 @@ body.scrolled-down header#header {
 
   <header id="header">
     <div class="header-content">
-      <div class="logo-section" onclick="scrollToTop()">
-        <span class="logo">ZYSKN</span>
-        <span class="logo-slogan">Curated Vintage</span>
+      <a href="https://www.instagram.com/zyskn.vtg" target="_blank" rel="noopener" class="logo-section" 
+   style="text-decoration: none; color: inherit; display: flex; flex-direction: column; cursor: pointer;"
+   onmouseover="this.querySelector('.logo').style.color='#A30000'" 
+   onmouseout="this.querySelector('.logo').style.color='#000'">
+  <span class="logo">ZYSKN</span>
+  <span class="logo-slogan">Curated Vintage</span>
+</a>
       </div>
 
       <div id="navContainer" class="nav-container">
@@ -1194,16 +1198,21 @@ body.scrolled-down header#header {
 </footer>
 
     <footer style="background: #000; color: #fff; padding: 60px 0; border-top: 1px solid #111;">
-      <div class="container" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px;">
-        <div style="text-align: left;">
-          <h2 style="font-size: 1.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 10px;">ZYSKN</h2>
-          <p style="font-size: 0.75rem; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">CURATED VINTAGE & STREETWEAR. CÓRDOBA, ARGENTINA.</p>
-        </div>
-        <div style="text-align: right; padding-bottom: 4px;">
-          <p style="font-size: 0.7rem; font-weight: 600; color: #444; text-transform: uppercase; letter-spacing: 0.05em;">© 2026 ZYSKN. TODOS LOS DERECHOS RESERVADOS.</p>
-        </div>
-      </div>
-    </footer>
+  <div class="container" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px;">
+    <div style="text-align: left;">
+      <a href="https://www.instagram.com/zyskn.vtg" target="_blank" rel="noopener" 
+         style="text-decoration: none; display: inline-block;"
+         onmouseover="this.querySelector('h2').style.color='#A30000'" 
+         onmouseout="this.querySelector('h2').style.color='#fff'">
+        <h2 style="font-size: 1.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 10px; color: #fff; transition: color 0.2s ease;">ZYSKN</h2>
+      </a>
+      <p style="font-size: 0.75rem; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">CURATED VINTAGE & STREETWEAR. CÓRDOBA, ARGENTINA.</p>
+    </div>
+    <div style="text-align: right; padding-bottom: 4px;">
+      <p style="font-size: 0.7rem; font-weight: 600; color: #444; text-transform: uppercase; letter-spacing: 0.05em;">© 2026 ZYSKN. TODOS LOS DERECHOS RESERVADOS.</p>
+    </div>
+  </div>
+</footer>
   </main>
 
   <script>
