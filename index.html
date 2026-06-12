@@ -1303,7 +1303,15 @@ async function checkAdmin() {
 }
 
 // inicializa sin bloquear la carga
-checkAdmin().then(ok => { adminMode = ok; });
+if (window.location.hash === '#admin') {
+  checkAdmin().then(ok => { 
+    adminMode = ok;
+    if(ok) {
+      window.history.replaceState({}, '', '/');
+      showNotification('MODO ADMIN ACTIVADO');
+    }
+  });
+}
     
 function adminVender(id){ if(!adminMode) return; vendidos[id]=true; localStorage.setItem('zysk_vendidos', JSON.stringify(vendidos)); alert('✅ VENDIDO'); location.reload(); }
 function adminReservar(id){ if(!adminMode) return; reservations[id]=Date.now()+86400000; saveRes(); alert('🔒 RESERVADO 24hs'); location.reload(); }
