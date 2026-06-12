@@ -1,7 +1,7 @@
 [
   {
     "id": "t1",
-    "section": "arriba",
+    "section": "polares",
     "category": "polares",
     "name": "POLAR COLUMBIA 90s",
     "price": 90000,
@@ -9,8 +9,12 @@
     "talle": "XL - Para L",
     "medidas": "Ancho 70cm | Largo 74cm",
     "estado": "10/10 - Impecable",
-    "img": "polar-columbia-90s.jpeg",
-    "sizes": ["L"],
+    "img": "https://zyskn.github.io/polar-columbia-90s.jpeg",
+    "img2": "",
+    "sizes": [
+      "XL",
+      "L"
+    ],
     "isNew": true
   }
 ]
