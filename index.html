@@ -877,11 +877,38 @@ body.scrolled-down header#header {
   transform: translateY(-50%) scale(1.15);
   text-shadow: 0 4px 20px rgba(0,0,0,0.7);
 }
-#prevBtn, #nextBtn { opacity: 0; pointer-events: none; transition: opacity.3s; }
-#zoomContainer:hover #prevBtn, #zoomContainer:hover #nextBtn { opacity:.85; pointer-events: auto; }
-@media (max-width: 1024px) { #prevBtn, #nextBtn { opacity:.85!important; pointer-events: auto!important; } }
-    .logo-section { text-decoration: none; color: inherit; }
-.logo-section:hover .logo { color: var(--red) !important; }
+#prevBtn, #nextBtn { 
+  opacity: 0; 
+  pointer-events: none; 
+  transition: opacity .3s; 
+}
+#zoomContainer:hover #prevBtn, 
+#zoomContainer:hover #nextBtn { 
+  opacity: .85; 
+  pointer-events: auto; 
+}
+@media (max-width: 1024px) { 
+  #prevBtn, #nextBtn { 
+    opacity: .85 !important; 
+    pointer-events: auto !important; 
+  } 
+}
+
+/* Logo siempre negro, sin subrayado en móvil */
+.logo-section,
+.logo-section:link,
+.logo-section:visited,
+.logo-section:hover,
+.logo-section:active {
+  color: #000 !important;
+  text-decoration: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+.logo, .logo-slogan {
+  color: #000 !important;
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
 </style>
 </head>
 <body>
