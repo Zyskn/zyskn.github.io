@@ -1062,50 +1062,85 @@ body.scrolled-down header#header {
     </section>
 
     <section id="faq-section" style="background: #fff; border-top: 1px solid #000;">
-      <h2 class="section-title">FAQ.</h2>
-      <div style="max-width: 800px; margin: 0 auto;">
-        <div style="margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
-          <h3 style="font-size: 1rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem;">¿QUÉ ES ROPA AMERICANA?</h3>
-          <p style="font-size: 0.9rem; color: var(--text-muted);">Archive pieces de origen estadounidense. Trabajamos con lotes cerrados y colecciones privadas de Estados Unidos. Cada prenda es inspeccionada y autenticada individualmente. Vintage curado con estándares de galería: solo conservamos piezas que mantengan su integridad y valor cultural.</p>
-        </div>
+  <h2 class="section-title">FAQ.</h2>
+  <div style="max-width: 800px; margin: 0 auto;">
 
-        <div style="margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
-          <h3 style="font-size: 1rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem;">¿HAY CAMBIOS O DEVOLUCIONES?</h3>
-          <p style="font-size: 0.9rem; color: var(--text-muted);">No. Todas las piezas son únicas sin restock. Te recomendamos revisar detalladamente el estado especificado debajo de cada producto antes de comprar. Consultá con nosotros si tenés dudas sobre una prenda específica.</p>
-        </div>
+    <style>
+      #faq-section details {
+        margin-bottom: 2rem;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 1rem;
+      }
+      #faq-section summary {
+        font-size: 1rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+        cursor: pointer;
+        list-style: none;
+        position: relative;
+        padding-right: 1.5rem;
+      }
+      #faq-section summary::-webkit-details-marker { display: none; }
+      #faq-section summary::after {
+        content: '+';
+        position: absolute;
+        right: 0;
+        top: 0;
+        font-weight: 400;
+      }
+      #faq-section details[open] summary::after {
+        content: '−';
+      }
+      #faq-section details p {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin: 0.5rem 0 0;
+      }
+    </style>
 
-        <div style="margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
-          <h3 style="font-size: 1rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem;">¿CUÁLES SON LOS MÉTODOS DE PAGO?</h3>
-          <p style="font-size: 0.9rem; color: var(--text-muted);">Aceptamos transferencia bancaria o efectivo. No procesamos pagos con tarjeta de crédito o débito.</p>
-        </div>
+    <details open>
+      <summary>¿QUÉ ES ROPA AMERICANA?</summary>
+      <p>Archivo americano: prendas vintage auténticas, seleccionadas en lotes cerrados y colecciones privadas de Estados Unidos. Cada pieza es inspeccionada y autenticada individualmente. Vintage curado con estándares de galería: solo conservamos piezas que mantengan su integridad y valor cultural.</p>
+    </details>
 
-        <div style="margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
-          <h3 style="font-size: 1rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem;">¿CÓMO FUNCIONAN LOS ENVÍOS?</h3>
-          <p style="font-size: 0.9rem; color: var(--text-muted);">Realizamos envíos a través de Correo Argentino a todo el país. El costo del envío corre por cuenta del cliente. Los despachos se realizan en fecha pactada.</p>
-        </div>
+    <details>
+      <summary>¿HAY CAMBIOS O DEVOLUCIONES?</summary>
+      <p>No. Todas las piezas son únicas sin restock. Te recomendamos revisar detalladamente el estado especificado debajo de cada producto antes de comprar. Consultá con nosotros si tenés dudas sobre una prenda específica.</p>
+    </details>
 
-        <div style="margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
-          <h3 style="font-size: 1rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem;">¿PUEDO RESERVAR UNA PRENDA?</h3>
-          <p style="font-size: 0.9rem; color: var(--text-muted);">Sí, aceptamos reservas con una seña del 70% del valor total. La reserva tiene validez por 24 horas. Sin seña, no garantizamos la disponibilidad de la prenda. <strong>Una vez pasadas las 24hs, no hay devolución de la seña.</strong>
-          </p>
-        </div>
+    <details>
+      <summary>¿CUÁLES SON LOS MÉTODOS DE PAGO?</summary>
+      <p>Aceptamos transferencia bancaria o efectivo. No procesamos pagos con tarjeta de crédito o débito.</p>
+    </details>
 
-        <div style="margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
-          <h3 style="font-size: 1rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem;">¿CÓMO VERIFICO EL ESTADO DE UNA PRENDA?</h3>
-          <p style="font-size: 0.9rem; color: var(--text-muted);">Utilizamos una escala de 10/10 (perfecta) a 8/10 (buen estado con mínimo uso). Cada prenda incluye descripción detallada del estado. Podés contactarnos por WhatsApp para fotos adicionales o consultas específicas.</p>
-        </div>
+    <details>
+      <summary>¿CÓMO FUNCIONAN LOS ENVÍOS?</summary>
+      <p>Realizamos envíos por Correo Argentino a todo el país. El costo del envío corre por cuenta del cliente. Los despachos se realizan en fecha pactada.</p>
+    </details>
 
-        <div style="margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
-          <h3 style="font-size: 1rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem;">¿TIENEN PRENDAS EN STOCK PERMANENTE?</h3>
-          <p style="font-size: 0.9rem; color: var(--text-muted);">No. Cada pieza es única y limitada. Nuestro catálogo se actualiza regularmente con nuevas llegadas. Te recomendamos seguir nuestras redes sociales para estar al tanto de los últimos ingresos.</p>
-        </div>
+    <details>
+      <summary>¿PUEDO RESERVAR UNA PRENDA?</summary>
+      <p>Sí, aceptamos reservas con una seña del 70% del valor total. La reserva tiene validez por 48 horas. Sin seña, no garantizamos la disponibilidad de la prenda. <strong>Una vez pasadas las 24 hs, no hay devolución de la seña.</strong></p>
+    </details>
 
-        <div style="margin-bottom: 2rem; padding-bottom: 1rem;">
-          <h3 style="font-size: 1rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem;">¿CÓMO ME CONTACTO CON USTEDES?</h3>
-          <p style="font-size: 0.9rem; color: var(--text-muted);">Podés escribirnos por WhatsApp al <strong>+54 9 3544 631553</strong> o seguirnos en Instagram <strong>@zyskn.vtg</strong>. Respondemos consultas de lunes a viernes en horario comercial.</p>
-        </div>
-      </div>
-    </section>
+    <details>
+      <summary>¿CÓMO VERIFICO EL ESTADO DE UNA PRENDA?</summary>
+      <p>Utilizamos una escala de 10/10 (perfecta) a 8/10 (buen estado con mínimo uso). Cada prenda incluye descripción detallada del estado. <strong>Podes contactarnos por whatsapp para fotos adicionales</strong> o consultas específicas.</p>
+    </details>
+
+    <details>
+      <summary>¿TIENEN PRENDAS EN STOCK PERMANENTE?</summary>
+      <p>No. Cada pieza es única y limitada. Nuestro catálogo se actualiza regularmente con nuevas llegadas. Te recomendamos seguir nuestras redes sociales para estar al tanto de los últimos ingresos.</p>
+    </details>
+
+    <details>
+      <summary>¿CÓMO ME CONTACTO CON NOSOTROS?</summary>
+      <p>Podés escribirnos por WhatsApp al <a href="https://wa.me/5493544631553" target="_blank" style="font-weight: 900; color: inherit; text-decoration: underline;">+54 9 3544 631553</a> o seguirnos en Instagram <a href="https://www.instagram.com/zyskn.vtg" target="_blank" style="font-weight: 900; color: inherit; text-decoration: underline;">@zyskn.vtg</a>. Respondemos consultas de lunes a viernes en horario comercial.</p>
+    </details>
+
+  </div>
+</section>
 
     <section id="account-section" style="background:#f9f9f9; border-top:1px solid #000;">
       <div style="max-width: 400px; margin: 0 auto; text-align:center;">
