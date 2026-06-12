@@ -1606,7 +1606,7 @@ function zoomImage(){
   if(isRes(currentProduct.id)){const m=String(Math.ceil(timeLeft(currentProduct.id)/60)).padStart(2,'0');alert('RESERVA ACTIVA · LIBERA EN '+m+':00');return}
   if(cart.find(i=>i.id===currentProduct.id)){alert('Ya en carrito');return}
   cart.push({...currentProduct,size:selectedSize});reserve(currentProduct.id);updateCartUI();
-  animateToCart(event,'#cart-icon');showNotification('RESERVA CONFIRMADA · 03:00');setTimeout(()=>scrollToSection('cart-section'),800);
+  animateToCart(event,'#cart-icon');showNotification('RESERVA CONFIRMADA · 05:00');setTimeout(()=>scrollToSection('cart-section'),800);
 }
 
     function updateCartUI() {
