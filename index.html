@@ -431,18 +431,29 @@ header.searching .nav-main {
 
     .search-input-container input {
   width: 100%;
-  padding: 0.7rem 0;
-  border: none;
-  border-bottom: 1px solid #fff;
+  height: 44px;
+  padding: 0 18px;
+  border: 1px solid #2a2a2a;
   border-radius: 0;
   outline: none;
-  font-family: inherit;
-  font-size: 0.75rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  background: #000;
+  background: #0a0a0a;
   color: #fff;
+  transition: all 0.2s ease;
+}
+
+.search-input-container input:focus {
+  border-color: #fff;
+  background: #111;
+}
+
+.search-input-container input::placeholder {
+  color: #666;
+  font-weight: 600;
 }
 
     .nav-icons { display: flex; gap: 1.5rem; align-items: center; flex-shrink: 0; }
@@ -574,31 +585,41 @@ header.searching .search-input-container {
   overflow: hidden !important;
 }
 
-header.searching .search-input-container input {
-  border-bottom: 1px solid #000 !important;
-  background: transparent !important;
-}
-      .search-input-container input { font-size: 0.67rem; padding: 0.5rem 1rem; }
-      .search-close-btn { 
-  position: absolute;
-  right: -28px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 22px;
-  height: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #000;
-  font-size: 18px;
-  line-height: 1;
-  z-index: 2;
+/* === SEARCH PREMIUM - UNIFICADO === */
+.search-input-container input {
+  width: 100%;
+  height: 44px !important;
+  padding: 0 18px !important;
+  border: 1px solid #2a2a2a !important;
+  background: #0a0a0a !important;
+  color: #fff !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  border-radius: 0 !important;
+  outline: none !important;
 }
 
-.search-input-container input {
-  padding-right: 12px !important;
-  height: 34px;
+.search-input-container input::placeholder {
+  color: #666 !important;
+}
+
+/* MÓVIL - que no la achique */
+@media (max-width: 1024px) {
+  header.searching .search-input-container {
+    width: 200px !important;
+  }
+  header.searching .search-input-container input {
+    height: 40px !important;
+    background: #0a !important;
+    border: 1px solid #2a2a !important;
+    font-size: 10px !important;
+  }
+  .search-close-btn {
+    color: #fff !important;
+    right: 8px !important;
+  }
 }
       .icon-btn { padding: 0.6rem; }
       .icon-btn svg { width: 22px; height: 22px; }
