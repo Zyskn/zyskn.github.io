@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZYSKN — Admin Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-thumb { background: #000; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
+    </style>
+</head>
+<body class="bg-white text-black min-h-screen">
+    <!-- LOGIN -->
+    <div id="login-screen" class="min-h-screen flex items-center justify-center p-6">
+        <div class="w-full max-w-sm">
+            <div class="text-center mb-12">
+                <h1 class="text-[2.5rem] font-bold tracking-[0.25em] leading-none">ZYSKN</h1>
+                <p class="text-[11px] uppercase tracking-[0.3em] text-neutral-500 mt-2">Vintage Store — Admin</p>
+            </div>
+            <div class="border border-black p-8">
+                <h2 class="text-sm uppercase tracking-widest font-semibold mb-6">Acceso</h2>
+                <form id="loginForm" class="space-y-5">
+                    <div>
+                        <label class="block text-[11px] uppercase tracking-wider mb-2 text-neutral-600">Contraseña</label>
+                        <input id="password" type="password" autocomplete="current-password" class="w-full border border-black px-4 py-3 text-[15px] focus:outline-none focus:ring-1 focus:ring-black" placeholder="••••••••••" required>
+                    </div>
+                    <button type="submit" class="w-full bg-black text-white py-3 text-[13px] uppercase tracking-widest font-medium hover:bg-neutral-900 active:bg-black transition">Entrar</button>
+                    <p id="loginError" class="text-[12px] text-red-600 hidden">Contraseña incorrecta</p>
+                </form>
+            </div>
+            <p class="text-[11px] text-neutral-400 text-center mt-8 uppercase tracking-wider">Diseño minimal — Black/White</p>
+        </div>
+    </div>
+
+    <!-- APP -->
+    <div id="app" class="hidden min-h-screen flex flex-col">
+        <header class="border-b border-black sticky top-0 bg-white z-30">
+            <div class="max-w-[1600px] mx-auto px-5 md:px-8 h-[64px] flex items-center justify-between">
+                <div class="flex items-center gap-5">
+                    <h1 class="text-[22px] font-bold tracking-[0.22em]">ZYSKN</h1>
+                    <span class="hidden sm:inline text-[10px] uppercase tracking-[0.25em] bg-black text-white px-2.5 py-1">ADMIN PANEL</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span id="productCount" class="text-[12px] text-neutral-500 hidden md:block">0 productos</span>
+                    <button id="btnLogout" class="text-[11px] uppercase tracking-widest hover:underline">Salir</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 max-w-[1600px] mx-auto w-full px-5 md:px-8 py-8 md:py-10">
+            <div class="grid grid-cols-1 xl:grid-cols-5 gap-10 xl:gap-12 items-start">
+                <!-- LEFT FORM -->
+                <section class="xl:col-span-3">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-[13px] uppercase tracking-[0.2em] font-semibold">Agregar / Editar Producto</h2>
+                        <button id="btnClear" class="text-[11px] uppercase tracking-wider text-neutral-500 hover:text-black">Limpiar formulario</button>
+                    </div>
+                    
+                    <form id="productForm" class="border border-black">
+                        <div class="p-6 md:p-8 space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div class="md:col-span-2">
+                                    <label class="block text-[11px] uppercase tracking-wider mb-2 font-medium">Nombre</label>
+                                    <input id="name" required class="w-full border border-neutral-300 px-3.5 py-2.5 text-[14px] focus:outline-none focus:border-black transition" placeholder="Polar Nike Vintage 90s">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] uppercase tracking-wider mb-2 font-medium">Precio (ARS)</label>
+                                    <input id="price" type="number" required min="0" step="100" class="w-full border border-neutral-300 px-3.5 py-2.5 text-[14px] focus:outline-none focus:border-black" placeholder="45999">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] uppercase tracking-wider mb-2 font-medium">Categoría</label>
+                                    <select id="category" class="w-full border border-neutral-300 px-3.5 py-2.5 text-[14px] bg-white focus:outline-none focus:border-black">
+                                        <option value="polares">polares</option>
+                                        <option value="remeras">remeras</option>
+                                        <option value="hoodies">hoodies</option>
+                                        <option value="camperas">camperas</option>
+                                        <option value="pantalones">pantalones</option>
+                                        <option value="jeans">jeans</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] uppercase tracking-wider mb-2 font-medium">Talle</label>
+                                    <input id="talle" class="w-full border border-neutral-300 px-3.5 py-2.5 text-[14px] focus:outline-none focus:border-black" placeholder="XL - Para L">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] uppercase tracking-wider mb-2 font-medium">Medidas</label>
+                                    <input id="medidas" class="w-full border border-neutral-300 px-3.5 py-2.5 text-[14px] focus:outline-none focus:border-black" placeholder="Largo 72cm, Ancho 60cm">
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-[11px] uppercase tracking-wider mb-2 font-medium">Estado</label>
+                                    <input id="estado" class="w-full border border-neutral-300 px-3.5 py-2.5 text-[14px] focus:outline-none focus:border-black" value="10/10 - Impecable">
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-[11px] uppercase tracking-wider mb-2 font-medium">Descripción <span class="text-neutral-400 normal-case">(HTML permitido)</span></label>
+                                    <textarea id="desc" rows="4" class="w-full border border-neutral-300 px-3.5 py-2.5 text-[14px] focus:outline-none focus:border-black resize-y" placeholder="Polar vintage original... <br> Detalles del bordado..."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
+                                <div>
+                                    <label class="block text-[11px] uppercase tracking-wider mb-2 font-medium">Foto principal</label>
+                                    <div class="border border-dashed border-neutral-400 p-3">
+                                        <input id="img1" type="file" accept="image/*" class="block w-full text-[12px] file:mr-3 file:py-1.5 file:px-3 file:border file:border-black file:bg-white file:text-[11px] file:uppercase file:tracking-wider hover:file:bg-black hover:file:text-white file:transition">
+                                        <div class="mt-3 aspect-[4/5] bg-neutral-100 overflow-hidden">
+                                            <img id="img1Preview" class="w-full h-full object-cover hidden" alt="preview">
+                                            <div id="img1Placeholder" class="w-full h-full flex items-center justify-center text-[11px] text-neutral-400 uppercase tracking-wider">Sin imagen</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] uppercase tracking-wider mb-2 font-medium">Foto hover <span class="text-neutral-400">(opcional)</span></label>
+                                    <div class="border border-dashed border-neutral-400 p-3">
+                                        <input id="img2" type="file" accept="image/*" class="block w-full text-[12px] file:mr-3 file:py-1.5 file:px-3 file:border file:border-black file:bg-white file:text-[11px] file:uppercase file:tracking-wider hover:file:bg-black hover:file:text-white file:transition">
+                                        <div class="mt-3 aspect-[4/5] bg-neutral-100 overflow-hidden">
+                                            <img id="img2Preview" class="w-full h-full object-cover hidden" alt="preview hover">
+                                            <div id="img2Placeholder" class="w-full h-full flex items-center justify-center text-[11px] text-neutral-400 uppercase tracking-wider">Sin imagen</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-3 pt-2">
+                                <label class="flex items-center gap-2.5 cursor-pointer select-none">
+                                    <input id="isNew" type="checkbox" class="w-4 h-4 border border-black text-black focus:ring-0">
+                                    <span class="text-[12px] uppercase tracking-wider font-medium">ES NUEVO</span>
+                                </label>
+                                <span class="text-[11px] text-neutral-500">Muestra badge en la tienda</span>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-black px-6 md:px-8 py-4 flex items-center justify-between bg-neutral-50">
+                            <span id="editingIndicator" class="text-[11px] uppercase tracking-wider text-neutral-500 hidden">Editando producto</span>
+                            <div class="flex gap-3 ml-auto">
+                                <button type="button" id="btnCancelEdit" class="hidden px-4 py-2.5 border border-black text-[12px] uppercase tracking-wider hover:bg-black hover:text-white transition">Cancelar</button>
+                                <button type="submit" class="bg-black text-white px-6 py-2.5 text-[12px] uppercase tracking-widest font-medium hover:bg-neutral-900 transition">Guardar producto</button>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- RIGHT PREVIEW & LIST -->
+                <aside class="xl:col-span-2 space-y-10">
+                    <div>
+                        <h3 class="text-[13px] uppercase tracking-[0.2em] font-semibold mb-4">Vista previa en vivo</h3>
+                        <div class="border border-black p-5 max-w-[320px]">
+                            <div class="group cursor-default">
+                                <div class="relative aspect-[4/5] bg-neutral-100 overflow-hidden mb-4">
+                                    <img id="pv-img1" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect width='100%25' height='100%25' fill='%23f5f5f5'/%3E%3C/svg%3E" alt="">
+                                    <img id="pv-img2" class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500" src="" alt="">
+                                    <span id="pv-new" class="absolute top-2.5 left-2.5 bg-black text-white text-[10px] px-2 py-1 uppercase tracking-widest font-medium hidden">Nuevo</span>
+                                </div>
+                                <h4 id="pv-name" class="font-medium text-[15px] leading-snug truncate">Nombre del producto</h4>
+                                <div class="flex items-baseline gap-2 mt-1.5">
+                                    <p id="pv-price" class="text-[15px]">$0</p>
+                                    <p id="pv-talle" class="text-[11px] text-neutral-500 uppercase tracking-wide"></p>
+                                </div>
+                                <p id="pv-estado" class="text-[11px] text-neutral-500 mt-2">10/10 - Impecable</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-[13px] uppercase tracking-[0.2em] font-semibold">Productos existentes</h3>
+                            <span id="listInfo" class="text-[11px] text-neutral-500">Cargando...</span>
+                        </div>
+                        <div id="productList" class="border border-black divide-y divide-neutral-200 max-h-[440px] overflow-y-auto bg-white">
+                            <div class="p-8 text-center text-[12px] text-neutral-400 uppercase tracking-wider">Sin productos</div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <!-- BOTTOM ACTIONS -->
+            <div class="mt-14 pt-8 border-t border-black">
+                <div class="flex flex-wrap gap-3">
+                    <button id="btnSaveLocal" class="bg-black text-white px-7 py-3 text-[12px] uppercase tracking-widest font-medium hover:bg-neutral-900 transition">Guardar Local</button>
+                    <button id="btnExport" class="border border-black px-7 py-3 text-[12px] uppercase tracking-widest font-medium hover:bg-black hover:text-white transition">Exportar JSON</button>
+                    <button id="btnPublish" class="border border-black px-7 py-3 text-[12px] uppercase tracking-widest font-medium hover:bg-black hover:text-white transition">Publicar en GitHub</button>
+                    <span class="text-[11px] text-neutral-500 self-center ml-2 hidden md:inline">Los cambios se guardan en localStorage automáticamente</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- GITHUB MODAL -->
+    <div id="githubModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-6">
+        <div class="bg-white w-full max-w-lg border border-black">
+            <div class="p-6 md:p-8">
+                <h3 class="text-[15px] uppercase tracking-widest font-semibold mb-5">Publicar en GitHub</h3>
+                <div class="space-y-4 text-[13px] leading-relaxed">
+                    <p>1. Ve a GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)</p>
+                    <p>2. Genera un token con scope <span class="font-mono bg-neutral-100 px-1.5 py-0.5">repo</span></p>
+                    <p>3. Pega el token abajo. No se guarda, solo se usa para esta publicación.</p>
+                </div>
+                <div class="mt-6 space-y-4">
+                    <div>
+                        <label class="block text-[11px] uppercase tracking-wider mb-2">GitHub Token</label>
+                        <input id="githubToken" type="password" class="w-full border border-black px-3.5 py-2.5 text-[13px] font-mono focus:outline-none focus:ring-1 focus:ring-black" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] uppercase tracking-wider mb-2">Owner</label>
+                            <input id="githubOwner" value="zyskn" class="w-full border border-neutral-300 px-3.5 py-2.5 text-[13px] focus:outline-none focus:border-black">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] uppercase tracking-wider mb-2">Repo</label>
+                            <input id="githubRepo" value="zyskn.github.io" class="w-full border border-neutral-300 px-3.5 py-2.5 text-[13px] focus:outline-none focus:border-black">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-3 mt-8">
+                    <button id="btnCancelGithub" class="flex-1 border border-black py-2.5 text-[12px] uppercase tracking-wider hover:bg-neutral-100">Cancelar</button>
+                    <button id="btnConfirmPublish" class="flex-1 bg-black text-white py-2.5 text-[12px] uppercase tracking-wider hover:bg-neutral-900">Publicar ahora</button>
+                </div>
+                <p id="githubStatus" class="text-[12px] mt-4 hidden"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="fixed top-6 right-6 z-[100] bg-black text-white px-5 py-3 text-[12px] uppercase tracking-widest font-medium shadow-lg translate-x-[120%] transition-transform duration-300">
+        Guardado
+    </div>
+
+<script>
+const $ = id => document.getElementById(id);
+let products = [];
+let editingId = null;
+let defaultHash = null;
+let draftTimer = null;
+
+async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function showToast(msg, ok = true) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.style.background = ok ? '#000' : '#dc2626';
+    t.style.transform = 'translateX(0)';
+    setTimeout(() => t.style.transform = 'translateX(120%)', 2400);
+}
+
+function slugify(str){
+    return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')
+}
+
+function formatPrice(n){
+    const num = Number(n) || 0;
+    return '$' + num.toLocaleString('es-AR');
+}
+
+function updatePreview(){
+    const name = $('name').value || 'Nombre del producto';
+    const price = $('price').value || 0;
+    const talle = $('talle').value;
+    const estado = $('estado').value;
+    const isNew = $('isNew').checked;
+    
+    $('pv-name').textContent = name;
+    $('pv-price').textContent = formatPrice(price);
+    $('pv-talle').textContent = talle ? talle.split(' ')[0] : '';
+    $('pv-estado').textContent = estado;
+    $('pv-new').classList.toggle('hidden', !isNew);
+    
+    // images handled by file inputs
+}
+
+function saveDraft(){
+    clearTimeout(draftTimer);
+    draftTimer = setTimeout(() => {
+        const draft = {
+            name: $('name').value,
+            price: $('price').value,
+            category: $('category').value,
+            talle: $('talle').value,
+            medidas: $('medidas').value,
+            estado: $('estado').value,
+            desc: $('desc').value,
+            isNew: $('isNew').checked,
+            img1: $('img1Preview').src,
+            img2: $('img2Preview').src
+        };
+        localStorage.setItem('zyskn_draft', JSON.stringify(draft));
+    }, 300);
+}
+
+function loadDraft(){
+    const d = localStorage.getItem('zyskn_draft');
+    if(!d) return;
+    try {
+        const draft = JSON.parse(d);
+        $('name').value = draft.name || '';
+        $('price').value = draft.price || '';
+        $('category').value = draft.category || 'polares';
+        $('talle').value = draft.talle || '';
+        $('medidas').value = draft.medidas || '';
+        $('estado').value = draft.estado || '10/10 - Impecable';
+        $('desc').value = draft.desc || '';
+        $('isNew').checked = !!draft.isNew;
+        if(draft.img1 && draft.img1.startsWith('data:')){
+            $('img1Preview').src = draft.img1;
+            $('img1Preview').classList.remove('hidden');
+            $('img1Placeholder').classList.add('hidden');
+            $('pv-img1').src = draft.img1;
+        }
+        if(draft.img2 && draft.img2.startsWith('data:')){
+            $('img2Preview').src = draft.img2;
+            $('img2Preview').classList.remove('hidden');
+            $('img2Placeholder').classList.add('hidden');
+            $('pv-img2').src = draft.img2;
+        }
+        updatePreview();
+    } catch {}
+}
+
+function handleImage(input, previewId, placeholderId, pvId){
+    const file = input.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        const src = e.target.result;
+        $(previewId).src = src;
+        $(previewId).classList.remove('hidden');
+        $(placeholderId).classList.add('hidden');
+        $(pvId).src = src;
+        saveDraft();
+    };
+    reader.readAsDataURL(file);
+}
+
+function renderList(){
+    const list = $('productList');
+    $('productCount').textContent = products.length + ' productos';
+    $('listInfo').textContent = products.length + ' items';
+    
+    if(!products.length){
+        list.innerHTML = '<div class="p-8 text-center text-[12px] text-neutral-400 uppercase tracking-wider">No hay productos cargados</div>';
+        return;
+    }
+    
+    list.innerHTML = products.map(p => `
+        <div class="flex items-center gap-4 p-3 hover:bg-neutral-50 transition group">
+            <div class="w-14 h-[70px] bg-neutral-100 overflow-hidden flex-shrink-0 border border-neutral-200">
+                <img src="${p.img || ''}" class="w-full h-full object-cover" alt="" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27%3E%3Crect width=%27100%25%27 height=%27100%25%27 fill=%27%23eee%27/%3E%3C/svg%3E'">
+            </div>
+            <div class="flex-1 min-w-0">
+                <p class="text-[13px] font-medium truncate">${p.name || 'Sin nombre'}</p>
+                <p class="text-[11px] text-neutral-500 mt-0.5">${formatPrice(p.price)} • ${p.category} • ${p.talle || ''}</p>
+            </div>
+            <div class="flex gap-1.5 opacity-0 group-hover:opacity-100 transition">
+                <button onclick="editProduct('${p.id}')" class="text-[11px] uppercase tracking-wider px-2.5 py-1 border border-black hover:bg-black hover:text-white">Editar</button>
+                <button onclick="deleteProduct('${p.id}')" class="text-[11px] uppercase tracking-wider px-2.5 py-1 border border-neutral-300 text-neutral-500 hover:border-red-600 hover:text-red-600">×</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function clearForm(){
+    editingId = null;
+    $('productForm').reset();
+    $('estado').value = '10/10 - Impecable';
+    $('category').value = 'polares';
+    $('img1Preview').classList.add('hidden');
+    $('img2Preview').classList.add('hidden');
+    $('img1Placeholder').classList.remove('hidden');
+    $('img2Placeholder').classList.remove('hidden');
+    $('pv-img1').src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect width='100%25' height='100%25' fill='%23f5f5f5'/%3E%3C/svg%3E";
+    $('pv-img2').src = '';
+    $('editingIndicator').classList.add('hidden');
+    $('btnCancelEdit').classList.add('hidden');
+    localStorage.removeItem('zyskn_draft');
+    updatePreview();
+}
+
+function getProductFromForm(){
+    const name = $('name').value.trim();
+    const price = Number($('price').value) || 0;
+    const category = $('category').value;
+    const talle = $('talle').value.trim();
+    const medidas = $('medidas').value.trim();
+    const estado = $('estado').value.trim();
+    const desc = $('desc').value.trim();
+    const isNew = $('isNew').checked;
+    const img1 = $('img1Preview').src && !$('img1Preview').classList.contains('hidden') ? $('img1Preview').src : '';
+    const img2 = $('img2Preview').src && !$('img2Preview').classList.contains('hidden') ? $('img2Preview').src : '';
+    
+    const id = editingId || (slugify(name) + '-' + Date.now().toString(36));
+    const sizes = Array.from(new Set((talle.match(/[0-9]+|[XSML]{1,3}/gi) || []).map(s => s.toUpperCase())));
+    
+    return {
+        id,
+        section: category,
+        category,
+        name,
+        price,
+        desc,
+        talle,
+        medidas,
+        estado,
+        img: img1,
+        img2,
+        sizes,
+        isNew
+    };
+}
+
+function editProduct(id){
+    const p = products.find(x => x.id === id);
+    if(!p) return;
+    editingId = id;
+    $('name').value = p.name || '';
+    $('price').value = p.price || '';
+    $('category').value = p.category || 'polares';
+    $('talle').value = p.talle || '';
+    $('medidas').value = p.medidas || '';
+    $('estado').value = p.estado || '10/10 - Impecable';
+    $('desc').value = p.desc || '';
+    $('isNew').checked = !!p.isNew;
+    
+    if(p.img){
+        $('img1Preview').src = p.img;
+        $('img1Preview').classList.remove('hidden');
+        $('img1Placeholder').classList.add('hidden');
+        $('pv-img1').src = p.img;
+    }
+    if(p.img2){
+        $('img2Preview').src = p.img2;
+        $('img2Preview').classList.remove('hidden');
+        $('img2Placeholder').classList.add('hidden');
+        $('pv-img2').src = p.img2;
+    }
+    
+    $('editingIndicator').classList.remove('hidden');
+    $('btnCancelEdit').classList.remove('hidden');
+    updatePreview();
+    window.scrollTo({top: 0, behavior: 'smooth'});
+    showToast('Editando: ' + p.name);
+}
+
+function deleteProduct(id){
+    if(!confirm('¿Eliminar producto?')) return;
+    products = products.filter(p => p.id !== id);
+    renderList();
+    showToast('Producto eliminado');
+    localStorage.setItem('zyskn_products', JSON.stringify(products));
+}
+
+async function loadProducts(){
+    try {
+        const res = await fetch('https://zyskn.github.io/productos.json', {cache: 'no-store'});
+        if(res.ok){
+            const data = await res.json();
+            if(Array.isArray(data)) products = data;
+        }
+    } catch(e){
+        console.warn('No se pudo cargar productos.json remoto');
+    }
+    const local = localStorage.getItem('zyskn_products');
+    if(local){
+        try {
+            const localData = JSON.parse(local);
+            if(Array.isArray(localData) && localData.length) products = localData;
+        } catch {}
+    }
+    renderList();
+}
+
+function showApp(){
+    $('login-screen').classList.add('hidden');
+    $('app').classList.remove('hidden');
+    loadProducts();
+    loadDraft();
+    updatePreview();
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    defaultHash = await sha256('keroyshyra99');
+    if(localStorage.getItem('zyskn_auth') === defaultHash){
+        showApp();
+    }
+    
+    $('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const pw = $('password').value;
+        const hash = await sha256(pw);
+        if(hash === defaultHash){
+            localStorage.setItem('zyskn_auth', defaultHash);
+            showApp();
+        } else {
+            $('loginError').classList.remove('hidden');
+            setTimeout(() => $('loginError').classList.add('hidden'), 2000);
+        }
+    });
+    
+    $('btnLogout').onclick = () => {
+        localStorage.removeItem('zyskn_auth');
+        location.reload();
+    };
+    
+    // Form listeners
+    ['name','price','category','talle','medidas','estado','desc','isNew'].forEach(id => {
+        $(id).addEventListener('input', () => { updatePreview(); saveDraft(); });
+    });
+    $('isNew').addEventListener('change', () => { updatePreview(); saveDraft(); });
+    
+    $('img1').addEventListener('change', () => handleImage($('img1'), 'img1Preview', 'img1Placeholder', 'pv-img1'));
+    $('img2').addEventListener('change', () => handleImage($('img2'), 'img2Preview', 'img2Placeholder', 'pv-img2'));
+    
+    $('productForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const prod = getProductFromForm();
+        if(!prod.name || !prod.price){
+            showToast('Completa nombre y precio', false);
+            return;
+        }
+        const idx = products.findIndex(p => p.id === editingId);
+        if(idx >= 0){
+            products[idx] = prod;
+            showToast('Producto actualizado');
+        } else {
+            products.unshift(prod);
+            showToast('Producto agregado');
+        }
+        renderList();
+        clearForm();
+        localStorage.setItem('zyskn_products', JSON.stringify(products));
+    });
+    
+    $('btnClear').onclick = clearForm;
+    $('btnCancelEdit').onclick = clearForm;
+    
+    $('btnSaveLocal').onclick = () => {
+        localStorage.setItem('zyskn_products', JSON.stringify(products));
+        showToast('Guardado local ✓');
+    };
+    
+    $('btnExport').onclick = () => {
+        const blob = new Blob([JSON.stringify(products, null, 2)], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'productos.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('JSON exportado');
+    };
+    
+    $('btnPublish').onclick = () => {
+        $('githubModal').classList.remove('hidden');
+        $('githubModal').classList.add('flex');
+    };
+    
+    $('btnCancelGithub').onclick = () => {
+        $('githubModal').classList.add('hidden');
+        $('githubModal').classList.remove('flex');
+    };
+    
+    $('btnConfirmPublish').onclick = async () => {
+        const token = $('githubToken').value.trim();
+        const owner = $('githubOwner').value.trim();
+        const repo = $('githubRepo').value.trim();
+        const status = $('githubStatus');
+        
+        if(!token){
+            status.textContent = 'Ingresa un token válido';
+            status.className = 'text-[12px] mt-4 text-red-600';
+            status.classList.remove('hidden');
+            return;
+        }
+        
+        status.textContent = 'Publicando...';
+        status.className = 'text-[12px] mt-4 text-neutral-600';
+        status.classList.remove('hidden');
+        
+        try {
+            const path = 'productos.json';
+            const api = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+            
+            // Get current file SHA
+            const getRes = await fetch(api, { headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' } });
+            if(!getRes.ok) throw new Error('No se pudo obtener el archivo. Verifica repo y permisos.');
+            const fileData = await getRes.json();
+            
+            const content = btoa(unescape(encodeURIComponent(JSON.stringify(products, null, 2))));
+            
+            const putRes = await fetch(api, {
+                method: 'PUT',
+                headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github.v3+json' },
+                body: JSON.stringify({
+                    message: `chore: update productos.json (${new Date().toISOString().slice(0,16)})`,
+                    content,
+                    sha: fileData.sha
+                })
+            });
+            
+            if(!putRes.ok){
+                const err = await putRes.json();
+                throw new Error(err.message || 'Error al publicar');
+            }
+            
+            status.textContent = '¡Publicado en GitHub correctamente!';
+            status.className = 'text-[12px] mt-4 text-green-600';
+            showToast('Publicado en GitHub ✓');
+            setTimeout(() => {
+                $('githubModal').classList.add('hidden');
+                $('githubModal').classList.remove('flex');
+                status.classList.add('hidden');
+            }, 1500);
+        } catch(err){
+            status.textContent = 'Error: ' + err.message;
+            status.className = 'text-[12px] mt-4 text-red-600';
+            showToast('Error al publicar', false);
+        }
+    };
+});
+
+// Expose for inline handlers
+window.editProduct = editProduct;
+window.deleteProduct = deleteProduct;
+</script>
+<script>(function(){document.addEventListener("click",function(e){var a=e.target.closest("[data-product-id]");if(!a)return;e.preventDefault();var pid=a.getAttribute("data-product-id");if(pid)parent.postMessage({type:"ecto-artifact-link-click",productId:pid},"*")})})();</script>
+</body>
+</html>
