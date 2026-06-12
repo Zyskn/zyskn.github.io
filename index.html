@@ -894,20 +894,33 @@ body.scrolled-down header#header {
   } 
 }
 
-/* Logo siempre negro, sin subrayado en móvil */
-.logo-section,
-.logo-section:link,
-.logo-section:visited,
-.logo-section:hover,
-.logo-section:active {
+/* ===== FIX LOGO NEGRO EN MÓVIL - DEFINITIVO ===== */
+header#header a.logo-section,
+header#header a.logo-section:link,
+header#header a.logo-section:visited,
+header#header a.logo-section:hover,
+header#header a.logo-section:active,
+header#header a.logo-section:focus {
   color: #000 !important;
   text-decoration: none !important;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-text-fill-color: #000 !important;
+  -webkit-tap-highlight-color: transparent !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
-.logo, .logo-slogan {
+
+header#header .logo,
+header#header .logo-slogan {
   color: #000 !important;
+  -webkit-text-fill-color: #000 !important;
   text-decoration: none !important;
-  border-bottom: none !important;
+}
+
+/* mantiene tu hover rojo en desktop */
+header#header a.logo-section:hover .logo {
+  color: var(--red) !important;
+  -webkit-text-fill-color: var(--red) !important;
 }
 </style>
 </head>
