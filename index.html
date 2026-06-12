@@ -861,6 +861,8 @@ body.scrolled-down header#header {
 #prevBtn, #nextBtn { opacity: 0; pointer-events: none; transition: opacity.3s; }
 #zoomContainer:hover #prevBtn, #zoomContainer:hover #nextBtn { opacity:.85; pointer-events: auto; }
 @media (max-width: 1024px) { #prevBtn, #nextBtn { opacity:.85!important; pointer-events: auto!important; } }
+    .logo-section { text-decoration: none; color: inherit; }
+.logo-section:hover .logo { color: var(--red) !important; }
 </style>
 </head>
 <body>
@@ -895,18 +897,14 @@ body.scrolled-down header#header {
 </div>
 
   <header id="header">
-    <div class="header-content">
-      <a href="https://www.instagram.com/zyskn.vtg" target="_blank" rel="noopener" class="logo-section" 
-   style="text-decoration: none; color: inherit; display: flex; flex-direction: column; cursor: pointer;"
-   onmouseover="this.querySelector('.logo').style.color='#A30000'" 
-   onmouseout="this.querySelector('.logo').style.color='#000'">
-  <span class="logo">ZYSKN</span>
-  <span class="logo-slogan">Curated Vintage</span>
-</a>
-      </div>
+  <div class="header-content">
+    <a href="https://www.instagram.com/zyskn.vtg" target="_blank" rel="noopener" class="logo-section">
+      <span class="logo">ZYSKN</span>
+      <span class="logo-slogan">Curated Vintage</span>
+    </a>
 
-      <div id="navContainer" class="nav-container">
-        <nav class="nav-main" id="navMain">
+    <div id="navContainer" class="nav-container">
+      <nav class="nav-main" id="navMain">
   <!-- BUSCADOR MÓVIL -->
   <div class="mobile-search" style="display:none; width:100%; padding:0; margin-bottom:1.8rem;">
   <div style="position:relative; border-bottom:1px solid #000;">
