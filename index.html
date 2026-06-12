@@ -894,33 +894,27 @@ body.scrolled-down header#header {
   } 
 }
 
-/* ===== FIX LOGO NEGRO EN MÓVIL - DEFINITIVO ===== */
-header#header a.logo-section,
-header#header a.logo-section:link,
-header#header a.logo-section:visited,
-header#header a.logo-section:hover,
-header#header a.logo-section:active,
-header#header a.logo-section:focus {
-  color: #000 !important;
-  text-decoration: none !important;
-  -webkit-text-fill-color: #000 !important;
+/* LOGO NEGRO DEFINITIVO - ya no es link */
+#header .logo-section {
+  display: flex !important;
+  flex-direction: column !important;
+  cursor: pointer !important;
   -webkit-tap-highlight-color: transparent !important;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
+  user-select: none !important;
 }
-
-header#header .logo,
-header#header .logo-slogan {
+#header .logo {
   color: #000 !important;
-  -webkit-text-fill-color: #000 !important;
-  text-decoration: none !important;
+  font-size: 2rem !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.02em !important;
+  text-transform: uppercase !important;
 }
-
-/* mantiene tu hover rojo en desktop */
-header#header a.logo-section:hover .logo {
-  color: var(--red) !important;
-  -webkit-text-fill-color: var(--red) !important;
+#header .logo-slogan {
+  color: #333 !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  margin-top: -4px !important;
 }
 </style>
 </head>
@@ -957,10 +951,10 @@ header#header a.logo-section:hover .logo {
 
   <header id="header">
   <div class="header-content">
-    <a href="https://www.instagram.com/zyskn.vtg" target="_blank" rel="noopener" class="logo-section">
-      <span class="logo">ZYSKN</span>
-      <span class="logo-slogan">Curated Vintage</span>
-    </a>
+    <div class="logo-section" onclick="window.open('https://instagram.com/zyskn.vtg','_blank')" style="cursor:pointer">
+  <span class="logo">ZYSKN</span>
+  <span class="logo-slogan">Curated Vintage</span>
+</div>
 
     <div id="navContainer" class="nav-container">
       <nav class="nav-main" id="navMain">
