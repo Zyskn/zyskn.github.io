@@ -194,12 +194,12 @@ header {
   z-index: 2000;
   background: #ffffff;
   border-bottom: 1px solid #000;
-  transition: top 0.12s ease, padding 0.12s ease !important;
+  transition: top 0.12s ease !important;
   padding: 1rem 3rem !important;
 }
-header.scrolled { padding: 0.7rem 3rem !important; }
 .logo { font-size: 2rem !important; }
 .logo-slogan { font-size: 0.75rem !important; }
+
 .marquee-content {
   display: flex;
   width: max-content;
@@ -237,7 +237,8 @@ a[href*="3544"] svg {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
-header.scrolled { padding: 1.2rem 3rem; }
+
+/* ELIMINADO: header.scrolled para que no cambie altura */
 
 .header-content {
   max-width: 100%;
@@ -272,16 +273,11 @@ header.searching .nav-main {
   transform: translateX(-40px);
   pointer-events: none;
 }
-
-/* NUEVO - centrado entre logo y barra */
-@media (min-width: 1025px) {
+    @media (min-width: 1025px) {
   header.searching .nav-main {
-    position: absolute;
-    left: calc(50% - 210px); /* 85px = mitad del buscador, ajustalo */
-    top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-40px);
+    opacity: 0.4;
     pointer-events: none;
-    opacity: 1;
   }
 }
     .nav-item { position: relative; padding: 1.5rem 0; }
@@ -499,7 +495,6 @@ header.searching .search-input-container {
 
     @media (max-width: 1024px) {
   .top-bar { height: 28px !important; font-size: 0.7rem !important; }
-  header.scrolled { padding: 0.75rem 1.2rem !important; }
   .logo { font-size: 1.45rem; }
   .logo-slogan { font-size: 0.62rem; margin-top: 0.1rem; }
   .header-content { padding: 0; gap: 1rem; }
