@@ -413,7 +413,7 @@
             </div>
           </div>
           <div class="nav-item"><a href="javascript:void(0)" onclick="applyFilter('all','all')">TODO</a></div>
-          <div class="nav-item nav-item-new"><a href="javascript:void(0)" onclick="scrollToSection('nuevo-section')">NEW</a></div>
+          <div class="nav-item nav-item-new"><a href="javascript:void(0)" onclick="scrollToSection('nuevo-section')">NUEVO</a></div>
           <div class="nav-item">
             <a href="javascript:void(0)" onclick="applyFilter('section','arriba')">ARRIBA</a>
             <div class="sub-nav-wrapper">
@@ -476,6 +476,24 @@
         <p>ZYSKN CURATED ARCHIVE · EST. 2026</p>
       </div>
     </section>
+
+    <!-- FILTROS -->
+    <div id="filter-bar">
+      <div class="filter-inner">
+        <button class="filter-btn active" onclick="applyFilter('all','all')" data-filter="all">TODO</button>
+        <div class="filter-sep"></div>
+        <button class="filter-btn" onclick="applyFilter('section','arriba')" data-filter="arriba">ARRIBA</button>
+        <button class="filter-btn" onclick="applyFilter('section','abajo')" data-filter="abajo">ABAJO</button>
+        <div class="filter-sep"></div>
+        <button class="filter-btn" onclick="applyFilter('size','S')" data-filter="S">S</button>
+        <button class="filter-btn" onclick="applyFilter('size','M')" data-filter="M">M</button>
+        <button class="filter-btn" onclick="applyFilter('size','L')" data-filter="L">L</button>
+        <button class="filter-btn" onclick="applyFilter('size','XL')" data-filter="XL">XL</button>
+        <button class="filter-btn" onclick="applyFilter('size','XXL')" data-filter="XXL">XXL</button>
+        <div class="filter-sep"></div>
+        <button class="filter-btn active-red" onclick="applyFilter('new','true')" data-filter="new">NUEVO</button>
+      </div>
+    </div>
 
     <!-- NEW ARRIVALS -->
     <section id="nuevo-section">
