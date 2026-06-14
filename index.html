@@ -613,51 +613,78 @@
     }
 
     .products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.5rem;
-    }
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
 
-    .product-card {
-      cursor: pointer;
-      transition: transform 0.5s var(--ease-out);
-      position: relative;
-    }
-    .product-card:hover { transform: translateY(-5px); }
+.product-card {
+  cursor: pointer;
+  transition: transform 0.5s var(--ease-out);
+  position: relative;
+}
+.product-card:hover { transform: translateY(-5px); }
 
-    .product-image {
-      width: 100%;
-      aspect-ratio: 4/5;
-      background: var(--gray-bg);
-      overflow: hidden;
-      margin-bottom: 0.9rem;
-      position: relative;
-    }
-    .product-image img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      transition: transform 0.7s var(--ease-out), filter 0.5s ease;
-    }
-    .product-card:hover .product-image img {
-      transform: scale(1.07);
-      filter: brightness(1.03);
-    }
+.product-image {
+  width: 100%;
+  aspect-ratio: 4/5;
+  background: var(--gray-bg);
+  overflow: hidden;
+  margin-bottom: 0.9rem;
+  position: relative;
+}
+.product-image img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease-out), filter 0.5s ease;
+}
+.product-card:hover .product-image img {
+  transform: scale(1.07);
+  filter: brightness(1.03);
+}
 
-    .product-meta {
-      display: flex; justify-content: space-between; align-items: flex-start;
-    }
-    .product-name {
-      font-size: 0.8rem; font-weight: 800;
-      text-transform: uppercase; letter-spacing: 0.04em;
-    }
-    .product-cat {
-      font-size: 0.68rem; font-weight: 600;
-      color: var(--text-faint); text-transform: uppercase;
-      letter-spacing: 0.06em; margin-top: 2px;
-    }
-    .product-price {
-      font-size: 0.82rem; font-weight: 700; white-space: nowrap;
-    }
+.product-meta {
+  display: flex; justify-content: space-between; align-items: flex-start;
+}
+.product-name {
+  font-size: 0.8rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.product-name-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.fav-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  line-height: 1;
+}
+.fav-btn svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: #bbb;
+  stroke-width: 1.8px;
+  transition: all 0.2s ease;
+}
+.fav-btn.active svg {
+  fill: var(--red);
+  stroke: var(--red);
+}
+.fav-btn:hover svg { transform: scale(1.15); }
+
+.product-cat {
+  font-size: 0.68rem; font-weight: 600;
+  color: var(--text-faint); text-transform: uppercase;
+  letter-spacing: 0.06em; margin-top: 2px;
+}
+.product-price {
+  font-size: 0.82rem; font-weight: 700; white-space: nowrap;
+}
 
     /* Estado / reservado / vendido */
     .product-card.reserved { cursor: pointer; }
@@ -1444,23 +1471,35 @@
     const RESERVE_TIME = 5*60*1000;
     let vendidos = {};
 
-    function saveRes(){ localStorage.setItem('zysk_res',JSON.stringify(reservations)); }
-    function reserve(id){ reservations[id]=Date.now()+RESERVE_TIME; saveRes(); }
-    function isRes(id){ if(!reservations[id])return false; if(Date.now()>reservations[id]){delete reservations[id];saveRes();return false;} return true; }
-    function timeLeft(id){ return Math.max(0,Math.floor((reservations[id]-Date.now())/1000)); }
+// FAVORITOS
+let favs = JSON.parse(localStorage.getItem('zysk_favs')||'[]');
+function isFav(id){ return favs.includes(id); }
+function toggleFav(id, e){
+  e.stopPropagation();
+  const i = favs.indexOf(id);
+  if(i>-1){ favs.splice(i,1); } else { favs.push(id); }
+  localStorage.setItem('zysk_favs', JSON.stringify(favs));
+  renderProducts(products,'productsGrid');
+  renderProducts(products.filter(p=>p.isNew),'newProductsGrid');
+}
 
-    function startReserveTimer(){
-      setInterval(()=>{
-        let changed=false;
-        Object.keys(reservations).forEach(i=>{
-          if(Date.now()>reservations[i]){
-            delete reservations[i]; cart=cart.filter(p=>p.id!==i); changed=true; showNotification('RESERVA FINALIZADA');
-          }
-        });
-        if(changed){ saveRes(); localStorage.setItem('zysk_cart',JSON.stringify(cart)); renderProducts(products,'productsGrid'); renderProducts(products.filter(p=>p.isNew),'newProductsGrid'); }
-        updateCartUI();
-      },1000);
-    }
+function saveRes(){ localStorage.setItem('zysk_res',JSON.stringify(reservations)); }
+function reserve(id){ reservations[id]=Date.now()+RESERVE_TIME; saveRes(); }
+function isRes(id){ if(!reservations[id])return false; if(Date.now()>reservations[id]){delete reservations[id];saveRes();return false;} return true; }
+function timeLeft(id){ return Math.max(0,Math.floor((reservations[id]-Date.now())/1000)); }
+
+function startReserveTimer(){
+  setInterval(()=>{
+    let changed=false;
+    Object.keys(reservations).forEach(i=>{
+      if(Date.now()>reservations[i]){
+        delete reservations[i]; cart=cart.filter(p=>p.id!==i); changed=true; showNotification('RESERVA FINALIZADA');
+      }
+    });
+    if(changed){ saveRes(); localStorage.setItem('zysk_cart',JSON.stringify(cart)); renderProducts(products,'productsGrid'); renderProducts(products.filter(p=>p.isNew),'newProductsGrid'); }
+    updateCartUI();
+  },1000);
+}
 
     localStorage.removeItem('zysk_admin'); localStorage.removeItem('zysk_admin_time');
     let adminMode = false;
@@ -1488,18 +1527,26 @@
     function init(){ renderProducts(products,'productsGrid'); renderProducts(products.filter(p=>p.isNew),'newProductsGrid'); updateCartUI(); startReserveTimer(); }
 
     function renderProducts(list, gridId){
-      const grid=document.getElementById(gridId); if(!grid) return;
-      grid.innerHTML = list.map(p=>{
-        const r=isRes(p.id), s=p.sold;
-        return `<div class="product-card ${r?'reserved':''} ${s?'sold':''}" onclick="showProductDetail('${p.id}')">
-          <div class="product-image"><img src="${p.img}" alt="${p.name}" onmouseenter="this.src='${p.img2||p.img}'" onmouseleave="this.src='${p.img}'" loading="lazy"></div>
-          <div class="product-meta">
-            <div><p class="product-name">${p.name}</p><p class="product-cat">${p.category}</p></div>
-            <p class="product-price">$${p.price.toLocaleString('es-AR')}</p>
+  const grid=document.getElementById(gridId); if(!grid) return;
+  grid.innerHTML = list.map(p=>{
+    const r=isRes(p.id), s=p.sold;
+    return `<div class="product-card ${r?'reserved':''} ${s?'sold':''}" onclick="showProductDetail('${p.id}')">
+      <div class="product-image"><img src="${p.img}" alt="${p.name}" onmouseenter="this.src='${p.img2||p.img}'" onmouseleave="this.src='${p.img}'" loading="lazy"></div>
+      <div class="product-meta">
+        <div>
+          <div class="product-name-wrap">
+            <p class="product-name">${p.name}</p>
+            <button class="fav-btn ${isFav(p.id)?'active':''}" onclick="toggleFav('${p.id}',event)" aria-label="Favorito">
+              <svg viewBox="0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </button>
           </div>
-        </div>`;
-      }).join('');
-    }
+          <p class="product-cat">${p.category}</p>
+        </div>
+        <p class="product-price">$${p.price.toLocaleString('es-AR')}</p>
+      </div>
+    </div>`;
+  }).join('');
+}
 
     /* ============================================================
        FILTERS / SEARCH
