@@ -424,8 +424,8 @@ function loadDraft(){
                 $(`img${i}Preview`).src = draft[`img${i}`];
                 $(`img${i}Preview`).classList.remove('hidden');
                 $(`img${i}Placeholder`).classList.add('hidden');
-                if(i===1) $(`pv-img1`).src = draft[`img${i}`];
-                if(i===2) $(`pv-img2`).src = draft[`img${i}`];
+                if(i===1) $('pv-img1').src = draft[`img${i}`];
+                if(i===2) $('pv-img2').src = draft[`img${i}`];
             }
         }
         
