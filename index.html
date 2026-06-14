@@ -936,36 +936,52 @@
     }
 
     .social-links {
-      display: flex;
-      justify-content: center;
-      gap: 48px;
-      flex-wrap: wrap;
-    }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 0 auto;
+}
 
-    .social-item {
-      display: flex; flex-direction: column;
-      align-items: center; gap: 14px;
-      text-decoration: none; color: var(--black);
-      transition: transform 0.3s var(--ease-out);
-    }
-    .social-item:hover { transform: translateY(-4px); }
+.social-item {
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-decoration: none; 
+  color: var(--black);
+  transition: transform 0.3s var(--ease-out);
+  text-align: center;
+}
 
-    .social-circle {
-      width: 56px; height: 56px;
-      background: var(--black); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.3s ease, box-shadow 0.3s ease;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-    }
-    .social-circle svg  { width: 28px; height: 28px; fill: #fff; display: block; }
-    .social-circle img  { width: 28px; height: 28px; display: block; filter: brightness(0) invert(1); }
+.social-item:hover { transform: translateY(-4px); }
 
-    .social-item.wa:hover  .social-circle { background: #25D366; box-shadow: 0 6px 20px rgba(37,211,102,0.3); }
-    .social-item.ig:hover  .social-circle {
-      background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-      box-shadow: 0 6px 20px rgba(214,36,159,0.3);
-    }
-    .social-item.tt:hover .social-circle { background: #010101; box-shadow: -2px -2px 0 #25F4EE, 2px 2px 0 #FE2C55, 0 6px 20px rgba(0,0,0,0.25); }
+.social-circle {
+  width: 56px; height: 56px;
+  background: var(--black); 
+  border-radius: 50%;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0,0,0.12);
+  margin: 0 auto;
+}
+
+.social-circle svg { width: 28px; height: 28px; fill: #fff; display: block; }
+.social-circle img { width: 28px; height: 28px; display: block; filter: brightness(0) invert(1); }
+
+.social-item.wa:hover .social-circle { background: #25D366; box-shadow: 0 6px 20px rgba(37,211,102,0.3); }
+.social-item.ig:hover .social-circle {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+  box-shadow: 0 6px 20px rgba(214,36,159,0.3);
+}
+.social-item.tt:hover .social-circle { 
+  background: #010101; 
+  box-shadow: -2px -2px 0 #25F4EE, 2px 2px 0 #FE2C55, 0 6px 20px rgba(0,0,0,0.25); 
 }
 
     .social-label {
