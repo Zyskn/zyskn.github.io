@@ -521,7 +521,13 @@
     .hero::before {
       content: '';
       position: absolute; inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 50% 110%, rgba(163,0,0,0.18) 0%, transparent 70%);
+      background: radial-gradient(ellipse 65vw 55vh at 50% 100%, rgba(163,0,0,0.22) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    @media (max-width: 768px) {
+      .hero::before {
+        background: radial-gradient(ellipse 95vw 45vh at 50% 100%, rgba(163,0,0,0.24) 0%, transparent 70%);
+      }
     }
     .hero-content { position: relative; z-index: 1; padding: 0 2rem; }
 
@@ -561,6 +567,12 @@
       border-color: var(--black);
     }
     .btn-dark:hover { background: transparent; color: var(--black); }
+
+    .btn-danger {
+      background: transparent; color: var(--red);
+      border-color: var(--red);
+    }
+    .btn-danger:hover { background: var(--red); color: #fff; }
 
     /* ============================================================
        MANIFESTO
@@ -1407,6 +1419,7 @@
           <p style="font-weight:900;text-transform:uppercase;margin-bottom:.4rem;font-size:.85rem;letter-spacing:.06em;" id="userDisplayName"></p>
           <p id="userDisplay" style="font-size:.75rem;color:var(--text-muted);margin-bottom:2rem;"></p>
           <button class="btn btn-dark" onclick="handleAuth('logout')" style="width:100%;padding:1rem;">CERRAR SESIÓN</button>
+          <button class="btn btn-danger" onclick="handleDeleteAccount()" style="width:100%;padding:1rem;margin-top:.8rem;">ELIMINAR CUENTA</button>
         </div>
       </div>
     </section>
@@ -1741,6 +1754,21 @@
         document.getElementById('loginForm').style.display = 'block';
         showNotification('SESIÓN CERRADA');
       }
+    }
+
+    function handleDeleteAccount() {
+      if(!confirm('¿Estás seguro de que querés eliminar tu cuenta? Se borrará tu perfil y tus favoritos guardados en este dispositivo. Esta acción no se puede deshacer.')) return;
+      try {
+        if(window.google && google.accounts && google.accounts.id) {
+          google.accounts.id.disableAutoSelect();
+        }
+      } catch(e) {}
+      sessionStorage.removeItem('zysk_user');
+      localStorage.removeItem('zysk_favs');
+      document.getElementById('userAuth').innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>LOGIN';
+      document.getElementById('profileView').style.display = 'none';
+      document.getElementById('loginForm').style.display = 'block';
+      showNotification('CUENTA ELIMINADA');
     }
 
     function toggleAuthView(type){ /* legacy */ }
