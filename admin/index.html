@@ -9,282 +9,860 @@
   <style>
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     :root {
-      --red:#A30000; --black:#000; --white:#fff;
-      --gray:#F5F5F5; --gray-mid:#e8e8e8; --muted:#666;
-      --green:#16a34a; --orange:#ea580c;
+      --red:#A30000; --black:#0a0a0a; --white:#fff;
+      --gray:#F2F2F2; --gray-mid:#e0e0e0; --gray-dark:#c0c0c0;
+      --muted:#888; --muted-light:#bbb;
+      --green:#16a34a; --green-light:#dcfce7; --green-dark:#166534;
+      --orange:#ea580c; --orange-light:#fff7ed;
+      --surface:#fff; --surface2:#fafafa;
       --ease: cubic-bezier(0.16,1,0.3,1);
+      --ease-out: cubic-bezier(0.0, 0, 0.2, 1);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.04);
+      --shadow-lg: 0 20px 60px rgba(0,0,0,.12), 0 4px 12px rgba(0,0,0,.06);
+      --radius: 4px;
     }
-    body { font-family:'Inter',sans-serif; background:var(--gray); color:var(--black); min-height:100vh; }
 
-    /* ── LOGIN ── */
+    /* ── ANIMATIONS ── */
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    @keyframes slideUp { from{transform:translateY(24px);opacity:0} to{transform:translateY(0);opacity:1} }
+    @keyframes slideDown { from{transform:translateY(-12px);opacity:0} to{transform:translateY(0);opacity:1} }
+    @keyframes slideInLeft { from{transform:translateX(-20px);opacity:0} to{transform:translateX(0);opacity:1} }
+    @keyframes spin { to{transform:rotate(360deg)} }
+    @keyframes shimmer {
+      0%{background-position:-600px 0}
+      100%{background-position:600px 0}
+    }
+    @keyframes toastIn { from{transform:translateY(100%) scale(.95);opacity:0} to{transform:translateY(0) scale(1);opacity:1} }
+    @keyframes toastOut { to{transform:translateY(100%) scale(.95);opacity:0} }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+    @keyframes statCount { from{transform:scale(.8);opacity:0} to{transform:scale(1);opacity:1} }
+    @keyframes badgePop { 0%{transform:scale(0)} 70%{transform:scale(1.15)} 100%{transform:scale(1)} }
+    @keyframes rowSlideIn { from{transform:translateX(-12px);opacity:0} to{transform:translateX(0);opacity:1} }
+    @keyframes cardEntrance { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+    @keyframes ringPulse { 0%,100%{box-shadow:0 0 0 0 rgba(163,0,0,.3)} 50%{box-shadow:0 0 0 6px rgba(163,0,0,0)} }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration:0.001ms !important; transition-duration:0.001ms !important; }
+    }
+
+    body {
+      font-family:'Inter',sans-serif;
+      background:var(--gray);
+      color:var(--black);
+      min-height:100vh;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    /* ══ LOGIN ══ */
     #loginScreen {
       display:flex; align-items:center; justify-content:center;
       min-height:100vh; padding:2rem;
+      background:linear-gradient(135deg,#0a0a0a 0%,#1a0000 100%);
+      animation:fadeIn .5s ease;
     }
     .login-box {
-      background:#fff; border:1px solid rgba(0,0,0,.1);
-      padding:3rem 2.5rem; width:100%; max-width:380px;
-      box-shadow:0 20px 60px rgba(0,0,0,.08);
+      background:#fff;
+      padding:3.5rem 3rem;
+      width:100%; max-width:400px;
+      box-shadow:var(--shadow-lg);
+      animation:slideUp .5s var(--ease);
     }
-    .login-logo { font-size:2rem; font-weight:900; letter-spacing:-.04em; margin-bottom:.2rem; }
-    .login-sub { font-size:.62rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.18em; margin-bottom:2.5rem; }
-    .login-box label { display:block; font-size:.62rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em; margin-bottom:.3rem; }
+    .login-logo {
+      font-size:2.4rem; font-weight:900; letter-spacing:-.05em;
+      margin-bottom:.15rem; color:var(--black);
+    }
+    .login-logo span { color:var(--red); }
+    .login-sub {
+      font-size:.58rem; font-weight:800; color:var(--muted);
+      text-transform:uppercase; letter-spacing:.22em; margin-bottom:2.5rem;
+    }
+    .login-divider {
+      height:1px; background:linear-gradient(90deg,var(--red),transparent);
+      margin-bottom:2rem; width:40px;
+    }
+    .login-box label {
+      display:block; font-size:.6rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:.12em;
+      margin-bottom:.35rem; color:var(--black);
+    }
     .login-box input {
-      width:100%; padding:.75rem; border:1.5px solid var(--gray-mid);
-      font-size:.85rem; font-family:'Inter',sans-serif; outline:none;
-      margin-bottom:1rem; transition:border-color .2s;
+      width:100%; padding:.8rem 1rem;
+      border:1.5px solid var(--gray-mid);
+      font-size:.85rem; font-family:'Inter',sans-serif;
+      outline:none; margin-bottom:1.1rem;
+      transition:border-color .2s, box-shadow .2s;
+      border-radius:var(--radius);
+      background:var(--surface2);
     }
-    .login-box input:focus { border-color:var(--black); }
+    .login-box input:focus {
+      border-color:var(--black);
+      box-shadow:0 0 0 3px rgba(0,0,0,.06);
+      background:#fff;
+    }
     .btn-login {
       width:100%; background:var(--black); color:#fff; border:none;
-      padding:.9rem; font-size:.78rem; font-weight:800; text-transform:uppercase;
-      letter-spacing:.1em; cursor:pointer; transition:opacity .2s;
-      font-family:'Inter',sans-serif;
+      padding:1rem; font-size:.72rem; font-weight:900;
+      text-transform:uppercase; letter-spacing:.14em; cursor:pointer;
+      font-family:'Inter',sans-serif; border-radius:var(--radius);
+      transition:transform .15s var(--ease), opacity .2s;
+      position:relative; overflow:hidden;
     }
-    .btn-login:hover { opacity:.85; }
-    #loginError { color:var(--red); font-size:.72rem; font-weight:700; margin-top:.8rem; display:none; }
+    .btn-login::after {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);
+      transform:translateX(-100%); transition:transform .4s;
+    }
+    .btn-login:hover::after { transform:translateX(100%); }
+    .btn-login:hover { opacity:.88; }
+    .btn-login:active { transform:scale(.98); }
+    #loginError {
+      color:var(--red); font-size:.7rem; font-weight:800;
+      margin-top:.8rem; display:none;
+      animation:slideDown .2s ease;
+    }
 
-    /* ── LAYOUT ── */
-    #adminApp { display:none; min-height:100vh; }
+    /* ══ LAYOUT ══ */
+    #adminApp { display:none; min-height:100vh; animation:fadeIn .3s ease; }
+
     .admin-header {
-      background:var(--black); color:#fff; padding:1rem 2rem;
+      background:var(--black); color:#fff;
+      padding:0 2rem;
       display:flex; justify-content:space-between; align-items:center;
       position:sticky; top:0; z-index:100;
+      height:60px;
+      box-shadow:0 2px 20px rgba(0,0,0,.3);
     }
-    .admin-logo { font-size:1.2rem; font-weight:900; letter-spacing:-.03em; }
-    .admin-logo span { color:var(--red); font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.18em; display:block; margin-top:1px; }
-    .header-right { display:flex; align-items:center; gap:1rem; }
-    .admin-user { font-size:.65rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#888; }
+    .admin-logo { font-size:1.3rem; font-weight:900; letter-spacing:-.04em; display:flex; align-items:center; gap:.6rem; }
+    .admin-logo-dot {
+      width:7px; height:7px; background:var(--red); border-radius:50%;
+      animation:ringPulse 2s infinite;
+    }
+    .admin-logo-sub {
+      font-size:.52rem; font-weight:700; color:#555;
+      text-transform:uppercase; letter-spacing:.2em;
+      margin-left:.4rem;
+    }
+    .header-right { display:flex; align-items:center; gap:1.2rem; }
+    .admin-user {
+      font-size:.6rem; font-weight:700; text-transform:uppercase;
+      letter-spacing:.08em; color:#555;
+    }
     .btn-logout {
-      background:none; border:1px solid #333; color:#888;
-      padding:.4rem .9rem; font-size:.6rem; font-weight:800; text-transform:uppercase;
-      letter-spacing:.08em; cursor:pointer; font-family:'Inter',sans-serif; transition:all .2s;
+      background:none; border:1px solid #2a2a2a; color:#555;
+      padding:.4rem 1rem; font-size:.6rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:.08em; cursor:pointer;
+      font-family:'Inter',sans-serif;
+      border-radius:var(--radius);
+      transition:all .2s;
     }
-    .btn-logout:hover { border-color:#fff; color:#fff; }
+    .btn-logout:hover { border-color:#fff; color:#fff; background:rgba(255,255,255,.05); }
 
+    /* NAV */
     .admin-nav {
-      background:#fff; border-bottom:1px solid rgba(0,0,0,.08);
-      padding:0 2rem; display:flex; gap:0;
+      background:var(--surface);
+      border-bottom:1px solid rgba(0,0,0,.07);
+      padding:0 2rem;
+      display:flex; gap:0;
+      position:sticky; top:60px; z-index:90;
+      box-shadow:var(--shadow-sm);
     }
     .tab-btn {
-      padding:1rem 1.5rem; font-size:.7rem; font-weight:800; text-transform:uppercase;
-      letter-spacing:.1em; border:none; background:none; cursor:pointer;
-      border-bottom:2px solid transparent; color:var(--muted); transition:all .2s;
-      font-family:'Inter',sans-serif;
+      padding:.9rem 1.6rem; font-size:.64rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:.1em;
+      border:none; background:none; cursor:pointer;
+      border-bottom:2px solid transparent;
+      color:var(--muted); transition:color .2s, border-color .2s;
+      font-family:'Inter',sans-serif; position:relative;
     }
     .tab-btn.active { color:var(--black); border-bottom-color:var(--red); }
-    .tab-btn:hover { color:var(--black); }
-
-    .admin-content { padding:2rem; max-width:1200px; margin:0 auto; }
-
-    /* ── CARDS ── */
-    .stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin-bottom:2rem; }
-    .stat-card {
-      background:#fff; padding:1.5rem; border:1px solid rgba(0,0,0,.06);
-      display:flex; flex-direction:column; gap:.3rem;
+    .tab-btn:hover:not(.active) { color:var(--black); }
+    .tab-badge {
+      display:inline-flex; align-items:center; justify-content:center;
+      min-width:18px; height:18px; padding:0 5px;
+      background:var(--red); color:#fff;
+      font-size:.5rem; font-weight:900; border-radius:10px;
+      margin-left:.4rem;
+      animation:badgePop .3s var(--ease);
     }
-    .stat-num { font-size:2rem; font-weight:900; }
-    .stat-label { font-size:.62rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); }
+
+    .admin-content { padding:2rem; max-width:1280px; margin:0 auto; }
+
+    /* ══ STAT CARDS ══ */
+    .stats-row {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+      gap:1rem; margin-bottom:2rem;
+    }
+    .stat-card {
+      background:var(--surface);
+      padding:1.5rem 1.5rem 1.3rem;
+      border:1px solid rgba(0,0,0,.06);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow-sm);
+      display:flex; flex-direction:column; gap:.3rem;
+      transition:transform .2s var(--ease), box-shadow .2s;
+      cursor:default;
+      position:relative; overflow:hidden;
+    }
+    .stat-card::before {
+      content:''; position:absolute;
+      top:0; left:0; right:0; height:2px;
+    }
+    .stat-card:hover {
+      transform:translateY(-2px);
+      box-shadow:var(--shadow-md);
+    }
+    .stat-card.red::before { background:var(--red); }
+    .stat-card.green::before { background:var(--green); }
+    .stat-card.orange::before { background:var(--orange); }
+    .stat-card.capital::before { background:linear-gradient(90deg,var(--red),var(--orange)); }
+    .stat-num {
+      font-size:1.8rem; font-weight:900; letter-spacing:-.03em;
+      line-height:1;
+      animation:statCount .4s var(--ease);
+    }
+    .stat-label {
+      font-size:.58rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:.1em; color:var(--muted);
+    }
     .stat-card.red .stat-num { color:var(--red); }
     .stat-card.green .stat-num { color:var(--green); }
     .stat-card.orange .stat-num { color:var(--orange); }
+    .stat-card.capital .stat-num { color:var(--orange); font-size:1.4rem; }
+    .stat-icon {
+      position:absolute; bottom:.8rem; right:1rem;
+      font-size:1.4rem; opacity:.07;
+    }
 
-    /* ── SECTION HEADERS ── */
+    /* ══ SECTION HEADERS ══ */
     .section-hdr {
       display:flex; justify-content:space-between; align-items:center;
       margin-bottom:1.5rem; padding-bottom:1rem;
-      border-bottom:1px solid rgba(0,0,0,.08);
+      border-bottom:1px solid rgba(0,0,0,.07);
     }
-    .section-hdr h2 { font-size:1rem; font-weight:900; text-transform:uppercase; letter-spacing:-.01em; }
+    .section-hdr h2 {
+      font-size:.95rem; font-weight:900;
+      text-transform:uppercase; letter-spacing:.02em;
+    }
+    .section-hdr h2 span { color:var(--muted); font-weight:600; font-size:.8rem; }
+
+    /* ══ BUTTONS ══ */
     .btn-primary {
       background:var(--black); color:#fff; border:none;
-      padding:.7rem 1.5rem; font-size:.68rem; font-weight:800; text-transform:uppercase;
-      letter-spacing:.1em; cursor:pointer; font-family:'Inter',sans-serif; transition:opacity .2s;
+      padding:.7rem 1.5rem; font-size:.65rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:.1em; cursor:pointer;
+      font-family:'Inter',sans-serif;
+      border-radius:var(--radius);
+      transition:opacity .2s, transform .15s var(--ease);
+      display:inline-flex; align-items:center; gap:.5rem;
     }
-    .btn-primary:hover { opacity:.8; }
+    .btn-primary:hover { opacity:.82; }
+    .btn-primary:active { transform:scale(.97); }
     .btn-danger { background:var(--red); }
     .btn-success { background:var(--green); }
     .btn-outline {
-      background:#fff; color:var(--black); border:1.5px solid var(--gray-mid);
-      padding:.5rem 1rem; font-size:.62rem; font-weight:800; text-transform:uppercase;
-      letter-spacing:.08em; cursor:pointer; font-family:'Inter',sans-serif; transition:all .2s;
+      background:var(--surface); color:var(--black);
+      border:1.5px solid var(--gray-mid);
+      padding:.5rem 1rem; font-size:.6rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:.08em;
+      cursor:pointer; font-family:'Inter',sans-serif;
+      border-radius:var(--radius);
+      transition:border-color .2s, background .2s, transform .1s;
+      display:inline-flex; align-items:center; gap:.35rem;
     }
-    .btn-outline:hover { border-color:var(--black); }
+    .btn-outline:hover { border-color:var(--black); background:var(--gray); }
+    .btn-outline:active { transform:scale(.97); }
+    .btn-icon {
+      width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center;
+      background:none; border:1.5px solid var(--gray-mid);
+      border-radius:var(--radius); cursor:pointer;
+      font-size:.85rem; transition:all .2s; color:var(--black);
+    }
+    .btn-icon:hover { border-color:var(--black); background:var(--gray); }
 
-    /* ── PRODUCT TABLE ── */
-    .product-table { width:100%; border-collapse:collapse; background:#fff; font-size:.78rem; }
-    .product-table th {
-      text-align:left; padding:.75rem 1rem; font-size:.6rem; font-weight:900;
-      text-transform:uppercase; letter-spacing:.1em; color:var(--muted);
-      border-bottom:2px solid var(--gray-mid); background:#fff;
+    /* ══ PRODUCT TABLE ══ */
+    .table-wrapper {
+      background:var(--surface);
+      border:1px solid rgba(0,0,0,.06);
+      border-radius:var(--radius);
+      overflow:hidden;
+      box-shadow:var(--shadow-sm);
+      overflow-x:auto;
     }
-    .product-table td { padding:.9rem 1rem; border-bottom:1px solid rgba(0,0,0,.05); vertical-align:middle; }
-    .product-table tr:hover td { background:rgba(0,0,0,.02); }
-    .product-thumb { width:48px; height:60px; object-fit:cover; border-radius:2px; display:block; }
-    .product-thumb-placeholder { width:48px; height:60px; background:var(--gray-mid); border-radius:2px; display:flex; align-items:center; justify-content:center; font-size:.55rem; color:var(--muted); font-weight:700; }
-    .badge { display:inline-block; padding:2px 8px; border-radius:2px; font-size:.55rem; font-weight:900; text-transform:uppercase; letter-spacing:.06em; }
+    .product-table { width:100%; border-collapse:collapse; font-size:.78rem; min-width:700px; }
+    .product-table th {
+      text-align:left; padding:.8rem 1rem;
+      font-size:.58rem; font-weight:900;
+      text-transform:uppercase; letter-spacing:.12em; color:var(--muted);
+      border-bottom:1px solid var(--gray-mid);
+      background:var(--surface2); white-space:nowrap;
+    }
+    .product-table td {
+      padding:.9rem 1rem;
+      border-bottom:1px solid rgba(0,0,0,.04);
+      vertical-align:middle;
+      transition:background .15s;
+    }
+    .product-table tbody tr {
+      animation:rowSlideIn .3s var(--ease) both;
+    }
+    .product-table tbody tr:nth-child(1) { animation-delay:.03s; }
+    .product-table tbody tr:nth-child(2) { animation-delay:.06s; }
+    .product-table tbody tr:nth-child(3) { animation-delay:.09s; }
+    .product-table tbody tr:nth-child(4) { animation-delay:.12s; }
+    .product-table tbody tr:nth-child(5) { animation-delay:.15s; }
+    .product-table tbody tr:last-child td { border-bottom:none; }
+    .product-table tr:hover td { background:rgba(0,0,0,.015); }
+
+    .product-thumb {
+      width:44px; height:56px; object-fit:cover;
+      border-radius:var(--radius); display:block;
+      box-shadow:var(--shadow-sm);
+      transition:transform .2s var(--ease), box-shadow .2s;
+      cursor:pointer;
+    }
+    .product-thumb:hover { transform:scale(1.08); box-shadow:var(--shadow-md); }
+    .product-thumb-placeholder {
+      width:44px; height:56px; background:var(--gray-mid);
+      border-radius:var(--radius); display:flex; align-items:center;
+      justify-content:center; font-size:.45rem; color:var(--muted); font-weight:800;
+    }
+
+    .badge {
+      display:inline-block; padding:3px 9px;
+      border-radius:2px; font-size:.52rem; font-weight:900;
+      text-transform:uppercase; letter-spacing:.07em;
+      animation:badgePop .25s var(--ease);
+    }
     .badge-new { background:var(--red); color:#fff; }
     .badge-sold { background:#111; color:#fff; }
-    .badge-avail { background:#dcfce7; color:var(--green); }
-    .badge-reserved { background:#fff7ed; color:var(--orange); }
+    .badge-avail { background:var(--green-light); color:var(--green-dark); }
+    .badge-reserved { background:var(--orange-light); color:var(--orange); }
     .badge-pending { background:#fef9c3; color:#854d0e; }
-    .badge-completed { background:#dcfce7; color:var(--green); }
-    .actions-cell { display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; }
+    .badge-completed { background:var(--green-light); color:var(--green-dark); }
 
-    /* ── FORM / MODAL ── */
+    .actions-cell { display:flex; gap:.4rem; align-items:center; flex-wrap:nowrap; }
+
+    /* ══ FILTERS ══ */
+    .filter-row {
+      display:flex; gap:.4rem; margin-bottom:1.2rem; flex-wrap:wrap; align-items:center;
+    }
+    .filter-chip {
+      padding:.35rem .9rem;
+      border:1.5px solid var(--gray-mid); background:var(--surface);
+      font-size:.58rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em;
+      cursor:pointer; border-radius:20px;
+      transition:all .2s var(--ease);
+      font-family:'Inter',sans-serif; color:var(--muted);
+    }
+    .filter-chip.active {
+      background:var(--black); color:#fff; border-color:var(--black);
+      box-shadow:0 2px 8px rgba(0,0,0,.2);
+    }
+    .filter-chip:hover:not(.active) { border-color:var(--black); color:var(--black); }
+
+    /* ══ MODAL ══ */
     .modal-overlay {
-      position:fixed; inset:0; background:rgba(0,0,0,.55);
-      backdrop-filter:blur(4px); z-index:200;
-      display:none; align-items:center; justify-content:center; padding:1rem;
+      position:fixed; inset:0;
+      background:rgba(0,0,0,.6);
+      backdrop-filter:blur(6px);
+      z-index:200; display:none;
+      align-items:center; justify-content:center;
+      padding:1rem;
     }
-    .modal-overlay.active { display:flex; }
+    .modal-overlay.active { display:flex; animation:fadeIn .2s ease; }
     .modal {
-      background:#fff; width:100%; max-width:640px; max-height:92vh;
-      overflow-y:auto; padding:2.5rem; position:relative;
+      background:var(--surface); width:100%; max-width:860px;
+      max-height:94vh; overflow-y:auto;
+      padding:0;
+      border-radius:var(--radius);
       animation:slideUp .3s var(--ease);
+      box-shadow:var(--shadow-lg);
+      display:flex; flex-direction:column;
     }
-    @keyframes slideUp { from{transform:translateY(30px);opacity:0} to{transform:translateY(0);opacity:1} }
-    .modal-title { font-size:1.1rem; font-weight:900; text-transform:uppercase; letter-spacing:-.02em; margin-bottom:2rem; }
+    .modal-header {
+      padding:1.8rem 2rem 1.5rem;
+      border-bottom:1px solid var(--gray-mid);
+      display:flex; justify-content:space-between; align-items:center;
+      position:sticky; top:0; background:var(--surface); z-index:10;
+    }
+    .modal-title { font-size:1rem; font-weight:900; text-transform:uppercase; letter-spacing:.01em; }
     .modal-close {
-      position:absolute; top:1rem; right:1rem; background:none; border:none;
-      font-size:1.5rem; cursor:pointer; color:var(--muted); line-height:1;
+      background:none; border:none; width:36px; height:36px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.3rem; cursor:pointer; color:var(--muted);
+      border-radius:var(--radius); transition:all .15s;
     }
+    .modal-close:hover { background:var(--gray); color:var(--black); }
+
+    /* Product modal: two-pane layout */
+    .modal-body {
+      display:grid;
+      grid-template-columns:1fr 340px;
+      min-height:0;
+    }
+    .modal-form-pane {
+      padding:1.8rem 2rem;
+      border-right:1px solid var(--gray-mid);
+      overflow-y:auto;
+    }
+    .modal-preview-pane {
+      padding:1.8rem 1.5rem;
+      background:var(--surface2);
+      overflow-y:auto;
+    }
+
     .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
     .form-full { grid-column:1/-1; }
-    .form-group { display:flex; flex-direction:column; gap:.3rem; }
-    .form-group label { font-size:.6rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em; }
+    .form-group { display:flex; flex-direction:column; gap:.35rem; }
+    .form-group label {
+      font-size:.58rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:.12em; color:var(--black);
+    }
+    .form-group label .optional { color:var(--muted); font-weight:600; }
     .form-group input, .form-group select, .form-group textarea {
-      padding:.65rem .75rem; border:1.5px solid var(--gray-mid); font-family:'Inter',sans-serif;
-      font-size:.82rem; outline:none; transition:border-color .2s; resize:none;
+      padding:.65rem .8rem;
+      border:1.5px solid var(--gray-mid);
+      font-family:'Inter',sans-serif; font-size:.82rem;
+      outline:none; border-radius:var(--radius);
+      transition:border-color .2s, box-shadow .2s;
+      background:var(--surface);
+      resize:none;
     }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--black); }
-    .sizes-grid { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.3rem; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color:var(--black);
+      box-shadow:0 0 0 3px rgba(0,0,0,.05);
+    }
+    .form-section-label {
+      font-size:.58rem; font-weight:900;
+      text-transform:uppercase; letter-spacing:.14em;
+      color:var(--muted); margin:1.4rem 0 .8rem;
+      display:flex; align-items:center; gap:.6rem;
+    }
+    .form-section-label::after {
+      content:''; flex:1; height:1px; background:var(--gray-mid);
+    }
+
+    .sizes-grid { display:flex; gap:.4rem; flex-wrap:wrap; }
     .size-toggle {
-      padding:.4rem .9rem; border:1.5px solid var(--gray-mid); background:#fff;
-      font-size:.65rem; font-weight:800; cursor:pointer; transition:all .15s;
+      padding:.35rem .85rem;
+      border:1.5px solid var(--gray-mid); background:var(--surface);
+      font-size:.62rem; font-weight:800; cursor:pointer;
+      transition:all .15s var(--ease);
       font-family:'Inter',sans-serif; text-transform:uppercase;
+      border-radius:var(--radius);
     }
-    .size-toggle.selected { background:var(--black); color:#fff; border-color:var(--black); }
-    .modal-footer { display:flex; gap:1rem; justify-content:flex-end; margin-top:2rem; padding-top:1.5rem; border-top:1px solid var(--gray-mid); }
+    .size-toggle.selected {
+      background:var(--black); color:#fff; border-color:var(--black);
+      transform:scale(1.05);
+    }
+    .size-toggle:hover:not(.selected) { border-color:var(--black); }
 
-    /* ── IMAGE UPLOAD ── */
+    .checkbox-row {
+      display:flex; align-items:center; gap:.65rem;
+      padding:.65rem .8rem;
+      border:1.5px solid var(--gray-mid);
+      border-radius:var(--radius);
+      cursor:pointer;
+      transition:border-color .2s, background .2s;
+    }
+    .checkbox-row:hover { border-color:var(--black); background:var(--gray); }
+    .checkbox-row input[type=checkbox] {
+      width:16px; height:16px; cursor:pointer; accent-color:var(--black);
+      border:none; box-shadow:none; padding:0; margin:0;
+      flex-shrink:0;
+    }
+    .checkbox-row label { font-size:.7rem; font-weight:700; cursor:pointer; margin:0; letter-spacing:0; text-transform:none; }
+
+    /* ── Multi-image upload ── */
     .img-upload-zone {
-      border:2px dashed var(--gray-mid); padding:2rem; text-align:center;
-      cursor:pointer; transition:border-color .2s; position:relative;
+      border:2px dashed var(--gray-mid);
+      padding:1.5rem; text-align:center;
+      cursor:pointer; border-radius:var(--radius);
+      transition:border-color .2s, background .2s;
+      position:relative; background:var(--surface2);
     }
-    .img-upload-zone:hover { border-color:var(--black); }
-    .img-upload-zone input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
-    .img-upload-zone p { font-size:.7rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; }
-    .img-preview { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.8rem; }
-    .img-preview-item { position:relative; }
-    .img-preview-item img { width:80px; height:100px; object-fit:cover; border-radius:2px; }
-    .img-preview-item button { position:absolute; top:-5px; right:-5px; background:var(--red); color:#fff; border:none; width:18px; height:18px; border-radius:50%; font-size:.7rem; cursor:pointer; line-height:1; }
+    .img-upload-zone:hover, .img-upload-zone.drag-over {
+      border-color:var(--black); background:var(--gray);
+    }
+    .img-upload-zone input[type=file] {
+      position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%;
+    }
+    .img-upload-zone .upload-icon { font-size:1.6rem; margin-bottom:.4rem; }
+    .img-upload-zone p {
+      font-size:.65rem; font-weight:800; color:var(--muted);
+      text-transform:uppercase; letter-spacing:.1em;
+    }
+    .img-upload-zone small { font-size:.58rem; color:var(--muted-light); display:block; margin-top:.2rem; }
 
-    /* ── ORDERS ── */
-    .order-card {
-      background:#fff; border:1px solid rgba(0,0,0,.07); padding:1.5rem;
-      margin-bottom:1rem;
+    .img-gallery {
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(80px,1fr));
+      gap:.5rem; margin-top:.8rem;
     }
-    .order-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1rem; flex-wrap:wrap; gap:.5rem; }
-    .order-id { font-size:.78rem; font-weight:900; letter-spacing:.05em; }
-    .order-date { font-size:.62rem; color:var(--muted); font-weight:600; }
-    .order-items { font-size:.78rem; margin-bottom:.8rem; color:var(--muted); }
-    .order-total { font-size:1rem; font-weight:900; }
-    .order-customer { font-size:.72rem; color:var(--muted); line-height:1.8; }
+    .img-gallery-item {
+      position:relative; aspect-ratio:4/5;
+      border-radius:var(--radius); overflow:hidden;
+      animation:cardEntrance .25s var(--ease);
+      box-shadow:var(--shadow-sm);
+    }
+    .img-gallery-item img { width:100%; height:100%; object-fit:cover; display:block; }
+    .img-gallery-item .img-badge {
+      position:absolute; top:4px; left:4px;
+      background:var(--red); color:#fff;
+      font-size:.45rem; font-weight:900; padding:2px 6px; border-radius:2px;
+    }
+    .img-gallery-item .img-main-badge { background:var(--black); }
+    .img-gallery-item .img-remove {
+      position:absolute; top:4px; right:4px;
+      background:rgba(0,0,0,.7); color:#fff;
+      border:none; width:20px; height:20px; border-radius:50%;
+      font-size:.65rem; cursor:pointer; display:flex;
+      align-items:center; justify-content:center;
+      opacity:0; transition:opacity .15s;
+    }
+    .img-gallery-item:hover .img-remove { opacity:1; }
+    .img-gallery-item .img-set-main {
+      position:absolute; bottom:4px; left:4px; right:4px;
+      background:rgba(0,0,0,.75); color:#fff; border:none;
+      font-size:.45rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em;
+      padding:3px 0; border-radius:2px; cursor:pointer;
+      opacity:0; transition:opacity .15s; font-family:'Inter',sans-serif;
+    }
+    .img-gallery-item:hover .img-set-main { opacity:1; }
+    .img-add-url {
+      display:flex; gap:.4rem; margin-top:.5rem;
+    }
+    .img-add-url input {
+      flex:1; padding:.5rem .7rem;
+      border:1.5px solid var(--gray-mid); font-family:'Inter',sans-serif;
+      font-size:.75rem; outline:none; border-radius:var(--radius);
+      transition:border-color .2s;
+    }
+    .img-add-url input:focus { border-color:var(--black); }
+    .img-add-url button {
+      background:var(--black); color:#fff; border:none;
+      padding:.5rem .9rem; font-size:.62rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:.06em; cursor:pointer;
+      font-family:'Inter',sans-serif; border-radius:var(--radius);
+      white-space:nowrap; transition:opacity .2s;
+    }
+    .img-add-url button:hover { opacity:.8; }
+
+    /* ── Product Preview Pane ── */
+    .preview-label {
+      font-size:.58rem; font-weight:900; text-transform:uppercase;
+      letter-spacing:.14em; color:var(--muted); margin-bottom:1rem;
+      display:flex; align-items:center; gap:.5rem;
+    }
+    .preview-label::before { content:''; width:20px; height:1px; background:var(--red); }
+
+    .preview-card {
+      border:1px solid var(--gray-mid); border-radius:var(--radius);
+      overflow:hidden; background:var(--surface);
+      box-shadow:var(--shadow-sm);
+    }
+    .preview-img-wrap {
+      aspect-ratio:3/4; background:var(--gray-mid);
+      position:relative; overflow:hidden;
+    }
+    .preview-img-wrap img {
+      width:100%; height:100%; object-fit:cover;
+      transition:transform .4s var(--ease);
+    }
+    .preview-img-wrap:hover img { transform:scale(1.04); }
+    .preview-img-placeholder {
+      width:100%; height:100%;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      color:var(--muted-light); font-size:.65rem; font-weight:700; gap:.5rem;
+    }
+    .preview-img-placeholder span { font-size:2rem; }
+    .preview-img-nav {
+      position:absolute; bottom:.6rem; left:50%; transform:translateX(-50%);
+      display:flex; gap:.3rem;
+    }
+    .preview-dot {
+      width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.5);
+      cursor:pointer; transition:background .2s, transform .2s;
+    }
+    .preview-dot.active { background:#fff; transform:scale(1.3); }
+    .preview-badges {
+      position:absolute; top:.6rem; left:.6rem;
+      display:flex; flex-direction:column; gap:.3rem;
+    }
+    .preview-info { padding:1rem; }
+    .preview-name {
+      font-size:.85rem; font-weight:800; line-height:1.3;
+      margin-bottom:.3rem; color:var(--black);
+    }
+    .preview-cat {
+      font-size:.58rem; font-weight:700; color:var(--muted);
+      text-transform:uppercase; letter-spacing:.1em; margin-bottom:.6rem;
+    }
+    .preview-price {
+      font-size:1.3rem; font-weight:900; letter-spacing:-.02em;
+      color:var(--black);
+    }
+    .preview-estado {
+      font-size:.58rem; font-weight:700; color:var(--muted);
+      margin-top:.2rem;
+    }
+    .preview-sizes {
+      display:flex; gap:.3rem; flex-wrap:wrap; margin-top:.7rem;
+    }
+    .preview-size-chip {
+      border:1.5px solid var(--gray-mid); padding:.2rem .55rem;
+      font-size:.55rem; font-weight:800; text-transform:uppercase;
+      border-radius:var(--radius); color:var(--muted);
+    }
+    .preview-medidas {
+      font-size:.6rem; color:var(--muted); margin-top:.5rem; line-height:1.6;
+    }
+    .preview-desc {
+      font-size:.68rem; color:var(--muted); margin-top:.5rem; line-height:1.6;
+      border-top:1px solid var(--gray-mid); padding-top:.5rem;
+    }
+
+    .modal-footer {
+      padding:1.2rem 2rem;
+      border-top:1px solid var(--gray-mid);
+      display:flex; gap:.8rem; justify-content:flex-end;
+      background:var(--surface); position:sticky; bottom:0; z-index:10;
+    }
+
+    /* ══ ORDERS ══ */
+    .order-card {
+      background:var(--surface);
+      border:1px solid rgba(0,0,0,.06);
+      border-radius:var(--radius);
+      padding:1.5rem;
+      margin-bottom:.8rem;
+      box-shadow:var(--shadow-sm);
+      animation:cardEntrance .3s var(--ease) both;
+      transition:box-shadow .2s, transform .2s;
+    }
+    .order-card:hover { box-shadow:var(--shadow-md); }
+    .order-card:nth-child(1) { animation-delay:.04s; }
+    .order-card:nth-child(2) { animation-delay:.08s; }
+    .order-card:nth-child(3) { animation-delay:.12s; }
+    .order-card:nth-child(4) { animation-delay:.16s; }
+    .order-header {
+      display:flex; justify-content:space-between; align-items:flex-start;
+      margin-bottom:1rem; flex-wrap:wrap; gap:.5rem;
+    }
+    .order-id { font-size:.78rem; font-weight:900; letter-spacing:.06em; }
+    .order-date { font-size:.6rem; color:var(--muted); font-weight:600; margin-top:.2rem; }
+    .order-items { font-size:.75rem; margin-bottom:.6rem; color:var(--muted); line-height:1.5; }
+    .order-total { font-size:1.1rem; font-weight:900; letter-spacing:-.02em; }
+    .order-customer {
+      font-size:.7rem; color:var(--muted); line-height:1.9;
+      margin-top:.5rem;
+      padding:.7rem; background:var(--surface2);
+      border-radius:var(--radius);
+    }
+    .order-customer strong { color:var(--black); }
     .order-actions { display:flex; gap:.5rem; margin-top:1rem; flex-wrap:wrap; }
     .btn-wa {
       background:#25D366; color:#fff; border:none;
-      padding:.5rem 1rem; font-size:.62rem; font-weight:800; text-transform:uppercase;
-      letter-spacing:.08em; cursor:pointer; font-family:'Inter',sans-serif;
+      padding:.55rem 1.1rem; font-size:.62rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:.08em; cursor:pointer;
+      font-family:'Inter',sans-serif; border-radius:var(--radius);
+      transition:opacity .2s, transform .1s;
+      display:inline-flex; align-items:center; gap:.4rem;
     }
-    .orders-filter { display:flex; gap:.5rem; margin-bottom:1.5rem; flex-wrap:wrap; }
-    .filter-chip {
-      padding:.35rem .9rem; border:1.5px solid var(--gray-mid); background:#fff;
-      font-size:.6rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em;
-      cursor:pointer; transition:all .15s; font-family:'Inter',sans-serif;
+    .btn-wa:hover { opacity:.88; }
+    .btn-wa:active { transform:scale(.97); }
+
+    .order-status-select {
+      font-size:.6rem; font-weight:800; text-transform:uppercase;
+      padding:.35rem .7rem; border:1.5px solid var(--gray-mid);
+      font-family:'Inter',sans-serif; cursor:pointer; outline:none;
+      border-radius:var(--radius);
+      transition:border-color .2s;
+      background:var(--surface);
     }
-    .filter-chip.active { background:var(--black); color:#fff; border-color:var(--black); }
+    .order-status-select:focus { border-color:var(--black); }
 
-    /* ── EMPTY / LOADING ── */
-    .empty-state { text-align:center; padding:4rem 2rem; color:var(--muted); }
-    .empty-state p { font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; }
-    .spinner { display:inline-block; width:20px; height:20px; border:2px solid var(--gray-mid); border-top-color:var(--black); border-radius:50%; animation:spin .7s linear infinite; }
-    @keyframes spin { to{transform:rotate(360deg)} }
+    /* ══ RECENT ORDERS (Dashboard) ══ */
+    .recent-order-row {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:.65rem .8rem; border-radius:var(--radius);
+      transition:background .15s; cursor:default;
+      font-size:.72rem; gap:.5rem;
+    }
+    .recent-order-row:hover { background:var(--gray); }
+    .recent-order-row:not(:last-child) { border-bottom:1px solid rgba(0,0,0,.04); }
 
-    /* ── TOAST ── */
+    /* ══ EMPTY / LOADING / SKELETON ══ */
+    .empty-state {
+      text-align:center; padding:4rem 2rem; color:var(--muted);
+    }
+    .empty-state .empty-icon { font-size:2.5rem; margin-bottom:1rem; opacity:.3; }
+    .empty-state p { font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em; }
+    .empty-state small { font-size:.65rem; font-weight:500; display:block; margin-top:.3rem; letter-spacing:0; text-transform:none; }
+
+    .spinner {
+      display:inline-block; width:18px; height:18px;
+      border:2px solid var(--gray-mid); border-top-color:var(--black);
+      border-radius:50%; animation:spin .7s linear infinite;
+    }
+
+    /* ══ TOAST ══ */
     #toast {
-      position:fixed; bottom:2rem; right:2rem; background:var(--black); color:#fff;
-      padding:.9rem 1.8rem; font-size:.72rem; font-weight:800; text-transform:uppercase;
-      letter-spacing:.1em; z-index:300; display:none; border-left:3px solid var(--red);
-      animation:slideInToast .3s ease-out;
+      position:fixed; bottom:2rem; right:2rem;
+      background:var(--black); color:#fff;
+      padding:.9rem 1.5rem; font-size:.68rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:.1em;
+      z-index:500; display:none;
+      border-left:3px solid var(--red);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow-lg);
+      display:none;
+      min-width:220px;
     }
-    @keyframes slideInToast { from{transform:translateY(100%);opacity:0} to{transform:translateY(0);opacity:1} }
+    .toast-visible { animation:toastIn .3s var(--ease) forwards; }
+    .toast-hiding { animation:toastOut .25s ease forwards; }
 
+    /* ══ CONFIRM MODAL ══ */
+    .modal-sm { max-width:420px; }
+    .modal-sm .modal-body { display:block; padding:1.8rem 2rem; }
+    .modal-sm .modal-body p {
+      font-size:.82rem; color:var(--muted); line-height:1.7;
+    }
+
+    /* ══ IMAGE LIGHTBOX ══ */
+    #lightbox {
+      position:fixed; inset:0; background:rgba(0,0,0,.9);
+      z-index:400; display:none; align-items:center; justify-content:center;
+      padding:2rem; cursor:zoom-out;
+    }
+    #lightbox.active { display:flex; animation:fadeIn .2s ease; }
+    #lightbox img {
+      max-width:100%; max-height:90vh; object-fit:contain;
+      border-radius:var(--radius); box-shadow:var(--shadow-lg);
+      animation:slideUp .25s var(--ease);
+    }
+    #lightbox .lb-close {
+      position:fixed; top:1.5rem; right:1.5rem;
+      background:rgba(255,255,255,.1); border:none; color:#fff;
+      width:40px; height:40px; border-radius:50%; font-size:1.2rem;
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+      transition:background .2s;
+    }
+    #lightbox .lb-close:hover { background:rgba(255,255,255,.2); }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width:900px) {
+      .modal-body { grid-template-columns:1fr; }
+      .modal-preview-pane {
+        border-right:none; border-top:1px solid var(--gray-mid);
+        order:-1;
+      }
+      .preview-card { max-width:260px; margin:0 auto; }
+    }
     @media (max-width:768px) {
       .admin-content { padding:1rem; }
       .form-grid { grid-template-columns:1fr; }
-      .modal { padding:1.5rem; }
-      .admin-header { padding:.8rem 1rem; }
+      .modal-form-pane { padding:1.2rem; }
+      .modal-preview-pane { padding:1.2rem; }
+      .admin-header { padding:0 1rem; }
       .admin-nav { padding:0 1rem; overflow-x:auto; }
-      .tab-btn { padding:.8rem 1rem; white-space:nowrap; }
+      .tab-btn { padding:.7rem .9rem; white-space:nowrap; font-size:.58rem; }
+      .stats-row { grid-template-columns:1fr 1fr; }
     }
   </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════
-     LOGIN SCREEN
-══════════════════════════════════════════ -->
+<!-- ══ LOGIN ══ -->
 <div id="loginScreen">
   <div class="login-box">
     <div class="login-logo">ZYSKN</div>
     <div class="login-sub">Panel de Administración</div>
+
     <label>Email</label>
     <input type="email" id="loginEmail" placeholder="tu@email.com" autocomplete="email">
     <label>Contraseña</label>
     <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password"
            onkeydown="if(event.key==='Enter') doLogin()">
-    <button class="btn-login" onclick="doLogin()">Ingresar</button>
-    <div id="loginError">Email o contraseña incorrectos</div>
+    <button class="btn-login" onclick="doLogin()">
+      <span id="loginBtnText">Ingresar al Panel</span>
+    </button>
+    <div id="loginError">⚠ Email o contraseña incorrectos</div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     ADMIN APP
-══════════════════════════════════════════ -->
+<!-- ══ APP ══ -->
 <div id="adminApp">
 
-  <!-- Header -->
   <div class="admin-header">
-    <div class="admin-logo">ZYSKN <span>Admin Panel</span></div>
+    <div class="admin-logo">
+      <div class="admin-logo-dot"></div>
+      ZYSKN
+      <span class="admin-logo-sub">Admin</span>
+    </div>
     <div class="header-right">
       <span class="admin-user" id="adminUserEmail"></span>
-      <button class="btn-logout" onclick="doLogout()">Salir</button>
+      <button class="btn-logout" onclick="doLogout()">↩ Salir</button>
     </div>
   </div>
 
-  <!-- Tabs -->
   <div class="admin-nav">
     <button class="tab-btn active" onclick="switchTab('dashboard')">Dashboard</button>
-    <button class="tab-btn" onclick="switchTab('products')">Productos</button>
-    <button class="tab-btn" onclick="switchTab('orders')">Pedidos</button>
+    <button class="tab-btn" onclick="switchTab('products')">
+      Productos <span class="tab-badge" id="badgeProducts">0</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('orders')">
+      Pedidos <span class="tab-badge" id="badgeOrders">0</span>
+    </button>
   </div>
 
-  <!-- Content -->
   <div class="admin-content">
 
     <!-- ── DASHBOARD ── -->
     <div id="tab-dashboard">
       <div class="stats-row" id="statsRow">
-        <div class="stat-card"><div class="stat-num" id="st-total">–</div><div class="stat-label">Productos</div></div>
-        <div class="stat-card green"><div class="stat-num" id="st-avail">–</div><div class="stat-label">Disponibles</div></div>
-        <div class="stat-card red"><div class="stat-num" id="st-sold">–</div><div class="stat-label">Vendidos</div></div>
-        <div class="stat-card orange"><div class="stat-num" id="st-res">–</div><div class="stat-label">Reservados ahora</div></div>
-        <div class="stat-card"><div class="stat-num" id="st-orders">–</div><div class="stat-label">Pedidos totales</div></div>
-        <div class="stat-card green"><div class="stat-num" id="st-revenue">–</div><div class="stat-label">Ingresos totales</div></div>
+        <div class="stat-card">
+          <div class="stat-num" id="st-total">–</div>
+          <div class="stat-label">Total prendas</div>
+          <div class="stat-icon">👕</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-num" id="st-avail">–</div>
+          <div class="stat-label">Disponibles</div>
+          <div class="stat-icon">✅</div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-num" id="st-sold">–</div>
+          <div class="stat-label">Vendidas</div>
+          <div class="stat-icon">🏷</div>
+        </div>
+        <div class="stat-card orange">
+          <div class="stat-num" id="st-res">–</div>
+          <div class="stat-label">Reservadas ahora</div>
+          <div class="stat-icon">⏳</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="st-orders">–</div>
+          <div class="stat-label">Pedidos totales</div>
+          <div class="stat-icon">📦</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-num" id="st-revenue">–</div>
+          <div class="stat-label">Ingresos confirmados</div>
+          <div class="stat-icon">💰</div>
+        </div>
+        <div class="stat-card capital">
+          <div class="stat-num" id="st-capital">–</div>
+          <div class="stat-label">Capital en stock</div>
+          <div class="stat-icon">📊</div>
+        </div>
       </div>
-      <div style="background:#fff;padding:1.5rem;border:1px solid rgba(0,0,0,.06);">
-        <p style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:1rem;">Pedidos recientes</p>
+
+      <div style="background:var(--surface);border:1px solid rgba(0,0,0,.06);border-radius:var(--radius);padding:1.5rem;box-shadow:var(--shadow-sm);">
+        <p style="font-size:.62rem;font-weight:900;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:1.2rem;">
+          Pedidos recientes
+        </p>
         <div id="recentOrders"></div>
       </div>
     </div>
@@ -292,18 +870,19 @@
     <!-- ── PRODUCTS ── -->
     <div id="tab-products" style="display:none;">
       <div class="section-hdr">
-        <h2>Productos (<span id="productCount">0</span>)</h2>
-        <button class="btn-primary" onclick="openProductModal()">+ Agregar Producto</button>
+        <h2>Productos <span id="productCountLabel"></span></h2>
+        <button class="btn-primary" onclick="openProductModal()">
+          + Agregar Producto
+        </button>
       </div>
-      <!-- Filtros rápidos -->
-      <div class="orders-filter" style="margin-bottom:1.5rem;">
+      <div class="filter-row">
         <button class="filter-chip active" onclick="filterProductsAdmin('all',this)">Todos</button>
         <button class="filter-chip" onclick="filterProductsAdmin('available',this)">Disponibles</button>
         <button class="filter-chip" onclick="filterProductsAdmin('sold',this)">Vendidos</button>
         <button class="filter-chip" onclick="filterProductsAdmin('new',this)">Nuevos</button>
         <button class="filter-chip" onclick="filterProductsAdmin('reserved',this)">Reservados</button>
       </div>
-      <div style="overflow-x:auto;">
+      <div class="table-wrapper">
         <table class="product-table">
           <thead>
             <tr>
@@ -325,11 +904,9 @@
     <div id="tab-orders" style="display:none;">
       <div class="section-hdr">
         <h2>Pedidos</h2>
-        <div style="display:flex;gap:.5rem;">
-          <button class="btn-outline" onclick="loadOrders()">↻ Actualizar</button>
-        </div>
+        <button class="btn-outline" onclick="loadOrders().then(renderOrders)">↻ Actualizar</button>
       </div>
-      <div class="orders-filter">
+      <div class="filter-row">
         <button class="filter-chip active" onclick="filterOrders('all',this)">Todos</button>
         <button class="filter-chip" onclick="filterOrders('pending',this)">Pendientes</button>
         <button class="filter-chip" onclick="filterOrders('completed',this)">Completados</button>
@@ -338,70 +915,80 @@
       <div id="ordersContainer"></div>
     </div>
 
-  </div><!-- /admin-content -->
-</div><!-- /adminApp -->
+  </div>
+</div>
 
-<!-- ══════════════════════════════════════════
-     MODAL PRODUCTO
-══════════════════════════════════════════ -->
+<!-- ══ MODAL PRODUCTO ══ -->
 <div class="modal-overlay" id="productModal">
   <div class="modal">
-    <button class="modal-close" onclick="closeModal('productModal')">×</button>
-    <div class="modal-title" id="modalTitle">Nuevo Producto</div>
-    <div class="form-grid">
-      <div class="form-group form-full">
-        <label>Nombre del producto *</label>
-        <input type="text" id="f-name" placeholder="Ej: Columbia Fleece 90s Navy">
-      </div>
-      <div class="form-group">
-        <label>Precio (ARS) *</label>
-        <input type="number" id="f-price" placeholder="15000">
-      </div>
-      <div class="form-group">
-        <label>Estado de la prenda</label>
-        <select id="f-estado">
-          <option>10/10</option>
-          <option>9/10</option>
-          <option>8/10</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Categoría *</label>
-        <select id="f-category">
-          <option value="">Seleccionar...</option>
-          <option value="remeras">Remeras</option>
-          <option value="hoodies">Hoodies</option>
-          <option value="polares">Polares</option>
-          <option value="sweaters">Sweaters</option>
-          <option value="camisas">Camisas</option>
-          <option value="camperas">Camperas</option>
-          <option value="rompevientos">Rompevientos</option>
-          <option value="Casacas deportivas">Casacas Deportivas</option>
-          <option value="chombas">Chombas</option>
-          <option value="pantalones">Pantalones Cargo</option>
-          <option value="jeans">Jeans</option>
-          <option value="bermudas">Bermudas Cargo</option>
-          <option value="shorts">Shorts</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Sección</label>
-        <select id="f-section">
-          <option value="arriba">Arriba</option>
-          <option value="abajo">Abajo</option>
-          <option value="accesorios">Accesorios</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Talle etiqueta</label>
-        <input type="text" id="f-talle" placeholder="Ej: L / XL US">
-      </div>
-      <div class="form-group form-full">
-        <label>Medidas exactas</label>
-        <input type="text" id="f-medidas" placeholder="Ej: Pecho 58cm · Largo 72cm · Manga 65cm">
-      </div>
-      <div class="form-group form-full">
-        <label>Talles disponibles</label>
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">Nuevo Producto</div>
+      <button class="modal-close" onclick="closeModal('productModal')">×</button>
+    </div>
+
+    <div class="modal-body">
+      <!-- FORM PANE -->
+      <div class="modal-form-pane">
+        <div class="form-section-label">Información básica</div>
+        <div class="form-grid">
+          <div class="form-group form-full">
+            <label>Nombre del producto *</label>
+            <input type="text" id="f-name" placeholder="Ej: Columbia Fleece 90s Navy" oninput="updatePreview()">
+          </div>
+          <div class="form-group">
+            <label>Precio (ARS) *</label>
+            <input type="number" id="f-price" placeholder="15000" oninput="updatePreview()">
+          </div>
+          <div class="form-group">
+            <label>Estado de la prenda</label>
+            <select id="f-estado" onchange="updatePreview()">
+              <option>10/10</option>
+              <option>9/10</option>
+              <option>8/10</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Categoría *</label>
+            <select id="f-category" onchange="updatePreview()">
+              <option value="">Seleccionar...</option>
+              <option value="remeras">Remeras</option>
+              <option value="hoodies">Hoodies</option>
+              <option value="polares">Polares</option>
+              <option value="sweaters">Sweaters</option>
+              <option value="camisas">Camisas</option>
+              <option value="camperas">Camperas</option>
+              <option value="rompevientos">Rompevientos</option>
+              <option value="Casacas deportivas">Casacas Deportivas</option>
+              <option value="chombas">Chombas</option>
+              <option value="pantalones">Pantalones Cargo</option>
+              <option value="jeans">Jeans</option>
+              <option value="bermudas">Bermudas Cargo</option>
+              <option value="shorts">Shorts</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Sección</label>
+            <select id="f-section">
+              <option value="arriba">Arriba</option>
+              <option value="abajo">Abajo</option>
+              <option value="accesorios">Accesorios</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Talle etiqueta <span class="optional">(opcional)</span></label>
+            <input type="text" id="f-talle" placeholder="Ej: L / XL US" oninput="updatePreview()">
+          </div>
+          <div class="form-group form-full">
+            <label>Medidas exactas <span class="optional">(opcional)</span></label>
+            <input type="text" id="f-medidas" placeholder="Ej: Pecho 58cm · Largo 72cm · Manga 65cm" oninput="updatePreview()">
+          </div>
+          <div class="form-group form-full">
+            <label>Descripción / Detalles <span class="optional">(opcional)</span></label>
+            <textarea id="f-desc" rows="3" placeholder="Detalles adicionales, historia de la prenda, materiales..." oninput="updatePreview()"></textarea>
+          </div>
+        </div>
+
+        <div class="form-section-label">Talles disponibles</div>
         <div class="sizes-grid" id="sizesGrid">
           <button class="size-toggle" onclick="toggleSize(this,'XS')">XS</button>
           <button class="size-toggle" onclick="toggleSize(this,'S')">S</button>
@@ -412,30 +999,65 @@
           <button class="size-toggle" onclick="toggleSize(this,'XXXL')">XXXL</button>
           <button class="size-toggle" onclick="toggleSize(this,'Único')">Único</button>
         </div>
+
+        <div class="form-section-label" style="margin-top:1.4rem;">Fotos del producto</div>
+
+        <!-- URL input -->
+        <div class="img-add-url">
+          <input type="url" id="f-img-url-input" placeholder="Pegar URL de imagen y presionar Agregar">
+          <button onclick="addImageFromUrl()">+ Agregar</button>
+        </div>
+
+        <!-- File upload zone -->
+        <div class="img-upload-zone" id="uploadZone" style="margin-top:.6rem;" onclick="document.getElementById('f-img-file').click()">
+          <div class="upload-icon">📁</div>
+          <p>Subir desde archivos</p>
+          <small>PNG, JPG, WEBP — máx. 5MB c/u</small>
+          <input type="file" id="f-img-file" accept="image/*" multiple style="display:none" onchange="handleFileUpload(event)">
+        </div>
+
+        <!-- Gallery -->
+        <div class="img-gallery" id="imgGallery"></div>
+
+        <div class="form-section-label" style="margin-top:1.4rem;">Opciones</div>
+        <div style="display:flex;flex-direction:column;gap:.5rem;">
+          <label class="checkbox-row">
+            <input type="checkbox" id="f-new" onchange="updatePreview()">
+            <span>🔴 Marcar como <strong>NUEVO</strong></span>
+          </label>
+          <label class="checkbox-row">
+            <input type="checkbox" id="f-sold" onchange="updatePreview()">
+            <span>🏷 Marcar como <strong>VENDIDO</strong></span>
+          </label>
+        </div>
       </div>
-      <div class="form-group form-full">
-        <label>Descripción / Detalles</label>
-        <textarea id="f-desc" rows="3" placeholder="Detalles adicionales, historia de la prenda, materiales..."></textarea>
-      </div>
-      <div class="form-group form-full">
-        <label>Foto principal (URL)</label>
-        <input type="url" id="f-img" placeholder="https://... (subí la imagen a Supabase Storage o Imgur)">
-      </div>
-      <div class="form-group form-full">
-        <label>Foto secundaria (URL, opcional)</label>
-        <input type="url" id="f-img2" placeholder="https://...">
-      </div>
-      <div class="form-group" style="flex-direction:row;align-items:center;gap:.75rem;">
-        <input type="checkbox" id="f-new" style="width:18px;height:18px;cursor:pointer;">
-        <label for="f-new" style="cursor:pointer;">Marcar como NUEVO</label>
-      </div>
-      <div class="form-group" style="flex-direction:row;align-items:center;gap:.75rem;">
-        <input type="checkbox" id="f-sold" style="width:18px;height:18px;cursor:pointer;">
-        <label for="f-sold" style="cursor:pointer;">Marcar como VENDIDO</label>
+
+      <!-- PREVIEW PANE -->
+      <div class="modal-preview-pane">
+        <div class="preview-label">Vista previa en tienda</div>
+        <div class="preview-card" id="previewCard">
+          <div class="preview-img-wrap">
+            <div class="preview-img-placeholder" id="previewImgPlaceholder">
+              <span>🖼</span>
+              <span>Sin foto aún</span>
+            </div>
+            <img id="previewMainImg" src="" alt="" style="display:none; position:absolute; inset:0;">
+            <div class="preview-badges" id="previewBadges"></div>
+            <div class="preview-img-nav" id="previewImgNav"></div>
+          </div>
+          <div class="preview-info">
+            <div class="preview-name" id="previewName">Nombre del producto</div>
+            <div class="preview-cat" id="previewCat">Categoría</div>
+            <div class="preview-price" id="previewPrice">$0</div>
+            <div class="preview-estado" id="previewEstado">Estado: 10/10</div>
+            <div class="preview-sizes" id="previewSizes"></div>
+            <div class="preview-medidas" id="previewMedidas"></div>
+            <div class="preview-desc" id="previewDesc" style="display:none;"></div>
+          </div>
+        </div>
       </div>
     </div>
-    <!-- Preview imágenes -->
-    <div id="imgPreviewArea" style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap;"></div>
+
     <div class="modal-footer">
       <button class="btn-outline" onclick="closeModal('productModal')">Cancelar</button>
       <button class="btn-primary" onclick="saveProduct()" id="saveProductBtn">Guardar Producto</button>
@@ -443,37 +1065,39 @@
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     CONFIRM MODAL
-══════════════════════════════════════════ -->
+<!-- ══ CONFIRM MODAL ══ -->
 <div class="modal-overlay" id="confirmModal">
-  <div class="modal" style="max-width:400px;">
-    <div class="modal-title" id="confirmTitle">Confirmar</div>
-    <p id="confirmMsg" style="font-size:.85rem;color:var(--muted);margin-bottom:2rem;line-height:1.6;"></p>
-    <div class="modal-footer" style="margin-top:0;padding-top:0;border:none;">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title" id="confirmTitle">Confirmar acción</div>
+      <button class="modal-close" onclick="closeModal('confirmModal')">×</button>
+    </div>
+    <div class="modal-body">
+      <p id="confirmMsg"></p>
+    </div>
+    <div class="modal-footer">
       <button class="btn-outline" onclick="closeModal('confirmModal')">Cancelar</button>
       <button class="btn-primary btn-danger" onclick="confirmAction()" id="confirmBtn">Confirmar</button>
     </div>
   </div>
 </div>
 
+<!-- ══ LIGHTBOX ══ -->
+<div id="lightbox" onclick="closeLightbox()">
+  <button class="lb-close" onclick="closeLightbox()">×</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
 <div id="toast"></div>
 
-<!-- ══════════════════════════════════════════
-     SUPABASE SDK
-══════════════════════════════════════════ -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-/* ────────────────────────────────────────────
-   CONFIG — Mismas credenciales que tu tienda
-──────────────────────────────────────────── */
+/* ── CONFIG ── */
 const SUPABASE_URL  = 'https://iifrudupaxcahnopxqcb.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlpZnJ1ZHVwYXhjYWhub3B4cWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NDUyNjgsImV4cCI6MjA5NzAyMTI2OH0.2tTm-ko4n15HctHX40w4_OjBlajaxYZXaqhNamGCD8o';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-/* ────────────────────────────────────────────
-   STATE
-──────────────────────────────────────────── */
+/* ── STATE ── */
 let allAdminProducts = [];
 let allOrders = [];
 let allReservations = [];
@@ -482,9 +1106,11 @@ let confirmCallback = null;
 let ordersFilter = 'all';
 let productsAdminFilter = 'all';
 
-/* ────────────────────────────────────────────
-   AUTH
-──────────────────────────────────────────── */
+// Multi-image state
+let productImages = []; // [{url, isMain}]
+let previewCurrentImg = 0;
+
+/* ── AUTH ── */
 sb.auth.onAuthStateChange((event, session) => {
   if (session) {
     document.getElementById('loginScreen').style.display = 'none';
@@ -501,8 +1127,13 @@ async function doLogin() {
   const email = document.getElementById('loginEmail').value.trim();
   const pass  = document.getElementById('loginPass').value;
   const errEl = document.getElementById('loginError');
+  const btn   = document.querySelector('.btn-login');
   errEl.style.display = 'none';
+  btn.textContent = 'Ingresando...';
+  btn.disabled = true;
   const { error } = await sb.auth.signInWithPassword({ email, password: pass });
+  btn.textContent = 'Ingresar al Panel';
+  btn.disabled = false;
   if (error) { errEl.style.display = 'block'; }
 }
 
@@ -510,62 +1141,54 @@ async function doLogout() {
   await sb.auth.signOut();
 }
 
-/* ────────────────────────────────────────────
-   INIT
-──────────────────────────────────────────── */
+/* ── INIT ── */
 async function initAdmin() {
   await Promise.all([loadAdminProducts(), loadOrders(), loadReservations()]);
   renderDashboard();
 }
 
-/* ────────────────────────────────────────────
-   TABS
-──────────────────────────────────────────── */
+/* ── TABS ── */
 function switchTab(tab) {
   ['dashboard','products','orders'].forEach(t => {
-    document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none';
+    document.getElementById('tab-'+t).style.display = t===tab ? 'block' : 'none';
   });
-  document.querySelectorAll('.tab-btn').forEach((btn, i) => {
-    const tabs = ['dashboard','products','orders'];
-    btn.classList.toggle('active', tabs[i] === tab);
+  document.querySelectorAll('.tab-btn').forEach((btn,i) => {
+    btn.classList.toggle('active', ['dashboard','products','orders'][i]===tab);
   });
-  if (tab === 'products') renderProductsTable();
-  if (tab === 'orders') renderOrders();
+  if (tab==='products') renderProductsTable();
+  if (tab==='orders')   renderOrders();
 }
 
-/* ────────────────────────────────────────────
-   PRODUCTS CRUD
-──────────────────────────────────────────── */
+/* ── PRODUCTS ── */
 async function loadAdminProducts() {
-  const { data } = await sb.from('products').select('*').order('created_at', { ascending: false });
+  const { data } = await sb.from('products').select('*').order('created_at',{ascending:false});
   allAdminProducts = data || [];
-  document.getElementById('productCount').textContent = allAdminProducts.length;
+  document.getElementById('badgeProducts').textContent = allAdminProducts.length;
 }
 
 async function loadReservations() {
-  // Limpiar vencidas primero
   await sb.from('reservations').delete().lt('expires_at', new Date().toISOString());
   const { data } = await sb.from('reservations').select('*');
   allReservations = data || [];
 }
 
-function isProductReserved(productId) {
-  return allReservations.some(r => r.product_id === productId);
+function isProductReserved(id) {
+  return allReservations.some(r => r.product_id === id);
 }
 
 function filterProductsAdmin(filter, btn) {
   productsAdminFilter = filter;
-  document.querySelectorAll('#tab-products .filter-chip').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#tab-products .filter-chip').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   renderProductsTable();
 }
 
 function getFilteredAdminProducts() {
-  switch (productsAdminFilter) {
-    case 'available': return allAdminProducts.filter(p => !p.is_sold && !isProductReserved(p.id));
-    case 'sold':      return allAdminProducts.filter(p => p.is_sold);
-    case 'new':       return allAdminProducts.filter(p => p.is_new);
-    case 'reserved':  return allAdminProducts.filter(p => isProductReserved(p.id));
+  switch(productsAdminFilter) {
+    case 'available': return allAdminProducts.filter(p=>!p.is_sold && !isProductReserved(p.id));
+    case 'sold':      return allAdminProducts.filter(p=>p.is_sold);
+    case 'new':       return allAdminProducts.filter(p=>p.is_new);
+    case 'reserved':  return allAdminProducts.filter(p=>isProductReserved(p.id));
     default:          return allAdminProducts;
   }
 }
@@ -573,152 +1196,301 @@ function getFilteredAdminProducts() {
 function renderProductsTable() {
   const list = getFilteredAdminProducts();
   const tbody = document.getElementById('productsTableBody');
+  document.getElementById('productCountLabel').textContent = `(${list.length})`;
+
   if (!list.length) {
-    tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><p>Sin productos en esta categoría</p></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state">
+      <div class="empty-icon">📦</div>
+      <p>Sin productos en esta categoría</p>
+      <small>Cambiá el filtro o agregá uno nuevo</small>
+    </div></td></tr>`;
     return;
   }
-  tbody.innerHTML = list.map(p => {
+
+  tbody.innerHTML = list.map((p, idx) => {
     const reserved = isProductReserved(p.id);
     const statusBadge = p.is_sold
       ? '<span class="badge badge-sold">Vendido</span>'
       : reserved
         ? '<span class="badge badge-reserved">Reservado</span>'
         : '<span class="badge badge-avail">Disponible</span>';
-    const newBadge = p.is_new ? '<span class="badge badge-new" style="margin-left:4px;">NEW</span>' : '';
+    const newBadge = p.is_new ? ' <span class="badge badge-new">NEW</span>' : '';
 
-    return `
-    <tr>
-      <td>${p.img
-        ? `<img src="${p.img}" class="product-thumb" alt="${p.name}" onerror="this.parentElement.innerHTML='<div class=\\'product-thumb-placeholder\\'>NO IMG</div>'">`
-        : '<div class="product-thumb-placeholder">NO IMG</div>'
-      }</td>
-      <td><strong style="font-size:.8rem;">${p.name}</strong></td>
-      <td style="font-weight:800;">$${Number(p.price).toLocaleString('es-AR')}</td>
-      <td style="font-size:.72rem;color:var(--muted);text-transform:capitalize;">${p.category || '–'}</td>
-      <td style="font-size:.72rem;">${(p.sizes || []).join(' · ') || '–'}</td>
+    // Get first image
+    const images = getProductImages(p);
+    const imgSrc = images[0] || null;
+
+    return `<tr style="animation-delay:${idx*0.04}s">
+      <td>
+        ${imgSrc
+          ? `<img src="${imgSrc}" class="product-thumb" onclick="openLightbox('${imgSrc}')" title="Ver imagen" onerror="this.parentElement.innerHTML='<div class=\\'product-thumb-placeholder\\'>NO IMG</div>'">`
+          : '<div class="product-thumb-placeholder">NO IMG</div>'}
+      </td>
+      <td>
+        <strong style="font-size:.8rem;line-height:1.4;">${p.name}</strong>
+        ${images.length > 1 ? `<div style="font-size:.55rem;color:var(--muted);margin-top:2px;">${images.length} fotos</div>` : ''}
+      </td>
+      <td style="font-weight:900;font-size:.82rem;white-space:nowrap;">$${Number(p.price).toLocaleString('es-AR')}</td>
+      <td style="font-size:.68rem;color:var(--muted);text-transform:capitalize;">${p.category||'–'}</td>
+      <td style="font-size:.68rem;">${(p.sizes||[]).join(' · ')||'–'}</td>
       <td>${statusBadge}${newBadge}</td>
       <td>
         <div class="actions-cell">
-          <button class="btn-outline" style="font-size:.55rem;padding:.35rem .7rem;" onclick="openProductModal('${p.id}')">Editar</button>
-          <button class="btn-outline" style="font-size:.55rem;padding:.35rem .7rem;" onclick="toggleSold('${p.id}',${p.is_sold})">
+          <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;" onclick="openProductModal('${p.id}')">✏ Editar</button>
+          <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;" onclick="toggleSold('${p.id}',${p.is_sold})">
             ${p.is_sold ? '✓ Disponible' : '✗ Vendido'}
           </button>
-          <button class="btn-outline" style="font-size:.55rem;padding:.35rem .7rem;color:var(--red);border-color:var(--red);" onclick="confirmDelete('${p.id}','${p.name.replace(/'/g,"\\'")}')">Eliminar</button>
+          <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;color:var(--red);border-color:rgba(163,0,0,.3);" onclick="confirmDelete('${p.id}','${p.name.replace(/'/g,"\\'")}')">🗑</button>
         </div>
       </td>
     </tr>`;
   }).join('');
 }
 
-/* ── MODAL PRODUCTO ── */
-function openProductModal(id = null) {
+/* ── Image helpers ── */
+function getProductImages(p) {
+  // Support both legacy img/img2 and new images array
+  if (p.images && Array.isArray(p.images) && p.images.length) return p.images;
+  const imgs = [];
+  if (p.img)  imgs.push(p.img);
+  if (p.img2) imgs.push(p.img2);
+  return imgs;
+}
+
+/* ── Multi-image gallery in modal ── */
+function renderImgGallery() {
+  const gallery = document.getElementById('imgGallery');
+  if (!productImages.length) { gallery.innerHTML = ''; return; }
+  gallery.innerHTML = productImages.map((item, i) => `
+    <div class="img-gallery-item" id="imgItem-${i}">
+      <img src="${item.url}" alt="foto ${i+1}"
+        onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'80\\' height=\\'100\\'><rect fill=\\'%23eee\\' width=\\'80\\' height=\\'100\\'/><text fill=\\'%23999\\' x=\\'50%\\' y=\\'50%\\' text-anchor=\\'middle\\' dy=\\'.3em\\' font-size=\\'10\\'>Error</text></svg>'">
+      ${i===0 ? '<span class="img-badge img-main-badge">Principal</span>' : `<span class="img-badge">${i+1}</span>`}
+      <button class="img-remove" onclick="removeImage(${i})" title="Eliminar">×</button>
+      ${i!==0 ? `<button class="img-set-main" onclick="setMainImage(${i})">Hacer principal</button>` : ''}
+    </div>
+  `).join('');
+  updatePreview();
+}
+
+function addImageFromUrl() {
+  const input = document.getElementById('f-img-url-input');
+  const url = input.value.trim();
+  if (!url) return;
+  if (!url.startsWith('http')) { showToast('URL inválida'); return; }
+  if (productImages.some(i=>i.url===url)) { showToast('Esa imagen ya fue agregada'); return; }
+  productImages.push({ url });
+  input.value = '';
+  renderImgGallery();
+}
+
+function handleFileUpload(event) {
+  const files = Array.from(event.target.files);
+  files.forEach(file => {
+    if (file.size > 5*1024*1024) { showToast(`${file.name} es mayor a 5MB`); return; }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      productImages.push({ url: e.target.result });
+      renderImgGallery();
+    };
+    reader.readAsDataURL(file);
+  });
+  event.target.value = '';
+}
+
+function removeImage(idx) {
+  productImages.splice(idx, 1);
+  renderImgGallery();
+}
+
+function setMainImage(idx) {
+  const [item] = productImages.splice(idx, 1);
+  productImages.unshift(item);
+  renderImgGallery();
+}
+
+// Allow adding url on Enter
+document.getElementById('f-img-url-input').addEventListener('keydown', e => {
+  if (e.key==='Enter') { e.preventDefault(); addImageFromUrl(); }
+});
+
+// Drag & drop
+const uploadZone = document.getElementById('uploadZone');
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault(); uploadZone.classList.remove('drag-over');
+  const files = Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith('image/'));
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = (ev) => { productImages.push({url:ev.target.result}); renderImgGallery(); };
+    reader.readAsDataURL(file);
+  });
+});
+
+/* ── Live Preview ── */
+function updatePreview() {
+  const name     = document.getElementById('f-name').value || 'Nombre del producto';
+  const price    = document.getElementById('f-price').value;
+  const cat      = document.getElementById('f-category').value;
+  const estado   = document.getElementById('f-estado').value;
+  const medidas  = document.getElementById('f-medidas').value;
+  const desc     = document.getElementById('f-desc').value;
+  const isNew    = document.getElementById('f-new').checked;
+  const isSold   = document.getElementById('f-sold').checked;
+  const sizes    = [...document.querySelectorAll('.size-toggle.selected')].map(b=>b.textContent);
+
+  document.getElementById('previewName').textContent    = name;
+  document.getElementById('previewCat').textContent     = cat ? cat.charAt(0).toUpperCase()+cat.slice(1) : 'Categoría';
+  document.getElementById('previewPrice').textContent   = price ? `$${Number(price).toLocaleString('es-AR')}` : '$0';
+  document.getElementById('previewEstado').textContent  = `Estado: ${estado}`;
+
+  // Sizes
+  const sizesEl = document.getElementById('previewSizes');
+  sizesEl.innerHTML = sizes.map(s=>`<span class="preview-size-chip">${s}</span>`).join('');
+
+  // Medidas
+  const medidasEl = document.getElementById('previewMedidas');
+  medidasEl.textContent = medidas || '';
+  medidasEl.style.display = medidas ? 'block' : 'none';
+
+  // Desc
+  const descEl = document.getElementById('previewDesc');
+  descEl.textContent = desc || '';
+  descEl.style.display = desc ? 'block' : 'none';
+
+  // Badges
+  const badgesEl = document.getElementById('previewBadges');
+  let badges = '';
+  if (isNew)  badges += '<span class="badge badge-new">NEW</span>';
+  if (isSold) badges += '<span class="badge badge-sold" style="margin-top:3px;">Vendido</span>';
+  badgesEl.innerHTML = badges;
+
+  // Image
+  const placeholder = document.getElementById('previewImgPlaceholder');
+  const mainImg     = document.getElementById('previewMainImg');
+  const navEl       = document.getElementById('previewImgNav');
+
+  if (productImages.length) {
+    placeholder.style.display = 'none';
+    mainImg.style.display = 'block';
+    mainImg.src = productImages[previewCurrentImg < productImages.length ? previewCurrentImg : 0].url;
+
+    navEl.innerHTML = productImages.map((_, i) =>
+      `<div class="preview-dot ${i===previewCurrentImg?'active':''}" onclick="previewGoTo(${i})"></div>`
+    ).join('');
+  } else {
+    placeholder.style.display = 'flex';
+    mainImg.style.display = 'none';
+    navEl.innerHTML = '';
+    previewCurrentImg = 0;
+  }
+}
+
+function previewGoTo(idx) {
+  previewCurrentImg = idx;
+  updatePreview();
+}
+
+/* ── Modal open/close ── */
+function openProductModal(id=null) {
   editingProductId = id;
-  const modal = document.getElementById('productModal');
-  const title = document.getElementById('modalTitle');
+  productImages = [];
+  previewCurrentImg = 0;
 
   // Reset form
-  ['f-name','f-price','f-talle','f-medidas','f-desc','f-img','f-img2'].forEach(fid => {
-    document.getElementById(fid).value = '';
+  ['f-name','f-price','f-talle','f-medidas','f-desc'].forEach(fid=>{
+    document.getElementById(fid).value='';
   });
+  document.getElementById('f-img-url-input').value = '';
   document.getElementById('f-category').value = '';
   document.getElementById('f-section').value = 'arriba';
   document.getElementById('f-estado').value = '10/10';
   document.getElementById('f-new').checked = true;
   document.getElementById('f-sold').checked = false;
-  document.querySelectorAll('.size-toggle').forEach(b => b.classList.remove('selected'));
-  document.getElementById('imgPreviewArea').innerHTML = '';
+  document.querySelectorAll('.size-toggle').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('imgGallery').innerHTML = '';
 
   if (id) {
-    title.textContent = 'Editar Producto';
-    const p = allAdminProducts.find(x => x.id === id);
+    document.getElementById('modalTitle').textContent = 'Editar Producto';
+    const p = allAdminProducts.find(x=>x.id===id);
     if (p) {
-      document.getElementById('f-name').value = p.name || '';
-      document.getElementById('f-price').value = p.price || '';
-      document.getElementById('f-category').value = p.category || '';
-      document.getElementById('f-section').value = p.section || 'arriba';
-      document.getElementById('f-estado').value = p.estado || '10/10';
-      document.getElementById('f-talle').value = p.talle || '';
-      document.getElementById('f-medidas').value = p.medidas || '';
-      document.getElementById('f-desc').value = p.description || '';
-      document.getElementById('f-img').value = p.img || '';
-      document.getElementById('f-img2').value = p.img2 || '';
-      document.getElementById('f-new').checked = !!p.is_new;
-      document.getElementById('f-sold').checked = !!p.is_sold;
-      (p.sizes || []).forEach(s => {
-        document.querySelectorAll('.size-toggle').forEach(b => {
-          if (b.textContent === s) b.classList.add('selected');
-        });
+      document.getElementById('f-name').value    = p.name||'';
+      document.getElementById('f-price').value   = p.price||'';
+      document.getElementById('f-category').value= p.category||'';
+      document.getElementById('f-section').value = p.section||'arriba';
+      document.getElementById('f-estado').value  = p.estado||'10/10';
+      document.getElementById('f-talle').value   = p.talle||'';
+      document.getElementById('f-medidas').value = p.medidas||'';
+      document.getElementById('f-desc').value    = p.description||'';
+      document.getElementById('f-new').checked   = !!p.is_new;
+      document.getElementById('f-sold').checked  = !!p.is_sold;
+      (p.sizes||[]).forEach(s=>{
+        document.querySelectorAll('.size-toggle').forEach(b=>{ if(b.textContent===s) b.classList.add('selected'); });
       });
-      updateImgPreview();
+      // Load images
+      const imgs = getProductImages(p);
+      productImages = imgs.map(url=>({url}));
+      renderImgGallery();
     }
   } else {
-    title.textContent = 'Nuevo Producto';
+    document.getElementById('modalTitle').textContent = 'Nuevo Producto';
+    updatePreview();
   }
 
-  modal.classList.add('active');
+  document.getElementById('productModal').classList.add('active');
 }
 
 function closeModal(id) {
   document.getElementById(id).classList.remove('active');
 }
 
-function toggleSize(btn, size) {
+function toggleSize(btn) {
   btn.classList.toggle('selected');
+  updatePreview();
 }
-
-function updateImgPreview() {
-  const area = document.getElementById('imgPreviewArea');
-  const urls = [document.getElementById('f-img').value, document.getElementById('f-img2').value].filter(Boolean);
-  area.innerHTML = urls.map(url =>
-    `<div class="img-preview-item"><img src="${url}" alt="preview" onerror="this.style.display='none'"></div>`
-  ).join('');
-}
-
-document.getElementById('f-img').addEventListener('input', updateImgPreview);
-document.getElementById('f-img2').addEventListener('input', updateImgPreview);
 
 async function saveProduct() {
-  const btn = document.getElementById('saveProductBtn');
+  const btn  = document.getElementById('saveProductBtn');
   const name = document.getElementById('f-name').value.trim();
-  const price = parseFloat(document.getElementById('f-price').value);
-  const category = document.getElementById('f-category').value;
+  const price= parseFloat(document.getElementById('f-price').value);
+  const cat  = document.getElementById('f-category').value;
 
-  if (!name || !price || !category) {
-    showToast('Completá Nombre, Precio y Categoría'); return;
-  }
+  if (!name || !price || !cat) { showToast('Completá Nombre, Precio y Categoría'); return; }
 
-  const sizes = [...document.querySelectorAll('.size-toggle.selected')].map(b => b.textContent);
+  const sizes = [...document.querySelectorAll('.size-toggle.selected')].map(b=>b.textContent);
+
+  // Build images array (store as array of URLs)
+  const imagesArray = productImages.map(i=>i.url).filter(Boolean);
 
   const payload = {
-    name,
-    price,
-    category,
-    section: document.getElementById('f-section').value,
-    estado: document.getElementById('f-estado').value,
-    talle: document.getElementById('f-talle').value.trim(),
-    medidas: document.getElementById('f-medidas').value.trim(),
-    description: document.getElementById('f-desc').value.trim(),
-    img: document.getElementById('f-img').value.trim() || null,
-    img2: document.getElementById('f-img2').value.trim() || null,
-    is_new: document.getElementById('f-new').checked,
-    is_sold: document.getElementById('f-sold').checked,
+    name, price, category: cat,
+    section:      document.getElementById('f-section').value,
+    estado:       document.getElementById('f-estado').value,
+    talle:        document.getElementById('f-talle').value.trim(),
+    medidas:      document.getElementById('f-medidas').value.trim(),
+    description:  document.getElementById('f-desc').value.trim(),
+    img:          imagesArray[0] || null,
+    img2:         imagesArray[1] || null,
+    images:       imagesArray,
+    is_new:       document.getElementById('f-new').checked,
+    is_sold:      document.getElementById('f-sold').checked,
     sizes,
   };
 
-  btn.disabled = true; btn.textContent = 'Guardando...';
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Guardando...';
 
   let error;
   if (editingProductId) {
-    ({ error } = await sb.from('products').update(payload).eq('id', editingProductId));
+    ({error} = await sb.from('products').update(payload).eq('id',editingProductId));
   } else {
-    ({ error } = await sb.from('products').insert(payload));
+    ({error} = await sb.from('products').insert(payload));
   }
 
-  btn.disabled = false; btn.textContent = 'Guardar Producto';
+  btn.disabled=false; btn.textContent='Guardar Producto';
+  if (error) { showToast('Error: '+error.message); return; }
 
-  if (error) { showToast('Error: ' + error.message); return; }
-
-  showToast(editingProductId ? 'Producto actualizado ✓' : 'Producto creado ✓');
+  showToast(editingProductId ? '✓ Producto actualizado' : '✓ Producto creado');
   closeModal('productModal');
   await loadAdminProducts();
   renderProductsTable();
@@ -726,100 +1498,92 @@ async function saveProduct() {
 }
 
 async function toggleSold(id, currentSold) {
-  await sb.from('products').update({ is_sold: !currentSold }).eq('id', id);
+  await sb.from('products').update({is_sold:!currentSold}).eq('id',id);
   await loadAdminProducts();
-  renderProductsTable();
-  renderDashboard();
-  showToast(!currentSold ? 'Marcado como VENDIDO' : 'Marcado como DISPONIBLE');
+  renderProductsTable(); renderDashboard();
+  showToast(!currentSold ? '✗ Marcado como VENDIDO' : '✓ Marcado como DISPONIBLE');
 }
 
 function confirmDelete(id, name) {
   document.getElementById('confirmTitle').textContent = 'Eliminar Producto';
   document.getElementById('confirmMsg').textContent = `¿Estás seguro que querés eliminar "${name}"? Esta acción no se puede deshacer.`;
   confirmCallback = async () => {
-    await sb.from('products').delete().eq('id', id);
+    await sb.from('products').delete().eq('id',id);
     closeModal('confirmModal');
     await loadAdminProducts();
-    renderProductsTable();
-    renderDashboard();
-    showToast('Producto eliminado');
+    renderProductsTable(); renderDashboard();
+    showToast('🗑 Producto eliminado');
   };
   document.getElementById('confirmModal').classList.add('active');
 }
 
-function confirmAction() {
-  if (confirmCallback) confirmCallback();
-}
+function confirmAction() { if(confirmCallback) confirmCallback(); }
 
-/* ────────────────────────────────────────────
-   ORDERS
-──────────────────────────────────────────── */
+/* ── ORDERS ── */
 async function loadOrders() {
-  const { data } = await sb.from('orders').select('*').order('created_at', { ascending: false });
+  const {data} = await sb.from('orders').select('*').order('created_at',{ascending:false});
   allOrders = data || [];
+  const pending = allOrders.filter(o=>o.status==='pending').length;
+  document.getElementById('badgeOrders').textContent = pending || allOrders.length;
 }
 
 function filterOrders(filter, btn) {
   ordersFilter = filter;
-  document.querySelectorAll('#tab-orders .filter-chip').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#tab-orders .filter-chip').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   renderOrders();
 }
 
 function renderOrders() {
-  const list = ordersFilter === 'all'
-    ? allOrders
-    : allOrders.filter(o => o.status === ordersFilter);
-
+  const list = ordersFilter==='all' ? allOrders : allOrders.filter(o=>o.status===ordersFilter);
   const container = document.getElementById('ordersContainer');
+
   if (!list.length) {
-    container.innerHTML = '<div class="empty-state"><p>No hay pedidos en esta categoría</p></div>';
+    container.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">📭</div>
+      <p>No hay pedidos en esta categoría</p>
+    </div>`;
     return;
   }
 
-  container.innerHTML = list.map(order => {
-    const date = new Date(order.created_at).toLocaleDateString('es-AR', {
+  container.innerHTML = list.map((order, idx) => {
+    const date = new Date(order.created_at).toLocaleDateString('es-AR',{
       day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'
     });
-    const items = (order.items || []);
-    const itemsText = items.map(i => `${i.name} (${i.size})`).join(', ');
-
+    const items = (order.items||[]).map(i=>`${i.name} (${i.size})`).join(', ');
     const statusBadge = {
       pending:   '<span class="badge badge-pending">Pendiente</span>',
       completed: '<span class="badge badge-completed">Completado</span>',
       cancelled: '<span class="badge badge-sold">Cancelado</span>',
-    }[order.status] || '<span class="badge">–</span>';
+    }[order.status]||'<span class="badge">–</span>';
 
-    // WhatsApp message recap
-    const waText = encodeURIComponent(
-      `Hola! Sigo con el pedido *${order.order_id}*. ¿Cómo quedamos?`
-    );
+    const waText = encodeURIComponent(`Hola! Sigo con el pedido *${order.order_id}*. ¿Cómo quedamos?`);
 
-    return `
-    <div class="order-card">
+    return `<div class="order-card" style="animation-delay:${idx*0.05}s">
       <div class="order-header">
         <div>
           <div class="order-id">${order.order_id}</div>
           <div class="order-date">${date}</div>
         </div>
-        <div style="display:flex;gap:.5rem;align-items:center;">
+        <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;">
           ${statusBadge}
-          <select onchange="updateOrderStatus('${order.id}',this.value)"
-            style="font-size:.6rem;font-weight:800;text-transform:uppercase;padding:.3rem .6rem;border:1.5px solid var(--gray-mid);font-family:'Inter',sans-serif;cursor:pointer;outline:none;">
-            <option value="pending"   ${order.status==='pending'   ?'selected':''}>Pendiente</option>
-            <option value="completed" ${order.status==='completed' ?'selected':''}>Completado</option>
-            <option value="cancelled" ${order.status==='cancelled' ?'selected':''}>Cancelado</option>
+          <select class="order-status-select" onchange="updateOrderStatus('${order.id}',this.value)">
+            <option value="pending"   ${order.status==='pending'  ?'selected':''}>⏳ Pendiente</option>
+            <option value="completed" ${order.status==='completed'?'selected':''}>✅ Completado</option>
+            <option value="cancelled" ${order.status==='cancelled'?'selected':''}>❌ Cancelado</option>
           </select>
         </div>
       </div>
-      <div class="order-items">${itemsText || '–'}</div>
-      <div class="order-total">$${Number(order.total || 0).toLocaleString('es-AR')}</div>
-      <div class="order-customer" style="margin-top:.6rem;">
-        <strong>${order.customer_name || '–'}</strong> · DNI ${order.customer_dni || '–'} · ${order.customer_phone || '–'}<br>
-        ${order.customer_location || ''} · ${order.customer_shipping || ''}
+      <div class="order-items">${items||'–'}</div>
+      <div class="order-total">$${Number(order.total||0).toLocaleString('es-AR')}</div>
+      <div class="order-customer">
+        <strong>${order.customer_name||'–'}</strong>
+        &nbsp;·&nbsp; DNI ${order.customer_dni||'–'}
+        &nbsp;·&nbsp; ${order.customer_phone||'–'}<br>
+        ${order.customer_location||''} ${order.customer_shipping ? '· '+order.customer_shipping : ''}
       </div>
       <div class="order-actions">
-        <a href="https://wa.me/${order.customer_phone ? order.customer_phone.replace(/\D/g,'') : '5493544631553'}?text=${waText}" target="_blank">
+        <a href="https://wa.me/${(order.customer_phone||'5493544631553').replace(/\D/g,'')}?text=${waText}" target="_blank">
           <button class="btn-wa">📲 Contactar por WhatsApp</button>
         </a>
       </div>
@@ -828,63 +1592,84 @@ function renderOrders() {
 }
 
 async function updateOrderStatus(id, status) {
-  await sb.from('orders').update({ status }).eq('id', id);
+  await sb.from('orders').update({status}).eq('id',id);
   await loadOrders();
-  renderOrders();
-  showToast('Estado actualizado: ' + status.toUpperCase());
+  renderOrders(); renderDashboard();
+  showToast('Estado → '+status.toUpperCase());
 }
 
-/* ────────────────────────────────────────────
-   DASHBOARD
-──────────────────────────────────────────── */
+/* ── DASHBOARD ── */
 function renderDashboard() {
   const total   = allAdminProducts.length;
-  const sold    = allAdminProducts.filter(p => p.is_sold).length;
+  const sold    = allAdminProducts.filter(p=>p.is_sold).length;
   const avail   = total - sold;
   const res     = allReservations.length;
   const orders  = allOrders.length;
-  const revenue = allOrders
-    .filter(o => o.status === 'completed')
-    .reduce((s, o) => s + Number(o.total || 0), 0);
+  const revenue = allOrders.filter(o=>o.status==='completed').reduce((s,o)=>s+Number(o.total||0),0);
+
+  // Capital = sum of prices of available (not sold) products
+  const capital = allAdminProducts
+    .filter(p=>!p.is_sold)
+    .reduce((s,p)=>s+Number(p.price||0),0);
 
   document.getElementById('st-total').textContent   = total;
   document.getElementById('st-avail').textContent   = avail;
   document.getElementById('st-sold').textContent    = sold;
   document.getElementById('st-res').textContent     = res;
   document.getElementById('st-orders').textContent  = orders;
-  document.getElementById('st-revenue').textContent = '$' + revenue.toLocaleString('es-AR');
+  document.getElementById('st-revenue').textContent = '$'+revenue.toLocaleString('es-AR');
+  document.getElementById('st-capital').textContent = '$'+capital.toLocaleString('es-AR');
 
-  // Pedidos recientes (últimos 5)
-  const recent = allOrders.slice(0, 5);
-  document.getElementById('recentOrders').innerHTML = recent.length ? recent.map(o => {
+  const recent = allOrders.slice(0,6);
+  document.getElementById('recentOrders').innerHTML = recent.length ? recent.map(o=>{
     const date = new Date(o.created_at).toLocaleDateString('es-AR');
-    const statusColor = { pending:'#854d0e', completed:'var(--green)', cancelled:'var(--red)' }[o.status] || '#000';
-    return `<div style="display:flex;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:.75rem;">
-      <div><strong>${o.order_id}</strong> — ${o.customer_name || '–'}</div>
-      <div style="display:flex;gap:1rem;align-items:center;">
-        <span style="font-weight:700;">$${Number(o.total||0).toLocaleString('es-AR')}</span>
-        <span style="font-size:.6rem;font-weight:800;text-transform:uppercase;color:${statusColor};">${o.status}</span>
-        <span style="font-size:.62rem;color:var(--muted);">${date}</span>
+    const colors = { pending:'#854d0e', completed:'var(--green)', cancelled:'var(--red)' };
+    const color = colors[o.status]||'#000';
+    return `<div class="recent-order-row">
+      <div>
+        <strong style="font-size:.74rem;">${o.order_id}</strong>
+        <span style="color:var(--muted);margin-left:.5rem;font-size:.68rem;">${o.customer_name||'–'}</span>
+      </div>
+      <div style="display:flex;gap:1.2rem;align-items:center;flex-shrink:0;">
+        <span style="font-weight:800;font-size:.74rem;">$${Number(o.total||0).toLocaleString('es-AR')}</span>
+        <span style="font-size:.56rem;font-weight:900;text-transform:uppercase;color:${color};">${o.status}</span>
+        <span style="font-size:.6rem;color:var(--muted);">${date}</span>
       </div>
     </div>`;
   }).join('')
-  : '<p style="font-size:.75rem;color:var(--muted);">No hay pedidos aún.</p>';
+  : '<p style="font-size:.72rem;color:var(--muted);padding:.5rem 0;">No hay pedidos aún.</p>';
 }
 
-/* ────────────────────────────────────────────
-   TOAST
-──────────────────────────────────────────── */
+/* ── LIGHTBOX ── */
+function openLightbox(src) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') { closeLightbox(); closeModal('productModal'); closeModal('confirmModal'); } });
+
+/* ── TOAST ── */
+let toastTimer;
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg; t.style.display = 'block';
-  clearTimeout(t._timer);
-  t._timer = setTimeout(() => t.style.display = 'none', 3500);
+  t.textContent = msg;
+  t.className = 'toast-visible';
+  t.style.display = 'block';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{
+    t.className = 'toast-hiding';
+    setTimeout(()=>{ t.style.display='none'; t.className=''; }, 250);
+  }, 3200);
 }
 
-/* Cerrar modal al hacer clic fuera */
-document.querySelectorAll('.modal-overlay').forEach(overlay => {
+/* ── Close overlays on outside click ── */
+document.querySelectorAll('.modal-overlay').forEach(overlay=>{
   overlay.addEventListener('click', e => {
-    if (e.target === overlay) overlay.classList.remove('active');
+    if(e.target===overlay) overlay.classList.remove('active');
   });
 });
 </script>
