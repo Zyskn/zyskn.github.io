@@ -650,11 +650,6 @@
   font-size: 0.8rem; font-weight: 800;
   text-transform: uppercase; letter-spacing: 0.04em;
 }
-.product-name-wrap {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
 .fav-btn {
   background: none;
   border: none;
@@ -771,11 +766,31 @@
     /* Detail info */
     .product-info { text-align: left; }
 
+    .detail-name-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 0.4rem;
+    }
+
     #detailName {
       font-size: 2.2rem; font-weight: 900;
-      text-transform: uppercase; margin-bottom: 0.4rem;
+      text-transform: uppercase; margin-bottom: 0;
       letter-spacing: -0.03em; line-height: 1;
     }
+
+    .detail-fav-btn { flex-shrink: 0; }
+    .detail-fav-btn svg {
+      width: 26px;
+      height: 26px;
+      stroke-width: 1.6px;
+    }
+
+    @media (max-width: 768px) {
+      .detail-name-wrap { gap: 10px; }
+      .detail-fav-btn svg { width: 24px; height: 24px; }
+    }
+
     #detailPrice {
       font-weight: 800; font-size: 1.6rem;
       margin-bottom: 0.6rem; color: var(--red);
@@ -1266,7 +1281,12 @@
         </div>
 
         <div class="product-info">
-          <h2 id="detailName"></h2>
+          <div class="detail-name-wrap">
+            <h2 id="detailName"></h2>
+            <button class="fav-btn detail-fav-btn" id="detailFavBtn" onclick="toggleFavDetail(event)" aria-label="Favorito">
+              <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </button>
+          </div>
           <p id="detailPrice"></p>
           <div id="detailDesc"></div>
 
@@ -1474,13 +1494,19 @@
 // FAVORITOS
 let favs = JSON.parse(localStorage.getItem('zysk_favs')||'[]');
 function isFav(id){ return favs.includes(id); }
-function toggleFav(id, e){
+function toggleFavDetail(e){
   e.stopPropagation();
+  if(!currentProduct) return;
+  const id = currentProduct.id;
   const i = favs.indexOf(id);
   if(i>-1){ favs.splice(i,1); } else { favs.push(id); }
   localStorage.setItem('zysk_favs', JSON.stringify(favs));
-  renderProducts(products,'productsGrid');
-  renderProducts(products.filter(p=>p.isNew),'newProductsGrid');
+  updateDetailFavBtn();
+}
+function updateDetailFavBtn(){
+  const btn = document.getElementById('detailFavBtn');
+  if(!btn || !currentProduct) return;
+  btn.classList.toggle('active', isFav(currentProduct.id));
 }
 
 function saveRes(){ localStorage.setItem('zysk_res',JSON.stringify(reservations)); }
@@ -1534,12 +1560,7 @@ function startReserveTimer(){
       <div class="product-image"><img src="${p.img}" alt="${p.name}" onmouseenter="this.src='${p.img2||p.img}'" onmouseleave="this.src='${p.img}'" loading="lazy"></div>
       <div class="product-meta">
         <div>
-          <div class="product-name-wrap">
-            <p class="product-name">${p.name}</p>
-            <button class="fav-btn ${isFav(p.id)?'active':''}" onclick="toggleFav('${p.id}',event)" aria-label="Favorito">
-              <svg viewBox="0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-            </button>
-          </div>
+          <p class="product-name">${p.name}</p>
           <p class="product-cat">${p.category}</p>
         </div>
         <p class="product-price">$${p.price.toLocaleString('es-AR')}</p>
@@ -1583,6 +1604,7 @@ function startReserveTimer(){
       document.getElementById('detailMedidas').textContent=currentProduct.medidas||'Consultar';
       document.getElementById('detailEstado').textContent=currentProduct.estado||'10/10';
       document.getElementById('detailSizes').innerHTML=currentProduct.sizes.map(s=>`<button onclick="setS('${s}',this)">${s}</button>`).join('');
+      updateDetailFavBtn();
       const hasMultiple=currentPhotos.length>1;
       document.getElementById('prevBtn').style.display=hasMultiple?'block':'none';
       document.getElementById('nextBtn').style.display=hasMultiple?'block':'none';
