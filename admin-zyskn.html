@@ -14,9 +14,89 @@
         ::-webkit-scrollbar-thumb { background: #000; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
+
+        /* Galería de imágenes */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 4/5;
+            background: #f5f5f5;
+            border: 1px solid #e5e5e5;
+            overflow: hidden;
+            cursor: default;
+        }
+        .gallery-item.is-main {
+            grid-column: span 3;
+            aspect-ratio: 4/3;
+        }
+        .gallery-item img {
+            width: 100%; height: 100%; object-fit: cover;
+            display: block;
+        }
+        .gallery-item .badge {
+            position: absolute; top: 4px; left: 4px;
+            background: #000; color: #fff;
+            font-size: 9px; text-transform: uppercase;
+            letter-spacing: 0.1em; padding: 2px 6px;
+        }
+        .gallery-item .hover-badge {
+            background: #555;
+        }
+        .gallery-item .btn-remove {
+            position: absolute; top: 4px; right: 4px;
+            background: rgba(0,0,0,0.7); color: #fff;
+            border: none; width: 22px; height: 22px;
+            font-size: 14px; line-height: 1;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.15s;
+        }
+        .gallery-item:hover .btn-remove { opacity: 1; }
+        .gallery-item .btn-set-main {
+            position: absolute; bottom: 4px; left: 4px;
+            background: rgba(0,0,0,0.7); color: #fff;
+            border: none; font-size: 9px; text-transform: uppercase;
+            letter-spacing: 0.08em; padding: 2px 6px;
+            cursor: pointer;
+            opacity: 0; transition: opacity 0.15s;
+        }
+        .gallery-item:hover .btn-set-main { opacity: 1; }
+
+        .gallery-add-btn {
+            aspect-ratio: 4/5;
+            border: 1px dashed #aaa;
+            background: #fafafa;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            cursor: pointer; transition: border-color 0.15s, background 0.15s;
+            gap: 6px;
+        }
+        .gallery-add-btn:hover { border-color: #000; background: #f0f0f0; }
+        .gallery-add-btn span { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #777; }
+        .gallery-add-btn .plus { font-size: 22px; color: #aaa; line-height: 1; }
+        .gallery-add-btn:hover .plus { color: #000; }
+
+        /* Preview galería mini */
+        .pv-gallery {
+            display: flex; gap: 4px; margin-top: 8px; overflow-x: auto;
+        }
+        .pv-gallery img {
+            width: 44px; height: 54px; object-fit: cover;
+            border: 1px solid #e5e5e5; cursor: pointer;
+            transition: border-color 0.15s;
+            flex-shrink: 0;
+        }
+        .pv-gallery img.active { border-color: #000; }
+
+        /* Drag reorder */
+        .gallery-item.drag-over { outline: 2px solid #000; }
     </style>
 </head>
 <body class="bg-white text-black min-h-screen">
+
     <!-- LOGIN -->
     <div id="login-screen" class="min-h-screen flex items-center justify-center p-6">
         <div class="w-full max-w-sm">
@@ -56,13 +136,14 @@
 
         <main class="flex-1 max-w-[1600px] mx-auto w-full px-5 md:px-8 py-8 md:py-10">
             <div class="grid grid-cols-1 xl:grid-cols-5 gap-10 xl:gap-12 items-start">
+
                 <!-- LEFT FORM -->
                 <section class="xl:col-span-3">
                     <div class="flex items-center justify-between mb-6">
                         <h2 class="text-[13px] uppercase tracking-[0.2em] font-semibold">Agregar / Editar Producto</h2>
                         <button id="btnClear" class="text-[11px] uppercase tracking-wider text-neutral-500 hover:text-black">Limpiar formulario</button>
                     </div>
-                    
+
                     <form id="productForm" class="border border-black">
                         <div class="p-6 md:p-8 space-y-6">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -103,27 +184,20 @@
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
-                                <div>
-                                    <label class="block text-[11px] uppercase tracking-wider mb-2 font-medium">Foto principal</label>
-                                    <div class="border border-dashed border-neutral-400 p-3">
-                                        <input id="img1" type="file" accept="image/*" class="block w-full text-[12px] file:mr-3 file:py-1.5 file:px-3 file:border file:border-black file:bg-white file:text-[11px] file:uppercase file:tracking-wider hover:file:bg-black hover:file:text-white file:transition">
-                                        <div class="mt-3 aspect-[4/5] bg-neutral-100 overflow-hidden">
-                                            <img id="img1Preview" class="w-full h-full object-cover hidden" alt="preview">
-                                            <div id="img1Placeholder" class="w-full h-full flex items-center justify-center text-[11px] text-neutral-400 uppercase tracking-wider">Sin imagen</div>
-                                        </div>
-                                    </div>
+                            <!-- ── GALERÍA DE IMÁGENES ── -->
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <label class="block text-[11px] uppercase tracking-wider font-medium">Imágenes del producto</label>
+                                    <span id="imgCount" class="text-[11px] text-neutral-400">0 / 8</span>
                                 </div>
-                                <div>
-                                    <label class="block text-[11px] uppercase tracking-wider mb-2 font-medium">Foto hover <span class="text-neutral-400">(opcional)</span></label>
-                                    <div class="border border-dashed border-neutral-400 p-3">
-                                        <input id="img2" type="file" accept="image/*" class="block w-full text-[12px] file:mr-3 file:py-1.5 file:px-3 file:border file:border-black file:bg-white file:text-[11px] file:uppercase file:tracking-wider hover:file:bg-black hover:file:text-white file:transition">
-                                        <div class="mt-3 aspect-[4/5] bg-neutral-100 overflow-hidden">
-                                            <img id="img2Preview" class="w-full h-full object-cover hidden" alt="preview hover">
-                                            <div id="img2Placeholder" class="w-full h-full flex items-center justify-center text-[11px] text-neutral-400 uppercase tracking-wider">Sin imagen</div>
-                                        </div>
-                                    </div>
+                                <p class="text-[11px] text-neutral-400 mb-3">La primera imagen es la principal (aparece en la tienda). La segunda es el hover. Podés arrastrar para reordenar.</p>
+
+                                <div id="galleryGrid" class="gallery-grid">
+                                    <!-- Se generan dinámicamente -->
                                 </div>
+
+                                <!-- Input oculto para agregar fotos -->
+                                <input id="galleryFileInput" type="file" accept="image/*" multiple class="hidden">
                             </div>
 
                             <div class="flex items-center gap-3 pt-2">
@@ -162,6 +236,8 @@
                                     <p id="pv-talle" class="text-[11px] text-neutral-500 uppercase tracking-wide"></p>
                                 </div>
                                 <p id="pv-estado" class="text-[11px] text-neutral-500 mt-2">10/10 - Impecable</p>
+                                <!-- Miniaturas galería en preview -->
+                                <div id="pv-gallery" class="pv-gallery mt-3"></div>
                             </div>
                         </div>
                     </div>
@@ -237,6 +313,178 @@ let editingId = null;
 let defaultHash = null;
 let draftTimer = null;
 
+// ── GALERÍA ──────────────────────────────────────────
+// galleryImages: array de { src: string, label?: string }
+// index 0 = principal, index 1 = hover
+let galleryImages = [];
+const MAX_IMAGES = 8;
+
+function renderGallery() {
+    const grid = $('galleryGrid');
+    $('imgCount').textContent = galleryImages.length + ' / ' + MAX_IMAGES;
+    grid.innerHTML = '';
+
+    galleryImages.forEach((img, i) => {
+        const item = document.createElement('div');
+        item.className = 'gallery-item' + (i === 0 ? ' is-main' : '');
+        item.draggable = true;
+        item.dataset.idx = i;
+
+        // Badge
+        if (i === 0) {
+            const badge = document.createElement('span');
+            badge.className = 'badge';
+            badge.textContent = 'Principal';
+            item.appendChild(badge);
+        } else if (i === 1) {
+            const badge = document.createElement('span');
+            badge.className = 'badge hover-badge';
+            badge.textContent = 'Hover';
+            item.appendChild(badge);
+        }
+
+        // Imagen
+        const image = document.createElement('img');
+        image.src = img.src;
+        image.alt = '';
+        item.appendChild(image);
+
+        // Botón quitar
+        const btnRemove = document.createElement('button');
+        btnRemove.type = 'button';
+        btnRemove.className = 'btn-remove';
+        btnRemove.textContent = '×';
+        btnRemove.title = 'Eliminar imagen';
+        btnRemove.onclick = () => removeImage(i);
+        item.appendChild(btnRemove);
+
+        // Botón "usar como principal" (solo si no es ya la principal)
+        if (i !== 0) {
+            const btnMain = document.createElement('button');
+            btnMain.type = 'button';
+            btnMain.className = 'btn-set-main';
+            btnMain.textContent = 'Hacer principal';
+            btnMain.onclick = () => setMainImage(i);
+            item.appendChild(btnMain);
+        }
+
+        // Drag & drop
+        item.addEventListener('dragstart', onDragStart);
+        item.addEventListener('dragover', onDragOver);
+        item.addEventListener('drop', onDrop);
+        item.addEventListener('dragend', onDragEnd);
+
+        grid.appendChild(item);
+    });
+
+    // Botón agregar (si hay espacio)
+    if (galleryImages.length < MAX_IMAGES) {
+        const addBtn = document.createElement('div');
+        addBtn.className = 'gallery-add-btn';
+        addBtn.innerHTML = '<span class="plus">+</span><span>Agregar foto</span>';
+        addBtn.onclick = () => $('galleryFileInput').click();
+        grid.appendChild(addBtn);
+    }
+
+    updatePreview();
+    saveDraft();
+}
+
+function removeImage(idx) {
+    galleryImages.splice(idx, 1);
+    renderGallery();
+}
+
+function setMainImage(idx) {
+    const [img] = galleryImages.splice(idx, 1);
+    galleryImages.unshift(img);
+    renderGallery();
+    showToast('Imagen principal actualizada');
+}
+
+// Drag & drop reorder
+let dragSrcIdx = null;
+function onDragStart(e) {
+    dragSrcIdx = parseInt(e.currentTarget.dataset.idx);
+    e.dataTransfer.effectAllowed = 'move';
+}
+function onDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    document.querySelectorAll('.gallery-item').forEach(el => el.classList.remove('drag-over'));
+    e.currentTarget.classList.add('drag-over');
+}
+function onDrop(e) {
+    e.preventDefault();
+    const targetIdx = parseInt(e.currentTarget.dataset.idx);
+    if (dragSrcIdx === null || dragSrcIdx === targetIdx) return;
+    const [moved] = galleryImages.splice(dragSrcIdx, 1);
+    galleryImages.splice(targetIdx, 0, moved);
+    renderGallery();
+}
+function onDragEnd() {
+    document.querySelectorAll('.gallery-item').forEach(el => el.classList.remove('drag-over'));
+    dragSrcIdx = null;
+}
+
+// Cargar imágenes desde file input (múltiple)
+$('galleryFileInput') && ($('galleryFileInput').addEventListener('change', function() {
+    const files = Array.from(this.files);
+    const remaining = MAX_IMAGES - galleryImages.length;
+    files.slice(0, remaining).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = e => {
+            galleryImages.push({ src: e.target.result });
+            renderGallery();
+        };
+        reader.readAsDataURL(file);
+    });
+    if (files.length > remaining) showToast(`Máximo ${MAX_IMAGES} imágenes`, false);
+    this.value = '';
+}));
+
+// ── PREVIEW ──────────────────────────────────────────
+function updatePreview() {
+    const name = $('name').value || 'Nombre del producto';
+    const price = $('price').value || 0;
+    const talle = $('talle').value;
+    const estado = $('estado').value;
+    const isNew = $('isNew').checked;
+
+    $('pv-name').textContent = name;
+    $('pv-price').textContent = formatPrice(price);
+    $('pv-talle').textContent = talle ? talle.split(' ')[0] : '';
+    $('pv-estado').textContent = estado;
+    $('pv-new').classList.toggle('hidden', !isNew);
+
+    const placeholder = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect width='100%25' height='100%25' fill='%23f5f5f5'/%3E%3C/svg%3E";
+    $('pv-img1').src = galleryImages[0]?.src || placeholder;
+    $('pv-img2').src = galleryImages[1]?.src || '';
+
+    // Mini galería
+    const pvGallery = $('pv-gallery');
+    if (galleryImages.length > 1) {
+        pvGallery.innerHTML = '';
+        galleryImages.forEach((img, i) => {
+            const thumb = document.createElement('img');
+            thumb.src = img.src;
+            thumb.className = i === 0 ? 'active' : '';
+            thumb.title = i === 0 ? 'Principal' : i === 1 ? 'Hover' : 'Foto ' + (i+1);
+            thumb.onclick = () => {
+                $('pv-img1').src = img.src;
+                pvGallery.querySelectorAll('img').forEach(t => t.classList.remove('active'));
+                thumb.classList.add('active');
+            };
+            pvGallery.appendChild(thumb);
+        });
+        pvGallery.style.display = 'flex';
+    } else {
+        pvGallery.innerHTML = '';
+        pvGallery.style.display = 'none';
+    }
+}
+
+// ── UTILIDADES ───────────────────────────────────────
 async function sha256(message) {
     const msgBuffer = new TextEncoder().encode(message);
     const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
@@ -251,32 +499,16 @@ function showToast(msg, ok = true) {
     setTimeout(() => t.style.transform = 'translateX(120%)', 2400);
 }
 
-function slugify(str){
-    return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')
+function slugify(str) {
+    return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
-function formatPrice(n){
+function formatPrice(n) {
     const num = Number(n) || 0;
     return '$' + num.toLocaleString('es-AR');
 }
 
-function updatePreview(){
-    const name = $('name').value || 'Nombre del producto';
-    const price = $('price').value || 0;
-    const talle = $('talle').value;
-    const estado = $('estado').value;
-    const isNew = $('isNew').checked;
-    
-    $('pv-name').textContent = name;
-    $('pv-price').textContent = formatPrice(price);
-    $('pv-talle').textContent = talle ? talle.split(' ')[0] : '';
-    $('pv-estado').textContent = estado;
-    $('pv-new').classList.toggle('hidden', !isNew);
-    
-    // images handled by file inputs
-}
-
-function saveDraft(){
+function saveDraft() {
     clearTimeout(draftTimer);
     draftTimer = setTimeout(() => {
         const draft = {
@@ -288,16 +520,15 @@ function saveDraft(){
             estado: $('estado').value,
             desc: $('desc').value,
             isNew: $('isNew').checked,
-            img1: $('img1Preview').src,
-            img2: $('img2Preview').src
+            galleryImages
         };
         localStorage.setItem('zyskn_draft', JSON.stringify(draft));
     }, 300);
 }
 
-function loadDraft(){
+function loadDraft() {
     const d = localStorage.getItem('zyskn_draft');
-    if(!d) return;
+    if (!d) return;
     try {
         const draft = JSON.parse(d);
         $('name').value = draft.name || '';
@@ -308,47 +539,24 @@ function loadDraft(){
         $('estado').value = draft.estado || '10/10 - Impecable';
         $('desc').value = draft.desc || '';
         $('isNew').checked = !!draft.isNew;
-        if(draft.img1 && draft.img1.startsWith('data:')){
-            $('img1Preview').src = draft.img1;
-            $('img1Preview').classList.remove('hidden');
-            $('img1Placeholder').classList.add('hidden');
-            $('pv-img1').src = draft.img1;
+        if (Array.isArray(draft.galleryImages)) {
+            galleryImages = draft.galleryImages.filter(i => i?.src?.startsWith('data:'));
         }
-        if(draft.img2 && draft.img2.startsWith('data:')){
-            $('img2Preview').src = draft.img2;
-            $('img2Preview').classList.remove('hidden');
-            $('img2Placeholder').classList.add('hidden');
-            $('pv-img2').src = draft.img2;
-        }
+        renderGallery();
         updatePreview();
     } catch {}
 }
 
-function handleImage(input, previewId, placeholderId, pvId){
-    const file = input.files[0];
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-        const src = e.target.result;
-        $(previewId).src = src;
-        $(previewId).classList.remove('hidden');
-        $(placeholderId).classList.add('hidden');
-        $(pvId).src = src;
-        saveDraft();
-    };
-    reader.readAsDataURL(file);
-}
-
-function renderList(){
+function renderList() {
     const list = $('productList');
     $('productCount').textContent = products.length + ' productos';
     $('listInfo').textContent = products.length + ' items';
-    
-    if(!products.length){
+
+    if (!products.length) {
         list.innerHTML = '<div class="p-8 text-center text-[12px] text-neutral-400 uppercase tracking-wider">No hay productos cargados</div>';
         return;
     }
-    
+
     list.innerHTML = products.map(p => `
         <div class="flex items-center gap-4 p-3 hover:bg-neutral-50 transition group">
             <div class="w-14 h-[70px] bg-neutral-100 overflow-hidden flex-shrink-0 border border-neutral-200">
@@ -357,6 +565,7 @@ function renderList(){
             <div class="flex-1 min-w-0">
                 <p class="text-[13px] font-medium truncate">${p.name || 'Sin nombre'}</p>
                 <p class="text-[11px] text-neutral-500 mt-0.5">${formatPrice(p.price)} • ${p.category} • ${p.talle || ''}</p>
+                ${p.images && p.images.length > 1 ? `<p class="text-[10px] text-neutral-400 mt-0.5">${p.images.length} fotos</p>` : ''}
             </div>
             <div class="flex gap-1.5 opacity-0 group-hover:opacity-100 transition">
                 <button onclick="editProduct('${p.id}')" class="text-[11px] uppercase tracking-wider px-2.5 py-1 border border-black hover:bg-black hover:text-white">Editar</button>
@@ -366,24 +575,20 @@ function renderList(){
     `).join('');
 }
 
-function clearForm(){
+function clearForm() {
     editingId = null;
+    galleryImages = [];
     $('productForm').reset();
     $('estado').value = '10/10 - Impecable';
     $('category').value = 'polares';
-    $('img1Preview').classList.add('hidden');
-    $('img2Preview').classList.add('hidden');
-    $('img1Placeholder').classList.remove('hidden');
-    $('img2Placeholder').classList.remove('hidden');
-    $('pv-img1').src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect width='100%25' height='100%25' fill='%23f5f5f5'/%3E%3C/svg%3E";
-    $('pv-img2').src = '';
     $('editingIndicator').classList.add('hidden');
     $('btnCancelEdit').classList.add('hidden');
     localStorage.removeItem('zyskn_draft');
+    renderGallery();
     updatePreview();
 }
 
-function getProductFromForm(){
+function getProductFromForm() {
     const name = $('name').value.trim();
     const price = Number($('price').value) || 0;
     const category = $('category').value;
@@ -392,12 +597,15 @@ function getProductFromForm(){
     const estado = $('estado').value.trim();
     const desc = $('desc').value.trim();
     const isNew = $('isNew').checked;
-    const img1 = $('img1Preview').src && !$('img1Preview').classList.contains('hidden') ? $('img1Preview').src : '';
-    const img2 = $('img2Preview').src && !$('img2Preview').classList.contains('hidden') ? $('img2Preview').src : '';
-    
+
     const id = editingId || (slugify(name) + '-' + Date.now().toString(36));
     const sizes = Array.from(new Set((talle.match(/[0-9]+|[XSML]{1,3}/gi) || []).map(s => s.toUpperCase())));
-    
+
+    // Compatibilidad: img e img2 apuntan a las primeras dos imágenes
+    const img = galleryImages[0]?.src || '';
+    const img2 = galleryImages[1]?.src || '';
+    const images = galleryImages.map(i => i.src);
+
     return {
         id,
         section: category,
@@ -408,16 +616,17 @@ function getProductFromForm(){
         talle,
         medidas,
         estado,
-        img: img1,
+        img,
         img2,
+        images, // ← array completo para la tienda
         sizes,
         isNew
     };
 }
 
-function editProduct(id){
+function editProduct(id) {
     const p = products.find(x => x.id === id);
-    if(!p) return;
+    if (!p) return;
     editingId = id;
     $('name').value = p.name || '';
     $('price').value = p.price || '';
@@ -427,74 +636,72 @@ function editProduct(id){
     $('estado').value = p.estado || '10/10 - Impecable';
     $('desc').value = p.desc || '';
     $('isNew').checked = !!p.isNew;
-    
-    if(p.img){
-        $('img1Preview').src = p.img;
-        $('img1Preview').classList.remove('hidden');
-        $('img1Placeholder').classList.add('hidden');
-        $('pv-img1').src = p.img;
+
+    // Cargar galería: si tiene images[], usar eso; sino construir desde img/img2
+    if (Array.isArray(p.images) && p.images.length) {
+        galleryImages = p.images.map(src => ({ src }));
+    } else {
+        galleryImages = [];
+        if (p.img) galleryImages.push({ src: p.img });
+        if (p.img2) galleryImages.push({ src: p.img2 });
     }
-    if(p.img2){
-        $('img2Preview').src = p.img2;
-        $('img2Preview').classList.remove('hidden');
-        $('img2Placeholder').classList.add('hidden');
-        $('pv-img2').src = p.img2;
-    }
-    
+
     $('editingIndicator').classList.remove('hidden');
     $('btnCancelEdit').classList.remove('hidden');
+    renderGallery();
     updatePreview();
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     showToast('Editando: ' + p.name);
 }
 
-function deleteProduct(id){
-    if(!confirm('¿Eliminar producto?')) return;
+function deleteProduct(id) {
+    if (!confirm('¿Eliminar producto?')) return;
     products = products.filter(p => p.id !== id);
     renderList();
     showToast('Producto eliminado');
     localStorage.setItem('zyskn_products', JSON.stringify(products));
 }
 
-async function loadProducts(){
+async function loadProducts() {
     try {
-        const res = await fetch('https://zyskn.github.io/productos.json', {cache: 'no-store'});
-        if(res.ok){
+        const res = await fetch('https://zyskn.github.io/productos.json', { cache: 'no-store' });
+        if (res.ok) {
             const data = await res.json();
-            if(Array.isArray(data)) products = data;
+            if (Array.isArray(data)) products = data;
         }
-    } catch(e){
+    } catch (e) {
         console.warn('No se pudo cargar productos.json remoto');
     }
     const local = localStorage.getItem('zyskn_products');
-    if(local){
+    if (local) {
         try {
             const localData = JSON.parse(local);
-            if(Array.isArray(localData) && localData.length) products = localData;
+            if (Array.isArray(localData) && localData.length) products = localData;
         } catch {}
     }
     renderList();
 }
 
-function showApp(){
+function showApp() {
     $('login-screen').classList.add('hidden');
     $('app').classList.remove('hidden');
     loadProducts();
     loadDraft();
+    renderGallery();
     updatePreview();
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
     defaultHash = await sha256('keroyshyra99');
-    if(localStorage.getItem('zyskn_auth') === defaultHash){
+    if (localStorage.getItem('zyskn_auth') === defaultHash) {
         showApp();
     }
-    
+
     $('loginForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const pw = $('password').value;
         const hash = await sha256(pw);
-        if(hash === defaultHash){
+        if (hash === defaultHash) {
             localStorage.setItem('zyskn_auth', defaultHash);
             showApp();
         } else {
@@ -502,30 +709,26 @@ document.addEventListener('DOMContentLoaded', async () => {
             setTimeout(() => $('loginError').classList.add('hidden'), 2000);
         }
     });
-    
+
     $('btnLogout').onclick = () => {
         localStorage.removeItem('zyskn_auth');
         location.reload();
     };
-    
-    // Form listeners
-    ['name','price','category','talle','medidas','estado','desc','isNew'].forEach(id => {
+
+    ['name', 'price', 'category', 'talle', 'medidas', 'estado', 'desc'].forEach(id => {
         $(id).addEventListener('input', () => { updatePreview(); saveDraft(); });
     });
     $('isNew').addEventListener('change', () => { updatePreview(); saveDraft(); });
-    
-    $('img1').addEventListener('change', () => handleImage($('img1'), 'img1Preview', 'img1Placeholder', 'pv-img1'));
-    $('img2').addEventListener('change', () => handleImage($('img2'), 'img2Preview', 'img2Placeholder', 'pv-img2'));
-    
+
     $('productForm').addEventListener('submit', (e) => {
         e.preventDefault();
         const prod = getProductFromForm();
-        if(!prod.name || !prod.price){
+        if (!prod.name || !prod.price) {
             showToast('Completa nombre y precio', false);
             return;
         }
         const idx = products.findIndex(p => p.id === editingId);
-        if(idx >= 0){
+        if (idx >= 0) {
             products[idx] = prod;
             showToast('Producto actualizado');
         } else {
@@ -536,17 +739,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         clearForm();
         localStorage.setItem('zyskn_products', JSON.stringify(products));
     });
-    
+
     $('btnClear').onclick = clearForm;
     $('btnCancelEdit').onclick = clearForm;
-    
+
     $('btnSaveLocal').onclick = () => {
         localStorage.setItem('zyskn_products', JSON.stringify(products));
         showToast('Guardado local ✓');
     };
-    
+
     $('btnExport').onclick = () => {
-        const blob = new Blob([JSON.stringify(products, null, 2)], {type: 'application/json'});
+        const blob = new Blob([JSON.stringify(products, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -555,60 +758,59 @@ document.addEventListener('DOMContentLoaded', async () => {
         URL.revokeObjectURL(url);
         showToast('JSON exportado');
     };
-    
+
     $('btnPublish').onclick = () => {
         $('githubModal').classList.remove('hidden');
         $('githubModal').classList.add('flex');
     };
-    
+
     $('btnCancelGithub').onclick = () => {
         $('githubModal').classList.add('hidden');
         $('githubModal').classList.remove('flex');
     };
-    
+
     $('btnConfirmPublish').onclick = async () => {
         const token = $('githubToken').value.trim();
         const owner = $('githubOwner').value.trim();
         const repo = $('githubRepo').value.trim();
         const status = $('githubStatus');
-        
-        if(!token){
+
+        if (!token) {
             status.textContent = 'Ingresa un token válido';
             status.className = 'text-[12px] mt-4 text-red-600';
             status.classList.remove('hidden');
             return;
         }
-        
+
         status.textContent = 'Publicando...';
         status.className = 'text-[12px] mt-4 text-neutral-600';
         status.classList.remove('hidden');
-        
+
         try {
             const path = 'productos.json';
             const api = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-            
-            // Get current file SHA
+
             const getRes = await fetch(api, { headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' } });
-            if(!getRes.ok) throw new Error('No se pudo obtener el archivo. Verifica repo y permisos.');
+            if (!getRes.ok) throw new Error('No se pudo obtener el archivo. Verifica repo y permisos.');
             const fileData = await getRes.json();
-            
+
             const content = btoa(unescape(encodeURIComponent(JSON.stringify(products, null, 2))));
-            
+
             const putRes = await fetch(api, {
                 method: 'PUT',
                 headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github.v3+json' },
                 body: JSON.stringify({
-                    message: `chore: update productos.json (${new Date().toISOString().slice(0,16)})`,
+                    message: `chore: update productos.json (${new Date().toISOString().slice(0, 16)})`,
                     content,
                     sha: fileData.sha
                 })
             });
-            
-            if(!putRes.ok){
+
+            if (!putRes.ok) {
                 const err = await putRes.json();
                 throw new Error(err.message || 'Error al publicar');
             }
-            
+
             status.textContent = '¡Publicado en GitHub correctamente!';
             status.className = 'text-[12px] mt-4 text-green-600';
             showToast('Publicado en GitHub ✓');
@@ -617,7 +819,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 $('githubModal').classList.remove('flex');
                 status.classList.add('hidden');
             }, 1500);
-        } catch(err){
+        } catch (err) {
             status.textContent = 'Error: ' + err.message;
             status.className = 'text-[12px] mt-4 text-red-600';
             showToast('Error al publicar', false);
@@ -625,7 +827,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 });
 
-// Expose for inline handlers
 window.editProduct = editProduct;
 window.deleteProduct = deleteProduct;
 </script>
