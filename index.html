@@ -429,7 +429,7 @@
           <div class="nav-item"><a href="javascript:void(0)" onclick="applyFilter('all','all')">TODO</a></div>
           <div class="nav-item nav-item-new"><a href="javascript:void(0)" onclick="scrollToSection('nuevo-section')">NUEVO</a></div>
           <div class="nav-item">
-            <a href="javascript:void(0)" onclick="applyFilter('section','arriba')">ARRIBA</a>
+            <a href="javascript:void(0)" data-section="arriba">ARRIBA</a>
             <div class="sub-nav-wrapper">
               <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','remeras')">Remeras</a>
               <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','Casacas deportivas')">Casacas deportivas</a>
@@ -443,7 +443,7 @@
             </div>
           </div>
           <div class="nav-item">
-            <a href="javascript:void(0)" onclick="applyFilter('section','abajo')">ABAJO</a>
+            <a href="javascript:void(0)" data-section="abajo">ABAJO</a>
             <div class="sub-nav-wrapper">
               <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','pantalones')">Pantalones Cargo</a>
               <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','jeans')">Jeans</a>
@@ -1190,12 +1190,26 @@
 
     document.querySelectorAll('.nav-item').forEach(item => {
       const link = item.querySelector('a');
-      if (item.querySelector('.sub-nav-wrapper')) {
+      const subNav = item.querySelector('.sub-nav-wrapper');
+      if (subNav && link.dataset.section) {
         link.addEventListener('click', e => {
+          e.preventDefault();
+          const section = link.dataset.section;
           if (window.innerWidth <= 1024) {
-            e.preventDefault(); e.stopPropagation();
-            document.querySelectorAll('.nav-item').forEach(o => { if (o !== item) o.classList.remove('active-mobile'); });
-            item.classList.toggle('active-mobile');
+            e.stopPropagation();
+            const isOpen = item.classList.contains('active-mobile');
+            if (isOpen) {
+              // Segundo toque: mostrar todo ARRIBA/ABAJO y cerrar categorías
+              item.classList.remove('active-mobile');
+              applyFilter('section', section);
+            } else {
+              // Primer toque: abrir categorías para elegir con 1 toque
+              document.querySelectorAll('.nav-item').forEach(o => { if (o !== item) o.classList.remove('active-mobile'); });
+              item.classList.add('active-mobile');
+            }
+          } else {
+            // Desktop: clic directo filtra por sección
+            applyFilter('section', section);
           }
         });
       }
