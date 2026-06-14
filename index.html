@@ -66,7 +66,7 @@
     @media (max-width: 1024px) { body { padding-top: 84px; } }
 
     /* ============================================================
-       TOP BAR – marquee rojo premium
+       TOP BAR
     ============================================================ */
     .top-bar {
       position: fixed;
@@ -156,7 +156,6 @@
       align-items: center;
     }
 
-    /* Logo */
     .logo-section {
       display: flex;
       flex-direction: column;
@@ -184,7 +183,6 @@
       margin-top: 2px;
     }
 
-    /* Nav container */
     .nav-container {
       display: flex;
       align-items: center;
@@ -228,7 +226,6 @@
     .nav-item-new > a { color: var(--red) !important; font-weight: 900 !important; }
     .nav-item-new > a::after { background: var(--red) !important; }
 
-    /* Bridge invisible */
     .nav-item::after {
       content: '';
       position: absolute;
@@ -237,7 +234,6 @@
       background: transparent;
     }
 
-    /* Dropdown */
     .sub-nav-wrapper {
       position: absolute;
       top: calc(100% + 0.5rem);
@@ -299,7 +295,6 @@
     .nav-item:hover .sub-nav-item:nth-child(8)  { transition-delay: 0.21s; }
     .nav-item:hover .sub-nav-item:nth-child(9)  { transition-delay: 0.23s; }
 
-    /* Icons */
     .nav-icons { display: flex; gap: 1.2rem; align-items: center; flex-shrink: 0; }
 
     .icon-btn {
@@ -331,7 +326,6 @@
       font-size: 0.6rem; font-weight: 800;
     }
 
-    /* Search */
     .search-wrapper { display: flex; align-items: center; position: relative; }
 
     .search-input-container {
@@ -362,7 +356,6 @@
       color: #aaa; font-weight: 500; font-size: 0.7rem; letter-spacing: 0.12em;
     }
 
-    /* Hamburger */
     .hamburger {
       display: none;
       flex-direction: column;
@@ -383,7 +376,6 @@
     .hamburger.active span:nth-child(2) { opacity: 0; }
     .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
-    /* Mobile nav */
     #nav-overlay {
       display: none; position: fixed; inset: 0;
       background: rgba(0,0,0,0.45); z-index: 998;
@@ -613,75 +605,74 @@
     }
 
     .products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1.5rem;
-}
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
 
-.product-card {
-  cursor: pointer;
-  transition: transform 0.5s var(--ease-out);
-  position: relative;
-}
-.product-card:hover { transform: translateY(-5px); }
+    .product-card {
+      cursor: pointer;
+      transition: transform 0.5s var(--ease-out);
+      position: relative;
+    }
+    .product-card:hover { transform: translateY(-5px); }
 
-.product-image {
-  width: 100%;
-  aspect-ratio: 4/5;
-  background: var(--gray-bg);
-  overflow: hidden;
-  margin-bottom: 0.9rem;
-  position: relative;
-}
-.product-image img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  transition: transform 0.7s var(--ease-out), filter 0.5s ease;
-}
-.product-card:hover .product-image img {
-  transform: scale(1.07);
-  filter: brightness(1.03);
-}
+    .product-image {
+      width: 100%;
+      aspect-ratio: 4/5;
+      background: var(--gray-bg);
+      overflow: hidden;
+      margin-bottom: 0.9rem;
+      position: relative;
+    }
+    .product-image img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s var(--ease-out), filter 0.5s ease;
+    }
+    .product-card:hover .product-image img {
+      transform: scale(1.07);
+      filter: brightness(1.03);
+    }
 
-.product-meta {
-  display: flex; justify-content: space-between; align-items: flex-start;
-}
-.product-name {
-  font-size: 0.8rem; font-weight: 800;
-  text-transform: uppercase; letter-spacing: 0.04em;
-}
-.fav-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 2px;
-  display: flex;
-  line-height: 1;
-}
-.fav-btn svg {
-  width: 15px;
-  height: 15px;
-  fill: none;
-  stroke: #bbb;
-  stroke-width: 1.8px;
-  transition: all 0.2s ease;
-}
-.fav-btn.active svg {
-  fill: var(--red);
-  stroke: var(--red);
-}
-.fav-btn:hover svg { transform: scale(1.15); }
+    .product-meta {
+      display: flex; justify-content: space-between; align-items: flex-start;
+    }
+    .product-name {
+      font-size: 0.8rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .fav-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 2px;
+      display: flex;
+      line-height: 1;
+    }
+    .fav-btn svg {
+      width: 15px;
+      height: 15px;
+      fill: none;
+      stroke: #bbb;
+      stroke-width: 1.8px;
+      transition: all 0.2s ease;
+    }
+    .fav-btn.active svg {
+      fill: var(--red);
+      stroke: var(--red);
+    }
+    .fav-btn:hover svg { transform: scale(1.15); }
 
-.product-cat {
-  font-size: 0.68rem; font-weight: 600;
-  color: var(--text-faint); text-transform: uppercase;
-  letter-spacing: 0.06em; margin-top: 2px;
-}
-.product-price {
-  font-size: 0.82rem; font-weight: 700; white-space: nowrap;
-}
+    .product-cat {
+      font-size: 0.68rem; font-weight: 600;
+      color: var(--text-faint); text-transform: uppercase;
+      letter-spacing: 0.06em; margin-top: 2px;
+    }
+    .product-price {
+      font-size: 0.82rem; font-weight: 700; white-space: nowrap;
+    }
 
-    /* Estado / reservado / vendido */
     .product-card.reserved { cursor: pointer; }
     .product-card.reserved .product-image { opacity: 0.88; }
     .product-card.sold .product-image { opacity: 0.8; }
@@ -763,7 +754,6 @@
       #prevBtn, #nextBtn { opacity: .85 !important; pointer-events: auto !important; }
     }
 
-    /* Detail info */
     .product-info { text-align: left; }
 
     .detail-name-wrap {
@@ -855,7 +845,6 @@
     }
     .back-link:hover { color: var(--black); }
 
-    /* Thumbs */
     #thumbs {
       display: flex; gap: 8px;
       margin-top: 12px; flex-wrap: wrap;
@@ -957,6 +946,7 @@
 
     /* ============================================================
        CONTACT FOOTER – PREMIUM
+       FIX: iconos centrados, sin sombra
     ============================================================ */
     footer#contact {
       background: #fff;
@@ -978,53 +968,52 @@
     }
 
     .social-links {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 48px;
-  flex-wrap: wrap;
-  width: 100%;
-  margin: 0 auto;
-}
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 48px;
+      flex-wrap: wrap;
+      width: 100%;
+      margin: 0 auto;
+    }
 
-.social-item {
-  display: flex; 
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  text-decoration: none; 
-  color: var(--black);
-  transition: transform 0.3s var(--ease-out);
-  text-align: center;
-}
+    .social-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      text-decoration: none;
+      color: var(--black);
+      transition: transform 0.3s var(--ease-out);
+      text-align: center;
+    }
 
-.social-item:hover { transform: translateY(-4px); }
+    .social-item:hover { transform: translateY(-4px); }
 
-.social-circle {
-  width: 56px; height: 56px;
-  background: var(--black); 
-  border-radius: 50%;
-  display: flex; 
-  align-items: center; 
-  justify-content: center;
-  transition: background 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 16px rgba(0,0,0.12);
-  margin: 0 auto;
-}
+    .social-circle {
+      width: 56px; height: 56px;
+      background: var(--black);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* ✦ sin box-shadow */
+      transition: background 0.3s ease;
+      margin: 0 auto;
+    }
 
-.social-circle svg { width: 28px; height: 28px; fill: #fff; display: block; }
-.social-circle img { width: 28px; height: 28px; display: block; filter: brightness(0) invert(1); }
+    .social-circle svg { width: 28px; height: 28px; fill: #fff; display: block; }
+    .social-circle img { width: 28px; height: 28px; display: block; filter: brightness(0) invert(1); }
 
-.social-item.wa:hover .social-circle { background: #25D366; box-shadow: 0 6px 20px rgba(37,211,102,0.3); }
-.social-item.ig:hover .social-circle {
-  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-  box-shadow: 0 6px 20px rgba(214,36,159,0.3);
-}
-.social-item.tt:hover .social-circle { 
-  background: #010101; 
-  box-shadow: -2px -2px 0 #25F4EE, 2px 2px 0 #FE2C55, 0 6px 20px rgba(0,0,0,0.25); 
-}
+    /* hover: solo cambia color de fondo, sin sombra */
+    .social-item.wa:hover .social-circle { background: #25D366; }
+    .social-item.ig:hover .social-circle {
+      background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+    }
+    .social-item.tt:hover .social-circle {
+      background: #010101;
+    }
 
     .social-label {
       font-size: 0.62rem; font-weight: 800;
@@ -1101,7 +1090,6 @@
     }
     @keyframes slideIn { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-    /* Fly to cart */
     @keyframes flyToCart {
       0%   { transform: translate(0,0) scale(1); opacity: 1; }
       50%  { transform: translate(calc(var(--tx)*.5), calc(var(--ty)*.5 - 50px)) scale(.8); opacity: .8; }
@@ -1112,11 +1100,16 @@
       border-radius: 50%; background: var(--black);
       animation: flyToCart 0.8s cubic-bezier(.42,0,.58,1) forwards;
     }
+
+    /* Google sign-in button centering */
+    #loginForm .g_id_signin {
+      display: flex;
+      justify-content: center;
+    }
   </style>
 </head>
 
 <body>
-  <!-- SEO hidden header -->
   <header style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
     <h1>ZYSKN - Ropa Vintage Curada y Streetwear en Córdoba, Argentina</h1>
     <p>ZYSKN es una tienda online de ropa vintage seleccionada y estilo urbano en Córdoba. Buzos canguros oversize, remeras oversize, camperas, hoodies, pantalones cargos y prendas únicas.</p>
@@ -1145,7 +1138,6 @@
         <span>ZYSKN.VTG</span>
       </a>
       <span class="marquee-sep">·</span>
-      <!-- copia 2 -->
       <a href="https://instagram.com/zyskn.vtg" target="_blank" class="marquee-item">
         <img src="https://cdn.simpleicons.org/instagram/FFFFFF" alt="Instagram">
         <span>ZYSKN.VTG</span>
@@ -1174,7 +1166,6 @@
 
       <div id="navContainer" class="nav-container">
         <nav class="nav-main" id="navMain">
-          <!-- Mobile search -->
           <div class="mobile-search" style="display:none; width:100%; margin-bottom:1.6rem;">
             <div style="position:relative; border-bottom:1.5px solid #000;">
               <svg style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:#000;opacity:.5;" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
@@ -1260,13 +1251,11 @@
 
     <!-- NEW ARRIVALS -->
     <section id="nuevo-section">
-  <div class="container" style="max-width:100%;">
-    <h2 class="section-title" style="color:var(--red);">
-      NUEVO
-    </h2>
-    <div id="newProductsGrid" class="products-grid"></div>
-  </div>
-</section>
+      <div class="container" style="max-width:100%;">
+        <h2 class="section-title" style="color:var(--red);">NUEVO</h2>
+        <div id="newProductsGrid" class="products-grid"></div>
+      </div>
+    </section>
 
     <!-- PRODUCT DETAIL -->
     <section id="product-detail">
@@ -1342,13 +1331,10 @@
       </div>
     </section>
 
-    <!-- FAQ -->
+    <!-- FAQ — "Preguntas frecuentes" eliminado -->
     <section id="faq-section">
       <div class="container">
-        <h2 class="section-title">
-          <span class="title-num">Preguntas frecuentes</span>
-          FAQ.
-        </h2>
+        <h2 class="section-title">FAQ.</h2>
         <div style="max-width:800px;">
           <details>
             <summary>¿Qué es ropa americana?</summary>
@@ -1380,32 +1366,47 @@
           </details>
           <details>
             <summary>¿Cómo me contacto?</summary>
-            <p>Por WhatsApp al <a href="https://wa.me/5493544631553" target="_blank" style="font-weight:900;color:var(--red);text-decoration:underline;">+54 9 3544 631553</a>, Instagram <a href="https://instagram.com/zyskn.vtg" target="_blank" style="font-weight:900;color:var(--red);text-decoration:underline;">@zyskn.vtg</a> o TikTok <a href="https://www.tiktok.com/@zyskn.vtg" target="_blank" style="font-weight:900;color:var(--red);text-decoration:underline;">@zyskn.vtg</a>. Respondemos de lunes a viernes en horario comercial.</p>
+            <p>Por WhatsApp al <a href="https://wa.me/5493544631553" target="_blank" style="font-weight:900;color:var(--red);text-decoration:underline;">+54 9 3544 631553</a>, Instagram <a href="https://instagram.com/zykn.vtg" target="_blank" style="font-weight:900;color:var(--red);text-decoration:underline;">@zyskn.vtg</a> o TikTok <a href="https://www.tiktok.com/@zyskn.vtg" target="_blank" style="font-weight:900;color:var(--red);text-decoration:underline;">@zyskn.vtg</a>. Respondemos de lunes a viernes en horario comercial.</p>
           </details>
         </div>
       </div>
     </section>
 
-    <!-- ACCOUNT -->
+    <!-- ACCOUNT — Google OAuth -->
     <section id="account-section">
       <div class="inner">
         <h2 class="section-title" style="text-align:center;">MI CUENTA</h2>
-        <div id="loginForm">
-          <div class="form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="tu@email.com"></div>
-          <div class="form-group"><label>Contraseña</label><input type="password" id="loginPass" placeholder="········"></div>
-          <button class="btn btn-dark" onclick="handleAuth('login')" style="width:100%;padding:1rem;">ENTRAR</button>
-          <p style="font-size:.7rem;color:#888;margin-top:1.5rem;">¿No tenés cuenta? <span style="color:var(--red);cursor:pointer;font-weight:700;text-decoration:underline;" onclick="toggleAuthView('register')">Registrate</span></p>
+
+        <!-- Google Identity Services -->
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+        <div id="loginForm" style="text-align:center;">
+          <p style="font-size:.72rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2rem;">Iniciá sesión con tu cuenta de Google</p>
+
+          <!-- Reemplazá YOUR_GOOGLE_CLIENT_ID con tu Client ID real de Google Cloud Console -->
+          <div id="g_id_onload"
+               data-client_id="YOUR_GOOGLE_CLIENT_ID"
+               data-callback="handleGoogleSignIn"
+               data-auto_prompt="false">
+          </div>
+          <div class="g_id_signin"
+               data-type="standard"
+               data-size="large"
+               data-theme="outline"
+               data-text="sign_in_with"
+               data-shape="rectangular"
+               data-logo_alignment="left"
+               data-width="320">
+          </div>
+          <p style="font-size:.62rem;color:#aaa;margin-top:1.5rem;line-height:1.6;">Al iniciar sesión aceptás que ZYSKN acceda a tu nombre y email para identificarte en futuras compras.</p>
         </div>
-        <div id="registerForm" style="display:none;">
-          <div class="form-group"><label>Nombre Completo</label><input type="text" id="regName" placeholder="Juan Pérez"></div>
-          <div class="form-group"><label>Email</label><input type="email" id="regEmail" placeholder="tu@email.com"></div>
-          <div class="form-group"><label>Contraseña</label><input type="password" id="regPass" placeholder="········"></div>
-          <button class="btn btn-dark" onclick="handleAuth('register')" style="width:100%;padding:1rem;">REGISTRARME</button>
-          <p style="font-size:.7rem;color:#888;margin-top:1.5rem;cursor:pointer;text-decoration:underline;" onclick="toggleAuthView('login')">¿Ya tenés cuenta? Iniciá sesión</p>
-        </div>
-        <div id="profileView" style="display:none;">
-          <p style="font-weight:800;text-transform:uppercase;margin-bottom:1rem;font-size:.85rem;">Bienvenido de nuevo</p>
-          <p id="userDisplay" style="font-size:.85rem;color:var(--text-muted);margin-bottom:2rem;"></p>
+
+        <div id="profileView" style="display:none;text-align:center;">
+          <div style="width:60px;height:60px;border-radius:50%;overflow:hidden;margin:0 auto 1rem;border:2px solid var(--gray-mid);">
+            <img id="userAvatar" src="" alt="Avatar" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+          <p style="font-weight:900;text-transform:uppercase;margin-bottom:.4rem;font-size:.85rem;letter-spacing:.06em;" id="userDisplayName"></p>
+          <p id="userDisplay" style="font-size:.75rem;color:var(--text-muted);margin-bottom:2rem;"></p>
           <button class="btn btn-dark" onclick="handleAuth('logout')" style="width:100%;padding:1rem;">CERRAR SESIÓN</button>
         </div>
       </div>
@@ -1416,7 +1417,6 @@
       <div class="container">
         <h2 class="contact-title">CONTACTO</h2>
         <div class="social-links">
-          <!-- WhatsApp -->
           <a href="https://wa.me/5493544631553" class="social-item wa" target="_blank" rel="noopener">
             <div class="social-circle">
               <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.94 3.659 1.437 5.634 1.437h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -1424,7 +1424,6 @@
             <span class="social-label">WhatsApp</span>
           </a>
 
-          <!-- Instagram -->
           <a href="https://instagram.com/zyskn.vtg" class="social-item ig" target="_blank" rel="noopener">
             <div class="social-circle">
               <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
@@ -1432,15 +1431,14 @@
             <span class="social-label">Instagram</span>
           </a>
 
-          <!-- TikTok -->
           <a href="https://www.tiktok.com/@zyskn.vtg" class="social-item tt" target="_blank" rel="noopener">
-  <div class="social-circle">
-    <svg viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-11.07z"/>
-    </svg>
-  </div>
-  <span class="social-label">TikTok</span>
-</a>
+            <div class="social-circle">
+              <svg viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-11.07z"/>
+              </svg>
+            </div>
+            <span class="social-label">TikTok</span>
+          </a>
         </div>
       </div>
     </footer>
@@ -1491,41 +1489,41 @@
     const RESERVE_TIME = 5*60*1000;
     let vendidos = {};
 
-// FAVORITOS
-let favs = JSON.parse(localStorage.getItem('zysk_favs')||'[]');
-function isFav(id){ return favs.includes(id); }
-function toggleFavDetail(e){
-  e.stopPropagation();
-  if(!currentProduct) return;
-  const id = currentProduct.id;
-  const i = favs.indexOf(id);
-  if(i>-1){ favs.splice(i,1); } else { favs.push(id); }
-  localStorage.setItem('zysk_favs', JSON.stringify(favs));
-  updateDetailFavBtn();
-}
-function updateDetailFavBtn(){
-  const btn = document.getElementById('detailFavBtn');
-  if(!btn || !currentProduct) return;
-  btn.classList.toggle('active', isFav(currentProduct.id));
-}
+    // FAVORITOS
+    let favs = JSON.parse(localStorage.getItem('zysk_favs')||'[]');
+    function isFav(id){ return favs.includes(id); }
+    function toggleFavDetail(e){
+      e.stopPropagation();
+      if(!currentProduct) return;
+      const id = currentProduct.id;
+      const i = favs.indexOf(id);
+      if(i>-1){ favs.splice(i,1); } else { favs.push(id); }
+      localStorage.setItem('zysk_favs', JSON.stringify(favs));
+      updateDetailFavBtn();
+    }
+    function updateDetailFavBtn(){
+      const btn = document.getElementById('detailFavBtn');
+      if(!btn || !currentProduct) return;
+      btn.classList.toggle('active', isFav(currentProduct.id));
+    }
 
-function saveRes(){ localStorage.setItem('zysk_res',JSON.stringify(reservations)); }
-function reserve(id){ reservations[id]=Date.now()+RESERVE_TIME; saveRes(); }
-function isRes(id){ if(!reservations[id])return false; if(Date.now()>reservations[id]){delete reservations[id];saveRes();return false;} return true; }
-function timeLeft(id){ return Math.max(0,Math.floor((reservations[id]-Date.now())/1000)); }
+    function saveRes(){ localStorage.setItem('zysk_res',JSON.stringify(reservations)); }
+    function reserve(id){ reservations[id]=Date.now()+RESERVE_TIME; saveRes(); }
+    function isRes(id){ if(!reservations[id])return false; if(Date.now()>reservations[id]){delete reservations[id];saveRes();return false;} return true; }
+    function timeLeft(id){ return Math.max(0,Math.floor((reservations[id]-Date.now())/1000)); }
 
-function startReserveTimer(){
-  setInterval(()=>{
-    let changed=false;
-    Object.keys(reservations).forEach(i=>{
-      if(Date.now()>reservations[i]){
-        delete reservations[i]; cart=cart.filter(p=>p.id!==i); changed=true; showNotification('RESERVA FINALIZADA');
-      }
-    });
-    if(changed){ saveRes(); localStorage.setItem('zysk_cart',JSON.stringify(cart)); renderProducts(products,'productsGrid'); renderProducts(products.filter(p=>p.isNew),'newProductsGrid'); }
-    updateCartUI();
-  },1000);
-}
+    function startReserveTimer(){
+      setInterval(()=>{
+        let changed=false;
+        Object.keys(reservations).forEach(i=>{
+          if(Date.now()>reservations[i]){
+            delete reservations[i]; cart=cart.filter(p=>p.id!==i); changed=true; showNotification('RESERVA FINALIZADA');
+          }
+        });
+        if(changed){ saveRes(); localStorage.setItem('zysk_cart',JSON.stringify(cart)); renderProducts(products,'productsGrid'); renderProducts(products.filter(p=>p.isNew),'newProductsGrid'); }
+        updateCartUI();
+      },1000);
+    }
 
     localStorage.removeItem('zysk_admin'); localStorage.removeItem('zysk_admin_time');
     let adminMode = false;
@@ -1553,21 +1551,21 @@ function startReserveTimer(){
     function init(){ renderProducts(products,'productsGrid'); renderProducts(products.filter(p=>p.isNew),'newProductsGrid'); updateCartUI(); startReserveTimer(); }
 
     function renderProducts(list, gridId){
-  const grid=document.getElementById(gridId); if(!grid) return;
-  grid.innerHTML = list.map(p=>{
-    const r=isRes(p.id), s=p.sold;
-    return `<div class="product-card ${r?'reserved':''} ${s?'sold':''}" onclick="showProductDetail('${p.id}')">
-      <div class="product-image"><img src="${p.img}" alt="${p.name}" onmouseenter="this.src='${p.img2||p.img}'" onmouseleave="this.src='${p.img}'" loading="lazy"></div>
-      <div class="product-meta">
-        <div>
-          <p class="product-name">${p.name}</p>
-          <p class="product-cat">${p.category}</p>
-        </div>
-        <p class="product-price">$${p.price.toLocaleString('es-AR')}</p>
-      </div>
-    </div>`;
-  }).join('');
-}
+      const grid=document.getElementById(gridId); if(!grid) return;
+      grid.innerHTML = list.map(p=>{
+        const r=isRes(p.id), s=p.sold;
+        return `<div class="product-card ${r?'reserved':''} ${s?'sold':''}" onclick="showProductDetail('${p.id}')">
+          <div class="product-image"><img src="${p.img}" alt="${p.name}" onmouseenter="this.src='${p.img2||p.img}'" onmouseleave="this.src='${p.img}'" loading="lazy"></div>
+          <div class="product-meta">
+            <div>
+              <p class="product-name">${p.name}</p>
+              <p class="product-cat">${p.category}</p>
+            </div>
+            <p class="product-price">$${p.price.toLocaleString('es-AR')}</p>
+          </div>
+        </div>`;
+      }).join('');
+    }
 
     /* ============================================================
        FILTERS / SEARCH
@@ -1709,14 +1707,60 @@ function startReserveTimer(){
     }
 
     /* ============================================================
-       AUTH
+       AUTH — Google OAuth
     ============================================================ */
-    function handleAuth(type){
-      if(type==='login'){ const email=document.getElementById('loginEmail').value; if(!email){alert('Ingresá tu email');return;} document.getElementById('userAuth').innerHTML='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>'; document.getElementById('loginForm').style.display='none'; document.getElementById('profileView').style.display='block'; document.getElementById('userDisplay').textContent=`Sesión iniciada como: ${email.toUpperCase()}`; showNotification('Sesión iniciada'); }
-      else if(type==='register'){ const name=document.getElementById('regName').value; if(!name){alert('Ingresá tu nombre');return;} document.getElementById('registerForm').style.display='none'; document.getElementById('profileView').style.display='block'; document.getElementById('userDisplay').textContent=`Cuenta creada: ${name.toUpperCase()}`; showNotification('Cuenta creada'); }
-      else if(type==='logout'){ document.getElementById('userAuth').textContent='LOGIN'; document.getElementById('profileView').style.display='none'; document.getElementById('loginForm').style.display='block'; showNotification('Sesión cerrada'); }
+    function handleGoogleSignIn(response) {
+      try {
+        // Decode JWT payload from Google
+        const parts = response.credential.split('.');
+        const payload = JSON.parse(atob(parts[1].replace(/-/g,'+').replace(/_/g,'/')));
+        const name = payload.name || '';
+        const email = payload.email || '';
+        const picture = payload.picture || '';
+
+        // Store in sessionStorage
+        sessionStorage.setItem('zysk_user', JSON.stringify({ name, email, picture }));
+
+        // Update UI
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('profileView').style.display = 'block';
+        const av = document.getElementById('userAvatar'); if(av) av.src = picture;
+        const dn = document.getElementById('userDisplayName'); if(dn) dn.textContent = name.toUpperCase();
+        const ud = document.getElementById('userDisplay'); if(ud) ud.textContent = email.toLowerCase();
+        document.getElementById('userAuth').innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>';
+        showNotification('BIENVENIDO, ' + name.split(' ')[0].toUpperCase());
+      } catch(e) {
+        console.error('Google sign-in error', e);
+      }
     }
-    function toggleAuthView(type){ document.getElementById('loginForm').style.display=type==='login'?'block':'none'; document.getElementById('registerForm').style.display=type==='register'?'block':'none'; }
+
+    function handleAuth(type) {
+      if(type === 'logout') {
+        sessionStorage.removeItem('zysk_user');
+        document.getElementById('userAuth').innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>LOGIN';
+        document.getElementById('profileView').style.display = 'none';
+        document.getElementById('loginForm').style.display = 'block';
+        showNotification('SESIÓN CERRADA');
+      }
+    }
+
+    function toggleAuthView(type){ /* legacy */ }
+
+    // Restore session on page load
+    (function restoreSession(){
+      const saved = sessionStorage.getItem('zysk_user');
+      if(!saved) return;
+      try {
+        const u = JSON.parse(saved);
+        window.addEventListener('DOMContentLoaded', function() {
+          const lf = document.getElementById('loginForm'); if(lf) lf.style.display = 'none';
+          const pv = document.getElementById('profileView'); if(pv) pv.style.display = 'block';
+          const av = document.getElementById('userAvatar'); if(av) av.src = u.picture || '';
+          const dn = document.getElementById('userDisplayName'); if(dn) dn.textContent = (u.name||'').toUpperCase();
+          const ud = document.getElementById('userDisplay'); if(ud) ud.textContent = (u.email||'').toLowerCase();
+        });
+      } catch(e){}
+    })();
 
     /* ============================================================
        UI HELPERS
@@ -1796,7 +1840,6 @@ function startReserveTimer(){
       });
     });
 
-    /* scroll behavior */
     window.addEventListener('scroll',()=>{
       if(window.pageYOffset>50) document.body.classList.add('scrolled-down');
       else document.body.classList.remove('scrolled-down');
