@@ -649,7 +649,7 @@
     <button class="btn-login" onclick="doLogin()">
       <span id="loginBtnText">Ingresar al Panel</span>
     </button>
-    <div id="loginError">⚠ Email o contraseña incorrectos</div>
+    <div id="loginError">Email o contraseña incorrectos</div>
   </div>
 </div>
 
@@ -1068,7 +1068,7 @@ function renderProductsTable() {
         <div class="actions-cell">
           <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;" onclick="openProductModal('${p.id}')">✏ Editar</button>
           <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;" onclick="toggleSold('${p.id}',${p.is_sold})">
-            ${p.is_sold ? '✓ Disponible' : '✗ Vendido'}
+            ${p.is_sold ? 'Disponible' : 'Vendido'}
           </button>
           <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;color:var(--red);border-color:rgba(163,0,0,.3);" onclick="confirmDelete('${p.id}','${p.name.replace(/'/g,"\\'")}')">🗑</button>
         </div>
@@ -1289,7 +1289,7 @@ async function saveProduct() {
   btn.disabled=false; btn.textContent='Guardar Producto';
   if (error) { showToast('Error: '+error.message); return; }
 
-  showToast(editingProductId ? '✓ Producto actualizado' : '✓ Producto creado');
+  showToast(editingProductId ? 'Producto actualizado' : 'Producto creado');
   closeModal('productModal');
   await loadAdminProducts();
   renderProductsTable();
@@ -1300,7 +1300,7 @@ async function toggleSold(id, currentSold) {
   await sb.from('products').update({is_sold:!currentSold}).eq('id',id);
   await loadAdminProducts();
   renderProductsTable(); renderDashboard();
-  showToast(!currentSold ? '✗ Marcado como VENDIDO' : '✓ Marcado como DISPONIBLE');
+  showToast(!currentSold ? 'Marcado como VENDIDO' : 'Marcado como DISPONIBLE');
 }
 
 function confirmDelete(id, name) {
@@ -1366,9 +1366,9 @@ function renderOrders() {
         <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;">
           ${statusBadge}
           <select class="order-status-select" onchange="updateOrderStatus('${order.id}',this.value)">
-            <option value="pending"   ${order.status==='pending'  ?'selected':''}>⏳ Pendiente</option>
-            <option value="completed" ${order.status==='completed'?'selected':''}>✅ Completado</option>
-            <option value="cancelled" ${order.status==='cancelled'?'selected':''}>❌ Cancelado</option>
+            <option value="pending"   ${order.status==='pending'  ?'selected':''}>Pendiente</option>
+            <option value="completed" ${order.status==='completed'?'selected':''}>Completado</option>
+            <option value="cancelled" ${order.status==='cancelled'?'selected':''}>Cancelado</option>
           </select>
         </div>
       </div>
@@ -1382,7 +1382,7 @@ function renderOrders() {
       </div>
       <div class="order-actions">
         <a href="https://wa.me/${(order.customer_phone||'5493544631553').replace(/\D/g,'')}?text=${waText}" target="_blank">
-          <button class="btn-wa">📲 Contactar por WhatsApp</button>
+          <button class="btn-wa">Contactar por WhatsApp</button>
         </a>
       </div>
     </div>`;
