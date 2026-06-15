@@ -1100,30 +1100,36 @@
         status: 'pending'
       });
 
-      let msg = `*ZYSKN* — NUEVO PEDIDO%0A`;
-      msg += `─────────────────────%0A`;
-      msg += `N° de Pedido: ${orderId}%0A`;
-      msg += `Fecha: ${fecha} · ${hora}%0A`;
-      msg += `─────────────────────%0A%0A`;
-      msg += `*DATOS DEL COMPRADOR*%0A`;
-      msg += `Nombre: ${nombre}%0A`;
-      msg += `DNI: ${dni}%0A`;
-      msg += `Celular: ${celular}%0A`;
-      msg += `Email: ${email || 'No informado'}%0A`;
-      msg += `Ciudad: ${localidad}%0A`;
-      msg += `Envío: ${sucursal || 'A coordinar'}%0A%0A`;
-      msg += `─────────────────────%0A`;
-      msg += `*PRENDAS SELECCIONADAS*%0A%0A`;
-
-      cart.forEach(item => {
-        msg += `▪ ${item.name}%0A`;
-        msg += `   Talle ${item.size} — $${Number(item.price).toLocaleString('es-AR')}%0A%0A`;
-      });
-
-      msg += `─────────────────────%0A`;
-      msg += `*TOTAL: $${total.toLocaleString('es-AR')}*%0A`;
-      msg += `_(+ costo de envío según destino)_%0A%0A`;
-      msg += `Gracias por elegir ZYSKN — piezas curadas, una por una.`;
+      let msg = `🛍️ *ZYSKN — NUEVO PEDIDO*%0A`;
+msg += `%0A`;
+msg += `📋 *N° de Pedido:* ${orderId}%0A`;
+msg += `🗓️ *Fecha:* ${fecha} · ${hora}%0A`;
+msg += `%0A`;
+msg += `─────────────────────%0A`;
+msg += `👤 *DATOS DEL COMPRADOR*%0A`;
+msg += `─────────────────────%0A`;
+msg += `%0A`;
+msg += `· *Nombre:* ${nombre}%0A`;
+msg += `· *DNI:* ${dni}%0A`;
+msg += `· *Celular:* ${celular}%0A`;
+msg += `· *Email:* ${email || 'No informado'}%0A`;
+msg += `· *Localidad:* ${localidad}%0A`;
+msg += `· *Envío:* ${direccion || 'A coordinar'}%0A`;
+msg += `%0A`;
+msg += `─────────────────────%0A`;
+msg += `👕 *PRENDAS SELECCIONADAS*%0A`;
+msg += `─────────────────────%0A`;
+msg += `%0A`;
+cart.forEach((item, index) => {
+  msg += `${index + 1}. *${item.name}*%0A`;
+  msg += `   Talle: ${item.size} · Precio: $${Number(item.price).toLocaleString('es-AR')}%0A`;
+  msg += `%0A`;
+});
+msg += `─────────────────────%0A`;
+msg += `💰 *TOTAL: $${total.toLocaleString('es-AR')}*%0A`;
+msg += `📦 _El costo de envío se calcula según destino._%0A`;
+msg += `%0A`;
+msg += `_Gracias por tu compra. En breve nos ponemos en contacto._ 🙌%0A`;
 
       for (const item of cart) {
         await deleteReservation(item.id);
