@@ -25,7 +25,6 @@
   <meta name="twitter:image" content="https://zyskn.github.io/open-graph.png">
   <meta name="google-site-verification" content="ZhyhpO9tm5X8Cc_6O1530LuJhZ7wKHxzsa94eH4wJoU">
 
-  <!-- Schema.org JSON-LD mejorado -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -165,6 +164,23 @@
     .cart-icon { color:var(--red); }
     .cart-badge { position:absolute; top:-1px; right:-1px; background:var(--red); color:#fff; width:15px; height:15px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.6rem; font-weight:800; }
 
+    /* FIX 3: Carrito mismo tamaño que hamburger en mobile */
+    @media (max-width:1024px) {
+      #cart-icon {
+        width:28px !important;
+        height:28px !important;
+        padding:0 !important;
+        margin:0 !important;
+        display:flex !important;
+        align-items:center !important;
+        justify-content:center !important;
+      }
+      #cart-icon svg {
+        width:22px !important;
+        height:22px !important;
+      }
+    }
+
     .search-wrapper { display:flex; align-items:center; position:relative; }
     .search-input-container { width:0; overflow:hidden; transition:width .4s ease,margin .4s ease; display:flex; align-items:center; }
     header.searching .search-input-container { width:280px; margin-right:.8rem; }
@@ -184,9 +200,9 @@
       .hamburger { display:flex!important; }
       .nav-icons .search-wrapper { display:none!important; }
       .nav-icons { width:auto!important; justify-content:flex-end!important; gap:14px!important; }
-      .icon-btn, #userAuth { width:28px!important; height:28px!important; padding:0!important; margin:0!important; }
-      .icon-btn svg, #userAuth svg { width:20px!important; height:20px!important; }
+      #userAuth { width:28px!important; height:28px!important; padding:0!important; margin:0!important; }
       #userAuth { font-size:0!important; }
+      #userAuth svg { width:20px!important; height:20px!important; }
       .nav-main { position:fixed; top:0; right:0; width:82vw; max-width:340px; height:100dvh; background:rgba(255,255,255,0.99); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); flex-direction:column; justify-content:flex-start; align-items:flex-start; padding:5.5rem 1.6rem 2rem; box-shadow:-8px 0 40px rgba(0,0,0,0.12); overflow-y:auto; gap:0; z-index:3005; transform:translate3d(100%,0,0); transition:transform .42s var(--ease-out); pointer-events:none; border-left:1px solid rgba(0,0,0,0.05); }
       .nav-main.active { transform:translate3d(0,0,0); pointer-events:auto; }
       .nav-item { padding:0; width:100%; border-bottom:1px solid rgba(0,0,0,0.06); }
@@ -370,8 +386,25 @@
     @keyframes fadeOutOverlay { 0%{opacity:1} 100%{opacity:0} }
     .notification { position:fixed; bottom:2rem; right:2rem; background:var(--black); color:#fff; padding:.9rem 1.8rem; font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em; z-index:3000; display:none; animation:slideIn .3s ease-out; border-left:3px solid var(--red); }
     @keyframes slideIn { from{transform:translateY(100%);opacity:0} to{transform:translateY(0);opacity:1} }
-    @keyframes flyToCart { 0%{transform:translate(0,0) scale(1);opacity:1} 50%{transform:translate(calc(var(--tx)*.5),calc(var(--ty)*.5 - 50px)) scale(.8);opacity:.8} 100%{transform:translate(var(--tx),var(--ty)) scale(.1);opacity:0} }
-    .fly-item { position:fixed; z-index:9999; pointer-events:none; border-radius:50%; background:var(--black); animation:flyToCart .8s cubic-bezier(.42,0,.58,1) forwards; }
+
+    /* FIX 2: Pelotita que vuela al carrito */
+    @keyframes flyToCart {
+      0%   { transform: translate(0, 0) scale(1); opacity: 1; }
+      40%  { opacity: 1; }
+      100% { transform: translate(var(--tx), var(--ty)) scale(0.1); opacity: 0; }
+    }
+    .fly-item {
+      position: fixed;
+      z-index: 9999;
+      pointer-events: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--red);
+      border: 2px solid #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      animation: flyToCart 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
   </style>
 </head>
 
@@ -695,7 +728,6 @@
     ============================================================ */
     async function syncReservations() {
       try {
-        // Limpiar reservas vencidas
         await sb.from('reservations').delete().lt('expires_at', new Date().toISOString());
         const { data } = await sb.from('reservations').select('*');
         if (data) {
@@ -709,7 +741,7 @@
     }
 
     async function createReservation(productId) {
-      const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString(); // 5 minutos
+      const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
       try {
         await sb.from('reservations').upsert({ product_id: productId, expires_at: expiresAt });
         localReservations[productId] = Date.now() + 5 * 60 * 1000;
@@ -859,7 +891,6 @@
         `<img src="${src}" onclick="currentPhotoIndex=${i};changePhoto(0)" class="${i === 0 ? 'active-thumb' : ''}">`
       ).join('');
 
-      // Swipe táctil
       const zc = document.getElementById('zoomContainer');
       let sx = 0, lt = 0;
       zc.ontouchstart = e => sx = e.touches[0].clientX;
@@ -871,7 +902,6 @@
         lt = now;
       };
 
-      // Estado del botón
       const infoDiv = document.querySelector('#product-detail .product-info');
       const oldBanner = infoDiv.querySelector('.status-banner');
       if (oldBanner) oldBanner.remove();
@@ -928,6 +958,45 @@
       btn.classList.add('selected');
     }
 
+    /* ============================================================
+       FIX 2: Animación pelotita que vuela al carrito
+    ============================================================ */
+    function animateToCart(originEl) {
+      const cartEl = document.getElementById('cart-icon');
+      if (!cartEl || !originEl) return;
+
+      const flyer = document.createElement('div');
+      flyer.className = 'fly-item';
+
+      const originRect = originEl.getBoundingClientRect();
+      const cartRect = cartEl.getBoundingClientRect();
+
+      // Punto de origen: centro del botón
+      const startX = originRect.left + originRect.width / 2 - 9; // 9 = mitad del tamaño (18px)
+      const startY = originRect.top + originRect.height / 2 - 9;
+
+      // Delta hacia el carrito
+      const tx = (cartRect.left + cartRect.width / 2) - (originRect.left + originRect.width / 2);
+      const ty = (cartRect.top + cartRect.height / 2) - (originRect.top + originRect.height / 2);
+
+      flyer.style.left = startX + 'px';
+      flyer.style.top  = startY + 'px';
+      flyer.style.setProperty('--tx', tx + 'px');
+      flyer.style.setProperty('--ty', ty + 'px');
+
+      document.body.appendChild(flyer);
+
+      flyer.addEventListener('animationend', () => {
+        flyer.remove();
+        // Bounce del ícono del carrito
+        cartEl.style.transform = 'scale(1.4)';
+        setTimeout(() => { cartEl.style.transform = 'scale(1)'; }, 220);
+      });
+    }
+
+    /* ============================================================
+       FIX 1: Siempre scroll al carrito al agregar
+    ============================================================ */
     async function addToCartFromDetail(event) {
       if (!selectedSize) { alert('Seleccioná el talle'); return; }
       if (currentProduct.is_sold) { alert('Este producto ya fue vendido'); return; }
@@ -939,9 +1008,14 @@
       cart.push({ ...currentProduct, size: selectedSize });
       localStorage.setItem('zysk_cart', JSON.stringify(cart));
       updateCartUI();
-      animateToCart(event, '#cart-icon');
+
+      // Animación pelotita desde el botón hacia el carrito
+      animateToCart(event.currentTarget);
+
       showNotification('RESERVADO POR 5 MINUTOS ✓');
-      setTimeout(() => scrollToSection('cart-section'), 800);
+
+      // FIX 1: Scroll inmediato al carrito (sin delay)
+      scrollToSection('cart-section');
     }
 
     /* ============================================================
@@ -990,7 +1064,7 @@
     }
 
     /* ============================================================
-       WHATSAPP PRO — Mensaje estructurado con ID de pedido
+       WHATSAPP
     ============================================================ */
     async function shareOnWhatsApp() {
       if (cart.length === 0) { alert('El carrito está vacío'); return; }
@@ -1007,14 +1081,12 @@
         return;
       }
 
-      // Generar ID de pedido único
       const orderId = 'ZSK-' + Date.now().toString(36).toUpperCase();
       const now = new Date();
       const fecha = now.toLocaleDateString('es-AR');
       const hora = now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
       const total = cart.reduce((s, i) => s + Number(i.price), 0);
 
-      // Guardar pedido en Supabase
       await saveOrder({
         order_id: orderId,
         customer_name: nombre,
@@ -1028,7 +1100,6 @@
         status: 'pending'
       });
 
-      // Mensaje WhatsApp estructurado — estilo premium
       let msg = `*ZYSKN* — NUEVO PEDIDO%0A`;
       msg += `─────────────────────%0A`;
       msg += `N° de Pedido: ${orderId}%0A`;
@@ -1054,7 +1125,6 @@
       msg += `_(+ costo de envío según destino)_%0A%0A`;
       msg += `Gracias por elegir ZYSKN — piezas curadas, una por una.`;
 
-      // Limpiar carrito
       for (const item of cart) {
         await deleteReservation(item.id);
       }
@@ -1136,25 +1206,6 @@
       setTimeout(() => n.style.display = 'none', 3500);
     }
 
-    function animateToCart(event, cartSelector) {
-      const button = event.currentTarget;
-      const cartEl = document.querySelector(cartSelector);
-      if (!cartEl) return;
-      const flyer = document.createElement('div');
-      flyer.className = 'fly-item'; flyer.style.width = '14px'; flyer.style.height = '14px';
-      const rect = button.getBoundingClientRect();
-      flyer.style.left = `${rect.left + rect.width / 2}px`;
-      flyer.style.top = `${rect.top + rect.height / 2}px`;
-      const cartRect = cartEl.getBoundingClientRect();
-      flyer.style.setProperty('--tx', `${(cartRect.left + cartRect.width / 2) - (rect.left + rect.width / 2)}px`);
-      flyer.style.setProperty('--ty', `${(cartRect.top + cartRect.height / 2) - (rect.top + rect.height / 2)}px`);
-      document.body.appendChild(flyer);
-      flyer.addEventListener('animationend', () => {
-        flyer.remove(); cartEl.style.transform = 'scale(1.3)';
-        setTimeout(() => cartEl.style.transform = 'scale(1)', 200);
-      });
-    }
-
     function scrollToSection(id) {
       const el = document.getElementById(id);
       if (!el) return;
@@ -1200,16 +1251,13 @@
             e.stopPropagation();
             const isOpen = item.classList.contains('active-mobile');
             if (isOpen) {
-              // Segundo toque: mostrar todo ARRIBA/ABAJO y cerrar categorías
               item.classList.remove('active-mobile');
               applyFilter('section', section);
             } else {
-              // Primer toque: abrir categorías para elegir con 1 toque
               document.querySelectorAll('.nav-item').forEach(o => { if (o !== item) o.classList.remove('active-mobile'); });
               item.classList.add('active-mobile');
             }
           } else {
-            // Desktop: clic directo filtra por sección
             applyFilter('section', section);
           }
         });
