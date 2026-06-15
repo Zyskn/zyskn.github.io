@@ -1070,7 +1070,7 @@ function renderProductsTable() {
           <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;" onclick="toggleSold('${p.id}',${p.is_sold})">
             ${p.is_sold ? 'Disponible' : 'Vendido'}
           </button>
-          <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;color:var(--red);border-color:rgba(163,0,0,.3);" onclick="confirmDelete('${p.id}','${p.name.replace(/'/g,"\\'")}')">🗑</button>
+          <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;color:var(--red);border-color:rgba(163,0,0,.3);" onclick="confirmDelete('${p.id}','${p.name.replace(/'/g,"\\'")}')">Eliminar</button>
         </div>
       </td>
     </tr>`;
