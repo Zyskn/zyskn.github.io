@@ -1412,53 +1412,45 @@
         status: 'pending'
       });
 
-      const lines = [
-  '*ZYSKN · NUEVO PEDIDO*',
-  '',
-  `*N° de Pedido:* ${orderId}`,
-  `*Fecha:* ${fecha} · ${hora}`,
-  '',
-  '─────────────────────',
-  '*DATOS DEL COMPRADOR*',
-  '─────────────────────',
-  '',
-  `*· Nombre:* ${nombre}`,
-  `*· DNI:* ${dni}`,
-  `*· Celular:* ${celular}`,
-  `*· Email:* ${email || 'No informado'}`,
-  `*· Ciudad y Provincia:* ${ciudadyprovincia}`,
-  `*· Sucursal Correo Argentino o Dirección:* ${sucursalOdireccion || 'A coordinar'}`,
-  '',
-  '─────────────────────',
-  '*PRENDAS SELECCIONADAS*',
-  '─────────────────────',
-  ''
-];
+      let msg = `Holaa *ZYSKN · NUEVO PEDIDO*%0A`;
+      msg += `%0A`;
+      msg += `*N° de Pedido:* ${orderId}%0A`;
+      msg += `*Fecha:* ${fecha} · ${hora}%0A`;
+      msg += `%0A`;
+      msg += `─────────────────────%0A`;
+      msg += `*DATOS DEL COMPRADOR*%0A`;
+      msg += `─────────────────────%0A`;
+      msg += `%0A`;
+      msg += `· *Nombre:* ${nombre}%0A`;
+      msg += `· *DNI:* ${dni}%0A`;
+      msg += `· *Celular:* ${celular}%0A`;
+      msg += `· *Email:* ${email || 'No informado'}%0A`;
+      msg += `· *Localidad:* ${localidad}%0A`;
+      msg += `· *Envío:* ${sucursal || 'A coordinar'}%0A`;
+      msg += `%0A`;
+      msg += `─────────────────────%0A`;
+      msg += `*PRENDAS SELECCIONADAS*%0A`;
+      msg += `─────────────────────%0A`;
+      msg += `%0A`;
+      cart.forEach((item, index) => {
+        msg += `${index + 1}. *${item.name}*%0A`;
+        msg += `   Talle: ${item.size} · Precio: $${Number(item.price).toLocaleString('es-AR')}%0A`;
+        msg += `%0A`;
+      });
+      msg += `─────────────────────%0A`;
+      msg += `· *TOTAL: $${total.toLocaleString('es-AR')}*%0A`;
+      msg += `_· El costo de envío se calcula según destino._%0A`;
+      msg += `%0A`;
+      msg += `_Gracias por tu compra. En breve nos ponemos en contacto._ 🙌%0A`;
 
-cart.forEach((item, i) => {
-  lines.push(`${i + 1}. *${item.name}*`);
-  lines.push(`   Talle: ${item.size} · Precio: $${Number(item.price).toLocaleString('es-AR')}`);
-  lines.push('');
-});
+      for (const item of cart) { await deleteReservation(item.id); }
+      cart = [];
+      localStorage.setItem('zysk_cart', JSON.stringify(cart));
+      updateCartUI();
 
-lines.push('─────────────────────');
-lines.push(`*TOTAL: $${total.toLocaleString('es-AR')}*`);
-lines.push('_El costo de envío se calcula según destino._');
-lines.push('');
-lines.push('_Gracias por tu compra. En breve nos ponemos en contacto._');
-
-// 2) encodeamos UNA sola vez
-const msg = encodeURIComponent(lines.join('\n'));
-
-// 3) abrimos WhatsApp
-window.open(`https://wa.me/5493544631553?text=${msg}`, '_blank');
-showNotification('PEDIDO ENVIADO · ' + orderId);
-
-// 4) recién ahora limpiamos
-for (const item of cart) { await deleteReservation(item.id); }
-cart = [];
-localStorage.setItem('zysk_cart', JSON.stringify(cart));
-updateCartUI();
+      window.open(`https://wa.me/5493544631553?text=${msg}`, '_blank');
+      showNotification('PEDIDO ENVIADO · ' + orderId);
+    }
 
     /* ============================================================
        SEARCH
