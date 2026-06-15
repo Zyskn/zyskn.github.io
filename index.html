@@ -203,99 +203,86 @@
       .mobile-search { display:block!important; width:100%; margin-bottom:1.6rem; }
     }
     @media (min-width:1025px) { .hamburger { display:none!important; } .mobile-search { display:none!important; } }
-    
-    /* ========== PREMIUM AUTH MODAL ========== */
+
+    /* AUTH MODAL */
     #authModal {
       display:none; position:fixed; inset:0; z-index:9000;
-      background:rgba(0,0,0,0.7); backdrop-filter:blur(8px);
+      background:rgba(0,0,0,0.6); backdrop-filter:blur(6px);
       align-items:center; justify-content:center;
     }
     #authModal.active { display:flex; }
     .auth-box {
-      background:#fff; width:100%; max-width:500px; margin:1rem;
-      padding:0; position:relative; border-radius:12px;
-      box-shadow:0 40px 120px rgba(0,0,0,0.25);
-      animation:authSlideIn .4s cubic-bezier(0.16, 1, 0.3, 1);
-      overflow:hidden;
+      background:#fff; width:100%; max-width:420px; margin:1rem;
+      padding:2.5rem 2rem; position:relative; border-radius:4px;
+      box-shadow:0 24px 80px rgba(0,0,0,0.2);
+      animation:authSlideIn .3s var(--ease-out);
     }
-    @keyframes authSlideIn { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
-    .auth-header {
-      background:linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
-      padding:3rem 2.5rem 2.5rem; position:relative; overflow:hidden;
-    }
-    .auth-header::before {
-      content:''; position:absolute; top:0; right:0; width:400px; height:400px;
-      background:radial-gradient(circle, rgba(163,0,0,0.15) 0%, transparent 70%);
-      border-radius:50%; transform:translate(100px, -100px);
-    }
-    .auth-logo { font-size:2.2rem; font-weight:900; text-transform:uppercase; color:#fff; position:relative; z-index:2; }
-    .auth-subtitle { font-size:.65rem; font-weight:700; text-transform:uppercase; letter-spacing:.18em; color:rgba(255,255,255,0.7); position:relative; z-index:2; }
+    @keyframes authSlideIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
     .auth-close {
-      position:absolute; top:1.5rem; right:1.5rem; background:rgba(255,255,255,0.1);
-      border:none; cursor:pointer; font-size:1.6rem; color:#fff; padding:.4rem .6rem; border-radius:6px; z-index:10;
+      position:absolute; top:1rem; right:1rem; background:none; border:none;
+      cursor:pointer; font-size:1.4rem; color:var(--text-faint); line-height:1;
+      transition:color .2s; padding:.2rem .5rem;
     }
-    .auth-content { padding:2.5rem; }
-    .auth-tabs { display:flex; gap:0; margin-bottom:2.5rem; background:rgba(0,0,0,0.03); padding:.3rem; border-radius:8px; }
-    .auth-tab { flex:1; text-align:center; padding:.9rem; font-size:.7rem; font-weight:800; text-transform:uppercase; cursor:pointer; border:none; background:transparent; color:#888; border-radius:6px; transition:all .2s; }
-    .auth-tab.active { color:#000; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+    .auth-close:hover { color:var(--black); }
+    .auth-logo { font-size:1.4rem; font-weight:900; text-transform:uppercase; letter-spacing:-.03em; margin-bottom:.3rem; }
+    .auth-subtitle { font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.16em; color:var(--text-faint); margin-bottom:2rem; }
+    .auth-tabs { display:flex; gap:0; margin-bottom:2rem; border-bottom:2px solid var(--gray-mid); }
+    .auth-tab {
+      flex:1; text-align:center; padding:.7rem; font-size:.68rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:.1em; cursor:pointer; border:none;
+      background:none; color:var(--text-faint); border-bottom:2px solid transparent;
+      margin-bottom:-2px; transition:all .2s;
+    }
+    .auth-tab.active { color:var(--black); border-bottom-color:var(--black); }
     .auth-form { display:none; }
-    .auth-form.active { display:block; animation:fadeIn .3s ease; }
-    @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-    .auth-field { margin-bottom:1.4rem; }
-    .auth-field label { display:block; font-size:.65rem; font-weight:800; text-transform:uppercase; margin-bottom:.6rem; }
-    .auth-field input { width:100%; padding:.95rem 1rem; border:1.5px solid rgba(0,0,0,0.12); border-radius:8px; background:#fafafa; outline:none; transition:all .2s; }
-    .auth-field input:focus { border-color:#A30000; background:#fff; box-shadow:0 0 0 3px rgba(163,0,0,0.1); }
-    .auth-btn { width:100%; background:linear-gradient(135deg, #A30000 0%, #8a0000 100%); color:#fff; border:none; padding:1.1rem; font-size:.8rem; font-weight:800; text-transform:uppercase; cursor:pointer; border-radius:8px; box-shadow:0 4px 16px rgba(163,0,0,0.25); transition:all .2s; }
-    .auth-btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(163,0,0,0.35); }
-    .auth-purchase-history { display:none; }
-    .auth-purchase-history.active { display:block; animation:fadeIn .3s ease; }
-    .purchase-item { padding:1.2rem; border:1.5px solid rgba(0,0,0,0.08); border-radius:8px; margin-bottom:1rem; }
-    .purchase-item-header { display:flex; justify-content:space-between; font-weight:700; text-transform:uppercase; font-size:.8rem; margin-bottom:.5rem; }
-    .purchase-item-price { color:#A30000; }
-    
-        /* ========== USER DROPDOWN PREMIUM ========== */
-    .user-menu-wrapper { position: relative; }
+    .auth-form.active { display:block; }
+    .auth-field { margin-bottom:1rem; }
+    .auth-field label { display:block; font-size:.6rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em; margin-bottom:.4rem; }
+    .auth-field input {
+      width:100%; padding:.7rem .8rem; border:1px solid rgba(0,0,0,0.2);
+      font-size:.82rem; font-family:'Inter',sans-serif; outline:none;
+      transition:border-color .2s; border-radius:1px;
+    }
+    .auth-field input:focus { border-color:var(--black); }
+    .auth-btn {
+      width:100%; background:var(--black); color:#fff; border:none; padding:1rem;
+      font-size:.78rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+      cursor:pointer; margin-top:.5rem; font-family:'Inter',sans-serif;
+      transition:opacity .2s; border-radius:1px;
+    }
+    .auth-btn:hover { opacity:.85; }
+    .auth-btn:disabled { opacity:.5; cursor:not-allowed; }
+    .auth-error { font-size:.7rem; color:var(--red); font-weight:700; margin-top:.8rem; min-height:1.2em; text-align:center; }
+    .auth-success { font-size:.7rem; color:#1a8a1a; font-weight:700; margin-top:.8rem; min-height:1.2em; text-align:center; }
+    .auth-switch { text-align:center; margin-top:1.2rem; font-size:.68rem; color:var(--text-faint); font-weight:600; }
+    .auth-switch a { color:var(--black); font-weight:800; text-decoration:underline; cursor:pointer; }
+
+    /* USER DROPDOWN */
+    .user-menu-wrapper { position:relative; }
     .user-dropdown {
-      position: absolute; top: calc(100% + 12px); right: 0;
-      background: #fff; border: 1px solid rgba(0,0,0,0.08);
-      min-width: 220px; padding: 0.8rem 0; border-radius: 12px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-      opacity: 0; visibility: hidden; transform: translateY(10px);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      z-index: 3100;
+      position:absolute; top:calc(100% + 8px); right:0;
+      background:#fff; border:1px solid rgba(0,0,0,0.1);
+      min-width:200px; padding:.5rem 0; border-radius:4px;
+      box-shadow:0 8px 32px rgba(0,0,0,0.12);
+      opacity:0; visibility:hidden; transform:translateY(4px);
+      transition:all .2s ease; z-index:3100;
     }
-    /* Solo se abre cuando tiene la clase .open (al hacer click) */
-    .user-dropdown.open { 
-      opacity: 1; 
-      visibility: visible; 
-      transform: translateY(0); 
-    }
+    .user-menu-wrapper:hover .user-dropdown,
+    .user-dropdown.open { opacity:1; visibility:visible; transform:translateY(0); }
     .user-dropdown-name {
-      padding: 0.5rem 1.4rem 0.8rem; font-size: 0.6rem; font-weight: 800;
-      text-transform: uppercase; letter-spacing: 0.15em; color: #888;
-      border-bottom: 1px solid rgba(0,0,0,0.05); margin-bottom: 0.5rem;
+      padding:.7rem 1.2rem .5rem; font-size:.62rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:.1em; color:var(--text-faint);
+      border-bottom:1px solid var(--gray-mid); margin-bottom:.3rem;
     }
     .user-dropdown-item {
-      display: block; width: 100%; padding: 0.8rem 1.4rem; background: none; border: none;
-      font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
-      cursor: pointer; text-align: left; color: #000; font-family: 'Inter', sans-serif;
-      transition: all 0.2s;
+      display:block; width:100%; padding:.6rem 1.2rem; background:none; border:none;
+      font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em;
+      cursor:pointer; text-align:left; color:var(--black); font-family:'Inter',sans-serif;
+      transition:background .15s;
     }
-    .user-dropdown-item:hover { 
-      background: rgba(163,0,0,0.04); 
-      color: #A30000;
-      padding-left: 1.6rem; /* Efecto sutil de desplazamiento */
-    }
-    .user-dropdown-item.danger { color: #A30000; opacity: 0.8; }
-    .user-dropdown-item.danger:hover { background: rgba(163,0,0,0.08); opacity: 1; }
-
-    /* Triángulo indicador superior */
-    .user-dropdown::before {
-      content: ''; position: absolute; top: -6px; right: 15px;
-      width: 12px; height: 12px; background: #fff;
-      transform: rotate(45deg); border-left: 1px solid rgba(0,0,0,0.08);
-      border-top: 1px solid rgba(0,0,0,0.08);
-    }
+    .user-dropdown-item:hover { background:var(--gray-bg); }
+    .user-dropdown-item.danger { color:var(--red); }
+    .user-dropdown-item.danger:hover { background:rgba(163,0,0,0.06); }
 
     /* CONFIRM MODAL */
     #confirmModal {
@@ -536,47 +523,53 @@
   <div id="notification" class="notification"></div>
   <div id="nav-overlay"></div>
 
-    <!-- PREMIUM AUTH MODAL -->
+  <!-- AUTH MODAL -->
   <div id="authModal">
     <div class="auth-box">
       <button class="auth-close" onclick="closeAuthModal()">×</button>
-      <div class="auth-header">
-        <div class="auth-logo">ZYSKN</div>
-        <div class="auth-subtitle">Curated Vintage</div>
+      <div class="auth-logo">ZYSKN</div>
+      <div class="auth-subtitle">Curated Vintage</div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Iniciar sesión</button>
+        <button class="auth-tab" id="tabRegister" onclick="switchTab('register')">Registrarse</button>
       </div>
-      <div class="auth-content">
-        <div class="auth-tabs">
-          <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Iniciar sesión</button>
-          <button class="auth-tab" id="tabRegister" onclick="switchTab('register')">Registrarse</button>
+
+      <!-- LOGIN FORM -->
+      <div class="auth-form active" id="formLogin">
+        <div class="auth-field">
+          <label>Correo electrónico</label>
+          <input type="email" id="loginEmail" placeholder="tu@correo.com">
         </div>
-        <!-- LOGIN -->
-        <div class="auth-form active" id="formLogin">
-          <div class="auth-field"><label>Email</label><input type="email" id="loginEmail" placeholder="tu@correo.com"></div>
-          <div class="auth-field"><label>Contraseña</label><input type="password" id="loginPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
-          <button class="auth-btn" id="btnLogin" onclick="doLogin()">Iniciar sesión</button>
-          <div class="auth-error" id="loginError"></div>
+        <div class="auth-field">
+          <label>Contraseña</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
         </div>
-        <!-- REGISTER -->
-        <div class="auth-form" id="formRegister">
-          <div class="auth-field"><label>Nombre</label><input type="text" id="regName" placeholder="Tu nombre"></div>
-          <div class="auth-field"><label>Email</label><input type="email" id="regEmail" placeholder="tu@correo.com"></div>
-          <div class="auth-field"><label>Contraseña</label><input type="password" id="regPassword" onkeydown="if(event.key==='Enter')doRegister()"></div>
-          <button class="auth-btn" id="btnRegister" onclick="doRegister()">Crear cuenta</button>
-          <div class="auth-error" id="registerError"></div>
-          <div class="auth-success" id="registerSuccess"></div>
+        <button class="auth-btn" id="btnLogin" onclick="doLogin()">Iniciar sesión</button>
+        <div class="auth-error" id="loginError"></div>
+        <div class="auth-switch">¿No tenés cuenta? <a onclick="switchTab('register')">Registrate</a></div>
+      </div>
+
+      <!-- REGISTER FORM -->
+      <div class="auth-form" id="formRegister">
+        <div class="auth-field">
+          <label>Nombre</label>
+          <input type="text" id="regName" placeholder="Tu nombre">
         </div>
-        <!-- HISTORIAL -->
-        <div class="auth-purchase-history" id="purchaseHistorySection">
-          <div style="display:flex; justify-content:space-between; margin-bottom:1.5rem; align-items:center;">
-            <span style="font-weight:800; text-transform:uppercase; font-size:.85rem;">Mis Compras</span>
-            <span onclick="closePurchaseHistory()" style="color:#A30000; cursor:pointer; font-size:.7rem; font-weight:700;">← VOLVER</span>
-          </div>
-          <div id="purchaseList"></div>
+        <div class="auth-field">
+          <label>Correo electrónico</label>
+          <input type="email" id="regEmail" placeholder="tu@correo.com">
         </div>
+        <div class="auth-field">
+          <label>Contraseña</label>
+          <input type="password" id="regPassword" placeholder="Mínimo 6 caracteres" onkeydown="if(event.key==='Enter')doRegister()">
+        </div>
+        <button class="auth-btn" id="btnRegister" onclick="doRegister()">Crear cuenta</button>
+        <div class="auth-error" id="registerError"></div>
+        <div class="auth-success" id="registerSuccess"></div>
+        <div class="auth-switch">¿Ya tenés cuenta? <a onclick="switchTab('login')">Iniciá sesión</a></div>
       </div>
     </div>
   </div>
-
 
   <!-- CONFIRM DELETE MODAL -->
   <div id="confirmModal">
@@ -679,11 +672,11 @@
             <button class="icon-btn" id="userAuth" onclick="openAuthModal()" title="Iniciar sesión">
               <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
             </button>
+            <div class="user-dropdown" id="userDropdown" style="display:none;">
               <div class="user-dropdown-name" id="userDropdownName">—</div>
-              <button class="user-dropdown-item" onclick="openPurchaseHistory()">Ver Compras</button>
               <button class="user-dropdown-item" onclick="doLogout()">Cerrar sesión</button>
               <button class="user-dropdown-item danger" onclick="openConfirmModal()">Eliminar cuenta</button>
-
+            </div>
           </div>
 
           <button class="icon-btn cart-icon" id="cart-icon" onclick="scrollToSection('cart-section')">
@@ -1673,42 +1666,6 @@
     /* BOOT */
     initAuth();
     loadProducts();
-    function openPurchaseHistory() {
-    document.getElementById('userDropdown').classList.remove('open');
-    document.getElementById('authModal').classList.add('active');
-    document.getElementById('formLogin').classList.remove('active');
-    document.getElementById('formRegister').classList.remove('active');
-    document.getElementById('purchaseHistorySection').classList.add('active');
-    document.getElementById('tabLogin').classList.remove('active');
-    document.getElementById('tabRegister').classList.remove('active');
-    loadPurchaseHistory();
-}
-
-function closePurchaseHistory() {
-    document.getElementById('purchaseHistorySection').classList.remove('active');
-    document.getElementById('formLogin').classList.add('active');
-    document.getElementById('tabLogin').classList.add('active');
-}
-
-async function loadPurchaseHistory() {
-    const list = document.getElementById('purchaseList');
-    if (!currentUser) return;
-    const { data } = await sb.from('orders').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
-    if (!data || data.length === 0) {
-        list.innerHTML = '<p style="text-align:center; font-size:.8rem; color:#888; padding:2rem;">No tenés compras aún.</p>';
-        return;
-    }
-    list.innerHTML = data.map(o => `
-        <div class="purchase-item">
-            <div class="purchase-item-header">
-                <span>Compra #${o.id.toString().slice(0,5)}</span>
-                <span class="purchase-item-price">$${Number(o.total).toLocaleString('es-AR')}</span>
-            </div>
-            <div style="font-size:.7rem; color:#888;">Fecha: ${new Date(o.created_at).toLocaleDateString()}</div>
-        </div>
-    `).join('');
-}
-
   </script>
 </body>
 </html>
