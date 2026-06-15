@@ -421,6 +421,33 @@
     #thumbs img { width:58px; height:73px; object-fit:cover; cursor:pointer; border:2px solid transparent; border-radius:2px; transition:all .2s ease; opacity:.5; }
     #thumbs img.active-thumb { border-color:var(--black); opacity:1; }
 
+    /* FAV BUTTON */
+    .fav-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.7rem;
+      line-height: 1;
+      padding: 4px 6px;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s;
+      color: #ddd;
+      flex-shrink: 0;
+      margin-left: 2px;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .fav-btn.active {
+      color: #e00;
+      filter: drop-shadow(0 2px 6px rgba(220,0,0,0.35));
+    }
+    .fav-btn:hover { transform: scale(1.2); }
+    .fav-btn.pop { animation: favPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    @keyframes favPop {
+      0%   { transform: scale(1); }
+      45%  { transform: scale(1.55); }
+      100% { transform: scale(1); }
+    }
+
     /* CART */
     #cart-section { background:#fff; border-top:1px solid rgba(0,0,0,0.1); }
     .cart-container { max-width:720px; margin:0 auto; }
@@ -642,11 +669,9 @@
 
           <!-- USER AUTH BUTTON -->
           <div class="user-menu-wrapper" id="userMenuWrapper">
-            <!-- When logged out: shows person icon -->
             <button class="icon-btn" id="userAuth" onclick="openAuthModal()" title="Iniciar sesión">
               <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
             </button>
-            <!-- When logged in: shows name + dropdown (injected by JS) -->
             <div class="user-dropdown" id="userDropdown" style="display:none;">
               <div class="user-dropdown-name" id="userDropdownName">—</div>
               <button class="user-dropdown-item" onclick="doLogout()">Cerrar sesión</button>
@@ -722,6 +747,8 @@
         <div class="product-info">
           <div class="detail-name-wrap">
             <h2 id="detailName"></h2>
+            <!-- FAVORITO -->
+            <button class="fav-btn" id="favBtn" onclick="toggleFavorite()" title="Agregar a favoritos" aria-label="Agregar a favoritos">❤</button>
           </div>
           <p id="detailPrice"></p>
           <div id="detailDesc"></div>
@@ -859,6 +886,42 @@
     let currentUser = null;
 
     /* ============================================================
+       FAVORITOS
+    ============================================================ */
+    let favorites = JSON.parse(localStorage.getItem('zysk_favs') || '[]');
+
+    function toggleFavorite() {
+      if (!currentProduct) return;
+      const id = currentProduct.id;
+      const btn = document.getElementById('favBtn');
+      const idx = favorites.indexOf(id);
+
+      if (idx === -1) {
+        favorites.push(id);
+        btn.classList.add('active');
+        showNotification('❤ GUARDADO EN FAVORITOS');
+      } else {
+        favorites.splice(idx, 1);
+        btn.classList.remove('active');
+        showNotification('ELIMINADO DE FAVORITOS');
+      }
+
+      localStorage.setItem('zysk_favs', JSON.stringify(favorites));
+
+      // Animación pop
+      btn.classList.remove('pop');
+      void btn.offsetWidth; // reflow para reiniciar
+      btn.classList.add('pop');
+    }
+
+    function updateFavBtn() {
+      const btn = document.getElementById('favBtn');
+      if (!btn || !currentProduct) return;
+      const isFav = favorites.includes(currentProduct.id);
+      btn.classList.toggle('active', isFav);
+    }
+
+    /* ============================================================
        AUTH — INIT SESSION
     ============================================================ */
     async function initAuth() {
@@ -881,15 +944,11 @@
 
       if (user) {
         const name = user.user_metadata?.name || user.email.split('@')[0];
-        // Show name label instead of person icon
         btnAuth.innerHTML = `<span style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--black);white-space:nowrap;">${name.split(' ')[0].toUpperCase()}</span>`;
-        btnAuth.onclick = () => {
-          dropdown.classList.toggle('open');
-        };
+        btnAuth.onclick = () => { dropdown.classList.toggle('open'); };
         dropdownName.textContent = name;
         dropdown.style.display = 'block';
 
-        // Pre-fill email in cart form if empty
         const orderEmail = document.getElementById('orderEmail');
         if (orderEmail && !orderEmail.value) orderEmail.value = user.email;
       } else {
@@ -998,15 +1057,12 @@
       closeConfirmModal();
       if (!currentUser) return;
 
-      // Call Supabase admin delete via edge function or RPC if available
-      // Fallback: sign out and show message
       try {
         const { error } = await sb.rpc('delete_user');
         if (error) throw error;
         await sb.auth.signOut();
         showNotification('CUENTA ELIMINADA');
       } catch {
-        // If RPC not available, sign out anyway and notify
         await sb.auth.signOut();
         showNotification('SESIÓN CERRADA — CONTACTANOS PARA ELIMINAR TU CUENTA');
       }
@@ -1244,6 +1300,9 @@
       } else {
         btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; btn.textContent = 'AGREGAR AL CARRITO';
       }
+
+      // Actualizar estado del corazón
+      updateFavBtn();
 
       document.getElementById('product-detail').classList.add('active');
       scrollToSection('product-detail');
