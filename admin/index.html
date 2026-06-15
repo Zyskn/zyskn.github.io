@@ -23,19 +23,12 @@
       --radius: 4px;
     }
 
-    /* ── ANIMATIONS ── */
     @keyframes fadeIn { from{opacity:0} to{opacity:1} }
     @keyframes slideUp { from{transform:translateY(24px);opacity:0} to{transform:translateY(0);opacity:1} }
     @keyframes slideDown { from{transform:translateY(-12px);opacity:0} to{transform:translateY(0);opacity:1} }
-    @keyframes slideInLeft { from{transform:translateX(-20px);opacity:0} to{transform:translateX(0);opacity:1} }
     @keyframes spin { to{transform:rotate(360deg)} }
-    @keyframes shimmer {
-      0%{background-position:-600px 0}
-      100%{background-position:600px 0}
-    }
     @keyframes toastIn { from{transform:translateY(100%) scale(.95);opacity:0} to{transform:translateY(0) scale(1);opacity:1} }
     @keyframes toastOut { to{transform:translateY(100%) scale(.95);opacity:0} }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
     @keyframes statCount { from{transform:scale(.8);opacity:0} to{transform:scale(1);opacity:1} }
     @keyframes badgePop { 0%{transform:scale(0)} 70%{transform:scale(1.15)} 100%{transform:scale(1)} }
     @keyframes rowSlideIn { from{transform:translateX(-12px);opacity:0} to{transform:translateX(0);opacity:1} }
@@ -68,24 +61,10 @@
       box-shadow:var(--shadow-lg);
       animation:slideUp .5s var(--ease);
     }
-    .login-logo {
-      font-size:2.4rem; font-weight:900; letter-spacing:-.05em;
-      margin-bottom:.15rem; color:var(--black);
-    }
+    .login-logo { font-size:2.4rem; font-weight:900; letter-spacing:-.05em; margin-bottom:.15rem; color:var(--black); }
     .login-logo span { color:var(--red); }
-    .login-sub {
-      font-size:.58rem; font-weight:800; color:var(--muted);
-      text-transform:uppercase; letter-spacing:.22em; margin-bottom:2.5rem;
-    }
-    .login-divider {
-      height:1px; background:linear-gradient(90deg,var(--red),transparent);
-      margin-bottom:2rem; width:40px;
-    }
-    .login-box label {
-      display:block; font-size:.6rem; font-weight:800;
-      text-transform:uppercase; letter-spacing:.12em;
-      margin-bottom:.35rem; color:var(--black);
-    }
+    .login-sub { font-size:.58rem; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:.22em; margin-bottom:2.5rem; }
+    .login-box label { display:block; font-size:.6rem; font-weight:800; text-transform:uppercase; letter-spacing:.12em; margin-bottom:.35rem; color:var(--black); }
     .login-box input {
       width:100%; padding:.8rem 1rem;
       border:1.5px solid var(--gray-mid);
@@ -95,11 +74,7 @@
       border-radius:var(--radius);
       background:var(--surface2);
     }
-    .login-box input:focus {
-      border-color:var(--black);
-      box-shadow:0 0 0 3px rgba(0,0,0,.06);
-      background:#fff;
-    }
+    .login-box input:focus { border-color:var(--black); box-shadow:0 0 0 3px rgba(0,0,0,.06); background:#fff; }
     .btn-login {
       width:100%; background:var(--black); color:#fff; border:none;
       padding:1rem; font-size:.72rem; font-weight:900;
@@ -116,11 +91,7 @@
     .btn-login:hover::after { transform:translateX(100%); }
     .btn-login:hover { opacity:.88; }
     .btn-login:active { transform:scale(.98); }
-    #loginError {
-      color:var(--red); font-size:.7rem; font-weight:800;
-      margin-top:.8rem; display:none;
-      animation:slideDown .2s ease;
-    }
+    #loginError { color:var(--red); font-size:.7rem; font-weight:800; margin-top:.8rem; display:none; animation:slideDown .2s ease; }
 
     /* ══ LAYOUT ══ */
     #adminApp { display:none; min-height:100vh; animation:fadeIn .3s ease; }
@@ -134,27 +105,15 @@
       box-shadow:0 2px 20px rgba(0,0,0,.3);
     }
     .admin-logo { font-size:1.3rem; font-weight:900; letter-spacing:-.04em; display:flex; align-items:center; gap:.6rem; }
-    .admin-logo-dot {
-      width:7px; height:7px; background:var(--red); border-radius:50%;
-      animation:ringPulse 2s infinite;
-    }
-    .admin-logo-sub {
-      font-size:.52rem; font-weight:700; color:#555;
-      text-transform:uppercase; letter-spacing:.2em;
-      margin-left:.4rem;
-    }
+    .admin-logo-dot { width:7px; height:7px; background:var(--red); border-radius:50%; animation:ringPulse 2s infinite; }
+    .admin-logo-sub { font-size:.52rem; font-weight:700; color:#555; text-transform:uppercase; letter-spacing:.2em; margin-left:.4rem; }
     .header-right { display:flex; align-items:center; gap:1.2rem; }
-    .admin-user {
-      font-size:.6rem; font-weight:700; text-transform:uppercase;
-      letter-spacing:.08em; color:#555;
-    }
+    .admin-user { font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#555; }
     .btn-logout {
       background:none; border:1px solid #2a2a2a; color:#555;
       padding:.4rem 1rem; font-size:.6rem; font-weight:800;
       text-transform:uppercase; letter-spacing:.08em; cursor:pointer;
-      font-family:'Inter',sans-serif;
-      border-radius:var(--radius);
-      transition:all .2s;
+      font-family:'Inter',sans-serif; border-radius:var(--radius); transition:all .2s;
     }
     .btn-logout:hover { border-color:#fff; color:#fff; background:rgba(255,255,255,.05); }
 
@@ -209,31 +168,29 @@
       content:''; position:absolute;
       top:0; left:0; right:0; height:2px;
     }
-    .stat-card:hover {
-      transform:translateY(-2px);
-      box-shadow:var(--shadow-md);
-    }
-    .stat-card.red::before { background:var(--red); }
-    .stat-card.green::before { background:var(--green); }
-    .stat-card.orange::before { background:var(--orange); }
-    .stat-card.capital::before { background:linear-gradient(90deg,var(--red),var(--orange)); }
-    .stat-num {
-      font-size:1.8rem; font-weight:900; letter-spacing:-.03em;
-      line-height:1;
-      animation:statCount .4s var(--ease);
-    }
-    .stat-label {
-      font-size:.58rem; font-weight:800;
-      text-transform:uppercase; letter-spacing:.1em; color:var(--muted);
-    }
-    .stat-card.red .stat-num { color:var(--red); }
-    .stat-card.green .stat-num { color:var(--green); }
-    .stat-card.orange .stat-num { color:var(--orange); }
-    .stat-card.capital .stat-num { color:var(--orange); font-size:1.4rem; }
-    .stat-icon {
-      position:absolute; bottom:.8rem; right:1rem;
-      font-size:1.4rem; opacity:.07;
-    }
+    .stat-card:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
+
+    /* ── Individual color themes ── */
+    .stat-card.total::before    { background:#3B82F6; }
+    .stat-card.avail::before    { background:#22C55E; }
+    .stat-card.sold::before     { background:#8B5CF6; }
+    .stat-card.reserved::before { background:#F59E0B; }
+    .stat-card.orders::before   { background:#06B6D4; }
+    .stat-card.revenue::before  { background:#10B981; }
+    .stat-card.capital::before  { background:linear-gradient(90deg,#F97316,#FBBF24); }
+
+    .stat-num { font-size:1.8rem; font-weight:900; letter-spacing:-.03em; line-height:1; animation:statCount .4s var(--ease); }
+    .stat-label { font-size:.58rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); }
+
+    .stat-card.total    .stat-num { color:#3B82F6; }
+    .stat-card.avail    .stat-num { color:#22C55E; }
+    .stat-card.sold     .stat-num { color:#8B5CF6; }
+    .stat-card.reserved .stat-num { color:#F59E0B; }
+    .stat-card.orders   .stat-num { color:#06B6D4; }
+    .stat-card.revenue  .stat-num { color:#10B981; }
+    .stat-card.capital  .stat-num { color:#F97316; font-size:1.4rem; }
+
+    .stat-icon { position:absolute; bottom:.8rem; right:1rem; font-size:1.4rem; opacity:.07; }
 
     /* ══ SECTION HEADERS ══ */
     .section-hdr {
@@ -241,10 +198,7 @@
       margin-bottom:1.5rem; padding-bottom:1rem;
       border-bottom:1px solid rgba(0,0,0,.07);
     }
-    .section-hdr h2 {
-      font-size:.95rem; font-weight:900;
-      text-transform:uppercase; letter-spacing:.02em;
-    }
+    .section-hdr h2 { font-size:.95rem; font-weight:900; text-transform:uppercase; letter-spacing:.02em; }
     .section-hdr h2 span { color:var(--muted); font-weight:600; font-size:.8rem; }
 
     /* ══ BUTTONS ══ */
@@ -304,9 +258,7 @@
       vertical-align:middle;
       transition:background .15s;
     }
-    .product-table tbody tr {
-      animation:rowSlideIn .3s var(--ease) both;
-    }
+    .product-table tbody tr { animation:rowSlideIn .3s var(--ease) both; }
     .product-table tbody tr:nth-child(1) { animation-delay:.03s; }
     .product-table tbody tr:nth-child(2) { animation-delay:.06s; }
     .product-table tbody tr:nth-child(3) { animation-delay:.09s; }
@@ -345,9 +297,7 @@
     .actions-cell { display:flex; gap:.4rem; align-items:center; flex-wrap:nowrap; }
 
     /* ══ FILTERS ══ */
-    .filter-row {
-      display:flex; gap:.4rem; margin-bottom:1.2rem; flex-wrap:wrap; align-items:center;
-    }
+    .filter-row { display:flex; gap:.4rem; margin-bottom:1.2rem; flex-wrap:wrap; align-items:center; }
     .filter-chip {
       padding:.35rem .9rem;
       border:1.5px solid var(--gray-mid); background:var(--surface);
@@ -356,10 +306,7 @@
       transition:all .2s var(--ease);
       font-family:'Inter',sans-serif; color:var(--muted);
     }
-    .filter-chip.active {
-      background:var(--black); color:#fff; border-color:var(--black);
-      box-shadow:0 2px 8px rgba(0,0,0,.2);
-    }
+    .filter-chip.active { background:var(--black); color:#fff; border-color:var(--black); box-shadow:0 2px 8px rgba(0,0,0,.2); }
     .filter-chip:hover:not(.active) { border-color:var(--black); color:var(--black); }
 
     /* ══ MODAL ══ */
@@ -396,30 +343,14 @@
     }
     .modal-close:hover { background:var(--gray); color:var(--black); }
 
-    /* Product modal: two-pane layout */
-    .modal-body {
-      display:grid;
-      grid-template-columns:1fr 340px;
-      min-height:0;
-    }
-    .modal-form-pane {
-      padding:1.8rem 2rem;
-      border-right:1px solid var(--gray-mid);
-      overflow-y:auto;
-    }
-    .modal-preview-pane {
-      padding:1.8rem 1.5rem;
-      background:var(--surface2);
-      overflow-y:auto;
-    }
+    .modal-body { display:grid; grid-template-columns:1fr 340px; min-height:0; }
+    .modal-form-pane { padding:1.8rem 2rem; border-right:1px solid var(--gray-mid); overflow-y:auto; }
+    .modal-preview-pane { padding:1.8rem 1.5rem; background:var(--surface2); overflow-y:auto; }
 
     .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
     .form-full { grid-column:1/-1; }
     .form-group { display:flex; flex-direction:column; gap:.35rem; }
-    .form-group label {
-      font-size:.58rem; font-weight:800;
-      text-transform:uppercase; letter-spacing:.12em; color:var(--black);
-    }
+    .form-group label { font-size:.58rem; font-weight:800; text-transform:uppercase; letter-spacing:.12em; color:var(--black); }
     .form-group label .optional { color:var(--muted); font-weight:600; }
     .form-group input, .form-group select, .form-group textarea {
       padding:.65rem .8rem;
@@ -440,9 +371,7 @@
       color:var(--muted); margin:1.4rem 0 .8rem;
       display:flex; align-items:center; gap:.6rem;
     }
-    .form-section-label::after {
-      content:''; flex:1; height:1px; background:var(--gray-mid);
-    }
+    .form-section-label::after { content:''; flex:1; height:1px; background:var(--gray-mid); }
 
     .sizes-grid { display:flex; gap:.4rem; flex-wrap:wrap; }
     .size-toggle {
@@ -453,10 +382,7 @@
       font-family:'Inter',sans-serif; text-transform:uppercase;
       border-radius:var(--radius);
     }
-    .size-toggle.selected {
-      background:var(--black); color:#fff; border-color:var(--black);
-      transform:scale(1.05);
-    }
+    .size-toggle.selected { background:var(--black); color:#fff; border-color:var(--black); transform:scale(1.05); }
     .size-toggle:hover:not(.selected) { border-color:var(--black); }
 
     .checkbox-row {
@@ -470,12 +396,10 @@
     .checkbox-row:hover { border-color:var(--black); background:var(--gray); }
     .checkbox-row input[type=checkbox] {
       width:16px; height:16px; cursor:pointer; accent-color:var(--black);
-      border:none; box-shadow:none; padding:0; margin:0;
-      flex-shrink:0;
+      border:none; box-shadow:none; padding:0; margin:0; flex-shrink:0;
     }
     .checkbox-row label { font-size:.7rem; font-weight:700; cursor:pointer; margin:0; letter-spacing:0; text-transform:none; }
 
-    /* ── Multi-image upload ── */
     .img-upload-zone {
       border:2px dashed var(--gray-mid);
       padding:1.5rem; text-align:center;
@@ -483,23 +407,13 @@
       transition:border-color .2s, background .2s;
       position:relative; background:var(--surface2);
     }
-    .img-upload-zone:hover, .img-upload-zone.drag-over {
-      border-color:var(--black); background:var(--gray);
-    }
-    .img-upload-zone input[type=file] {
-      position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%;
-    }
+    .img-upload-zone:hover, .img-upload-zone.drag-over { border-color:var(--black); background:var(--gray); }
+    .img-upload-zone input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
     .img-upload-zone .upload-icon { font-size:1.6rem; margin-bottom:.4rem; }
-    .img-upload-zone p {
-      font-size:.65rem; font-weight:800; color:var(--muted);
-      text-transform:uppercase; letter-spacing:.1em;
-    }
+    .img-upload-zone p { font-size:.65rem; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; }
     .img-upload-zone small { font-size:.58rem; color:var(--muted-light); display:block; margin-top:.2rem; }
 
-    .img-gallery {
-      display:grid; grid-template-columns:repeat(auto-fill,minmax(80px,1fr));
-      gap:.5rem; margin-top:.8rem;
-    }
+    .img-gallery { display:grid; grid-template-columns:repeat(auto-fill,minmax(80px,1fr)); gap:.5rem; margin-top:.8rem; }
     .img-gallery-item {
       position:relative; aspect-ratio:4/5;
       border-radius:var(--radius); overflow:hidden;
@@ -530,9 +444,7 @@
       opacity:0; transition:opacity .15s; font-family:'Inter',sans-serif;
     }
     .img-gallery-item:hover .img-set-main { opacity:1; }
-    .img-add-url {
-      display:flex; gap:.4rem; margin-top:.5rem;
-    }
+    .img-add-url { display:flex; gap:.4rem; margin-top:.5rem; }
     .img-add-url input {
       flex:1; padding:.5rem .7rem;
       border:1.5px solid var(--gray-mid); font-family:'Inter',sans-serif;
@@ -549,7 +461,6 @@
     }
     .img-add-url button:hover { opacity:.8; }
 
-    /* ── Product Preview Pane ── */
     .preview-label {
       font-size:.58rem; font-weight:900; text-transform:uppercase;
       letter-spacing:.14em; color:var(--muted); margin-bottom:1rem;
@@ -557,19 +468,9 @@
     }
     .preview-label::before { content:''; width:20px; height:1px; background:var(--red); }
 
-    .preview-card {
-      border:1px solid var(--gray-mid); border-radius:var(--radius);
-      overflow:hidden; background:var(--surface);
-      box-shadow:var(--shadow-sm);
-    }
-    .preview-img-wrap {
-      aspect-ratio:3/4; background:var(--gray-mid);
-      position:relative; overflow:hidden;
-    }
-    .preview-img-wrap img {
-      width:100%; height:100%; object-fit:cover;
-      transition:transform .4s var(--ease);
-    }
+    .preview-card { border:1px solid var(--gray-mid); border-radius:var(--radius); overflow:hidden; background:var(--surface); box-shadow:var(--shadow-sm); }
+    .preview-img-wrap { aspect-ratio:3/4; background:var(--gray-mid); position:relative; overflow:hidden; }
+    .preview-img-wrap img { width:100%; height:100%; object-fit:cover; transition:transform .4s var(--ease); }
     .preview-img-wrap:hover img { transform:scale(1.04); }
     .preview-img-placeholder {
       width:100%; height:100%;
@@ -581,47 +482,18 @@
       position:absolute; bottom:.6rem; left:50%; transform:translateX(-50%);
       display:flex; gap:.3rem;
     }
-    .preview-dot {
-      width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.5);
-      cursor:pointer; transition:background .2s, transform .2s;
-    }
+    .preview-dot { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.5); cursor:pointer; transition:background .2s, transform .2s; }
     .preview-dot.active { background:#fff; transform:scale(1.3); }
-    .preview-badges {
-      position:absolute; top:.6rem; left:.6rem;
-      display:flex; flex-direction:column; gap:.3rem;
-    }
+    .preview-badges { position:absolute; top:.6rem; left:.6rem; display:flex; flex-direction:column; gap:.3rem; }
     .preview-info { padding:1rem; }
-    .preview-name {
-      font-size:.85rem; font-weight:800; line-height:1.3;
-      margin-bottom:.3rem; color:var(--black);
-    }
-    .preview-cat {
-      font-size:.58rem; font-weight:700; color:var(--muted);
-      text-transform:uppercase; letter-spacing:.1em; margin-bottom:.6rem;
-    }
-    .preview-price {
-      font-size:1.3rem; font-weight:900; letter-spacing:-.02em;
-      color:var(--black);
-    }
-    .preview-estado {
-      font-size:.58rem; font-weight:700; color:var(--muted);
-      margin-top:.2rem;
-    }
-    .preview-sizes {
-      display:flex; gap:.3rem; flex-wrap:wrap; margin-top:.7rem;
-    }
-    .preview-size-chip {
-      border:1.5px solid var(--gray-mid); padding:.2rem .55rem;
-      font-size:.55rem; font-weight:800; text-transform:uppercase;
-      border-radius:var(--radius); color:var(--muted);
-    }
-    .preview-medidas {
-      font-size:.6rem; color:var(--muted); margin-top:.5rem; line-height:1.6;
-    }
-    .preview-desc {
-      font-size:.68rem; color:var(--muted); margin-top:.5rem; line-height:1.6;
-      border-top:1px solid var(--gray-mid); padding-top:.5rem;
-    }
+    .preview-name { font-size:.85rem; font-weight:800; line-height:1.3; margin-bottom:.3rem; color:var(--black); }
+    .preview-cat { font-size:.58rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; margin-bottom:.6rem; }
+    .preview-price { font-size:1.3rem; font-weight:900; letter-spacing:-.02em; color:var(--black); }
+    .preview-estado { font-size:.58rem; font-weight:700; color:var(--muted); margin-top:.2rem; }
+    .preview-sizes { display:flex; gap:.3rem; flex-wrap:wrap; margin-top:.7rem; }
+    .preview-size-chip { border:1.5px solid var(--gray-mid); padding:.2rem .55rem; font-size:.55rem; font-weight:800; text-transform:uppercase; border-radius:var(--radius); color:var(--muted); }
+    .preview-medidas { font-size:.6rem; color:var(--muted); margin-top:.5rem; line-height:1.6; }
+    .preview-desc { font-size:.68rem; color:var(--muted); margin-top:.5rem; line-height:1.6; border-top:1px solid var(--gray-mid); padding-top:.5rem; }
 
     .modal-footer {
       padding:1.2rem 2rem;
@@ -646,10 +518,7 @@
     .order-card:nth-child(2) { animation-delay:.08s; }
     .order-card:nth-child(3) { animation-delay:.12s; }
     .order-card:nth-child(4) { animation-delay:.16s; }
-    .order-header {
-      display:flex; justify-content:space-between; align-items:flex-start;
-      margin-bottom:1rem; flex-wrap:wrap; gap:.5rem;
-    }
+    .order-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1rem; flex-wrap:wrap; gap:.5rem; }
     .order-id { font-size:.78rem; font-weight:900; letter-spacing:.06em; }
     .order-date { font-size:.6rem; color:var(--muted); font-weight:600; margin-top:.2rem; }
     .order-items { font-size:.75rem; margin-bottom:.6rem; color:var(--muted); line-height:1.5; }
@@ -693,10 +562,8 @@
     .recent-order-row:hover { background:var(--gray); }
     .recent-order-row:not(:last-child) { border-bottom:1px solid rgba(0,0,0,.04); }
 
-    /* ══ EMPTY / LOADING / SKELETON ══ */
-    .empty-state {
-      text-align:center; padding:4rem 2rem; color:var(--muted);
-    }
+    /* ══ EMPTY / LOADING ══ */
+    .empty-state { text-align:center; padding:4rem 2rem; color:var(--muted); }
     .empty-state .empty-icon { font-size:2.5rem; margin-bottom:1rem; opacity:.3; }
     .empty-state p { font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em; }
     .empty-state small { font-size:.65rem; font-weight:500; display:block; margin-top:.3rem; letter-spacing:0; text-transform:none; }
@@ -713,7 +580,7 @@
       background:var(--black); color:#fff;
       padding:.9rem 1.5rem; font-size:.68rem; font-weight:800;
       text-transform:uppercase; letter-spacing:.1em;
-      z-index:500; display:none;
+      z-index:500;
       border-left:3px solid var(--red);
       border-radius:var(--radius);
       box-shadow:var(--shadow-lg);
@@ -726,9 +593,7 @@
     /* ══ CONFIRM MODAL ══ */
     .modal-sm { max-width:420px; }
     .modal-sm .modal-body { display:block; padding:1.8rem 2rem; }
-    .modal-sm .modal-body p {
-      font-size:.82rem; color:var(--muted); line-height:1.7;
-    }
+    .modal-sm .modal-body p { font-size:.82rem; color:var(--muted); line-height:1.7; }
 
     /* ══ IMAGE LIGHTBOX ══ */
     #lightbox {
@@ -754,10 +619,7 @@
     /* ══ RESPONSIVE ══ */
     @media (max-width:900px) {
       .modal-body { grid-template-columns:1fr; }
-      .modal-preview-pane {
-        border-right:none; border-top:1px solid var(--gray-mid);
-        order:-1;
-      }
+      .modal-preview-pane { border-right:none; border-top:1px solid var(--gray-mid); order:-1; }
       .preview-card { max-width:260px; margin:0 auto; }
     }
     @media (max-width:768px) {
@@ -779,7 +641,6 @@
   <div class="login-box">
     <div class="login-logo">ZYSKN</div>
     <div class="login-sub">Panel de Administración</div>
-
     <label>Email</label>
     <input type="email" id="loginEmail" placeholder="tu@email.com" autocomplete="email">
     <label>Contraseña</label>
@@ -822,27 +683,27 @@
     <!-- ── DASHBOARD ── -->
     <div id="tab-dashboard">
       <div class="stats-row" id="statsRow">
-        <div class="stat-card">
+        <div class="stat-card total">
           <div class="stat-num" id="st-total">–</div>
           <div class="stat-label">Total prendas</div>
         </div>
-        <div class="stat-card green">
+        <div class="stat-card avail">
           <div class="stat-num" id="st-avail">–</div>
           <div class="stat-label">Disponibles</div>
         </div>
-        <div class="stat-card red">
+        <div class="stat-card sold">
           <div class="stat-num" id="st-sold">–</div>
           <div class="stat-label">Vendidas</div>
         </div>
-        <div class="stat-card orange">
+        <div class="stat-card reserved">
           <div class="stat-num" id="st-res">–</div>
           <div class="stat-label">Reservadas ahora</div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card orders">
           <div class="stat-num" id="st-orders">–</div>
           <div class="stat-label">Pedidos totales</div>
         </div>
-        <div class="stat-card green">
+        <div class="stat-card revenue">
           <div class="stat-num" id="st-revenue">–</div>
           <div class="stat-label">Ingresos confirmados</div>
         </div>
@@ -864,9 +725,7 @@
     <div id="tab-products" style="display:none;">
       <div class="section-hdr">
         <h2>Productos <span id="productCountLabel"></span></h2>
-        <button class="btn-primary" onclick="openProductModal()">
-          + Agregar Producto
-        </button>
+        <button class="btn-primary" onclick="openProductModal()">+ Agregar Producto</button>
       </div>
       <div class="filter-row">
         <button class="filter-chip active" onclick="filterProductsAdmin('all',this)">Todos</button>
@@ -920,7 +779,6 @@
     </div>
 
     <div class="modal-body">
-      <!-- FORM PANE -->
       <div class="modal-form-pane">
         <div class="form-section-label">Información básica</div>
         <div class="form-grid">
@@ -992,22 +850,16 @@
         </div>
 
         <div class="form-section-label" style="margin-top:1.4rem;">Fotos del producto</div>
-
-        <!-- URL input -->
         <div class="img-add-url">
           <input type="url" id="f-img-url-input" placeholder="Pegar URL de imagen y presionar Agregar">
           <button onclick="addImageFromUrl()">+ Agregar</button>
         </div>
-
-        <!-- File upload zone -->
         <div class="img-upload-zone" id="uploadZone" style="margin-top:.6rem;" onclick="document.getElementById('f-img-file').click()">
           <div class="upload-icon">📁</div>
           <p>Subir desde archivos</p>
           <small>PNG, JPG, WEBP — máx. 5MB c/u</small>
           <input type="file" id="f-img-file" accept="image/*" multiple style="display:none" onchange="handleFileUpload(event)">
         </div>
-
-        <!-- Gallery -->
         <div class="img-gallery" id="imgGallery"></div>
 
         <div class="form-section-label" style="margin-top:1.4rem;">Opciones</div>
@@ -1023,7 +875,6 @@
         </div>
       </div>
 
-      <!-- PREVIEW PANE -->
       <div class="modal-preview-pane">
         <div class="preview-label">Vista previa en tienda</div>
         <div class="preview-card" id="previewCard">
@@ -1083,12 +934,10 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-/* ── CONFIG ── */
 const SUPABASE_URL  = 'https://iifrudupaxcahnopxqcb.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlpZnJ1ZHVwYXhjYWhub3B4cWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NDUyNjgsImV4cCI6MjA5NzAyMTI2OH0.2tTm-ko4n15HctHX40w4_OjBlajaxYZXaqhNamGCD8o';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-/* ── STATE ── */
 let allAdminProducts = [];
 let allOrders = [];
 let allReservations = [];
@@ -1096,12 +945,9 @@ let editingProductId = null;
 let confirmCallback = null;
 let ordersFilter = 'all';
 let productsAdminFilter = 'all';
-
-// Multi-image state
-let productImages = []; // [{url, isMain}]
+let productImages = [];
 let previewCurrentImg = 0;
 
-/* ── AUTH ── */
 sb.auth.onAuthStateChange((event, session) => {
   if (session) {
     document.getElementById('loginScreen').style.display = 'none';
@@ -1128,17 +974,13 @@ async function doLogin() {
   if (error) { errEl.style.display = 'block'; }
 }
 
-async function doLogout() {
-  await sb.auth.signOut();
-}
+async function doLogout() { await sb.auth.signOut(); }
 
-/* ── INIT ── */
 async function initAdmin() {
   await Promise.all([loadAdminProducts(), loadOrders(), loadReservations()]);
   renderDashboard();
 }
 
-/* ── TABS ── */
 function switchTab(tab) {
   ['dashboard','products','orders'].forEach(t => {
     document.getElementById('tab-'+t).style.display = t===tab ? 'block' : 'none';
@@ -1150,7 +992,6 @@ function switchTab(tab) {
   if (tab==='orders')   renderOrders();
 }
 
-/* ── PRODUCTS ── */
 async function loadAdminProducts() {
   const { data } = await sb.from('products').select('*').order('created_at',{ascending:false});
   allAdminProducts = data || [];
@@ -1206,8 +1047,6 @@ function renderProductsTable() {
         ? '<span class="badge badge-reserved">Reservado</span>'
         : '<span class="badge badge-avail">Disponible</span>';
     const newBadge = p.is_new ? ' <span class="badge badge-new">NEW</span>' : '';
-
-    // Get first image
     const images = getProductImages(p);
     const imgSrc = images[0] || null;
 
@@ -1238,9 +1077,7 @@ function renderProductsTable() {
   }).join('');
 }
 
-/* ── Image helpers ── */
 function getProductImages(p) {
-  // Support both legacy img/img2 and new images array
   if (p.images && Array.isArray(p.images) && p.images.length) return p.images;
   const imgs = [];
   if (p.img)  imgs.push(p.img);
@@ -1248,7 +1085,6 @@ function getProductImages(p) {
   return imgs;
 }
 
-/* ── Multi-image gallery in modal ── */
 function renderImgGallery() {
   const gallery = document.getElementById('imgGallery');
   if (!productImages.length) { gallery.innerHTML = ''; return; }
@@ -1280,19 +1116,13 @@ function handleFileUpload(event) {
   files.forEach(file => {
     if (file.size > 5*1024*1024) { showToast(`${file.name} es mayor a 5MB`); return; }
     const reader = new FileReader();
-    reader.onload = (e) => {
-      productImages.push({ url: e.target.result });
-      renderImgGallery();
-    };
+    reader.onload = (e) => { productImages.push({ url: e.target.result }); renderImgGallery(); };
     reader.readAsDataURL(file);
   });
   event.target.value = '';
 }
 
-function removeImage(idx) {
-  productImages.splice(idx, 1);
-  renderImgGallery();
-}
+function removeImage(idx) { productImages.splice(idx, 1); renderImgGallery(); }
 
 function setMainImage(idx) {
   const [item] = productImages.splice(idx, 1);
@@ -1300,12 +1130,10 @@ function setMainImage(idx) {
   renderImgGallery();
 }
 
-// Allow adding url on Enter
 document.getElementById('f-img-url-input').addEventListener('keydown', e => {
   if (e.key==='Enter') { e.preventDefault(); addImageFromUrl(); }
 });
 
-// Drag & drop
 const uploadZone = document.getElementById('uploadZone');
 uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
 uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
@@ -1319,45 +1147,39 @@ uploadZone.addEventListener('drop', e => {
   });
 });
 
-/* ── Live Preview ── */
 function updatePreview() {
-  const name     = document.getElementById('f-name').value || 'Nombre del producto';
-  const price    = document.getElementById('f-price').value;
-  const cat      = document.getElementById('f-category').value;
-  const estado   = document.getElementById('f-estado').value;
-  const medidas  = document.getElementById('f-medidas').value;
-  const desc     = document.getElementById('f-desc').value;
-  const isNew    = document.getElementById('f-new').checked;
-  const isSold   = document.getElementById('f-sold').checked;
-  const sizes    = [...document.querySelectorAll('.size-toggle.selected')].map(b=>b.textContent);
+  const name    = document.getElementById('f-name').value || 'Nombre del producto';
+  const price   = document.getElementById('f-price').value;
+  const cat     = document.getElementById('f-category').value;
+  const estado  = document.getElementById('f-estado').value;
+  const medidas = document.getElementById('f-medidas').value;
+  const desc    = document.getElementById('f-desc').value;
+  const isNew   = document.getElementById('f-new').checked;
+  const isSold  = document.getElementById('f-sold').checked;
+  const sizes   = [...document.querySelectorAll('.size-toggle.selected')].map(b=>b.textContent);
 
   document.getElementById('previewName').textContent    = name;
   document.getElementById('previewCat').textContent     = cat ? cat.charAt(0).toUpperCase()+cat.slice(1) : 'Categoría';
   document.getElementById('previewPrice').textContent   = price ? `$${Number(price).toLocaleString('es-AR')}` : '$0';
   document.getElementById('previewEstado').textContent  = `Estado: ${estado}`;
 
-  // Sizes
   const sizesEl = document.getElementById('previewSizes');
   sizesEl.innerHTML = sizes.map(s=>`<span class="preview-size-chip">${s}</span>`).join('');
 
-  // Medidas
   const medidasEl = document.getElementById('previewMedidas');
   medidasEl.textContent = medidas || '';
   medidasEl.style.display = medidas ? 'block' : 'none';
 
-  // Desc
   const descEl = document.getElementById('previewDesc');
   descEl.textContent = desc || '';
   descEl.style.display = desc ? 'block' : 'none';
 
-  // Badges
   const badgesEl = document.getElementById('previewBadges');
   let badges = '';
   if (isNew)  badges += '<span class="badge badge-new">NEW</span>';
   if (isSold) badges += '<span class="badge badge-sold" style="margin-top:3px;">Vendido</span>';
   badgesEl.innerHTML = badges;
 
-  // Image
   const placeholder = document.getElementById('previewImgPlaceholder');
   const mainImg     = document.getElementById('previewMainImg');
   const navEl       = document.getElementById('previewImgNav');
@@ -1366,7 +1188,6 @@ function updatePreview() {
     placeholder.style.display = 'none';
     mainImg.style.display = 'block';
     mainImg.src = productImages[previewCurrentImg < productImages.length ? previewCurrentImg : 0].url;
-
     navEl.innerHTML = productImages.map((_, i) =>
       `<div class="preview-dot ${i===previewCurrentImg?'active':''}" onclick="previewGoTo(${i})"></div>`
     ).join('');
@@ -1378,18 +1199,13 @@ function updatePreview() {
   }
 }
 
-function previewGoTo(idx) {
-  previewCurrentImg = idx;
-  updatePreview();
-}
+function previewGoTo(idx) { previewCurrentImg = idx; updatePreview(); }
 
-/* ── Modal open/close ── */
 function openProductModal(id=null) {
   editingProductId = id;
   productImages = [];
   previewCurrentImg = 0;
 
-  // Reset form
   ['f-name','f-price','f-talle','f-medidas','f-desc'].forEach(fid=>{
     document.getElementById(fid).value='';
   });
@@ -1419,7 +1235,6 @@ function openProductModal(id=null) {
       (p.sizes||[]).forEach(s=>{
         document.querySelectorAll('.size-toggle').forEach(b=>{ if(b.textContent===s) b.classList.add('selected'); });
       });
-      // Load images
       const imgs = getProductImages(p);
       productImages = imgs.map(url=>({url}));
       renderImgGallery();
@@ -1432,14 +1247,9 @@ function openProductModal(id=null) {
   document.getElementById('productModal').classList.add('active');
 }
 
-function closeModal(id) {
-  document.getElementById(id).classList.remove('active');
-}
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-function toggleSize(btn) {
-  btn.classList.toggle('selected');
-  updatePreview();
-}
+function toggleSize(btn) { btn.classList.toggle('selected'); updatePreview(); }
 
 async function saveProduct() {
   const btn  = document.getElementById('saveProductBtn');
@@ -1450,8 +1260,6 @@ async function saveProduct() {
   if (!name || !price || !cat) { showToast('Completá Nombre, Precio y Categoría'); return; }
 
   const sizes = [...document.querySelectorAll('.size-toggle.selected')].map(b=>b.textContent);
-
-  // Build images array (store as array of URLs)
   const imagesArray = productImages.map(i=>i.url).filter(Boolean);
 
   const payload = {
@@ -1510,7 +1318,6 @@ function confirmDelete(id, name) {
 
 function confirmAction() { if(confirmCallback) confirmCallback(); }
 
-/* ── ORDERS ── */
 async function loadOrders() {
   const {data} = await sb.from('orders').select('*').order('created_at',{ascending:false});
   allOrders = data || [];
@@ -1589,7 +1396,6 @@ async function updateOrderStatus(id, status) {
   showToast('Estado → '+status.toUpperCase());
 }
 
-/* ── DASHBOARD ── */
 function renderDashboard() {
   const total   = allAdminProducts.length;
   const sold    = allAdminProducts.filter(p=>p.is_sold).length;
@@ -1597,11 +1403,7 @@ function renderDashboard() {
   const res     = allReservations.length;
   const orders  = allOrders.length;
   const revenue = allOrders.filter(o=>o.status==='completed').reduce((s,o)=>s+Number(o.total||0),0);
-
-  // Capital = sum of prices of available (not sold) products
-  const capital = allAdminProducts
-    .filter(p=>!p.is_sold)
-    .reduce((s,p)=>s+Number(p.price||0),0);
+  const capital = allAdminProducts.filter(p=>!p.is_sold).reduce((s,p)=>s+Number(p.price||0),0);
 
   document.getElementById('st-total').textContent   = total;
   document.getElementById('st-avail').textContent   = avail;
@@ -1631,7 +1433,6 @@ function renderDashboard() {
   : '<p style="font-size:.72rem;color:var(--muted);padding:.5rem 0;">No hay pedidos aún.</p>';
 }
 
-/* ── LIGHTBOX ── */
 function openLightbox(src) {
   document.getElementById('lightboxImg').src = src;
   document.getElementById('lightbox').classList.add('active');
@@ -1641,9 +1442,10 @@ function closeLightbox() {
   document.getElementById('lightbox').classList.remove('active');
   document.body.style.overflow = '';
 }
-document.addEventListener('keydown', e => { if(e.key==='Escape') { closeLightbox(); closeModal('productModal'); closeModal('confirmModal'); } });
+document.addEventListener('keydown', e => {
+  if(e.key==='Escape') { closeLightbox(); closeModal('productModal'); closeModal('confirmModal'); }
+});
 
-/* ── TOAST ── */
 let toastTimer;
 function showToast(msg) {
   const t = document.getElementById('toast');
@@ -1657,7 +1459,6 @@ function showToast(msg) {
   }, 3200);
 }
 
-/* ── Close overlays on outside click ── */
 document.querySelectorAll('.modal-overlay').forEach(overlay=>{
   overlay.addEventListener('click', e => {
     if(e.target===overlay) overlay.classList.remove('active');
