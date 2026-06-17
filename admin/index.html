@@ -1320,7 +1320,7 @@ function confirmDelete(id, name) {
     closeModal('confirmModal');
     await loadAdminProducts();
     renderProductsTable(); renderDashboard();
-    showToast('🗑 Producto eliminado');
+    showToast('Producto eliminado');
   };
   document.getElementById('confirmModal').classList.add('active');
 }
