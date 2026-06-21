@@ -704,7 +704,10 @@
       .stat-card { padding:1.1rem 1rem 1rem; }
       .stat-num { font-size:1.4rem; }
       .header-right { gap:.4rem; }
-      .btn-logout { padding:.4rem .6rem; }
+      .btn-logout {
+        padding:.55rem .9rem; font-size:.62rem;
+        min-height:38px; display:inline-flex; align-items:center;
+      }
 
       /* BOTON BLOQUEO — version mobile: chip compacto, icono SVG en vez de texto,
          más fácil de tocar y de entender de un vistazo */
@@ -741,25 +744,27 @@
       .modal-header { padding:1rem 1rem .9rem; }
       .modal-title { font-size:.85rem; }
 
-      .modal-body { display:block; }
-      .modal-form-pane { border-right:none; padding:1rem; }
+      .modal-body { display:flex; flex-direction:column; }
+      .modal-form-pane { border-right:none; padding:1rem; display:flex; flex-direction:column; }
 
-      /* Vista previa colapsable en mobile para ganar espacio */
+      /* Vista previa: visible por defecto en mobile, colapsable solo si el
+         usuario quiere ocultarla para ganar espacio en pantallas chicas */
       .preview-toggle-btn {
         display:flex; width:100%; align-items:center; justify-content:space-between;
         background:var(--surface2); border:1.5px solid var(--gray-mid);
         padding:.75rem .9rem; border-radius:var(--radius);
         font-size:.62rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
         color:var(--black); cursor:pointer; font-family:'Inter',sans-serif;
-        margin-bottom:1rem;
+        margin:1rem 1rem 0;
+        order:-1;
       }
       .preview-toggle-btn .chev { transition:transform .2s var(--ease); font-size:.9rem; color:var(--muted); }
       .preview-toggle-btn.open .chev { transform:rotate(180deg); }
       .modal-preview-pane {
-        border-top:none; padding:0 1rem 1rem; background:transparent;
-        max-height:0; overflow:hidden; transition:max-height .25s var(--ease);
+        border-top:none; padding:1rem; background:transparent;
+        max-height:600px; overflow-y:auto; transition:max-height .25s var(--ease), padding .25s var(--ease);
       }
-      .modal-preview-pane.open { max-height:600px; overflow-y:auto; padding-bottom:1rem; }
+      .modal-preview-pane.collapsed { max-height:0; overflow:hidden; padding:0 1rem; }
       .preview-card { max-width:220px; }
 
       /* Inputs y botones mas grandes para tocar comodo */
@@ -989,12 +994,6 @@
     <div class="modal-body">
       <div class="modal-form-pane">
 
-        <!-- Toggle de vista previa, solo visible en mobile -->
-        <button type="button" class="preview-toggle-btn" id="previewToggleBtn" onclick="togglePreviewPane()">
-          <span>👁 Ver vista previa en tienda</span>
-          <span class="chev">▾</span>
-        </button>
-
         <div class="form-section-label">Información básica</div>
         <div class="form-grid">
           <div class="form-group form-full">
@@ -1096,6 +1095,12 @@
           </label>
         </div>
       </div>
+
+      <!-- Toggle de vista previa, solo visible en mobile -->
+      <button type="button" class="preview-toggle-btn" id="previewToggleBtn" onclick="togglePreviewPane()">
+        <span id="previewToggleLabel">🔽 Ocultar vista previa</span>
+        <span class="chev">▾</span>
+      </button>
 
       <div class="modal-preview-pane" id="modalPreviewPane">
         <div class="preview-label">Vista previa en tienda</div>
@@ -1542,12 +1547,20 @@ function updatePreview() {
 
 function previewGoTo(idx) { previewCurrentImg = idx; updatePreview(); }
 
-/* Mostrar/ocultar panel de vista previa en mobile (acordeón) */
+/* Mostrar/ocultar panel de vista previa en mobile (acordeón).
+   Por defecto la vista previa está VISIBLE; el botón permite colapsarla
+   para ganar espacio si el usuario lo prefiere. */
 function togglePreviewPane() {
   const pane = document.getElementById('modalPreviewPane');
   const btn  = document.getElementById('previewToggleBtn');
-  pane.classList.toggle('open');
+  const label = document.getElementById('previewToggleLabel');
+  pane.classList.toggle('collapsed');
   btn.classList.toggle('open');
+  if (label) {
+    label.textContent = pane.classList.contains('collapsed')
+      ? '👁 Ver vista previa en tienda'
+      : '🔽 Ocultar vista previa';
+  }
 }
 
 function openProductModal(id=null) {
@@ -1567,9 +1580,11 @@ function openProductModal(id=null) {
   document.querySelectorAll('.size-toggle').forEach(b=>b.classList.remove('selected'));
   document.getElementById('imgGallery').innerHTML = '';
 
-  // Resetear estado de vista previa colapsable (mobile)
-  document.getElementById('modalPreviewPane').classList.remove('open');
+  // Resetear estado de vista previa colapsable (mobile): arranca visible
+  document.getElementById('modalPreviewPane').classList.remove('collapsed');
   document.getElementById('previewToggleBtn').classList.remove('open');
+  const ptLabel = document.getElementById('previewToggleLabel');
+  if (ptLabel) ptLabel.textContent = '🔽 Ocultar vista previa';
 
   if (id) {
     document.getElementById('modalTitle').textContent = 'Editar Producto';
