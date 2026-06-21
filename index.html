@@ -953,9 +953,10 @@
         const locked = data?.value === 'true';
 
         if (locked) {
+          lockScroll();
+
           const screen = document.getElementById('zyskn-lock-screen');
           screen.style.display = 'flex';
-          document.body.style.overflow = 'hidden';
 
           // Recheck cada 10 segundos — cuando se desbloquea, recarga la página
           const interval = setInterval(async () => {
@@ -976,6 +977,31 @@
         // Si falla la conexión, no bloqueamos la tienda
         console.warn('ZYSKN lock check failed:', e);
       }
+    }
+
+    /* Bloquea el scroll real en mobile y desktop.
+       overflow:hidden en el body NO alcanza en iOS/Chrome mobile
+       cuando el gesto es un touch-drag directo sobre el documento. */
+    function lockScroll() {
+      const scrollYNow = window.scrollY;
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollYNow}px`;
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      document.body.style.width = '100%';
+
+      // Refuerzo: evita cualquier touchmove que escape al position:fixed
+      document.addEventListener('touchmove', preventScrollTouch, { passive: false });
+    }
+
+    function preventScrollTouch(e) {
+      // Permite el scroll DENTRO del lock screen si en algún momento tuviera contenido scrolleable,
+      // pero bloquea todo lo demás.
+      const lockScreen = document.getElementById('zyskn-lock-screen');
+      if (lockScreen && lockScreen.contains(e.target)) return;
+      e.preventDefault();
     }
 
     /* ============================================================
