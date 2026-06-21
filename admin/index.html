@@ -47,7 +47,7 @@
       -webkit-font-smoothing:antialiased;
     }
 
-    /* ══ LOGIN ══ */
+    /* LOGIN */
     #loginScreen {
       display:flex; align-items:center; justify-content:center;
       min-height:100vh; padding:2rem;
@@ -93,7 +93,7 @@
     .btn-login:active { transform:scale(.98); }
     #loginError { color:var(--red); font-size:.7rem; font-weight:800; margin-top:.8rem; display:none; animation:slideDown .2s ease; }
 
-    /* ══ LAYOUT ══ */
+    /* LAYOUT */
     #adminApp { display:none; min-height:100vh; animation:fadeIn .3s ease; }
 
     .admin-header {
@@ -107,7 +107,7 @@
     .admin-logo { font-size:1.3rem; font-weight:900; letter-spacing:-.04em; display:flex; align-items:center; gap:.6rem; }
     .admin-logo-dot { width:7px; height:7px; background:var(--red); border-radius:50%; animation:ringPulse 2s infinite; }
     .admin-logo-sub { font-size:.52rem; font-weight:700; color:#555; text-transform:uppercase; letter-spacing:.2em; margin-left:.4rem; }
-    .header-right { display:flex; align-items:center; gap:1.2rem; }
+    .header-right { display:flex; align-items:center; gap:.8rem; }
     .admin-user { font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#555; }
     .btn-logout {
       background:none; border:1px solid #2a2a2a; color:#555;
@@ -116,6 +116,28 @@
       font-family:'Inter',sans-serif; border-radius:var(--radius); transition:all .2s;
     }
     .btn-logout:hover { border-color:#fff; color:#fff; background:rgba(255,255,255,.05); }
+
+    /* BOTON BLOQUEO TIENDA */
+    .btn-lock {
+      border:1px solid #2a2a2a; color:#888;
+      padding:.4rem 1rem; font-size:.6rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:.08em; cursor:pointer;
+      font-family:'Inter',sans-serif; border-radius:var(--radius);
+      transition:all .25s var(--ease);
+      display:inline-flex; align-items:center; gap:.4rem;
+      background:none;
+    }
+    .btn-lock:hover { border-color:#888; color:#ccc; }
+    .btn-lock.locked {
+      background:var(--red); border-color:var(--red); color:#fff;
+      animation:ringPulse 2s infinite;
+    }
+    .btn-lock.locked:hover { opacity:.85; }
+    .btn-lock .lock-dot {
+      width:6px; height:6px; border-radius:50%;
+      background:currentColor; flex-shrink:0;
+      transition:background .2s;
+    }
 
     /* NAV */
     .admin-nav {
@@ -147,7 +169,7 @@
 
     .admin-content { padding:2rem; max-width:1280px; margin:0 auto; }
 
-    /* ══ STAT CARDS ══ */
+    /* STAT CARDS */
     .stats-row {
       display:grid;
       grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
@@ -169,8 +191,6 @@
       top:0; left:0; right:0; height:2px;
     }
     .stat-card:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
-
-    /* ── Individual color themes ── */
     .stat-card.total::before    { background:#3B82F6; }
     .stat-card.avail::before    { background:#22C55E; }
     .stat-card.sold::before     { background:#8B5CF6; }
@@ -178,10 +198,8 @@
     .stat-card.orders::before   { background:#06B6D4; }
     .stat-card.revenue::before  { background:#10B981; }
     .stat-card.capital::before  { background:linear-gradient(90deg,#F97316,#FBBF24); }
-
     .stat-num { font-size:1.8rem; font-weight:900; letter-spacing:-.03em; line-height:1; animation:statCount .4s var(--ease); }
     .stat-label { font-size:.58rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); }
-
     .stat-card.total    .stat-num { color:#3B82F6; }
     .stat-card.avail    .stat-num { color:#22C55E; }
     .stat-card.sold     .stat-num { color:#8B5CF6; }
@@ -189,10 +207,9 @@
     .stat-card.orders   .stat-num { color:#06B6D4; }
     .stat-card.revenue  .stat-num { color:#10B981; }
     .stat-card.capital  .stat-num { color:#F97316; font-size:1.4rem; }
-
     .stat-icon { position:absolute; bottom:.8rem; right:1rem; font-size:1.4rem; opacity:.07; }
 
-    /* ══ SECTION HEADERS ══ */
+    /* SECTION HEADERS */
     .section-hdr {
       display:flex; justify-content:space-between; align-items:center;
       margin-bottom:1.5rem; padding-bottom:1rem;
@@ -201,7 +218,7 @@
     .section-hdr h2 { font-size:.95rem; font-weight:900; text-transform:uppercase; letter-spacing:.02em; }
     .section-hdr h2 span { color:var(--muted); font-weight:600; font-size:.8rem; }
 
-    /* ══ BUTTONS ══ */
+    /* BUTTONS */
     .btn-primary {
       background:var(--black); color:#fff; border:none;
       padding:.7rem 1.5rem; font-size:.65rem; font-weight:800;
@@ -235,7 +252,7 @@
     }
     .btn-icon:hover { border-color:var(--black); background:var(--gray); }
 
-    /* ══ PRODUCT TABLE ══ */
+    /* PRODUCT TABLE */
     .table-wrapper {
       background:var(--surface);
       border:1px solid rgba(0,0,0,.06);
@@ -266,7 +283,6 @@
     .product-table tbody tr:nth-child(5) { animation-delay:.15s; }
     .product-table tbody tr:last-child td { border-bottom:none; }
     .product-table tr:hover td { background:rgba(0,0,0,.015); }
-
     .product-thumb {
       width:44px; height:56px; object-fit:cover;
       border-radius:var(--radius); display:block;
@@ -280,7 +296,6 @@
       border-radius:var(--radius); display:flex; align-items:center;
       justify-content:center; font-size:.45rem; color:var(--muted); font-weight:800;
     }
-
     .badge {
       display:inline-block; padding:3px 9px;
       border-radius:2px; font-size:.52rem; font-weight:900;
@@ -293,10 +308,9 @@
     .badge-reserved { background:var(--orange-light); color:var(--orange); }
     .badge-pending { background:#fef9c3; color:#854d0e; }
     .badge-completed { background:var(--green-light); color:var(--green-dark); }
-
     .actions-cell { display:flex; gap:.4rem; align-items:center; flex-wrap:nowrap; }
 
-    /* ══ FILTERS ══ */
+    /* FILTERS */
     .filter-row { display:flex; gap:.4rem; margin-bottom:1.2rem; flex-wrap:wrap; align-items:center; }
     .filter-chip {
       padding:.35rem .9rem;
@@ -309,7 +323,7 @@
     .filter-chip.active { background:var(--black); color:#fff; border-color:var(--black); box-shadow:0 2px 8px rgba(0,0,0,.2); }
     .filter-chip:hover:not(.active) { border-color:var(--black); color:var(--black); }
 
-    /* ══ MODAL ══ */
+    /* MODAL */
     .modal-overlay {
       position:fixed; inset:0;
       background:rgba(0,0,0,.6);
@@ -342,11 +356,9 @@
       border-radius:var(--radius); transition:all .15s;
     }
     .modal-close:hover { background:var(--gray); color:var(--black); }
-
     .modal-body { display:grid; grid-template-columns:1fr 340px; min-height:0; }
     .modal-form-pane { padding:1.8rem 2rem; border-right:1px solid var(--gray-mid); overflow-y:auto; }
     .modal-preview-pane { padding:1.8rem 1.5rem; background:var(--surface2); overflow-y:auto; }
-
     .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
     .form-full { grid-column:1/-1; }
     .form-group { display:flex; flex-direction:column; gap:.35rem; }
@@ -372,7 +384,6 @@
       display:flex; align-items:center; gap:.6rem;
     }
     .form-section-label::after { content:''; flex:1; height:1px; background:var(--gray-mid); }
-
     .sizes-grid { display:flex; gap:.4rem; flex-wrap:wrap; }
     .size-toggle {
       padding:.35rem .85rem;
@@ -384,7 +395,6 @@
     }
     .size-toggle.selected { background:var(--black); color:#fff; border-color:var(--black); transform:scale(1.05); }
     .size-toggle:hover:not(.selected) { border-color:var(--black); }
-
     .checkbox-row {
       display:flex; align-items:center; gap:.65rem;
       padding:.65rem .8rem;
@@ -399,7 +409,6 @@
       border:none; box-shadow:none; padding:0; margin:0; flex-shrink:0;
     }
     .checkbox-row label { font-size:.7rem; font-weight:700; cursor:pointer; margin:0; letter-spacing:0; text-transform:none; }
-
     .img-upload-zone {
       border:2px dashed var(--gray-mid);
       padding:1.5rem; text-align:center;
@@ -412,7 +421,6 @@
     .img-upload-zone .upload-icon { font-size:1.6rem; margin-bottom:.4rem; }
     .img-upload-zone p { font-size:.65rem; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; }
     .img-upload-zone small { font-size:.58rem; color:var(--muted-light); display:block; margin-top:.2rem; }
-
     .img-gallery { display:grid; grid-template-columns:repeat(auto-fill,minmax(80px,1fr)); gap:.5rem; margin-top:.8rem; }
     .img-gallery-item {
       position:relative; aspect-ratio:4/5;
@@ -460,14 +468,12 @@
       white-space:nowrap; transition:opacity .2s;
     }
     .img-add-url button:hover { opacity:.8; }
-
     .preview-label {
       font-size:.58rem; font-weight:900; text-transform:uppercase;
       letter-spacing:.14em; color:var(--muted); margin-bottom:1rem;
       display:flex; align-items:center; gap:.5rem;
     }
     .preview-label::before { content:''; width:20px; height:1px; background:var(--red); }
-
     .preview-card { border:1px solid var(--gray-mid); border-radius:var(--radius); overflow:hidden; background:var(--surface); box-shadow:var(--shadow-sm); }
     .preview-img-wrap { aspect-ratio:3/4; background:var(--gray-mid); position:relative; overflow:hidden; }
     .preview-img-wrap img { width:100%; height:100%; object-fit:cover; transition:transform .4s var(--ease); }
@@ -494,7 +500,6 @@
     .preview-size-chip { border:1.5px solid var(--gray-mid); padding:.2rem .55rem; font-size:.55rem; font-weight:800; text-transform:uppercase; border-radius:var(--radius); color:var(--muted); }
     .preview-medidas { font-size:.6rem; color:var(--muted); margin-top:.5rem; line-height:1.6; }
     .preview-desc { font-size:.68rem; color:var(--muted); margin-top:.5rem; line-height:1.6; border-top:1px solid var(--gray-mid); padding-top:.5rem; }
-
     .modal-footer {
       padding:1.2rem 2rem;
       border-top:1px solid var(--gray-mid);
@@ -502,7 +507,7 @@
       background:var(--surface); position:sticky; bottom:0; z-index:10;
     }
 
-    /* ══ ORDERS ══ */
+    /* ORDERS */
     .order-card {
       background:var(--surface);
       border:1px solid rgba(0,0,0,.06);
@@ -541,7 +546,6 @@
     }
     .btn-wa:hover { opacity:.88; }
     .btn-wa:active { transform:scale(.97); }
-
     .order-status-select {
       font-size:.6rem; font-weight:800; text-transform:uppercase;
       padding:.35rem .7rem; border:1.5px solid var(--gray-mid);
@@ -552,7 +556,7 @@
     }
     .order-status-select:focus { border-color:var(--black); }
 
-    /* ══ RECENT ORDERS (Dashboard) ══ */
+    /* RECENT ORDERS */
     .recent-order-row {
       display:flex; justify-content:space-between; align-items:center;
       padding:.65rem .8rem; border-radius:var(--radius);
@@ -571,19 +575,18 @@
     }
     .recent-order-delete:hover { background:var(--red); border-color:var(--red); color:#fff; transform:scale(1.1); }
 
-    /* ══ EMPTY / LOADING ══ */
+    /* EMPTY / LOADING */
     .empty-state { text-align:center; padding:4rem 2rem; color:var(--muted); }
     .empty-state .empty-icon { font-size:2.5rem; margin-bottom:1rem; opacity:.3; }
     .empty-state p { font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em; }
     .empty-state small { font-size:.65rem; font-weight:500; display:block; margin-top:.3rem; letter-spacing:0; text-transform:none; }
-
     .spinner {
       display:inline-block; width:18px; height:18px;
       border:2px solid var(--gray-mid); border-top-color:var(--black);
       border-radius:50%; animation:spin .7s linear infinite;
     }
 
-    /* ══ TOAST ══ */
+    /* TOAST */
     #toast {
       position:fixed; bottom:2rem; right:2rem;
       background:var(--black); color:#fff;
@@ -599,12 +602,12 @@
     .toast-visible { animation:toastIn .3s var(--ease) forwards; }
     .toast-hiding { animation:toastOut .25s ease forwards; }
 
-    /* ══ CONFIRM MODAL ══ */
+    /* CONFIRM MODAL */
     .modal-sm { max-width:420px; }
     .modal-sm .modal-body { display:block; padding:1.8rem 2rem; }
     .modal-sm .modal-body p { font-size:.82rem; color:var(--muted); line-height:1.7; }
 
-    /* ══ IMAGE LIGHTBOX ══ */
+    /* LIGHTBOX */
     #lightbox {
       position:fixed; inset:0; background:rgba(0,0,0,.9);
       z-index:400; display:none; align-items:center; justify-content:center;
@@ -625,7 +628,7 @@
     }
     #lightbox .lb-close:hover { background:rgba(255,255,255,.2); }
 
-    /* ══ RESPONSIVE ══ */
+    /* RESPONSIVE */
     @media (max-width:900px) {
       .modal-body { grid-template-columns:1fr; }
       .modal-preview-pane { border-right:none; border-top:1px solid var(--gray-mid); order:-1; }
@@ -640,12 +643,13 @@
       .admin-nav { padding:0 1rem; overflow-x:auto; }
       .tab-btn { padding:.7rem .9rem; white-space:nowrap; font-size:.58rem; }
       .stats-row { grid-template-columns:1fr 1fr; }
+      .btn-lock span.lock-label { display:none; }
     }
   </style>
 </head>
 <body>
 
-<!-- ══ LOGIN ══ -->
+<!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-box">
     <div class="login-logo">ZYSKN</div>
@@ -662,7 +666,7 @@
   </div>
 </div>
 
-<!-- ══ APP ══ -->
+<!-- APP -->
 <div id="adminApp">
 
   <div class="admin-header">
@@ -673,6 +677,13 @@
     </div>
     <div class="header-right">
       <span class="admin-user" id="adminUserEmail"></span>
+
+      <!-- BOTON BLOQUEO TIENDA -->
+      <button class="btn-lock" id="lockBtn" onclick="toggleStoreLock()" title="Bloquear / desbloquear la tienda pública">
+        <div class="lock-dot"></div>
+        <span class="lock-label" id="lockLabel">Tienda activa</span>
+      </button>
+
       <button class="btn-logout" onclick="doLogout()">↩ Salir</button>
     </div>
   </div>
@@ -689,7 +700,7 @@
 
   <div class="admin-content">
 
-    <!-- ── DASHBOARD ── -->
+    <!-- DASHBOARD -->
     <div id="tab-dashboard">
       <div class="stats-row" id="statsRow">
         <div class="stat-card total">
@@ -730,7 +741,7 @@
       </div>
     </div>
 
-    <!-- ── PRODUCTS ── -->
+    <!-- PRODUCTS -->
     <div id="tab-products" style="display:none;">
       <div class="section-hdr">
         <h2>Productos <span id="productCountLabel"></span></h2>
@@ -761,7 +772,7 @@
       </div>
     </div>
 
-    <!-- ── ORDERS ── -->
+    <!-- ORDERS -->
     <div id="tab-orders" style="display:none;">
       <div class="section-hdr">
         <h2>Pedidos</h2>
@@ -779,14 +790,13 @@
   </div>
 </div>
 
-<!-- ══ MODAL PRODUCTO ══ -->
+<!-- MODAL PRODUCTO -->
 <div class="modal-overlay" id="productModal">
   <div class="modal">
     <div class="modal-header">
       <div class="modal-title" id="modalTitle">Nuevo Producto</div>
       <button class="modal-close" onclick="closeModal('productModal')">×</button>
     </div>
-
     <div class="modal-body">
       <div class="modal-form-pane">
         <div class="form-section-label">Información básica</div>
@@ -916,7 +926,7 @@
   </div>
 </div>
 
-<!-- ══ CONFIRM MODAL ══ -->
+<!-- CONFIRM MODAL -->
 <div class="modal-overlay" id="confirmModal">
   <div class="modal modal-sm">
     <div class="modal-header">
@@ -933,7 +943,7 @@
   </div>
 </div>
 
-<!-- ══ LIGHTBOX ══ -->
+<!-- LIGHTBOX -->
 <div id="lightbox" onclick="closeLightbox()">
   <button class="lb-close" onclick="closeLightbox()">×</button>
   <img id="lightboxImg" src="" alt="">
@@ -956,7 +966,9 @@ let ordersFilter = 'all';
 let productsAdminFilter = 'all';
 let productImages = [];
 let previewCurrentImg = 0;
+let storeLocked = false;
 
+/* ══ AUTH ══ */
 sb.auth.onAuthStateChange((event, session) => {
   if (session) {
     document.getElementById('loginScreen').style.display = 'none';
@@ -986,10 +998,48 @@ async function doLogin() {
 async function doLogout() { await sb.auth.signOut(); }
 
 async function initAdmin() {
-  await Promise.all([loadAdminProducts(), loadOrders(), loadReservations()]);
+  await Promise.all([loadAdminProducts(), loadOrders(), loadReservations(), loadLockState()]);
   renderDashboard();
 }
 
+/* ══ LOCK / UNLOCK TIENDA ══ */
+async function loadLockState() {
+  const { data } = await sb.from('settings').select('value').eq('key', 'store_locked').single();
+  storeLocked = data?.value === 'true';
+  updateLockUI();
+}
+
+function updateLockUI() {
+  const btn   = document.getElementById('lockBtn');
+  const label = document.getElementById('lockLabel');
+  if (storeLocked) {
+    btn.classList.add('locked');
+    label.textContent = 'Tienda bloqueada';
+  } else {
+    btn.classList.remove('locked');
+    label.textContent = 'Tienda activa';
+  }
+}
+
+async function toggleStoreLock() {
+  const btn = document.getElementById('lockBtn');
+  btn.disabled = true;
+  const newState = !storeLocked;
+
+  const { error } = await sb.from('settings').upsert(
+    { key: 'store_locked', value: String(newState) },
+    { onConflict: 'key' }
+  );
+
+  btn.disabled = false;
+  if (error) { showToast('Error al cambiar estado'); return; }
+
+  storeLocked = newState;
+  updateLockUI();
+  showToast(storeLocked ? '🔒 Tienda bloqueada — cargando productos...' : '🔓 Tienda desbloqueada');
+}
+
+/* ══ TABS ══ */
 function switchTab(tab) {
   ['dashboard','products','orders'].forEach(t => {
     document.getElementById('tab-'+t).style.display = t===tab ? 'block' : 'none';
@@ -1001,6 +1051,7 @@ function switchTab(tab) {
   if (tab==='orders')   renderOrders();
 }
 
+/* ══ PRODUCTS ══ */
 async function loadAdminProducts() {
   const { data } = await sb.from('products').select('*').order('created_at',{ascending:false});
   allAdminProducts = data || [];
@@ -1327,6 +1378,7 @@ function confirmDelete(id, name) {
 
 function confirmAction() { if(confirmCallback) confirmCallback(); }
 
+/* ══ ORDERS ══ */
 async function loadOrders() {
   const {data} = await sb.from('orders').select('*').order('created_at',{ascending:false});
   allOrders = data || [];
@@ -1452,11 +1504,12 @@ function confirmDeleteOrder(id, orderLabel) {
     await loadOrders();
     renderOrders();
     renderDashboard();
-    showToast('🗑 Pedido eliminado');
+    showToast('Pedido eliminado');
   };
   document.getElementById('confirmModal').classList.add('active');
 }
 
+/* ══ LIGHTBOX ══ */
 function openLightbox(src) {
   document.getElementById('lightboxImg').src = src;
   document.getElementById('lightbox').classList.add('active');
@@ -1470,6 +1523,7 @@ document.addEventListener('keydown', e => {
   if(e.key==='Escape') { closeLightbox(); closeModal('productModal'); closeModal('confirmModal'); }
 });
 
+/* ══ TOAST ══ */
 let toastTimer;
 function showToast(msg) {
   const t = document.getElementById('toast');
