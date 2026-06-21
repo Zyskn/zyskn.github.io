@@ -703,10 +703,22 @@
       .stats-row { grid-template-columns:1fr 1fr; gap:.6rem; }
       .stat-card { padding:1.1rem 1rem 1rem; }
       .stat-num { font-size:1.4rem; }
-      .btn-lock span.lock-label { display:none; }
-      .btn-lock { padding:.5rem; }
       .header-right { gap:.4rem; }
       .btn-logout { padding:.4rem .6rem; }
+
+      /* BOTON BLOQUEO — version mobile: chip compacto, icono SVG en vez de texto,
+         más fácil de tocar y de entender de un vistazo */
+      .btn-lock {
+        padding:.5rem .65rem;
+        gap:0;
+        min-width:38px; min-height:38px;
+        justify-content:center;
+        border-radius:8px;
+        position:relative;
+      }
+      .btn-lock .lock-dot { display:none; }
+      .btn-lock .lock-icon { display:flex; }
+      .btn-lock span.lock-label { display:none; }
 
       /* Tabla -> Cards en productos */
       .table-wrapper { display:none; }
@@ -783,12 +795,26 @@
       .order-status-select { width:100%; min-height:40px; }
       .order-card { padding:1.1rem; }
 
-      /* Filter chips: scroll horizontal con mas padding al toque */
-      .filter-row { overflow-x:auto; -webkit-overflow-scrolling:touch; flex-wrap:nowrap; }
-      .filter-chip { padding:.55rem 1.1rem; white-space:nowrap; flex-shrink:0; }
-
-      /* Toast centrado abajo en mobile */
-      #toast { left:1rem; right:1rem; bottom:1rem; min-width:0; text-align:center; }
+      /* Filter chips — version mobile: scroll horizontal con fades en los bordes
+         para que se note que hay mas opciones, chips mas grandes y separados
+         de la fila siguiente con mas aire */
+      .filter-row {
+        position:relative;
+        overflow-x:auto; -webkit-overflow-scrolling:touch; flex-wrap:nowrap;
+        gap:.5rem;
+        margin:0 -1rem 1.3rem;
+        padding:.15rem 1rem .55rem;
+        scroll-snap-type:x proximity;
+        -ms-overflow-style:none; scrollbar-width:none;
+      }
+      .filter-row::-webkit-scrollbar { display:none; }
+      .filter-chip {
+        padding:.6rem 1.15rem; white-space:nowrap; flex-shrink:0;
+        font-size:.62rem; min-height:38px;
+        scroll-snap-align:start;
+        border-width:1.5px;
+      }
+      .filter-chip.active { box-shadow:0 3px 10px rgba(0,0,0,.25); }
 
       /* Recent orders mas compactos */
       .recent-order-row { flex-wrap:wrap; gap:.4rem .8rem; }
@@ -832,8 +858,12 @@
       <span class="admin-user" id="adminUserEmail"></span>
 
       <!-- BOTON BLOQUEO TIENDA -->
-      <button class="btn-lock" id="lockBtn" onclick="toggleStoreLock()" title="Bloquear / desbloquear la tienda pública">
+      <button class="btn-lock" id="lockBtn" onclick="toggleStoreLock()" title="Bloquear / desbloquear la tienda pública" aria-label="Bloquear o desbloquear la tienda">
         <div class="lock-dot"></div>
+        <svg class="lock-icon" id="lockIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+          <rect x="4" y="11" width="16" height="9" rx="2"></rect>
+          <path id="lockIconShackle" d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+        </svg>
         <span class="lock-label" id="lockLabel">Tienda activa</span>
       </button>
 
@@ -1188,12 +1218,19 @@ async function loadLockState() {
 function updateLockUI() {
   const btn   = document.getElementById('lockBtn');
   const label = document.getElementById('lockLabel');
+  const shackle = document.getElementById('lockIconShackle');
   if (storeLocked) {
     btn.classList.add('locked');
     label.textContent = 'Tienda bloqueada';
+    btn.title = 'Tienda bloqueada — tocar para desbloquear';
+    // candado cerrado: el arco baja hasta el cuerpo
+    if (shackle) shackle.setAttribute('d', 'M8 11V7a4 4 0 0 1 8 0v4');
   } else {
     btn.classList.remove('locked');
     label.textContent = 'Tienda activa';
+    btn.title = 'Tienda activa — tocar para bloquear';
+    // candado abierto: el arco se desplaza hacia un costado
+    if (shackle) shackle.setAttribute('d', 'M8 11V7a4 4 0 0 1 7.5-2');
   }
 }
 
@@ -1250,6 +1287,7 @@ function filterProductsAdmin(filter, btn) {
   document.querySelectorAll('#tab-products .filter-chip').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   renderProductsTable();
+  scrollChipIntoView(btn);
 }
 
 function getFilteredAdminProducts() {
@@ -1260,6 +1298,18 @@ function getFilteredAdminProducts() {
     case 'reserved':  return allAdminProducts.filter(p=>isProductReserved(p.id));
     default:          return allAdminProducts;
   }
+}
+
+/* Centra el chip tocado dentro de su fila con scroll horizontal,
+   para que en mobile siempre quede visible lo que el usuario eligió. */
+function scrollChipIntoView(btn) {
+  if (!btn || !btn.closest) return;
+  const row = btn.closest('.filter-row');
+  if (!row) return;
+  const rowRect = row.getBoundingClientRect();
+  const btnRect = btn.getBoundingClientRect();
+  const offset = (btnRect.left + btnRect.width/2) - (rowRect.left + rowRect.width/2);
+  row.scrollBy({ left: offset, behavior: 'smooth' });
 }
 
 function renderProductsTable() {
@@ -1638,6 +1688,7 @@ function filterOrders(filter, btn) {
   document.querySelectorAll('#tab-orders .filter-chip').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   renderOrders();
+  scrollChipIntoView(btn);
 }
 
 function renderOrders() {
@@ -1789,6 +1840,19 @@ document.querySelectorAll('.modal-overlay').forEach(overlay=>{
     if(e.target===overlay) overlay.classList.remove('active');
   });
 });
+
+// Mostrar el icono SVG de candado en mobile (CSS ya lo controla con display,
+// pero forzamos el estado inicial correcto por si el toggle ocurre antes de loadLockState)
+function syncLockIconVisibility() {
+  const icon = document.getElementById('lockIcon');
+  if (window.matchMedia('(max-width:768px)').matches) {
+    icon.style.display = 'flex';
+  } else {
+    icon.style.display = 'none';
+  }
+}
+window.addEventListener('resize', syncLockIconVisibility);
+syncLockIconVisibility();
 </script>
 </body>
 </html>
