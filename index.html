@@ -515,10 +515,76 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.4);
       animation: flyToCart 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     }
+
+    /* ── Pantalla de bloqueo tienda ── */
+    @keyframes zyskn-spin { to { transform: rotate(360deg); } }
+    @keyframes zyskn-fade { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes zyskn-pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: .4; }
+    }
+
+    #zyskn-lock-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #0a0a0a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      animation: zyskn-fade .4s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    #zyskn-lock-screen .zls-logo {
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: -.05em;
+      color: #fff;
+    }
+
+    #zyskn-lock-screen .zls-logo span {
+      color: #A30000;
+    }
+
+    #zyskn-lock-screen .zls-spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid rgba(255,255,255,.1);
+      border-top-color: #A30000;
+      border-radius: 50%;
+      animation: zyskn-spin .9s linear infinite;
+    }
+
+    #zyskn-lock-screen .zls-text {
+      font-size: .7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      color: #555;
+      animation: zyskn-pulse 2s ease infinite;
+    }
+
+    #zyskn-lock-screen .zls-sub {
+      font-size: .58rem;
+      color: #333;
+      font-weight: 500;
+      letter-spacing: .06em;
+    }
   </style>
 </head>
 
 <body>
+  <!-- ZYSKN LOCK SCREEN -->
+  <div id="zyskn-lock-screen" style="display:none;">
+    <div class="zls-logo">ZYSKN</div>
+    <div class="zls-spinner"></div>
+    <div class="zls-text">Cargando productos...</div>
+    <div class="zls-sub">Volvé en unos minutos</div>
+  </div>
+
   <div id="supreme-overlay"></div>
   <div id="notification" class="notification"></div>
   <div id="nav-overlay"></div>
@@ -870,6 +936,47 @@
     const SUPABASE_URL = 'https://iifrudupaxcahnopxqcb.supabase.co';
     const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlpZnJ1ZHVwYXhjYWhub3B4cWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NDUyNjgsImV4cCI6MjA5NzAyMTI2OH0.2tTm-ko4n15HctHX40w4_OjBlajaxYZXaqhNamGCD8o';
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    /* ============================================================
+       ZYSKN — VERIFICACIÓN DE BLOQUEO DE TIENDA
+       Reusa el cliente "sb" ya creado arriba.
+    ============================================================ */
+    async function checkStoreLock() {
+      try {
+        const { data, error } = await sb
+          .from('settings')
+          .select('value')
+          .eq('key', 'store_locked')
+          .maybeSingle();
+
+        if (error) throw error;
+        const locked = data?.value === 'true';
+
+        if (locked) {
+          const screen = document.getElementById('zyskn-lock-screen');
+          screen.style.display = 'flex';
+          document.body.style.overflow = 'hidden';
+
+          // Recheck cada 10 segundos — cuando se desbloquea, recarga la página
+          const interval = setInterval(async () => {
+            try {
+              const { data: d2 } = await sb
+                .from('settings')
+                .select('value')
+                .eq('key', 'store_locked')
+                .maybeSingle();
+              if (d2?.value !== 'true') {
+                clearInterval(interval);
+                window.location.reload();
+              }
+            } catch (e) {}
+          }, 10000);
+        }
+      } catch (e) {
+        // Si falla la conexión, no bloqueamos la tienda
+        console.warn('ZYSKN lock check failed:', e);
+      }
+    }
 
     /* ============================================================
        STATE
@@ -1664,6 +1771,7 @@
     });
 
     /* BOOT */
+    checkStoreLock();
     initAuth();
     loadProducts();
   </script>
