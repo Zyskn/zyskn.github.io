@@ -628,22 +628,175 @@
     }
     #lightbox .lb-close:hover { background:rgba(255,255,255,.2); }
 
-    /* RESPONSIVE */
+    /* PRODUCT CARDS (mobile list) — hidden on desktop */
+    .product-cards { display:none; flex-direction:column; gap:.7rem; }
+    .product-card {
+      background:var(--surface);
+      border:1px solid rgba(0,0,0,.06);
+      border-radius:8px;
+      box-shadow:var(--shadow-sm);
+      padding:.85rem;
+      display:flex; gap:.8rem;
+      animation:cardEntrance .3s var(--ease) both;
+    }
+    .product-card-thumb {
+      width:64px; height:80px; object-fit:cover; border-radius:6px;
+      flex-shrink:0; box-shadow:var(--shadow-sm); display:block;
+    }
+    .product-card-thumb-placeholder {
+      width:64px; height:80px; border-radius:6px; flex-shrink:0;
+      background:var(--gray-mid); display:flex; align-items:center; justify-content:center;
+      font-size:.5rem; color:var(--muted); font-weight:800;
+    }
+    .product-card-main { flex:1; min-width:0; display:flex; flex-direction:column; gap:.3rem; }
+    .product-card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:.5rem; }
+    .product-card-name { font-size:.82rem; font-weight:800; line-height:1.3; }
+    .product-card-meta { font-size:.65rem; color:var(--muted); text-transform:capitalize; }
+    .product-card-price { font-size:.95rem; font-weight:900; letter-spacing:-.01em; white-space:nowrap; }
+    .product-card-badges { display:flex; gap:.3rem; flex-wrap:wrap; margin-top:.1rem; }
+    .product-card-actions { display:flex; gap:.4rem; margin-top:.5rem; flex-wrap:wrap; }
+    .product-card-actions .btn-outline {
+      flex:1; justify-content:center; padding:.55rem .5rem; font-size:.58rem;
+      min-height:38px;
+    }
+    .product-card-actions .btn-del { color:var(--red); border-color:rgba(163,0,0,.3); flex:0 0 auto; width:38px; padding:.55rem; }
+
+    /* FAB (mobile add button) */
+    .fab-add {
+      display:none;
+      position:fixed; bottom:1.4rem; right:1.4rem; z-index:150;
+      width:56px; height:56px; border-radius:50%;
+      background:var(--red); color:#fff; border:none;
+      font-size:1.7rem; font-weight:400; line-height:1;
+      box-shadow:0 6px 20px rgba(163,0,0,.4);
+      cursor:pointer; align-items:center; justify-content:center;
+      transition:transform .15s var(--ease);
+    }
+    .fab-add:active { transform:scale(.92); }
+
+    /* Mobile collapsible preview toggle inside modal — hidden on desktop */
+    .preview-toggle-btn { display:none; }
+
+    .img-upload-actions { display:flex; gap:.5rem; margin-top:.6rem; }
+    .img-upload-actions .img-upload-zone { flex:1; margin-top:0; padding:1.1rem .8rem; }
+
+    /* ══════════════════════════════════════════════════
+       RESPONSIVE — MOBILE OPTIMIZATION
+       ══════════════════════════════════════════════════ */
     @media (max-width:900px) {
       .modal-body { grid-template-columns:1fr; }
       .modal-preview-pane { border-right:none; border-top:1px solid var(--gray-mid); order:-1; }
       .preview-card { max-width:260px; margin:0 auto; }
     }
+
     @media (max-width:768px) {
-      .admin-content { padding:1rem; }
+      .admin-content { padding:1rem 1rem 5.5rem; }
       .form-grid { grid-template-columns:1fr; }
       .modal-form-pane { padding:1.2rem; }
       .modal-preview-pane { padding:1.2rem; }
-      .admin-header { padding:0 1rem; }
-      .admin-nav { padding:0 1rem; overflow-x:auto; }
-      .tab-btn { padding:.7rem .9rem; white-space:nowrap; font-size:.58rem; }
-      .stats-row { grid-template-columns:1fr 1fr; }
+      .admin-header { padding:0 1rem; height:56px; }
+      .admin-logo { font-size:1.1rem; }
+      .admin-logo-sub { display:none; }
+      .admin-user { display:none; }
+      .admin-nav { padding:0 1rem; overflow-x:auto; top:56px; }
+      .tab-btn { padding:.8rem .9rem; white-space:nowrap; font-size:.6rem; }
+      .stats-row { grid-template-columns:1fr 1fr; gap:.6rem; }
+      .stat-card { padding:1.1rem 1rem 1rem; }
+      .stat-num { font-size:1.4rem; }
       .btn-lock span.lock-label { display:none; }
+      .btn-lock { padding:.5rem; }
+      .header-right { gap:.4rem; }
+      .btn-logout { padding:.4rem .6rem; }
+
+      /* Tabla -> Cards en productos */
+      .table-wrapper { display:none; }
+      .product-cards { display:flex; }
+
+      /* Ocultar boton "Agregar" del header de seccion en mobile, usamos el FAB */
+      .section-hdr { flex-wrap:wrap; gap:.6rem; }
+      .section-hdr .btn-primary { display:none; }
+      .fab-add { display:flex; }
+
+      /* MODAL: fullscreen en mobile para editar comodamente */
+      .modal-overlay { padding:0; align-items:flex-end; }
+      .modal-overlay.active { align-items:stretch; }
+      .modal {
+        max-width:100%; width:100%; height:100%; max-height:100%;
+        border-radius:0; animation:none;
+      }
+      .modal-sm { height:auto; max-height:90vh; border-radius:var(--radius); margin:auto; }
+
+      .modal-header { padding:1rem 1rem .9rem; }
+      .modal-title { font-size:.85rem; }
+
+      .modal-body { display:block; }
+      .modal-form-pane { border-right:none; padding:1rem; }
+
+      /* Vista previa colapsable en mobile para ganar espacio */
+      .preview-toggle-btn {
+        display:flex; width:100%; align-items:center; justify-content:space-between;
+        background:var(--surface2); border:1.5px solid var(--gray-mid);
+        padding:.75rem .9rem; border-radius:var(--radius);
+        font-size:.62rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+        color:var(--black); cursor:pointer; font-family:'Inter',sans-serif;
+        margin-bottom:1rem;
+      }
+      .preview-toggle-btn .chev { transition:transform .2s var(--ease); font-size:.9rem; color:var(--muted); }
+      .preview-toggle-btn.open .chev { transform:rotate(180deg); }
+      .modal-preview-pane {
+        border-top:none; padding:0 1rem 1rem; background:transparent;
+        max-height:0; overflow:hidden; transition:max-height .25s var(--ease);
+      }
+      .modal-preview-pane.open { max-height:600px; overflow-y:auto; padding-bottom:1rem; }
+      .preview-card { max-width:220px; }
+
+      /* Inputs y botones mas grandes para tocar comodo */
+      .form-group input, .form-group select, .form-group textarea {
+        padding:.85rem .9rem; font-size:1rem; min-height:46px;
+      }
+      .form-group textarea { min-height:80px; }
+      .form-group label { font-size:.62rem; }
+      .size-toggle { padding:.6rem 1rem; font-size:.7rem; min-height:42px; }
+      .checkbox-row { padding:.85rem .9rem; }
+      .checkbox-row input[type=checkbox] { width:20px; height:20px; }
+      .checkbox-row label { font-size:.78rem; }
+
+      /* Fotos: subir desde camara o galeria, botones grandes */
+      .img-upload-actions { flex-direction:column; }
+      .img-upload-zone { padding:1.1rem .9rem; }
+      .img-upload-zone p { font-size:.68rem; }
+      .img-gallery { grid-template-columns:repeat(3,1fr); }
+      .img-add-url input { padding:.8rem .9rem; font-size:.85rem; }
+      .img-add-url button { padding:.8rem 1rem; }
+
+      /* Footer del modal: sticky, full width, pulgar-friendly */
+      .modal-footer {
+        padding:.9rem 1rem; gap:.6rem;
+        padding-bottom:calc(.9rem + env(safe-area-inset-bottom));
+      }
+      .modal-footer .btn-outline,
+      .modal-footer .btn-primary { flex:1; justify-content:center; min-height:48px; font-size:.68rem; }
+
+      /* Orders: stack vertical mas comodo */
+      .order-header { flex-direction:column; align-items:stretch; }
+      .order-actions .btn-wa { width:100%; justify-content:center; min-height:46px; }
+      .order-status-select { width:100%; min-height:40px; }
+      .order-card { padding:1.1rem; }
+
+      /* Filter chips: scroll horizontal con mas padding al toque */
+      .filter-row { overflow-x:auto; -webkit-overflow-scrolling:touch; flex-wrap:nowrap; }
+      .filter-chip { padding:.55rem 1.1rem; white-space:nowrap; flex-shrink:0; }
+
+      /* Toast centrado abajo en mobile */
+      #toast { left:1rem; right:1rem; bottom:1rem; min-width:0; text-align:center; }
+
+      /* Recent orders mas compactos */
+      .recent-order-row { flex-wrap:wrap; gap:.4rem .8rem; }
+    }
+
+    @media (max-width:420px) {
+      .stats-row { grid-template-columns:1fr 1fr; }
+      .img-gallery { grid-template-columns:repeat(3,1fr); }
     }
   </style>
 </head>
@@ -770,6 +923,9 @@
           <tbody id="productsTableBody"></tbody>
         </table>
       </div>
+
+      <!-- Cards: visible en mobile -->
+      <div class="product-cards" id="productsCardsList"></div>
     </div>
 
     <!-- ORDERS -->
@@ -790,6 +946,9 @@
   </div>
 </div>
 
+<!-- FAB agregar producto (mobile) -->
+<button class="fab-add" id="fabAdd" onclick="openProductModal()" title="Agregar producto" aria-label="Agregar producto">+</button>
+
 <!-- MODAL PRODUCTO -->
 <div class="modal-overlay" id="productModal">
   <div class="modal">
@@ -799,6 +958,13 @@
     </div>
     <div class="modal-body">
       <div class="modal-form-pane">
+
+        <!-- Toggle de vista previa, solo visible en mobile -->
+        <button type="button" class="preview-toggle-btn" id="previewToggleBtn" onclick="togglePreviewPane()">
+          <span>👁 Ver vista previa en tienda</span>
+          <span class="chev">▾</span>
+        </button>
+
         <div class="form-section-label">Información básica</div>
         <div class="form-grid">
           <div class="form-group form-full">
@@ -807,7 +973,7 @@
           </div>
           <div class="form-group">
             <label>Precio (ARS) *</label>
-            <input type="number" id="f-price" placeholder="15000" oninput="updatePreview()">
+            <input type="number" id="f-price" placeholder="15000" inputmode="numeric" oninput="updatePreview()">
           </div>
           <div class="form-group">
             <label>Estado de la prenda</label>
@@ -873,11 +1039,18 @@
           <input type="url" id="f-img-url-input" placeholder="Pegar URL de imagen y presionar Agregar">
           <button onclick="addImageFromUrl()">+ Agregar</button>
         </div>
-        <div class="img-upload-zone" id="uploadZone" style="margin-top:.6rem;" onclick="document.getElementById('f-img-file').click()">
-          <div class="upload-icon">📁</div>
-          <p>Subir desde archivos</p>
-          <small>PNG, JPG, WEBP — máx. 5MB c/u</small>
-          <input type="file" id="f-img-file" accept="image/*" multiple style="display:none" onchange="handleFileUpload(event)">
+        <div class="img-upload-actions">
+          <div class="img-upload-zone" id="uploadZoneCamera" onclick="document.getElementById('f-img-file-camera').click()">
+            <div class="upload-icon">📷</div>
+            <p>Tomar foto</p>
+            <input type="file" id="f-img-file-camera" accept="image/*" capture="environment" style="display:none" onchange="handleFileUpload(event)">
+          </div>
+          <div class="img-upload-zone" id="uploadZone" onclick="document.getElementById('f-img-file').click()">
+            <div class="upload-icon">🖼️</div>
+            <p>Galería</p>
+            <small>PNG, JPG, WEBP — máx. 5MB</small>
+            <input type="file" id="f-img-file" accept="image/*" multiple style="display:none" onchange="handleFileUpload(event)">
+          </div>
         </div>
         <div class="img-gallery" id="imgGallery"></div>
 
@@ -894,7 +1067,7 @@
         </div>
       </div>
 
-      <div class="modal-preview-pane">
+      <div class="modal-preview-pane" id="modalPreviewPane">
         <div class="preview-label">Vista previa en tienda</div>
         <div class="preview-card" id="previewCard">
           <div class="preview-img-wrap">
@@ -978,6 +1151,9 @@ sb.auth.onAuthStateChange((event, session) => {
   } else {
     document.getElementById('loginScreen').style.display = 'flex';
     document.getElementById('adminApp').style.display = 'none';
+    // El FAB de "agregar producto" vive fuera de #adminApp en el DOM,
+    // así que se oculta explícitamente sin sesión para que nadie sin login pueda usarlo.
+    document.getElementById('fabAdd').style.display = 'none';
   }
 });
 
@@ -1047,6 +1223,7 @@ function switchTab(tab) {
   document.querySelectorAll('.tab-btn').forEach((btn,i) => {
     btn.classList.toggle('active', ['dashboard','products','orders'][i]===tab);
   });
+  document.getElementById('fabAdd').style.display = (tab==='products') ? '' : 'none';
   if (tab==='products') renderProductsTable();
   if (tab==='orders')   renderOrders();
 }
@@ -1087,8 +1264,14 @@ function getFilteredAdminProducts() {
 
 function renderProductsTable() {
   const list = getFilteredAdminProducts();
-  const tbody = document.getElementById('productsTableBody');
   document.getElementById('productCountLabel').textContent = `(${list.length})`;
+
+  renderProductsTableDesktop(list);
+  renderProductsCardsMobile(list);
+}
+
+function renderProductsTableDesktop(list) {
+  const tbody = document.getElementById('productsTableBody');
 
   if (!list.length) {
     tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state">
@@ -1134,6 +1317,54 @@ function renderProductsTable() {
         </div>
       </td>
     </tr>`;
+  }).join('');
+}
+
+/* Render de tarjetas, version mobile de la lista de productos */
+function renderProductsCardsMobile(list) {
+  const wrap = document.getElementById('productsCardsList');
+  if (!wrap) return;
+
+  if (!list.length) {
+    wrap.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">📦</div>
+      <p>Sin productos en esta categoría</p>
+      <small>Cambiá el filtro o agregá uno nuevo</small>
+    </div>`;
+    return;
+  }
+
+  wrap.innerHTML = list.map((p, idx) => {
+    const reserved = isProductReserved(p.id);
+    const statusBadge = p.is_sold
+      ? '<span class="badge badge-sold">Vendido</span>'
+      : reserved
+        ? '<span class="badge badge-reserved">Reservado</span>'
+        : '<span class="badge badge-avail">Disponible</span>';
+    const newBadge = p.is_new ? '<span class="badge badge-new">NEW</span>' : '';
+    const images = getProductImages(p);
+    const imgSrc = images[0] || null;
+
+    return `<div class="product-card" style="animation-delay:${idx*0.03}s">
+      ${imgSrc
+        ? `<img src="${imgSrc}" class="product-card-thumb" onclick="openLightbox('${imgSrc}')" alt="${p.name}" onerror="this.outerHTML='<div class=\\'product-card-thumb-placeholder\\'>NO IMG</div>'">`
+        : '<div class="product-card-thumb-placeholder">NO IMG</div>'}
+      <div class="product-card-main">
+        <div class="product-card-top">
+          <div>
+            <div class="product-card-name">${p.name}</div>
+            <div class="product-card-meta">${p.category||'–'} ${(p.sizes||[]).length ? '· '+(p.sizes||[]).join(' ') : ''}</div>
+          </div>
+          <div class="product-card-price">$${Number(p.price).toLocaleString('es-AR')}</div>
+        </div>
+        <div class="product-card-badges">${statusBadge}${newBadge}</div>
+        <div class="product-card-actions">
+          <button class="btn-outline" onclick="openProductModal('${p.id}')">Editar</button>
+          <button class="btn-outline" onclick="toggleSold('${p.id}',${p.is_sold})">${p.is_sold ? 'Disponible' : 'Vendido'}</button>
+          <button class="btn-outline btn-del" title="Eliminar" onclick="confirmDelete('${p.id}','${p.name.replace(/'/g,"\\'")}')">🗑</button>
+        </div>
+      </div>
+    </div>`;
   }).join('');
 }
 
@@ -1261,6 +1492,14 @@ function updatePreview() {
 
 function previewGoTo(idx) { previewCurrentImg = idx; updatePreview(); }
 
+/* Mostrar/ocultar panel de vista previa en mobile (acordeón) */
+function togglePreviewPane() {
+  const pane = document.getElementById('modalPreviewPane');
+  const btn  = document.getElementById('previewToggleBtn');
+  pane.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+
 function openProductModal(id=null) {
   editingProductId = id;
   productImages = [];
@@ -1277,6 +1516,10 @@ function openProductModal(id=null) {
   document.getElementById('f-sold').checked = false;
   document.querySelectorAll('.size-toggle').forEach(b=>b.classList.remove('selected'));
   document.getElementById('imgGallery').innerHTML = '';
+
+  // Resetear estado de vista previa colapsable (mobile)
+  document.getElementById('modalPreviewPane').classList.remove('open');
+  document.getElementById('previewToggleBtn').classList.remove('open');
 
   if (id) {
     document.getElementById('modalTitle').textContent = 'Editar Producto';
@@ -1305,9 +1548,13 @@ function openProductModal(id=null) {
   }
 
   document.getElementById('productModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
 
-function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+function closeModal(id) {
+  document.getElementById(id).classList.remove('active');
+  document.body.style.overflow = '';
+}
 
 function toggleSize(btn) { btn.classList.toggle('selected'); updatePreview(); }
 
