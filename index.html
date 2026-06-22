@@ -1019,6 +1019,20 @@
     let currentUser = null;
 
     /* ============================================================
+       HELPER — IMÁGENES DEL PRODUCTO
+       Usa el array "images" (todas las fotos subidas en el admin)
+       y cae de vuelta a img/img2 solo como respaldo para productos
+       viejos que no tengan el campo "images" poblado.
+    ============================================================ */
+    function getProductImages(p) {
+      if (p.images && Array.isArray(p.images) && p.images.length) return p.images;
+      const imgs = [];
+      if (p.img)  imgs.push(p.img);
+      if (p.img2) imgs.push(p.img2);
+      return imgs;
+    }
+
+    /* ============================================================
        FAVORITOS
     ============================================================ */
     let favorites = JSON.parse(localStorage.getItem('zysk_favs') || '[]');
@@ -1354,14 +1368,17 @@
         const isSold = p.is_sold;
         const sizeBadges = (p.sizes || []).map(s => `<span class="badge badge-size">${s}</span>`).join('');
         const newBadge = p.is_new ? '<span class="badge badge-new">NEW</span>' : '';
+        const photos = getProductImages(p);
+        const mainImg = photos[0] || '';
+        const hoverImg = photos[1] || '';
 
         return `<div class="product-card ${isReserved ? 'reserved' : ''} ${isSold ? 'sold' : ''}" onclick="showProductDetail('${p.id}')">
           <div class="product-image">
             <img
-              src="${p.img}"
+              src="${mainImg}"
               alt="${p.name}"
               loading="lazy"
-              ${p.img2 ? `onmouseenter="this.src='${p.img2}'" onmouseleave="this.src='${p.img}'"` : ''}
+              ${hoverImg ? `onmouseenter="this.src='${hoverImg}'" onmouseleave="this.src='${mainImg}'"` : ''}
             >
           </div>
           <div class="product-meta">
@@ -1384,14 +1401,14 @@
       if (!currentProduct) return;
 
       selectedSize = null;
-      currentPhotos = [currentProduct.img, currentProduct.img2].filter(Boolean);
+      currentPhotos = getProductImages(currentProduct);
       currentPhotoIndex = 0;
       zoomed = false;
 
       document.getElementById('detailName').textContent = currentProduct.name;
       document.getElementById('detailPrice').textContent = `$${Number(currentProduct.price).toLocaleString('es-AR')}`;
       document.getElementById('detailDesc').innerHTML = currentProduct.description || '';
-      document.getElementById('detailImage').src = currentPhotos[0];
+      document.getElementById('detailImage').src = currentPhotos[0] || '';
       document.getElementById('detailImage').style.transform = 'scale(1)';
       document.getElementById('detailTalle').textContent = currentProduct.talle || 'Consultar';
       document.getElementById('detailMedidas').textContent = currentProduct.medidas || 'Consultar';
