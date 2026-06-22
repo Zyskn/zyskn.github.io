@@ -388,15 +388,26 @@
     /* =============================================
        PRODUCT DETAIL — FIX PRINCIPAL
        ============================================= */
-    #product-detail {
-      display: none;
-      border-top: 1px solid rgba(0,0,0,0.1);
-      border-bottom: 1px solid rgba(0,0,0,0.1);
-      /* Sin padding aquí — lo pone el wrapper interno */
-    }
-    #product-detail.active { display: block; }
 
-    /* Wrapper que contiene todo y limita el ancho */
+    /* Cuando está oculto: display none + anular el padding
+       que el selector genérico "section" le heredaría */
+    #product-detail {
+      display: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      border: none !important;
+    }
+
+    /* Cuando está activo: mostrar y restaurar bordes */
+    #product-detail.active {
+      display: block !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      border-top: 1px solid rgba(0,0,0,0.1) !important;
+      border-bottom: 1px solid rgba(0,0,0,0.1) !important;
+    }
+
+    /* Wrapper interno que da el padding real y limita el ancho */
     .product-detail-wrapper {
       max-width: 1200px;
       margin: 0 auto;
@@ -410,9 +421,9 @@
       align-items: start;
     }
 
-    /* Columna izquierda: imagen no se desborda */
+    /* Columna izquierda: imagen no se desborda del grid */
     .product-detail-col-img {
-      min-width: 0; /* evita que el grid hijo se expanda */
+      min-width: 0;
     }
 
     @media (max-width: 900px) {
