@@ -926,21 +926,21 @@
 
     /* STORE LOCK */
     async function checkStoreLock() {
-      try {
-        const { data, error } = await sb.from('products').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false });
-        if (error) throw error;
-        if (data?.value === 'true') {
-          lockScroll();
-          document.getElementById('zyskn-lock-screen').style.display = 'flex';
-          const interval = setInterval(async () => {
-            try {
-              const { data: d2 } = await sb.from('settings').select('value').eq('key', 'store_locked').maybeSingle();
-              if (d2?.value !== 'true') { clearInterval(interval); window.location.reload(); }
-            } catch (e) {}
-          }, 10000);
-        }
-      } catch (e) { console.warn('ZYSKN lock check failed:', e); }
+  try {
+    const { data, error } = await sb.from('settings').select('value').eq('key', 'store_locked').maybeSingle();
+    if (error) throw error;
+    if (data?.value === 'true') {
+      lockScroll();
+      document.getElementById('zyskn-lock-screen').style.display = 'flex';
+      const interval = setInterval(async () => {
+        try {
+          const { data: d2 } = await sb.from('settings').select('value').eq('key', 'store_locked').maybeSingle();
+          if (d2?.value !== 'true') { clearInterval(interval); window.location.reload(); }
+        } catch (e) {}
+      }, 10000);
     }
+  } catch (e) { console.warn('ZYSKN lock check failed:', e); }
+}
 
     function lockScroll() {
       const scrollYNow = window.scrollY;
@@ -1080,18 +1080,18 @@
 
     /* SUPABASE — PRODUCTOS */
     async function loadProducts() {
-      showSkeletons('productsGrid', 6); showSkeletons('newProductsGrid', 3);
-      try {
-        const { data, error } = await sb.from('products').select('*').order('created_at', { ascending: false });
-        if (error) throw error;
-        allProducts = data || [];
-      } catch (e) { console.error('Error cargando productos:', e); allProducts = []; }
-      await syncReservations();
-      filteredProducts = [...allProducts];
-      renderProducts(filteredProducts, 'productsGrid');
-      renderProducts(allProducts.filter(p => p.is_new), 'newProductsGrid');
-      updateCartUI(); startTimers();
-    }
+  showSkeletons('productsGrid', 6); showSkeletons('newProductsGrid', 3);
+  try {
+    const { data, error } = await sb.from('products').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false });
+    if (error) throw error;
+    allProducts = data || [];
+  } catch (e) { console.error('Error cargando productos:', e); allProducts = []; }
+  await syncReservations();
+  filteredProducts = [...allProducts];
+  renderProducts(filteredProducts, 'productsGrid');
+  renderProducts(allProducts.filter(p => p.is_new), 'newProductsGrid');
+  updateCartUI(); startTimers();
+}
 
     /* RESERVAS */
     async function syncReservations() {
