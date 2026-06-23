@@ -927,7 +927,7 @@
     /* STORE LOCK */
     async function checkStoreLock() {
       try {
-        const { data, error } = await sb.from('settings').select('value').eq('key', 'store_locked').maybeSingle();
+        const { data, error } = await sb.from('products').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false });
         if (error) throw error;
         if (data?.value === 'true') {
           lockScroll();
