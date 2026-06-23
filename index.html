@@ -1139,7 +1139,10 @@
       let result = [...allProducts];
       if (type === 'all') result = [...allProducts];
       else if (type === 'section') result = allProducts.filter(p => p.section === value);
-      else if (type === 'category') result = allProducts.filter(p => p.category === value);
+      else if (type === 'category') result = allProducts.filter(p => {
+  const cats = p.categories || (p.category ? [p.category] : []);
+  return cats.map(c => c.toLowerCase()).includes(value.toLowerCase());
+});
       else if (type === 'size') result = allProducts.filter(p => p.sizes && p.sizes.includes(value));
       else if (type === 'new') result = allProducts.filter(p => p.is_new);
       filteredProducts = result;
@@ -1168,7 +1171,7 @@
           <div class="product-meta">
             <div>
               <p class="product-name">${p.name}</p>
-              <p class="product-cat">${p.category || ''}</p>
+              <p class="product-cat">${(p.categories && p.categories.length ? p.categories : [p.category || '']).join(', ')}</p>
               <div class="product-badges">${newBadge}${sizeBadges}</div>
             </div>
             <p class="product-price">$${Number(p.price).toLocaleString('es-AR')}</p>
