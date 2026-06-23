@@ -1156,14 +1156,19 @@ function addImageFromUrl() {
   productImages.push({ url }); input.value = ''; renderImgGallery();
 }
 
-function handleFileUpload(event) {
+async function handleFileUpload(event) {
   const files = Array.from(event.target.files);
-  files.forEach(file => {
-    if (file.size > 5*1024*1024) { showToast(`${file.name} es mayor a 5MB`); return; }
-    const reader = new FileReader();
-    reader.onload = (e) => { productImages.push({ url: e.target.result }); renderImgGallery(); };
-    reader.readAsDataURL(file);
-  });
+  for (const file of files) {
+    if (file.size > 5*1024*1024) { showToast(`${file.name} es mayor a 5MB`); continue; }
+    const ext = file.name.split('.').pop();
+    const fileName = `${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+    showToast(`Subiendo ${file.name}...`);
+    const { error } = await sb.storage.from('Products').upload(fileName, file);
+    if (error) { showToast(`Error subiendo ${file.name}: ${error.message}`); continue; }
+    const { data: urlData } = sb.storage.from('Products').getPublicUrl(fileName);
+    productImages.push({ url: urlData.publicUrl });
+    renderImgGallery();
+  }
   event.target.value = '';
 }
 
@@ -1175,16 +1180,19 @@ document.getElementById('f-img-url-input').addEventListener('keydown', e => {
 });
 
 const uploadZone = document.getElementById('uploadZone');
-uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
-uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
-uploadZone.addEventListener('drop', e => {
+uploadZone.addEventListener('drop', async e => {
   e.preventDefault(); uploadZone.classList.remove('drag-over');
   const files = Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith('image/'));
-  files.forEach(file => {
-    const reader = new FileReader();
-    reader.onload = (ev) => { productImages.push({url:ev.target.result}); renderImgGallery(); };
-    reader.readAsDataURL(file);
-  });
+  for (const file of files) {
+    const ext = file.name.split('.').pop();
+    const fileName = `${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+    showToast(`Subiendo ${file.name}...`);
+    const { error } = await sb.storage.from('Products').upload(fileName, file);
+    if (error) { showToast(`Error subiendo ${file.name}`); continue; }
+    const { data: urlData } = sb.storage.from('Products').getPublicUrl(fileName);
+    productImages.push({ url: urlData.publicUrl });
+    renderImgGallery();
+  }
 });
 
 /* ══ PREVIEW ══ */
