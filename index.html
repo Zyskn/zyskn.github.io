@@ -387,10 +387,37 @@
 
     .product-card.reserved .product-image { opacity:.88; }
     .product-card.sold .product-image { opacity:.8; }
-    .product-card.reserved::after,
-    .product-card.sold::after { content:attr(data-label); position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.78); color:#fff; padding:8px 18px; font-size:.62rem; font-weight:900; letter-spacing:.2em; text-transform:uppercase; z-index:3; border-radius:3px; backdrop-filter:blur(8px); border:1px solid rgba(163,0,0,0.6); }
-    .product-card.reserved::after { content:'RESERVADO'; border-color:var(--red); }
-    .product-card.sold::after { content:'SIN STOCK'; border-color:rgba(255,255,255,0.2); }
+    .product-card.sold .product-image::after,
+.product-card.reserved .product-image::after {
+  content: attr(data-label);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.78);
+  color: #fff;
+  padding: 8px 18px;
+  font-size: .62rem;
+  font-weight: 900;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  z-index: 3;
+  border-radius: 3px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(163,0,0,0.6);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.product-card.reserved .product-image::after {
+  content: 'RESERVADO';
+  border-color: var(--red);
+}
+
+.product-card.sold .product-image::after {
+  content: 'SIN STOCK';
+  border-color: rgba(255,255,255,0.2);
+}
 
     .no-results { text-align:center; padding:4rem 0; grid-column:1/-1; }
     .no-results p { font-size:.85rem; color:var(--text-muted); text-transform:uppercase; font-weight:700; }
