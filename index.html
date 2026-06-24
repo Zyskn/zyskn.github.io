@@ -1379,7 +1379,7 @@
       const total = cart.reduce((s, i) => s + Number(i.price), 0);
       await saveOrder({ order_id: orderId, customer_name: nombre, customer_dni: dni, customer_phone: celular, customer_email: email, customer_location: localidad, customer_shipping: sucursal, items: cart, total: total, status: 'pending' });
 
-      let msg = `*ZYSKN · NUEVO PEDIDO*\n\n`;
+      let msg = `*Holaa! ZYSKN · NUEVO PEDIDO*\n\n`;
       msg += `*N° de Pedido:* ${orderId}\n`;
       msg += `*Fecha:* ${fecha} · ${hora}\n\n`;
       msg += `─────────────────────\n`;
@@ -1401,7 +1401,7 @@
       msg += `─────────────────────\n`;
       msg += `· *TOTAL: $${total.toLocaleString('es-AR')}*\n`;
       msg += `_· El costo de envío se calcula según destino._\n\n`;
-      msg += `_Gracias por tu compra. En breve nos ponemos en contacto._`;
+      msg += `_Gracias por tu compra. En breve nos ponemos en contacto!._`;
 
       for (const item of cart) { await deleteReservation(item.id); }
       cart = []; localStorage.setItem('zysk_cart', JSON.stringify(cart)); updateCartUI();
