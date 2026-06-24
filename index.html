@@ -440,6 +440,29 @@
     #zoomContainer:hover #prevBtn, #zoomContainer:hover #nextBtn { opacity:.85; pointer-events:auto; }
     @media (max-width:1024px) { #prevBtn, #nextBtn { opacity:.85!important; pointer-events:auto!important; } }
 
+    /* OVERLAY DE ESTADO (SIN STOCK / RESERVADO) — centrado sobre la imagen del detalle */
+    .detail-status-overlay {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.78);
+      color: #fff;
+      padding: 10px 24px;
+      font-size: .72rem;
+      font-weight: 900;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      border-radius: 3px;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(163,0,0,0.6);
+      z-index: 4;
+      pointer-events: none;
+      white-space: nowrap;
+      display: none;
+    }
+    .detail-status-overlay.show { display: block; }
+    .detail-status-overlay.sold { border-color: rgba(255,255,255,0.2); }
+
     .product-info { text-align:left; min-width:0; }
     .detail-name-wrap { display:flex; align-items:center; gap:14px; margin-bottom:.4rem; flex-wrap:wrap; }
     #detailName { font-size:clamp(1.4rem, 3vw, 2.2rem); font-weight:900; text-transform:uppercase; margin-bottom:0; letter-spacing:-.03em; line-height:1.05; }
@@ -794,6 +817,7 @@
           <div class="product-detail-col-img">
             <div id="zoomContainer" onclick="zoomImage()">
               <img id="detailImage" src="" alt="">
+              <div id="detailStatusOverlay" class="detail-status-overlay"></div>
               <button id="prevBtn" onclick="event.stopPropagation();changePhoto(-1)">‹</button>
               <button id="nextBtn" onclick="event.stopPropagation();changePhoto(1)">›</button>
             </div>
@@ -1216,19 +1240,20 @@
         lt = now;
       };
 
-      const infoDiv = document.querySelector('#product-detail .product-info');
-      const oldBanner = infoDiv.querySelector('.status-banner');
-      if (oldBanner) oldBanner.remove();
-      const btn = infoDiv.querySelector('.btn-add-cart');
+      const btn = document.querySelector('#product-detail .btn-add-cart');
+      const statusOverlay = document.getElementById('detailStatusOverlay');
       const isSold = currentProduct.is_sold;
       const isReservedByOther = currentProduct._reserved && !isReservedByMe(currentProduct.id);
 
       if (isSold || isReservedByOther) {
         const text = isSold ? 'SIN STOCK' : 'RESERVADO';
-        const color = isSold ? '#000' : 'var(--red)';
-        infoDiv.insertAdjacentHTML('afterbegin', `<div class="status-banner" style="background:${color};color:#fff;padding:10px;text-align:center;font-weight:900;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1.5rem;font-size:.75rem;">${text}</div>`);
+        statusOverlay.textContent = text;
+        statusOverlay.classList.add('show');
+        statusOverlay.classList.toggle('sold', isSold);
         btn.disabled = true; btn.style.opacity = '.4'; btn.style.cursor = 'not-allowed'; btn.textContent = text;
       } else {
+        statusOverlay.classList.remove('show', 'sold');
+        statusOverlay.textContent = '';
         btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; btn.textContent = 'AGREGAR AL CARRITO';
       }
 
@@ -1348,15 +1373,39 @@
       const sucursal  = document.getElementById('orderShippingAddr').value.trim();
       if (!nombre || !dni || !celular || !localidad) { alert('Completá Nombre, DNI, Celular y Ciudad antes de continuar'); return; }
       const orderId = 'ZSK-' + Date.now().toString(36).toUpperCase();
-      const now = new Date(); const fecha = now.toLocaleDateString('es-AR'); const hora = now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+      const now = new Date();
+      const fecha = now.toLocaleDateString('es-AR');
+      const hora = now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
       const total = cart.reduce((s, i) => s + Number(i.price), 0);
       await saveOrder({ order_id: orderId, customer_name: nombre, customer_dni: dni, customer_phone: celular, customer_email: email, customer_location: localidad, customer_shipping: sucursal, items: cart, total: total, status: 'pending' });
-      let msg = `Holaa *ZYSKN · NUEVO PEDIDO*%0A%0A*N° de Pedido:* ${orderId}%0A*Fecha:* ${fecha} · ${hora}%0A%0A─────────────────────%0A*DATOS DEL COMPRADOR*%0A─────────────────────%0A%0A· *Nombre:* ${nombre}%0A· *DNI:* ${dni}%0A· *Celular:* ${celular}%0A· *Email:* ${email || 'No informado'}%0A· *Localidad:* ${localidad}%0A· *Envío:* ${sucursal || 'A coordinar'}%0A%0A─────────────────────%0A*PRENDAS SELECCIONADAS*%0A─────────────────────%0A%0A`;
-      cart.forEach((item, index) => { msg += `${index + 1}. *${item.name}*%0A   Talle: ${item.size} · Precio: $${Number(item.price).toLocaleString('es-AR')}%0A%0A`; });
-      msg += `─────────────────────%0A· *TOTAL: $${total.toLocaleString('es-AR')}*%0A_· El costo de envío se calcula según destino._%0A%0A_Gracias por tu compra. En breve nos ponemos en contacto._ 🙌%0A`;
+
+      let msg = `*ZYSKN · NUEVO PEDIDO*\n\n`;
+      msg += `*N° de Pedido:* ${orderId}\n`;
+      msg += `*Fecha:* ${fecha} · ${hora}\n\n`;
+      msg += `─────────────────────\n`;
+      msg += `*DATOS DEL COMPRADOR*\n`;
+      msg += `─────────────────────\n\n`;
+      msg += `· *Nombre:* ${nombre}\n`;
+      msg += `· *DNI:* ${dni}\n`;
+      msg += `· *Celular:* ${celular}\n`;
+      msg += `· *Email:* ${email || 'No informado'}\n`;
+      msg += `· *Localidad:* ${localidad}\n`;
+      msg += `· *Envío:* ${sucursal || 'A coordinar'}\n\n`;
+      msg += `─────────────────────\n`;
+      msg += `*PRENDAS SELECCIONADAS*\n`;
+      msg += `─────────────────────\n\n`;
+      cart.forEach((item, index) => {
+        msg += `${index + 1}. *${item.name}*\n`;
+        msg += `   Talle: ${item.size} · Precio: $${Number(item.price).toLocaleString('es-AR')}\n\n`;
+      });
+      msg += `─────────────────────\n`;
+      msg += `· *TOTAL: $${total.toLocaleString('es-AR')}*\n`;
+      msg += `_· El costo de envío se calcula según destino._\n\n`;
+      msg += `_Gracias por tu compra. En breve nos ponemos en contacto._`;
+
       for (const item of cart) { await deleteReservation(item.id); }
       cart = []; localStorage.setItem('zysk_cart', JSON.stringify(cart)); updateCartUI();
-      window.open(`https://wa.me/5493544631553?text=${msg}`, '_blank');
+      window.open(`https://wa.me/5493544631553?text=${encodeURIComponent(msg)}`, '_blank');
       showNotification('PEDIDO ENVIADO · ' + orderId);
     }
 
