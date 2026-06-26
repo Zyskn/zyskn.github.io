@@ -4,40 +4,60 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-  <title>ZYSKN | Ropa Vintage y Streetwear en Córdoba, Argentina</title>
-  <meta name="description" content="ZYSKN · Est. 2026 — Vintage curado y streetwear en Córdoba, Argentina. Remeras oversize, cargos y hoodies únicos. Piezas 10/10 con envío a todo el país.">
+
+  <!-- ============================================================
+       SEO: TITLE Y META DESCRIPTION OPTIMIZADOS PARA CTR
+       - Keyword principal al inicio
+       - Propuesta de valor única (sin restock)
+       - CTA implícito
+  ============================================================ -->
+  <title>Ropa Vintage Córdoba | ZYSKN – Piezas Únicas Sin Restock</title>
+  <meta name="description" content="Tienda vintage curada en Córdoba 🔴 Remeras americanas, hoodies oversize, cargos y camperas importadas. Cada pieza es única, sin restock. Envíos a todo el país ✦ Entrá y elegí la tuya.">
+
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="apple-touch-icon" href="/favicon.png">
   <meta name="author" content="ZYSKN">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://zyskn.github.io/">
-  <meta property="og:title" content="ZYSKN · Est. 2026">
-  <meta property="og:description" content="ZYSKN: Ropa vintage curada y streetwear en Córdoba Argentina.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Ropa Vintage Córdoba | ZYSKN – Piezas Únicas Sin Restock">
+  <meta property="og:description" content="Remeras americanas, hoodies oversize, cargos y camperas importadas. Cada pieza es única, sin restock. Envíos a todo el país.">
   <meta property="og:image" content="https://zyskn.github.io/open-graph.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:site_name" content="ZYSKN · Vintage.">
   <meta property="og:url" content="https://zyskn.github.io/">
   <meta property="og:type" content="website">
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "ZYSKN",
-  "url": "https://zyskn.github.io",
-  "logo": "https://zyskn.github.io/favicon.png",
-  "sameAs": [
-    "https://instagram.com/zyskn.vtg",
-    "https://www.tiktok.com/@zyskn.vtg"
-  ]
-}
-</script>
+
+  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="ZYSKN · Est. 2026">
-  <meta name="twitter:description" content="ZYSKN: Ropa vintage curada y streetwear en Córdoba Argentina.">
+  <meta name="twitter:title" content="Ropa Vintage Córdoba | ZYSKN – Piezas Únicas Sin Restock">
+  <meta name="twitter:description" content="Remeras americanas, hoodies, cargos y camperas importadas. Única unidad. Envíos a todo el país.">
   <meta name="twitter:image" content="https://zyskn.github.io/open-graph.png">
+
   <meta name="google-site-verification" content="ZhyhpO9tm5X8Cc_6O1530LuJhZ7wKHxzsa94eH4wJoU">
 
+  <!-- ============================================================
+       SCHEMA: Organization
+  ============================================================ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "ZYSKN",
+    "url": "https://zyskn.github.io",
+    "logo": "https://zyskn.github.io/favicon.png",
+    "sameAs": [
+      "https://instagram.com/zyskn.vtg",
+      "https://www.tiktok.com/@zyskn.vtg"
+    ]
+  }
+  </script>
+
+  <!-- ============================================================
+       SCHEMA: ClothingStore (Local SEO)
+  ============================================================ -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -45,10 +65,11 @@
     "name": "ZYSKN",
     "url": "https://zyskn.github.io",
     "telephone": "+5493544631553",
-    "description": "Tienda de ropa vintage curada y streetwear en Córdoba, Argentina. Piezas únicas seleccionadas una por una.",
+    "description": "Tienda de ropa vintage curada y streetwear en Córdoba, Argentina. Remeras americanas, hoodies oversize, cargos y camperas importadas. Piezas únicas seleccionadas una por una, sin restock.",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Córdoba",
+      "addressRegion": "Córdoba",
       "addressCountry": "AR"
     },
     "sameAs": [
@@ -57,10 +78,14 @@
     ],
     "priceRange": "$$",
     "currenciesAccepted": "ARS",
-    "paymentAccepted": "Transferencia bancaria, Efectivo"
+    "paymentAccepted": "Transferencia bancaria, Efectivo",
+    "keywords": "ropa vintage Córdoba, remeras americanas Córdoba, streetwear Córdoba Argentina, hoodies oversize, ropa importada Córdoba"
   }
   </script>
 
+  <!-- ============================================================
+       SCHEMA: WebSite con SearchAction
+  ============================================================ -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -72,6 +97,21 @@
       "target": "https://zyskn.github.io/?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
+  }
+  </script>
+
+  <!-- ============================================================
+       SCHEMA: ItemList (catálogo de productos — se actualiza via JS)
+       Se inyecta dinámicamente cuando cargan los productos
+  ============================================================ -->
+  <script id="schema-itemlist" type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Ropa Vintage y Streetwear ZYSKN Córdoba",
+    "description": "Catálogo de prendas vintage curadas: remeras americanas, hoodies oversize, cargos, camperas y más. Únicas unidades sin restock.",
+    "url": "https://zyskn.github.io",
+    "itemListElement": []
   }
   </script>
 
@@ -388,36 +428,18 @@
     .product-card.reserved .product-image { opacity:.88; }
     .product-card.sold .product-image { opacity:.8; }
     .product-card.sold .product-image::after,
-.product-card.reserved .product-image::after {
-  content: attr(data-label);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0,0,0,0.78);
-  color: #fff;
-  padding: 8px 18px;
-  font-size: .62rem;
-  font-weight: 900;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  z-index: 3;
-  border-radius: 3px;
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(163,0,0,0.6);
-  pointer-events: none;
-  white-space: nowrap;
-}
-
-.product-card.reserved .product-image::after {
-  content: 'RESERVADO';
-  border-color: var(--red);
-}
-
-.product-card.sold .product-image::after {
-  content: 'SIN STOCK';
-  border-color: rgba(255,255,255,0.2);
-}
+    .product-card.reserved .product-image::after {
+      content: attr(data-label);
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.78); color: #fff;
+      padding: 8px 18px; font-size: .62rem; font-weight: 900;
+      letter-spacing: .2em; text-transform: uppercase; z-index: 3;
+      border-radius: 3px; backdrop-filter: blur(8px);
+      border: 1px solid rgba(163,0,0,0.6); pointer-events: none; white-space: nowrap;
+    }
+    .product-card.reserved .product-image::after { content: 'RESERVADO'; border-color: var(--red); }
+    .product-card.sold .product-image::after { content: 'SIN STOCK'; border-color: rgba(255,255,255,0.2); }
 
     .no-results { text-align:center; padding:4rem 0; grid-column:1/-1; }
     .no-results p { font-size:.85rem; color:var(--text-muted); text-transform:uppercase; font-weight:700; }
@@ -425,87 +447,42 @@
     @media (max-width:768px) { .products-grid { grid-template-columns:repeat(2,1fr)!important; gap:10px!important; } }
     @media (max-width:480px) { .products-grid { grid-template-columns:1fr!important; gap:14px!important; } }
 
-    /* =============================================
-       PRODUCT DETAIL — FIX PRINCIPAL
-       ============================================= */
+    /* PRODUCT DETAIL */
     #product-detail {
       display: none;
       border-top: 1px solid rgba(0,0,0,0.1);
       border-bottom: 1px solid rgba(0,0,0,0.1);
-      /* Sin padding aquí — lo pone el wrapper interno */
     }
     #product-detail.active { display: block; }
-
-    /* Wrapper que contiene todo y limita el ancho */
-    .product-detail-wrapper {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 5rem 2rem;
-    }
-
-    .product-detail-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: start;
-    }
-
-    /* Columna izquierda: imagen no se desborda */
-    .product-detail-col-img {
-      min-width: 0; /* evita que el grid hijo se expanda */
-    }
+    .product-detail-wrapper { max-width: 1200px; margin: 0 auto; padding: 5rem 2rem; }
+    .product-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .product-detail-col-img { min-width: 0; }
 
     @media (max-width: 900px) {
-      .product-detail-grid {
-        grid-template-columns: 1fr !important;
-        gap: 2rem !important;
-      }
-      .product-detail-wrapper {
-        padding: 2.5rem 1.2rem;
-      }
+      .product-detail-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
+      .product-detail-wrapper { padding: 2.5rem 1.2rem; }
     }
 
-    #zoomContainer {
-      position: relative;
-      background: var(--gray-bg);
-      aspect-ratio: 4/5;
-      overflow: hidden;
-      cursor: zoom-in;
-      border-radius: 2px;
-      width: 100%; /* garantiza que no se salga de la columna */
-    }
+    #zoomContainer { position:relative; background:var(--gray-bg); aspect-ratio:4/5; overflow:hidden; cursor:zoom-in; border-radius:2px; width:100%; }
     #detailImage { width:100%; height:100%; object-fit:cover; transition:transform .4s var(--ease-out),opacity .25s ease; }
     #prevBtn, #nextBtn { position:absolute; top:50%; transform:translateY(-50%); background:none; border:none; color:rgba(255,255,255,0.9); font-size:40px; font-weight:200; cursor:pointer; z-index:3; padding:0; line-height:1; text-shadow:0 2px 12px rgba(0,0,0,0.5); transition:all .25s var(--ease-out); opacity:0; pointer-events:none; }
     #prevBtn { left:16px; } #nextBtn { right:16px; }
     #zoomContainer:hover #prevBtn, #zoomContainer:hover #nextBtn { opacity:.85; pointer-events:auto; }
     @media (max-width:1024px) { #prevBtn, #nextBtn { opacity:.85!important; pointer-events:auto!important; } }
 
-    /* OVERLAY DE ESTADO (SIN STOCK / RESERVADO) — centrado sobre la imagen del detalle */
     .detail-status-overlay {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0,0,0,0.78);
-      color: #fff;
-      padding: 10px 24px;
-      font-size: .72rem;
-      font-weight: 900;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      border-radius: 3px;
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(163,0,0,0.6);
-      z-index: 4;
-      pointer-events: none;
-      white-space: nowrap;
-      display: none;
+      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+      background:rgba(0,0,0,0.78); color:#fff; padding:10px 24px;
+      font-size:.72rem; font-weight:900; letter-spacing:.2em; text-transform:uppercase;
+      border-radius:3px; backdrop-filter:blur(8px); border:1px solid rgba(163,0,0,0.6);
+      z-index:4; pointer-events:none; white-space:nowrap; display:none;
     }
-    .detail-status-overlay.show { display: block; }
-    .detail-status-overlay.sold { border-color: rgba(255,255,255,0.2); }
+    .detail-status-overlay.show { display:block; }
+    .detail-status-overlay.sold { border-color:rgba(255,255,255,0.2); }
 
     .product-info { text-align:left; min-width:0; }
     .detail-name-wrap { display:flex; align-items:center; gap:14px; margin-bottom:.4rem; flex-wrap:wrap; }
-    #detailName { font-size:clamp(1.4rem, 3vw, 2.2rem); font-weight:900; text-transform:uppercase; margin-bottom:0; letter-spacing:-.03em; line-height:1.05; }
+    #detailName { font-size:clamp(1.4rem,3vw,2.2rem); font-weight:900; text-transform:uppercase; margin-bottom:0; letter-spacing:-.03em; line-height:1.05; }
     #detailPrice { font-weight:800; font-size:1.6rem; margin-bottom:.6rem; color:var(--red); }
     #detailDesc { font-size:.88rem; color:var(--text-muted); margin-bottom:1.5rem; line-height:1.7; }
     .detail-specs { margin-bottom:1.5rem; font-size:.8rem; line-height:2; border-top:1px solid var(--gray-mid); border-bottom:1px solid var(--gray-mid); padding:1rem 0; }
@@ -527,21 +504,11 @@
     #thumbs img.active-thumb { border-color:var(--black); opacity:1; }
 
     /* FAV BUTTON */
-    .fav-btn {
-      background: none; border: none; cursor: pointer;
-      font-size: 1.7rem; line-height: 1; padding: 4px 6px;
-      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s;
-      color: #ddd; flex-shrink: 0; margin-left: 2px;
-      -webkit-tap-highlight-color: transparent; user-select: none;
-    }
-    .fav-btn.active { color: #e00; filter: drop-shadow(0 2px 6px rgba(220,0,0,0.35)); }
-    .fav-btn:hover { transform: scale(1.2); }
-    .fav-btn.pop { animation: favPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
-    @keyframes favPop {
-      0%   { transform: scale(1); }
-      45%  { transform: scale(1.55); }
-      100% { transform: scale(1); }
-    }
+    .fav-btn { background:none; border:none; cursor:pointer; font-size:1.7rem; line-height:1; padding:4px 6px; transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1),filter 0.2s; color:#ddd; flex-shrink:0; margin-left:2px; -webkit-tap-highlight-color:transparent; user-select:none; }
+    .fav-btn.active { color:#e00; filter:drop-shadow(0 2px 6px rgba(220,0,0,0.35)); }
+    .fav-btn:hover { transform:scale(1.2); }
+    .fav-btn.pop { animation:favPop 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+    @keyframes favPop { 0%{transform:scale(1)} 45%{transform:scale(1.55)} 100%{transform:scale(1)} }
 
     /* CART */
     #cart-section { background:#fff; border-top:1px solid rgba(0,0,0,0.1); }
@@ -599,34 +566,30 @@
 
     /* FLY ANIMATION */
     @keyframes flyToCart {
-      0%   { transform: translate(0, 0) scale(1); opacity: 1; }
-      40%  { opacity: 1; }
-      100% { transform: translate(var(--tx), var(--ty)) scale(0.1); opacity: 0; }
+      0%   { transform: translate(0,0) scale(1); opacity:1; }
+      40%  { opacity:1; }
+      100% { transform: translate(var(--tx),var(--ty)) scale(0.1); opacity:0; }
     }
-    .fly-item {
-      position: fixed; z-index: 9999; pointer-events: none;
-      width: 18px; height: 18px; border-radius: 50%;
-      background: var(--red); border: 2px solid #fff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-      animation: flyToCart 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    }
+    .fly-item { position:fixed; z-index:9999; pointer-events:none; width:18px; height:18px; border-radius:50%; background:var(--red); border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.4); animation:flyToCart 0.75s cubic-bezier(0.25,0.46,0.45,0.94) forwards; }
 
     /* LOCK SCREEN */
     @keyframes zyskn-spin { to { transform: rotate(360deg); } }
     @keyframes zyskn-fade { from { opacity: 0; } to { opacity: 1; } }
     @keyframes zyskn-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
+    #zyskn-lock-screen { position:fixed; inset:0; z-index:9999; background:#0a0a0a; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.5rem; animation:zyskn-fade .4s ease; font-family:'Inter',sans-serif; }
+    #zyskn-lock-screen .zls-logo { font-size:2rem; font-weight:900; letter-spacing:-.05em; color:#fff; }
+    #zyskn-lock-screen .zls-logo span { color:#A30000; }
+    #zyskn-lock-screen .zls-spinner { width:36px; height:36px; border:3px solid rgba(255,255,255,.1); border-top-color:#A30000; border-radius:50%; animation:zyskn-spin .9s linear infinite; }
+    #zyskn-lock-screen .zls-text { font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.18em; color:#555; animation:zyskn-pulse 2s ease infinite; }
+    #zyskn-lock-screen .zls-sub { font-size:.58rem; color:#333; font-weight:500; letter-spacing:.06em; }
 
-    #zyskn-lock-screen {
-      position: fixed; inset: 0; z-index: 9999;
-      background: #0a0a0a; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 1.5rem;
-      animation: zyskn-fade .4s ease; font-family: 'Inter', sans-serif;
-    }
-    #zyskn-lock-screen .zls-logo { font-size: 2rem; font-weight: 900; letter-spacing: -.05em; color: #fff; }
-    #zyskn-lock-screen .zls-logo span { color: #A30000; }
-    #zyskn-lock-screen .zls-spinner { width: 36px; height: 36px; border: 3px solid rgba(255,255,255,.1); border-top-color: #A30000; border-radius: 50%; animation: zyskn-spin .9s linear infinite; }
-    #zyskn-lock-screen .zls-text { font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .18em; color: #555; animation: zyskn-pulse 2s ease infinite; }
-    #zyskn-lock-screen .zls-sub { font-size: .58rem; color: #333; font-weight: 500; letter-spacing: .06em; }
+    /* SEO CONTENT */
+    #seo-content { background:#fafafa; border-top:1px solid rgba(0,0,0,0.05); }
+    #seo-content h2 { font-size:clamp(1.1rem,3vw,1.5rem); }
+    #seo-content h3 { font-size:.95rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; margin:1.8rem 0 .6rem; color:var(--black); }
+    #seo-content p { font-size:.88rem; line-height:1.85; color:#555; max-width:900px; }
+    #seo-content ul { list-style:none; padding:0; margin:.5rem 0 1rem; display:flex; flex-wrap:wrap; gap:.5rem; max-width:900px; }
+    #seo-content ul li { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; background:var(--gray-mid); padding:.35rem .8rem; border-radius:2px; color:var(--black); }
   </style>
 </head>
 
@@ -654,31 +617,16 @@
         <button class="auth-tab" id="tabRegister" onclick="switchTab('register')">Registrarse</button>
       </div>
       <div class="auth-form active" id="formLogin">
-        <div class="auth-field">
-          <label>Correo electrónico</label>
-          <input type="email" id="loginEmail" placeholder="tu@correo.com">
-        </div>
-        <div class="auth-field">
-          <label>Contraseña</label>
-          <input type="password" id="loginPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
-        </div>
+        <div class="auth-field"><label>Correo electrónico</label><input type="email" id="loginEmail" placeholder="tu@correo.com"></div>
+        <div class="auth-field"><label>Contraseña</label><input type="password" id="loginPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
         <button class="auth-btn" id="btnLogin" onclick="doLogin()">Iniciar sesión</button>
         <div class="auth-error" id="loginError"></div>
         <div class="auth-switch">¿No tenés cuenta? <a onclick="switchTab('register')">Registrate</a></div>
       </div>
       <div class="auth-form" id="formRegister">
-        <div class="auth-field">
-          <label>Nombre</label>
-          <input type="text" id="regName" placeholder="Tu nombre">
-        </div>
-        <div class="auth-field">
-          <label>Correo electrónico</label>
-          <input type="email" id="regEmail" placeholder="tu@correo.com">
-        </div>
-        <div class="auth-field">
-          <label>Contraseña</label>
-          <input type="password" id="regPassword" placeholder="Mínimo 6 caracteres" onkeydown="if(event.key==='Enter')doRegister()">
-        </div>
+        <div class="auth-field"><label>Nombre</label><input type="text" id="regName" placeholder="Tu nombre"></div>
+        <div class="auth-field"><label>Correo electrónico</label><input type="email" id="regEmail" placeholder="tu@correo.com"></div>
+        <div class="auth-field"><label>Contraseña</label><input type="password" id="regPassword" placeholder="Mínimo 6 caracteres" onkeydown="if(event.key==='Enter')doRegister()"></div>
         <button class="auth-btn" id="btnRegister" onclick="doRegister()">Crear cuenta</button>
         <div class="auth-error" id="registerError"></div>
         <div class="auth-success" id="registerSuccess"></div>
@@ -809,8 +757,8 @@
     <!-- HERO -->
     <section class="hero">
       <div class="hero-content">
-        <h1>ZYSKN - Ropa Vintage y Streetwear en Córdoba</h1>
-        <span class="hero-sub">Piezas únicas 10/10. Curadas en Córdoba. 1 - No Restock</span>
+        <h1>Remeras Vintage y Streetwear en Córdoba – ZYSKN</h1>
+        <span class="hero-sub">Piezas únicas 10/10. Curadas en Córdoba. Sin restock — 1 sola unidad por prenda</span>
         <a onclick="scrollToSection('shop')" class="btn">VER DROP 1/3</a>
       </div>
     </section>
@@ -822,11 +770,6 @@
         <p>ZYSKN CURATED ARCHIVE · EST. 2026</p>
       </div>
     </section>
-    <section id="seo-content" style="max-width:1200px;margin:0 auto;padding:4rem 2rem;"> <h2 class="section-title">Ropa Vintage en Córdoba</h2>
-
-<p style="font-size:.9rem;line-height:1.8;color:#444;max-width:900px;"> ZYSKN es una tienda de ropa vintage y streetwear ubicada en Córdoba, Argentina. Seleccionamos cuidadosamente prendas únicas, remeras oversize, hoodies, camperas, cargos y piezas exclusivas importadas. Cada artículo es seleccionado uno por uno para ofrecer productos auténticos y de calidad. </p>
-
-<p style="font-size:.9rem;line-height:1.8;color:#444;max-width:900px;margin-top:1rem;"> Nuestra colección incluye ropa vintage americana, streetwear, prendas deportivas retro y piezas únicas sin restock. En ZYSKN creemos en preservar la cultura a través de la moda y ofrecer prendas irrepetibles para quienes buscan un estilo diferente. </p> </section>
 
     <!-- FILTROS -->
     <div id="filter-bar">
@@ -854,11 +797,10 @@
       </div>
     </section>
 
-    <!-- PRODUCT DETAIL — estructura corregida con wrapper propio -->
+    <!-- PRODUCT DETAIL -->
     <section id="product-detail">
       <div class="product-detail-wrapper">
         <div class="product-detail-grid">
-          <!-- Columna imagen -->
           <div class="product-detail-col-img">
             <div id="zoomContainer" onclick="zoomImage()">
               <img id="detailImage" src="" alt="">
@@ -868,7 +810,6 @@
             </div>
             <div id="thumbs"></div>
           </div>
-          <!-- Columna info -->
           <div class="product-info">
             <div class="detail-name-wrap">
               <h2 id="detailName"></h2>
@@ -933,7 +874,9 @@
       <div class="container">
         <h2 class="section-title">FAQ.</h2>
         <div style="max-width:800px;">
+          <details><summary>¿Qué tipo de ropa vende ZYSKN?</summary><p>Ropa vintage y streetwear curada en Córdoba: <strong>remeras americanas, hoodies oversize, camperas y pantalones cargo</strong> importados. Cada pieza es única, sin restock.</p></details>
           <details><summary>¿Qué es ropa americana?</summary><p>Moda importada de <strong>primera calidad</strong>, seleccionada directamente de <strong>colecciones exclusivas</strong> de Estados Unidos. Cada prenda pasa por un <strong>riguroso control de estado y curaduría</strong> para garantizar <strong>estilo y durabilidad</strong> a nuestros clientes.</p></details>
+          <details><summary>¿Por qué las prendas son únicas?</summary><p>Compramos y curamos pieza por pieza, no por lote. Eso significa que cada prenda tiene <strong>una sola unidad disponible</strong>: lo que ves es lo único que hay, y no vuelve a aparecer.</p></details>
           <details><summary>¿Hay cambios o devoluciones?</summary><p>No. Todas las piezas son únicas sin restock. Revisá detalladamente el estado especificado antes de comprar. Consultanos si tenés dudas.</p></details>
           <details><summary>¿Cuáles son los métodos de pago?</summary><p>Aceptamos transferencia bancaria o efectivo.</p></details>
           <details><summary>¿Cómo funcionan los envíos?</summary><p>Realizamos envíos por Correo Argentino a todo el país. El costo del envío corre por cuenta del cliente.</p></details>
@@ -995,21 +938,21 @@
 
     /* STORE LOCK */
     async function checkStoreLock() {
-  try {
-    const { data, error } = await sb.from('settings').select('value').eq('key', 'store_locked').maybeSingle();
-    if (error) throw error;
-    if (data?.value === 'true') {
-      lockScroll();
-      document.getElementById('zyskn-lock-screen').style.display = 'flex';
-      const interval = setInterval(async () => {
-        try {
-          const { data: d2 } = await sb.from('settings').select('value').eq('key', 'store_locked').maybeSingle();
-          if (d2?.value !== 'true') { clearInterval(interval); window.location.reload(); }
-        } catch (e) {}
-      }, 10000);
+      try {
+        const { data, error } = await sb.from('settings').select('value').eq('key', 'store_locked').maybeSingle();
+        if (error) throw error;
+        if (data?.value === 'true') {
+          lockScroll();
+          document.getElementById('zyskn-lock-screen').style.display = 'flex';
+          const interval = setInterval(async () => {
+            try {
+              const { data: d2 } = await sb.from('settings').select('value').eq('key', 'store_locked').maybeSingle();
+              if (d2?.value !== 'true') { clearInterval(interval); window.location.reload(); }
+            } catch (e) {}
+          }, 10000);
+        }
+      } catch (e) { console.warn('ZYSKN lock check failed:', e); }
     }
-  } catch (e) { console.warn('ZYSKN lock check failed:', e); }
-}
 
     function lockScroll() {
       const scrollYNow = window.scrollY;
@@ -1045,6 +988,59 @@
       if (p.img)  imgs.push(p.img);
       if (p.img2) imgs.push(p.img2);
       return imgs;
+    }
+
+    /* ============================================================
+       SCHEMA MARKUP DINÁMICO DE PRODUCTOS
+       Se inyecta en el <head> al cargar los productos desde Supabase
+       Permite rich snippets con precio y disponibilidad en Google
+    ============================================================ */
+    function injectProductSchema(products) {
+      // ItemList schema para listado general
+      const itemListSchema = {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "Ropa Vintage y Streetwear ZYSKN Córdoba",
+        "description": "Catálogo de prendas vintage curadas: remeras americanas, hoodies oversize, cargos, camperas y más. Únicas unidades sin restock.",
+        "url": "https://zyskn.github.io",
+        "numberOfItems": products.length,
+        "itemListElement": products.slice(0, 20).map((p, i) => ({
+          "@type": "ListItem",
+          "position": i + 1,
+          "item": {
+            "@type": "Product",
+            "name": p.name,
+            "description": p.description ? p.description.replace(/<[^>]*>/g, '').substring(0, 160) : `${p.name} - Prenda vintage única en ZYSKN Córdoba`,
+            "image": getProductImages(p)[0] || '',
+            "brand": { "@type": "Brand", "name": "ZYSKN" },
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "ARS",
+              "price": String(p.price),
+              "availability": p.is_sold
+                ? "https://schema.org/OutOfStock"
+                : "https://schema.org/InStock",
+              "seller": {
+                "@type": "Organization",
+                "name": "ZYSKN"
+              },
+              "url": "https://zyskn.github.io"
+            },
+            "size": (p.sizes || []).join(', ') || p.talle || '',
+            "category": (p.categories && p.categories.length ? p.categories : [p.category || '']).join(', ')
+          }
+        }))
+      };
+
+      // Reemplazar el schema-itemlist existente o crear uno nuevo
+      let el = document.getElementById('schema-itemlist');
+      if (!el) {
+        el = document.createElement('script');
+        el.type = 'application/ld+json';
+        el.id = 'schema-itemlist';
+        document.head.appendChild(el);
+      }
+      el.textContent = JSON.stringify(itemListSchema);
     }
 
     /* FAVORITOS */
@@ -1149,18 +1145,20 @@
 
     /* SUPABASE — PRODUCTOS */
     async function loadProducts() {
-  showSkeletons('productsGrid', 6); showSkeletons('newProductsGrid', 3);
-  try {
-    const { data, error } = await sb.from('products').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false });
-    if (error) throw error;
-    allProducts = data || [];
-  } catch (e) { console.error('Error cargando productos:', e); allProducts = []; }
-  await syncReservations();
-  filteredProducts = [...allProducts];
-  renderProducts(filteredProducts, 'productsGrid');
-  renderProducts(allProducts.filter(p => p.is_new), 'newProductsGrid');
-  updateCartUI(); startTimers();
-}
+      showSkeletons('productsGrid', 6); showSkeletons('newProductsGrid', 3);
+      try {
+        const { data, error } = await sb.from('products').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false });
+        if (error) throw error;
+        allProducts = data || [];
+      } catch (e) { console.error('Error cargando productos:', e); allProducts = []; }
+      await syncReservations();
+      filteredProducts = [...allProducts];
+      renderProducts(filteredProducts, 'productsGrid');
+      renderProducts(allProducts.filter(p => p.is_new), 'newProductsGrid');
+      // Inyectar schema de productos luego de cargar
+      injectProductSchema(allProducts);
+      updateCartUI(); startTimers();
+    }
 
     /* RESERVAS */
     async function syncReservations() {
@@ -1209,9 +1207,9 @@
       if (type === 'all') result = [...allProducts];
       else if (type === 'section') result = allProducts.filter(p => p.section === value);
       else if (type === 'category') result = allProducts.filter(p => {
-  const cats = p.categories || (p.category ? [p.category] : []);
-  return cats.map(c => c.toLowerCase()).includes(value.toLowerCase());
-});
+        const cats = p.categories || (p.category ? [p.category] : []);
+        return cats.map(c => c.toLowerCase()).includes(value.toLowerCase());
+      });
       else if (type === 'size') result = allProducts.filter(p => p.sizes && p.sizes.includes(value));
       else if (type === 'new') result = allProducts.filter(p => p.is_new);
       filteredProducts = result;
@@ -1232,15 +1230,16 @@
         const photos = getProductImages(p);
         const mainImg = photos[0] || '';
         const hoverImg = photos[1] || '';
+        const cats = (p.categories && p.categories.length ? p.categories : [p.category || '']).join(', ');
         return `<div class="product-card ${isReserved ? 'reserved' : ''} ${isSold ? 'sold' : ''}" onclick="showProductDetail('${p.id}')">
           <div class="product-image">
-            <img src="${mainImg}" alt="${p.name}" loading="lazy"
+            <img src="${mainImg}" alt="${p.name} - Ropa Vintage ZYSKN Córdoba" loading="lazy"
               ${hoverImg ? `onmouseenter="this.src='${hoverImg}'" onmouseleave="this.src='${mainImg}'"` : ''}>
           </div>
           <div class="product-meta">
             <div>
               <p class="product-name">${p.name}</p>
-              <p class="product-cat">${(p.categories && p.categories.length ? p.categories : [p.category || '']).join(', ')}</p>
+              <p class="product-cat">${cats}</p>
               <div class="product-badges">${newBadge}${sizeBadges}</div>
             </div>
             <p class="product-price">$${Number(p.price).toLocaleString('es-AR')}</p>
@@ -1261,6 +1260,7 @@
       document.getElementById('detailPrice').textContent = `$${Number(currentProduct.price).toLocaleString('es-AR')}`;
       document.getElementById('detailDesc').innerHTML = currentProduct.description || '';
       document.getElementById('detailImage').src = currentPhotos[0] || '';
+      document.getElementById('detailImage').alt = `${currentProduct.name} - Vintage ZYSKN Córdoba`;
       document.getElementById('detailImage').style.transform = 'scale(1)';
       document.getElementById('detailTalle').textContent = currentProduct.talle || 'Consultar';
       document.getElementById('detailMedidas').textContent = currentProduct.medidas || 'Consultar';
@@ -1271,7 +1271,7 @@
       document.getElementById('prevBtn').style.display = hasMultiple ? 'block' : 'none';
       document.getElementById('nextBtn').style.display = hasMultiple ? 'block' : 'none';
       document.getElementById('thumbs').innerHTML = currentPhotos.map((src, i) =>
-        `<img src="${src}" onclick="currentPhotoIndex=${i};changePhoto(0)" class="${i === 0 ? 'active-thumb' : ''}">`
+        `<img src="${src}" alt="${currentProduct.name} foto ${i+1}" onclick="currentPhotoIndex=${i};changePhoto(0)" class="${i === 0 ? 'active-thumb' : ''}">`
       ).join('');
 
       const zc = document.getElementById('zoomContainer');
