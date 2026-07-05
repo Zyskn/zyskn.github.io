@@ -33,17 +33,20 @@
       letter-spacing:-.04em;
       margin-bottom:.8rem;
       cursor:pointer;
+      color:#fff; /* <- TODO BLANCO */
       transition:all .3s ease;
     }
-    .logo span{color:#fff;transition:all .3s ease}
-    /* EFECTO ROJO AL PASAR EL MOUSE */
-    .logo:hover{transform:scale(1.03)}
-    .logo:hover span{
+    .logo span{color:inherit;transition:inherit} /* hereda del padre */
+    
+    /* EFECTO ROJO EN TODO EL LOGO */
+    .logo:hover{
       color:#A30000;
+      transform:scale(1.03);
       text-shadow:0 0 18px rgba(163,0,0,.7);
     }
+    
     h1{
-      font-size:clamp(2.8rem,10vw,5.5rem); /* <- MÁS CHICO */
+      font-size:clamp(2.8rem,10vw,5.5rem);
       font-weight:900;
       line-height:.9;
       letter-spacing:-.04em;
