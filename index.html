@@ -4,60 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-
-  <!-- ============================================================
-       SEO: TITLE Y META DESCRIPTION OPTIMIZADOS PARA CTR
-       - Keyword principal al inicio
-       - Propuesta de valor única (sin restock)
-       - CTA implícito
-  ============================================================ -->
-  <title>ZYSKN – Ropa Vintage en Córdoba | Piezas Únicas Sin Restock</title>
-  <meta name="description" content="Tienda vintage curada en Córdoba. Remeras oversize, hoodies oversize, cargos y camperas importadas. Cada pieza es única, Rin restock. Envíos a todo el país. Entrá y elegí la tuya.">
-
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="apple-touch-icon" href="favicon.png">
+  <title>ZYSKN</title>
+  <meta name="description" content="ZYSKN · Est. 2026 — Vintage curado y streetwear en Córdoba, Argentina. Remeras oversize, cargos y hoodies únicos. Piezas 10/10 con envío a todo el país.">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/favicon.png">
   <meta name="author" content="ZYSKN">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://zyskn.github.io/">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Ropa Vintage en Córdoba | ZYSKN – Piezas Únicas Sin Restock">
-  <meta property="og:description" content="Remeras americanas, hoodies oversize, cargos y camperas importadas. Cada pieza es única, sin restock. Envíos a todo el país.">
+  <meta property="og:title" content="ZYSKN · Est. 2026">
+  <meta property="og:description" content="ZYSKN: Ropa vintage curada y streetwear en Córdoba Argentina.">
   <meta property="og:image" content="https://zyskn.github.io/open-graph.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:site_name" content="ZYSKN · Vintage.">
   <meta property="og:url" content="https://zyskn.github.io/">
   <meta property="og:type" content="website">
-
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Ropa Vintage Córdoba | ZYSKN – Piezas Únicas Sin Restock">
-  <meta name="twitter:description" content="Remeras americanas, hoodies, cargos y camperas importadas. Única unidad. Envíos a todo el país.">
+  <meta name="twitter:title" content="ZYSKN · Est. 2026">
+  <meta name="twitter:description" content="ZYSKN: Ropa vintage curada y streetwear en Córdoba Argentina.">
   <meta name="twitter:image" content="https://zyskn.github.io/open-graph.png">
-
   <meta name="google-site-verification" content="ZhyhpO9tm5X8Cc_6O1530LuJhZ7wKHxzsa94eH4wJoU">
 
-  <!-- ============================================================
-       SCHEMA: Organization
-  ============================================================ -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "ZYSKN",
-    "url": "https://zyskn.github.io",
-    "logo": "https://zyskn.github.io/favicon.png",
-    "sameAs": [
-      "https://instagram.com/zyskn_",
-      "https://www.tiktok.com/@zyskn_"
-    ]
-  }
-  </script>
-
-  <!-- ============================================================
-       SCHEMA: ClothingStore (Local SEO)
-  ============================================================ -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -65,27 +32,22 @@
     "name": "ZYSKN",
     "url": "https://zyskn.github.io",
     "telephone": "+5493544631553",
-    "description": "Tienda de ropa vintage curada y streetwear en Córdoba, Argentina. Remeras americanas, hoodies oversize, cargos y camperas importadas. Piezas únicas seleccionadas una por una, sin restock.",
+    "description": "Tienda de ropa vintage curada y streetwear en Córdoba, Argentina. Piezas únicas seleccionadas una por una.",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Córdoba",
-      "addressRegion": "Córdoba",
       "addressCountry": "AR"
     },
     "sameAs": [
-      "https://instagram.com/zyskn_",
-      "https://www.tiktok.com/@zyskn_"
+      "https://instagram.com/zyskn.vtg",
+      "https://www.tiktok.com/@zyskn.vtg"
     ],
     "priceRange": "$$",
     "currenciesAccepted": "ARS",
-    "paymentAccepted": "Transferencia bancaria, Efectivo",
-    "keywords": "ropa vintage Córdoba, remeras americanas Córdoba, streetwear Córdoba Argentina, hoodies oversize, ropa importada Córdoba"
+    "paymentAccepted": "Transferencia bancaria, Efectivo"
   }
   </script>
 
-  <!-- ============================================================
-       SCHEMA: WebSite con SearchAction
-  ============================================================ -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -97,21 +59,6 @@
       "target": "https://zyskn.github.io/?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
-  }
-  </script>
-
-  <!-- ============================================================
-       SCHEMA: ItemList (catálogo de productos — se actualiza via JS)
-       Se inyecta dinámicamente cuando cargan los productos
-  ============================================================ -->
-  <script id="schema-itemlist" type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "name": "Ropa Vintage y Streetwear ZYSKN Córdoba",
-    "description": "Catálogo de prendas vintage curadas: remeras americanas, hoodies oversize, cargos, camperas y más. Únicas unidades sin restock.",
-    "url": "https://zyskn.github.io",
-    "itemListElement": []
   }
   </script>
 
@@ -427,19 +374,10 @@
 
     .product-card.reserved .product-image { opacity:.88; }
     .product-card.sold .product-image { opacity:.8; }
-    .product-card.sold .product-image::after,
-    .product-card.reserved .product-image::after {
-      content: attr(data-label);
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0,0,0,0.78); color: #fff;
-      padding: 8px 18px; font-size: .62rem; font-weight: 900;
-      letter-spacing: .2em; text-transform: uppercase; z-index: 3;
-      border-radius: 3px; backdrop-filter: blur(8px);
-      border: 1px solid rgba(163,0,0,0.6); pointer-events: none; white-space: nowrap;
-    }
-    .product-card.reserved .product-image::after { content: 'RESERVADO'; border-color: var(--red); }
-    .product-card.sold .product-image::after { content: 'SIN STOCK'; border-color: rgba(255,255,255,0.2); }
+    .product-card.reserved::after,
+    .product-card.sold::after { content:attr(data-label); position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.78); color:#fff; padding:8px 18px; font-size:.62rem; font-weight:900; letter-spacing:.2em; text-transform:uppercase; z-index:3; border-radius:3px; backdrop-filter:blur(8px); border:1px solid rgba(163,0,0,0.6); }
+    .product-card.reserved::after { content:'RESERVADO'; border-color:var(--red); }
+    .product-card.sold::after { content:'SIN STOCK'; border-color:rgba(255,255,255,0.2); }
 
     .no-results { text-align:center; padding:4rem 0; grid-column:1/-1; }
     .no-results p { font-size:.85rem; color:var(--text-muted); text-transform:uppercase; font-weight:700; }
@@ -447,42 +385,64 @@
     @media (max-width:768px) { .products-grid { grid-template-columns:repeat(2,1fr)!important; gap:10px!important; } }
     @media (max-width:480px) { .products-grid { grid-template-columns:1fr!important; gap:14px!important; } }
 
-    /* PRODUCT DETAIL */
+    /* =============================================
+       PRODUCT DETAIL — FIX PRINCIPAL
+       ============================================= */
     #product-detail {
       display: none;
       border-top: 1px solid rgba(0,0,0,0.1);
       border-bottom: 1px solid rgba(0,0,0,0.1);
+      /* Sin padding aquí — lo pone el wrapper interno */
     }
     #product-detail.active { display: block; }
-    .product-detail-wrapper { max-width: 1200px; margin: 0 auto; padding: 5rem 2rem; }
-    .product-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
-    .product-detail-col-img { min-width: 0; }
 
-    @media (max-width: 900px) {
-      .product-detail-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
-      .product-detail-wrapper { padding: 2.5rem 1.2rem; }
+    /* Wrapper que contiene todo y limita el ancho */
+    .product-detail-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
     }
 
-    #zoomContainer { position:relative; background:var(--gray-bg); aspect-ratio:4/5; overflow:hidden; cursor:zoom-in; border-radius:2px; width:100%; }
+    .product-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    /* Columna izquierda: imagen no se desborda */
+    .product-detail-col-img {
+      min-width: 0; /* evita que el grid hijo se expanda */
+    }
+
+    @media (max-width: 900px) {
+      .product-detail-grid {
+        grid-template-columns: 1fr !important;
+        gap: 2rem !important;
+      }
+      .product-detail-wrapper {
+        padding: 2.5rem 1.2rem;
+      }
+    }
+
+    #zoomContainer {
+      position: relative;
+      background: var(--gray-bg);
+      aspect-ratio: 4/5;
+      overflow: hidden;
+      cursor: zoom-in;
+      border-radius: 2px;
+      width: 100%; /* garantiza que no se salga de la columna */
+    }
     #detailImage { width:100%; height:100%; object-fit:cover; transition:transform .4s var(--ease-out),opacity .25s ease; }
     #prevBtn, #nextBtn { position:absolute; top:50%; transform:translateY(-50%); background:none; border:none; color:rgba(255,255,255,0.9); font-size:40px; font-weight:200; cursor:pointer; z-index:3; padding:0; line-height:1; text-shadow:0 2px 12px rgba(0,0,0,0.5); transition:all .25s var(--ease-out); opacity:0; pointer-events:none; }
     #prevBtn { left:16px; } #nextBtn { right:16px; }
     #zoomContainer:hover #prevBtn, #zoomContainer:hover #nextBtn { opacity:.85; pointer-events:auto; }
     @media (max-width:1024px) { #prevBtn, #nextBtn { opacity:.85!important; pointer-events:auto!important; } }
 
-    .detail-status-overlay {
-      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-      background:rgba(0,0,0,0.78); color:#fff; padding:10px 24px;
-      font-size:.72rem; font-weight:900; letter-spacing:.2em; text-transform:uppercase;
-      border-radius:3px; backdrop-filter:blur(8px); border:1px solid rgba(163,0,0,0.6);
-      z-index:4; pointer-events:none; white-space:nowrap; display:none;
-    }
-    .detail-status-overlay.show { display:block; }
-    .detail-status-overlay.sold { border-color:rgba(255,255,255,0.2); }
-
     .product-info { text-align:left; min-width:0; }
     .detail-name-wrap { display:flex; align-items:center; gap:14px; margin-bottom:.4rem; flex-wrap:wrap; }
-    #detailName { font-size:clamp(1.4rem,3vw,2.2rem); font-weight:900; text-transform:uppercase; margin-bottom:0; letter-spacing:-.03em; line-height:1.05; }
+    #detailName { font-size:clamp(1.4rem, 3vw, 2.2rem); font-weight:900; text-transform:uppercase; margin-bottom:0; letter-spacing:-.03em; line-height:1.05; }
     #detailPrice { font-weight:800; font-size:1.6rem; margin-bottom:.6rem; color:var(--red); }
     #detailDesc { font-size:.88rem; color:var(--text-muted); margin-bottom:1.5rem; line-height:1.7; }
     .detail-specs { margin-bottom:1.5rem; font-size:.8rem; line-height:2; border-top:1px solid var(--gray-mid); border-bottom:1px solid var(--gray-mid); padding:1rem 0; }
@@ -504,11 +464,21 @@
     #thumbs img.active-thumb { border-color:var(--black); opacity:1; }
 
     /* FAV BUTTON */
-    .fav-btn { background:none; border:none; cursor:pointer; font-size:1.7rem; line-height:1; padding:4px 6px; transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1),filter 0.2s; color:#ddd; flex-shrink:0; margin-left:2px; -webkit-tap-highlight-color:transparent; user-select:none; }
-    .fav-btn.active { color:#e00; filter:drop-shadow(0 2px 6px rgba(220,0,0,0.35)); }
-    .fav-btn:hover { transform:scale(1.2); }
-    .fav-btn.pop { animation:favPop 0.4s cubic-bezier(0.34,1.56,0.64,1); }
-    @keyframes favPop { 0%{transform:scale(1)} 45%{transform:scale(1.55)} 100%{transform:scale(1)} }
+    .fav-btn {
+      background: none; border: none; cursor: pointer;
+      font-size: 1.7rem; line-height: 1; padding: 4px 6px;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s;
+      color: #ddd; flex-shrink: 0; margin-left: 2px;
+      -webkit-tap-highlight-color: transparent; user-select: none;
+    }
+    .fav-btn.active { color: #e00; filter: drop-shadow(0 2px 6px rgba(220,0,0,0.35)); }
+    .fav-btn:hover { transform: scale(1.2); }
+    .fav-btn.pop { animation: favPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    @keyframes favPop {
+      0%   { transform: scale(1); }
+      45%  { transform: scale(1.55); }
+      100% { transform: scale(1); }
+    }
 
     /* CART */
     #cart-section { background:#fff; border-top:1px solid rgba(0,0,0,0.1); }
@@ -566,30 +536,34 @@
 
     /* FLY ANIMATION */
     @keyframes flyToCart {
-      0%   { transform: translate(0,0) scale(1); opacity:1; }
-      40%  { opacity:1; }
-      100% { transform: translate(var(--tx),var(--ty)) scale(0.1); opacity:0; }
+      0%   { transform: translate(0, 0) scale(1); opacity: 1; }
+      40%  { opacity: 1; }
+      100% { transform: translate(var(--tx), var(--ty)) scale(0.1); opacity: 0; }
     }
-    .fly-item { position:fixed; z-index:9999; pointer-events:none; width:18px; height:18px; border-radius:50%; background:var(--red); border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.4); animation:flyToCart 0.75s cubic-bezier(0.25,0.46,0.45,0.94) forwards; }
+    .fly-item {
+      position: fixed; z-index: 9999; pointer-events: none;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--red); border: 2px solid #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      animation: flyToCart 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
 
     /* LOCK SCREEN */
     @keyframes zyskn-spin { to { transform: rotate(360deg); } }
     @keyframes zyskn-fade { from { opacity: 0; } to { opacity: 1; } }
     @keyframes zyskn-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
-    #zyskn-lock-screen { position:fixed; inset:0; z-index:9999; background:#0a0a0a; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.5rem; animation:zyskn-fade .4s ease; font-family:'Inter',sans-serif; }
-    #zyskn-lock-screen .zls-logo { font-size:2rem; font-weight:900; letter-spacing:-.05em; color:#fff; }
-    #zyskn-lock-screen .zls-logo span { color:#A30000; }
-    #zyskn-lock-screen .zls-spinner { width:36px; height:36px; border:3px solid rgba(255,255,255,.1); border-top-color:#A30000; border-radius:50%; animation:zyskn-spin .9s linear infinite; }
-    #zyskn-lock-screen .zls-text { font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.18em; color:#555; animation:zyskn-pulse 2s ease infinite; }
-    #zyskn-lock-screen .zls-sub { font-size:.58rem; color:#333; font-weight:500; letter-spacing:.06em; }
 
-    /* SEO CONTENT */
-    #seo-content { background:#fafafa; border-top:1px solid rgba(0,0,0,0.05); }
-    #seo-content h2 { font-size:clamp(1.1rem,3vw,1.5rem); }
-    #seo-content h3 { font-size:.95rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; margin:1.8rem 0 .6rem; color:var(--black); }
-    #seo-content p { font-size:.88rem; line-height:1.85; color:#555; max-width:900px; }
-    #seo-content ul { list-style:none; padding:0; margin:.5rem 0 1rem; display:flex; flex-wrap:wrap; gap:.5rem; max-width:900px; }
-    #seo-content ul li { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; background:var(--gray-mid); padding:.35rem .8rem; border-radius:2px; color:var(--black); }
+    #zyskn-lock-screen {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #0a0a0a; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 1.5rem;
+      animation: zyskn-fade .4s ease; font-family: 'Inter', sans-serif;
+    }
+    #zyskn-lock-screen .zls-logo { font-size: 2rem; font-weight: 900; letter-spacing: -.05em; color: #fff; }
+    #zyskn-lock-screen .zls-logo span { color: #A30000; }
+    #zyskn-lock-screen .zls-spinner { width: 36px; height: 36px; border: 3px solid rgba(255,255,255,.1); border-top-color: #A30000; border-radius: 50%; animation: zyskn-spin .9s linear infinite; }
+    #zyskn-lock-screen .zls-text { font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .18em; color: #555; animation: zyskn-pulse 2s ease infinite; }
+    #zyskn-lock-screen .zls-sub { font-size: .58rem; color: #333; font-weight: 500; letter-spacing: .06em; }
   </style>
 </head>
 
@@ -617,16 +591,31 @@
         <button class="auth-tab" id="tabRegister" onclick="switchTab('register')">Registrarse</button>
       </div>
       <div class="auth-form active" id="formLogin">
-        <div class="auth-field"><label>Correo electrónico</label><input type="email" id="loginEmail" placeholder="tu@correo.com"></div>
-        <div class="auth-field"><label>Contraseña</label><input type="password" id="loginPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+        <div class="auth-field">
+          <label>Correo electrónico</label>
+          <input type="email" id="loginEmail" placeholder="tu@correo.com">
+        </div>
+        <div class="auth-field">
+          <label>Contraseña</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+        </div>
         <button class="auth-btn" id="btnLogin" onclick="doLogin()">Iniciar sesión</button>
         <div class="auth-error" id="loginError"></div>
         <div class="auth-switch">¿No tenés cuenta? <a onclick="switchTab('register')">Registrate</a></div>
       </div>
       <div class="auth-form" id="formRegister">
-        <div class="auth-field"><label>Nombre</label><input type="text" id="regName" placeholder="Tu nombre"></div>
-        <div class="auth-field"><label>Correo electrónico</label><input type="email" id="regEmail" placeholder="tu@correo.com"></div>
-        <div class="auth-field"><label>Contraseña</label><input type="password" id="regPassword" placeholder="Mínimo 6 caracteres" onkeydown="if(event.key==='Enter')doRegister()"></div>
+        <div class="auth-field">
+          <label>Nombre</label>
+          <input type="text" id="regName" placeholder="Tu nombre">
+        </div>
+        <div class="auth-field">
+          <label>Correo electrónico</label>
+          <input type="email" id="regEmail" placeholder="tu@correo.com">
+        </div>
+        <div class="auth-field">
+          <label>Contraseña</label>
+          <input type="password" id="regPassword" placeholder="Mínimo 6 caracteres" onkeydown="if(event.key==='Enter')doRegister()">
+        </div>
         <button class="auth-btn" id="btnRegister" onclick="doRegister()">Crear cuenta</button>
         <div class="auth-error" id="registerError"></div>
         <div class="auth-success" id="registerSuccess"></div>
@@ -650,9 +639,9 @@
   <!-- TOP BAR -->
   <div class="top-bar">
     <div class="marquee-content">
-      <a href="https://instagram.com/zyskn_" target="_blank" class="marquee-item">
+      <a href="https://instagram.com/zyskn.vtg" target="_blank" class="marquee-item">
         <img src="https://cdn.simpleicons.org/instagram/FFFFFF" alt="Instagram">
-        <span>ZYSKN_</span>
+        <span>ZYSKN.VTG</span>
       </a>
       <span class="marquee-sep">·</span>
       <a href="https://wa.me/5493544631553" target="_blank" class="marquee-item">
@@ -660,14 +649,14 @@
         <span>+54 9 3544 631553</span>
       </a>
       <span class="marquee-sep">·</span>
-      <a href="https://www.tiktok.com/@zyskn_" target="_blank" class="marquee-item">
+      <a href="https://www.tiktok.com/@zyskn.vtg" target="_blank" class="marquee-item">
         <img src="https://cdn.simpleicons.org/tiktok/FFFFFF" alt="TikTok">
-        <span>ZYSKN_</span>
+        <span>ZYSKN.VTG</span>
       </a>
       <span class="marquee-sep">·</span>
-      <a href="https://instagram.com/zyskn_" target="_blank" class="marquee-item">
+      <a href="https://instagram.com/zyskn.vtg" target="_blank" class="marquee-item">
         <img src="https://cdn.simpleicons.org/instagram/FFFFFF" alt="Instagram">
-        <span>ZYSKN_</span>
+        <span>ZYSKN.VTG</span>
       </a>
       <span class="marquee-sep">·</span>
       <a href="https://wa.me/5493544631553" target="_blank" class="marquee-item">
@@ -681,9 +670,9 @@
   <!-- HEADER -->
   <header id="header">
     <div class="header-content">
-      <div class="logo-section" onclick="window.open('https://instagram.com/zyskn_','_blank')">
+      <div class="logo-section" onclick="window.open('https://instagram.com/zyskn.vtg','_blank')">
         <span class="logo">ZYSKN</span>
-        <span class="logo-slogan">Vintage Curado</span>
+        <span class="logo-slogan">Curated Vintage</span>
       </div>
       <div id="navContainer" class="nav-container">
         <nav class="nav-main" id="navMain">
@@ -757,17 +746,17 @@
     <!-- HERO -->
     <section class="hero">
       <div class="hero-content">
-        <h1>Ropa Vintage y Streetwear en Córdoba</h1>
-        <span class="hero-sub">Piezas únicas. Curadas en Córdoba. Sin Restock.</span>
-        <a onclick="scrollToSection('shop')" class="btn">VER DROP 1</a>
+        <h1>ZYSKN</h1>
+        <span class="hero-sub">Curated Vintage & Streetwear · Córdoba, Argentina</span>
+        <a onclick="scrollToSection('shop')" class="btn">VER COLECCIÓN</a>
       </div>
     </section>
 
     <!-- MANIFESTO -->
     <section id="manifesto">
       <div style="max-width:900px;margin:0 auto;">
-        <h2>NO VENDEMOS ROPA, <em>PRESERVAMOS CULTURA.</em> PIEZAS SELECCIONADAS UNA POR UNA PARA QUIENES BUSCAN LO <em>IRREPETIBLE.</em></h2>
-        <p>ZYSKN · EST. 2026</p>
+        <h2>NO VENDEMOS ROPA, <em>PRESERVAMOS CULTURA.</em> PIEZAS SELECCIONADAS UNA POR UNA PARA QUIENES BUSCAN LO IRREPETIBLE.</h2>
+        <p>ZYSKN CURATED ARCHIVE · EST. 2026</p>
       </div>
     </section>
 
@@ -797,19 +786,20 @@
       </div>
     </section>
 
-    <!-- PRODUCT DETAIL -->
+    <!-- PRODUCT DETAIL — estructura corregida con wrapper propio -->
     <section id="product-detail">
       <div class="product-detail-wrapper">
         <div class="product-detail-grid">
+          <!-- Columna imagen -->
           <div class="product-detail-col-img">
             <div id="zoomContainer" onclick="zoomImage()">
               <img id="detailImage" src="" alt="">
-              <div id="detailStatusOverlay" class="detail-status-overlay"></div>
               <button id="prevBtn" onclick="event.stopPropagation();changePhoto(-1)">‹</button>
               <button id="nextBtn" onclick="event.stopPropagation();changePhoto(1)">›</button>
             </div>
             <div id="thumbs"></div>
           </div>
+          <!-- Columna info -->
           <div class="product-info">
             <div class="detail-name-wrap">
               <h2 id="detailName"></h2>
@@ -874,15 +864,13 @@
       <div class="container">
         <h2 class="section-title">FAQ.</h2>
         <div style="max-width:800px;">
-          <details><summary>¿Qué tipo de ropa vende ZYSKN?</summary><p>Ropa vintage y streetwear curada en Córdoba: <strong>remeras americanas, hoodies oversize, camperas y pantalones cargo</strong> importados. Cada pieza es única, sin restock.</p></details>
           <details><summary>¿Qué es ropa americana?</summary><p>Moda importada de <strong>primera calidad</strong>, seleccionada directamente de <strong>colecciones exclusivas</strong> de Estados Unidos. Cada prenda pasa por un <strong>riguroso control de estado y curaduría</strong> para garantizar <strong>estilo y durabilidad</strong> a nuestros clientes.</p></details>
-          <details><summary>¿Por qué las prendas son únicas?</summary><p>Compramos y curamos pieza por pieza, no por lote. Eso significa que cada prenda tiene <strong>una sola unidad disponible</strong>: lo que ves es lo único que hay, y no vuelve a aparecer.</p></details>
           <details><summary>¿Hay cambios o devoluciones?</summary><p>No. Todas las piezas son únicas sin restock. Revisá detalladamente el estado especificado antes de comprar. Consultanos si tenés dudas.</p></details>
           <details><summary>¿Cuáles son los métodos de pago?</summary><p>Aceptamos transferencia bancaria o efectivo.</p></details>
           <details><summary>¿Cómo funcionan los envíos?</summary><p>Realizamos envíos por Correo Argentino a todo el país. El costo del envío corre por cuenta del cliente.</p></details>
           <details><summary>¿Puedo reservar una prenda?</summary><p>Sí, aceptamos reservas con una seña del 70% del valor total. La reserva tiene validez por 48 horas. <strong>Una vez pasadas las 48 hs, no hay devolución de la seña.</strong></p></details>
           <details><summary>¿Cómo verifico el estado de una prenda?</summary><p>Utilizamos una escala de 10/10 (Perfecta) a 8/10 (Buen estado con mínimo uso). <strong>Podés contactarnos por WhatsApp para fotos adicionales.</strong></p></details>
-          <details><summary>¿Cómo me contacto?</summary><p>Por WhatsApp al <a href="https://wa.me/5493544631553" target="_blank" style="font-weight:900;color:var(--red);">+54 9 3544 631553</a>, Instagram <a href="https://instagram.com/zyskn_" target="_blank" style="font-weight:900;color:var(--red);">@zyskn_</a> o TikTok <a href="https://www.tiktok.com/@zyskn_" target="_blank" style="font-weight:900;color:var(--red);">@zyskn_</a>.</p></details>
+          <details><summary>¿Cómo me contacto?</summary><p>Por WhatsApp al <a href="https://wa.me/5493544631553" target="_blank" style="font-weight:900;color:var(--red);">+54 9 3544 631553</a>, Instagram <a href="https://instagram.com/zyskn.vtg" target="_blank" style="font-weight:900;color:var(--red);">@zyskn.vtg</a> o TikTok <a href="https://www.tiktok.com/@zyskn.vtg" target="_blank" style="font-weight:900;color:var(--red);">@zyskn.vtg</a>.</p></details>
         </div>
       </div>
     </section>
@@ -898,13 +886,13 @@
             </div>
             <span class="social-label">WhatsApp</span>
           </a>
-          <a href="https://instagram.com/zyskn_" class="social-item ig" target="_blank" rel="noopener">
+          <a href="https://instagram.com/zyskn.vtg" class="social-item ig" target="_blank" rel="noopener">
             <div class="social-circle">
               <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
             </div>
             <span class="social-label">Instagram</span>
           </a>
-          <a href="https://www.tiktok.com/@zyskn_" class="social-item tt" target="_blank" rel="noopener">
+          <a href="https://www.tiktok.com/@zyskn.vtg" class="social-item tt" target="_blank" rel="noopener">
             <div class="social-circle">
               <svg viewBox="0 0 24 24" fill="#fff"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-11.07z"/></svg>
             </div>
@@ -917,11 +905,11 @@
     <footer class="bottom-footer">
       <div class="container">
         <div class="footer-brand">
-          <h2 onclick="window.open('https://instagram.com/zyskn_','_blank')">ZYSKN</h2>
+          <h2 onclick="window.open('https://instagram.com/zyskn.vtg','_blank')">ZYSKN</h2>
           <p>Curated Vintage &amp; Streetwear · Córdoba, Argentina</p>
         </div>
         <div class="footer-copy">
-          <p>® 2026 ZYSKN</p>
+          <p>© 2026 ZYSKN</p>
           <p style="margin-top:4px;">Todos los derechos reservados</p>
         </div>
       </div>
@@ -938,21 +926,21 @@
 
     /* STORE LOCK */
     async function checkStoreLock() {
-      try {
-        const { data, error } = await sb.from('settings').select('value').eq('key', 'store_locked').maybeSingle();
-        if (error) throw error;
-        if (data?.value === 'true') {
-          lockScroll();
-          document.getElementById('zyskn-lock-screen').style.display = 'flex';
-          const interval = setInterval(async () => {
-            try {
-              const { data: d2 } = await sb.from('settings').select('value').eq('key', 'store_locked').maybeSingle();
-              if (d2?.value !== 'true') { clearInterval(interval); window.location.reload(); }
-            } catch (e) {}
-          }, 10000);
-        }
-      } catch (e) { console.warn('ZYSKN lock check failed:', e); }
+  try {
+    const { data, error } = await sb.from('settings').select('value').eq('key', 'store_locked').maybeSingle();
+    if (error) throw error;
+    if (data?.value === 'true') {
+      lockScroll();
+      document.getElementById('zyskn-lock-screen').style.display = 'flex';
+      const interval = setInterval(async () => {
+        try {
+          const { data: d2 } = await sb.from('settings').select('value').eq('key', 'store_locked').maybeSingle();
+          if (d2?.value !== 'true') { clearInterval(interval); window.location.reload(); }
+        } catch (e) {}
+      }, 10000);
     }
+  } catch (e) { console.warn('ZYSKN lock check failed:', e); }
+}
 
     function lockScroll() {
       const scrollYNow = window.scrollY;
@@ -988,59 +976,6 @@
       if (p.img)  imgs.push(p.img);
       if (p.img2) imgs.push(p.img2);
       return imgs;
-    }
-
-    /* ============================================================
-       SCHEMA MARKUP DINÁMICO DE PRODUCTOS
-       Se inyecta en el <head> al cargar los productos desde Supabase
-       Permite rich snippets con precio y disponibilidad en Google
-    ============================================================ */
-    function injectProductSchema(products) {
-      // ItemList schema para listado general
-      const itemListSchema = {
-        "@context": "https://schema.org",
-        "@type": "ItemList",
-        "name": "Ropa Vintage y Streetwear ZYSKN Córdoba",
-        "description": "Catálogo de prendas vintage curadas: remeras americanas, hoodies oversize, cargos, camperas y más. Únicas unidades sin restock.",
-        "url": "https://zyskn.github.io",
-        "numberOfItems": products.length,
-        "itemListElement": products.slice(0, 20).map((p, i) => ({
-          "@type": "ListItem",
-          "position": i + 1,
-          "item": {
-            "@type": "Product",
-            "name": p.name,
-            "description": p.description ? p.description.replace(/<[^>]*>/g, '').substring(0, 160) : `${p.name} - Prenda vintage única en ZYSKN Córdoba`,
-            "image": getProductImages(p)[0] || '',
-            "brand": { "@type": "Brand", "name": "ZYSKN" },
-            "offers": {
-              "@type": "Offer",
-              "priceCurrency": "ARS",
-              "price": String(p.price),
-              "availability": p.is_sold
-                ? "https://schema.org/OutOfStock"
-                : "https://schema.org/InStock",
-              "seller": {
-                "@type": "Organization",
-                "name": "ZYSKN"
-              },
-              "url": "https://zyskn.github.io"
-            },
-            "size": (p.sizes || []).join(', ') || p.talle || '',
-            "category": (p.categories && p.categories.length ? p.categories : [p.category || '']).join(', ')
-          }
-        }))
-      };
-
-      // Reemplazar el schema-itemlist existente o crear uno nuevo
-      let el = document.getElementById('schema-itemlist');
-      if (!el) {
-        el = document.createElement('script');
-        el.type = 'application/ld+json';
-        el.id = 'schema-itemlist';
-        document.head.appendChild(el);
-      }
-      el.textContent = JSON.stringify(itemListSchema);
     }
 
     /* FAVORITOS */
@@ -1145,20 +1080,18 @@
 
     /* SUPABASE — PRODUCTOS */
     async function loadProducts() {
-      showSkeletons('productsGrid', 6); showSkeletons('newProductsGrid', 3);
-      try {
-        const { data, error } = await sb.from('products').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false });
-        if (error) throw error;
-        allProducts = data || [];
-      } catch (e) { console.error('Error cargando productos:', e); allProducts = []; }
-      await syncReservations();
-      filteredProducts = [...allProducts];
-      renderProducts(filteredProducts, 'productsGrid');
-      renderProducts(allProducts.filter(p => p.is_new), 'newProductsGrid');
-      // Inyectar schema de productos luego de cargar
-      injectProductSchema(allProducts);
-      updateCartUI(); startTimers();
-    }
+  showSkeletons('productsGrid', 6); showSkeletons('newProductsGrid', 3);
+  try {
+    const { data, error } = await sb.from('products').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false });
+    if (error) throw error;
+    allProducts = data || [];
+  } catch (e) { console.error('Error cargando productos:', e); allProducts = []; }
+  await syncReservations();
+  filteredProducts = [...allProducts];
+  renderProducts(filteredProducts, 'productsGrid');
+  renderProducts(allProducts.filter(p => p.is_new), 'newProductsGrid');
+  updateCartUI(); startTimers();
+}
 
     /* RESERVAS */
     async function syncReservations() {
@@ -1207,9 +1140,9 @@
       if (type === 'all') result = [...allProducts];
       else if (type === 'section') result = allProducts.filter(p => p.section === value);
       else if (type === 'category') result = allProducts.filter(p => {
-        const cats = p.categories || (p.category ? [p.category] : []);
-        return cats.map(c => c.toLowerCase()).includes(value.toLowerCase());
-      });
+  const cats = p.categories || (p.category ? [p.category] : []);
+  return cats.map(c => c.toLowerCase()).includes(value.toLowerCase());
+});
       else if (type === 'size') result = allProducts.filter(p => p.sizes && p.sizes.includes(value));
       else if (type === 'new') result = allProducts.filter(p => p.is_new);
       filteredProducts = result;
@@ -1230,16 +1163,15 @@
         const photos = getProductImages(p);
         const mainImg = photos[0] || '';
         const hoverImg = photos[1] || '';
-        const cats = (p.categories && p.categories.length ? p.categories : [p.category || '']).join(', ');
         return `<div class="product-card ${isReserved ? 'reserved' : ''} ${isSold ? 'sold' : ''}" onclick="showProductDetail('${p.id}')">
           <div class="product-image">
-            <img src="${mainImg}" alt="${p.name} - Ropa Vintage ZYSKN Córdoba" loading="lazy"
+            <img src="${mainImg}" alt="${p.name}" loading="lazy"
               ${hoverImg ? `onmouseenter="this.src='${hoverImg}'" onmouseleave="this.src='${mainImg}'"` : ''}>
           </div>
           <div class="product-meta">
             <div>
               <p class="product-name">${p.name}</p>
-              <p class="product-cat">${cats}</p>
+              <p class="product-cat">${(p.categories && p.categories.length ? p.categories : [p.category || '']).join(', ')}</p>
               <div class="product-badges">${newBadge}${sizeBadges}</div>
             </div>
             <p class="product-price">$${Number(p.price).toLocaleString('es-AR')}</p>
@@ -1260,7 +1192,6 @@
       document.getElementById('detailPrice').textContent = `$${Number(currentProduct.price).toLocaleString('es-AR')}`;
       document.getElementById('detailDesc').innerHTML = currentProduct.description || '';
       document.getElementById('detailImage').src = currentPhotos[0] || '';
-      document.getElementById('detailImage').alt = `${currentProduct.name} - Vintage ZYSKN Córdoba`;
       document.getElementById('detailImage').style.transform = 'scale(1)';
       document.getElementById('detailTalle').textContent = currentProduct.talle || 'Consultar';
       document.getElementById('detailMedidas').textContent = currentProduct.medidas || 'Consultar';
@@ -1271,7 +1202,7 @@
       document.getElementById('prevBtn').style.display = hasMultiple ? 'block' : 'none';
       document.getElementById('nextBtn').style.display = hasMultiple ? 'block' : 'none';
       document.getElementById('thumbs').innerHTML = currentPhotos.map((src, i) =>
-        `<img src="${src}" alt="${currentProduct.name} foto ${i+1}" onclick="currentPhotoIndex=${i};changePhoto(0)" class="${i === 0 ? 'active-thumb' : ''}">`
+        `<img src="${src}" onclick="currentPhotoIndex=${i};changePhoto(0)" class="${i === 0 ? 'active-thumb' : ''}">`
       ).join('');
 
       const zc = document.getElementById('zoomContainer');
@@ -1285,20 +1216,19 @@
         lt = now;
       };
 
-      const btn = document.querySelector('#product-detail .btn-add-cart');
-      const statusOverlay = document.getElementById('detailStatusOverlay');
+      const infoDiv = document.querySelector('#product-detail .product-info');
+      const oldBanner = infoDiv.querySelector('.status-banner');
+      if (oldBanner) oldBanner.remove();
+      const btn = infoDiv.querySelector('.btn-add-cart');
       const isSold = currentProduct.is_sold;
       const isReservedByOther = currentProduct._reserved && !isReservedByMe(currentProduct.id);
 
       if (isSold || isReservedByOther) {
         const text = isSold ? 'SIN STOCK' : 'RESERVADO';
-        statusOverlay.textContent = text;
-        statusOverlay.classList.add('show');
-        statusOverlay.classList.toggle('sold', isSold);
+        const color = isSold ? '#000' : 'var(--red)';
+        infoDiv.insertAdjacentHTML('afterbegin', `<div class="status-banner" style="background:${color};color:#fff;padding:10px;text-align:center;font-weight:900;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1.5rem;font-size:.75rem;">${text}</div>`);
         btn.disabled = true; btn.style.opacity = '.4'; btn.style.cursor = 'not-allowed'; btn.textContent = text;
       } else {
-        statusOverlay.classList.remove('show', 'sold');
-        statusOverlay.textContent = '';
         btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; btn.textContent = 'AGREGAR AL CARRITO';
       }
 
@@ -1418,39 +1348,15 @@
       const sucursal  = document.getElementById('orderShippingAddr').value.trim();
       if (!nombre || !dni || !celular || !localidad) { alert('Completá Nombre, DNI, Celular y Ciudad antes de continuar'); return; }
       const orderId = 'ZSK-' + Date.now().toString(36).toUpperCase();
-      const now = new Date();
-      const fecha = now.toLocaleDateString('es-AR');
-      const hora = now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+      const now = new Date(); const fecha = now.toLocaleDateString('es-AR'); const hora = now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
       const total = cart.reduce((s, i) => s + Number(i.price), 0);
       await saveOrder({ order_id: orderId, customer_name: nombre, customer_dni: dni, customer_phone: celular, customer_email: email, customer_location: localidad, customer_shipping: sucursal, items: cart, total: total, status: 'pending' });
-
-      let msg = `*Holaa! ZYSKN · NUEVO PEDIDO*\n\n`;
-      msg += `*N° de Pedido:* ${orderId}\n`;
-      msg += `*Fecha:* ${fecha} · ${hora}\n\n`;
-      msg += `─────────────────────\n`;
-      msg += `*DATOS DEL COMPRADOR*\n`;
-      msg += `─────────────────────\n\n`;
-      msg += `· *Nombre:* ${nombre}\n`;
-      msg += `· *DNI:* ${dni}\n`;
-      msg += `· *Celular:* ${celular}\n`;
-      msg += `· *Email:* ${email || 'No informado'}\n`;
-      msg += `· *Localidad:* ${localidad}\n`;
-      msg += `· *Envío:* ${sucursal || 'A coordinar'}\n\n`;
-      msg += `─────────────────────\n`;
-      msg += `*PRENDAS SELECCIONADAS*\n`;
-      msg += `─────────────────────\n\n`;
-      cart.forEach((item, index) => {
-        msg += `${index + 1}. *${item.name}*\n`;
-        msg += `   Talle: ${item.size} · Precio: $${Number(item.price).toLocaleString('es-AR')}\n\n`;
-      });
-      msg += `─────────────────────\n`;
-      msg += `· *TOTAL: $${total.toLocaleString('es-AR')}*\n`;
-      msg += `_· El costo de envío se calcula según destino._\n\n`;
-      msg += `_Gracias por tu compra. En breve nos ponemos en contacto!._`;
-
+      let msg = `Holaa *ZYSKN · NUEVO PEDIDO*%0A%0A*N° de Pedido:* ${orderId}%0A*Fecha:* ${fecha} · ${hora}%0A%0A─────────────────────%0A*DATOS DEL COMPRADOR*%0A─────────────────────%0A%0A· *Nombre:* ${nombre}%0A· *DNI:* ${dni}%0A· *Celular:* ${celular}%0A· *Email:* ${email || 'No informado'}%0A· *Localidad:* ${localidad}%0A· *Envío:* ${sucursal || 'A coordinar'}%0A%0A─────────────────────%0A*PRENDAS SELECCIONADAS*%0A─────────────────────%0A%0A`;
+      cart.forEach((item, index) => { msg += `${index + 1}. *${item.name}*%0A   Talle: ${item.size} · Precio: $${Number(item.price).toLocaleString('es-AR')}%0A%0A`; });
+      msg += `─────────────────────%0A· *TOTAL: $${total.toLocaleString('es-AR')}*%0A_· El costo de envío se calcula según destino._%0A%0A_Gracias por tu compra. En breve nos ponemos en contacto._ 🙌%0A`;
       for (const item of cart) { await deleteReservation(item.id); }
       cart = []; localStorage.setItem('zysk_cart', JSON.stringify(cart)); updateCartUI();
-      window.open(`https://wa.me/5493544631553?text=${encodeURIComponent(msg)}`, '_blank');
+      window.open(`https://wa.me/5493544631553?text=${msg}`, '_blank');
       showNotification('PEDIDO ENVIADO · ' + orderId);
     }
 
