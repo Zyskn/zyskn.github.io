@@ -1,2 +1,2 @@
 # Zyskn.com
-ZYSKN ★ No restocks.
+ZYSKN - No restocks.
