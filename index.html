@@ -928,13 +928,25 @@
     </footer>
   </main>
 
-  <!-- SUPABASE SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- FIREBASE SDK (reemplaza a Supabase) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+  <script>
+    window.firebaseConfig = {
+      apiKey: "AIzaSyCTwHUL6oG3u7TlS5Wrp8NnF0OmQoRR24c",
+      authDomain: "zyskn-store.firebaseapp.com",
+      projectId: "zyskn-store",
+      storageBucket: "zyskn-store.firebasestorage.app",
+      messagingSenderId: "993449780187",
+      appId: "1:993449780187:web:c2dc8f216529598f347dfe"
+    };
+  </script>
+  <script src="firebase-shim.js"></script>
 
   <script>
-    const SUPABASE_URL = 'https://iifrudupaxcahnopxqcb.supabase.co';
-    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlpZnJ1ZHVwYXhjYWhub3B4cWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NDUyNjgsImV4cCI6MjA5NzAyMTI2OH0.2tTm-ko4n15HctHX40w4_OjBlajaxYZXaqhNamGCD8o';
-    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    // `sb` ahora lo define firebase-shim.js con la misma interfaz que usaba Supabase
 
     /* STORE LOCK */
     async function checkStoreLock() {
