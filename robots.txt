@@ -1,5 +1,5 @@
+# permite todo excepto /admin
 User-agent: *
-Allow: /
-Disallow: /admin/
+Disallow: /admin
 
 Sitemap: https://zyskn.github.io/sitemap.xml
