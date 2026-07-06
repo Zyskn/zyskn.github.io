@@ -31,7 +31,7 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background-image: url('fondo-pagina.webp');
+  background-image: url('fondo pagina 1.jpg');
   background-size: 100% auto;
   background-position: top center;
   background-repeat: no-repeat;
