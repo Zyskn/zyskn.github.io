@@ -151,21 +151,35 @@
     .top-bar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 3000;
       height: 32px; background: var(--red); color: #fff;
-      display: flex; align-items: center; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
       font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
       letter-spacing: 0.06em; transition: transform 0.3s ease;
     }
     body.scrolled-down .top-bar { transform: translateY(-100%); }
-    .marquee-content {
-      display: flex; width: max-content;
-      animation: marquee-infinite 26s linear infinite;
-      will-change: transform; align-items: center; height: 100%;
+
+    .tb-arrow {
+      background:none; border:none; color:rgba(255,255,255,.55); cursor:pointer;
+      font-size:.95rem; font-weight:700; padding:0 .8rem; height:100%;
+      display:flex; align-items:center; justify-content:center;
+      transition:color .2s; flex-shrink:0;
     }
-    @keyframes marquee-infinite { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-    .marquee-item { display:inline-flex; align-items:center; gap:7px; margin-right:56px; color:#fff; text-decoration:none; white-space:nowrap; }
-    .marquee-item img { width:14px; height:14px; flex-shrink:0; }
-    .marquee-sep { opacity:.5; margin-right:56px; font-size:.6rem; }
-    @media (max-width:1024px) { .top-bar { height:28px; font-size:.65rem; } }
+    .tb-arrow:hover { color:#fff; }
+
+    .tb-track { position:relative; flex:1; height:100%; max-width:560px; }
+    .tb-msg {
+      position:absolute; inset:0;
+      display:flex; align-items:center; justify-content:center; gap:.45rem;
+      font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em;
+      opacity:0; transform:translateY(6px);
+      transition:opacity .35s ease, transform .35s ease;
+      pointer-events:none; white-space:nowrap;
+    }
+    .tb-msg.active { opacity:1; transform:translateY(0); pointer-events:auto; }
+    .tb-msg img { width:13px; height:13px; flex-shrink:0; }
+    .tb-msg a { color:#fff; text-decoration:none; }
+    .tb-msg a:hover { text-decoration:underline; }
+
+    @media (max-width:1024px) { .top-bar { height:28px; font-size:.65rem; } .tb-msg { font-size:.6rem; } .tb-arrow { padding:0 .5rem; font-size:.85rem; } }
 
     /* HEADER */
     header#header {
@@ -652,33 +666,25 @@
 
   <!-- TOP BAR -->
   <div class="top-bar">
-    <div class="marquee-content">
-      <a href="https://instagram.com/zyskn_" target="_blank" class="marquee-item">
-        <img src="https://cdn.simpleicons.org/instagram/FFFFFF" alt="Instagram">
-        <span>ZYSKN_</span>
-      </a>
-      <span class="marquee-sep">·</span>
-      <a href="https://wa.me/5493544631553" target="_blank" class="marquee-item">
-        <img src="https://cdn.simpleicons.org/whatsapp/FFFFFF" alt="WhatsApp">
-        <span>+54 9 3544 631553</span>
-      </a>
-      <span class="marquee-sep">·</span>
-      <a href="https://www.tiktok.com/@zyskn_" target="_blank" class="marquee-item">
-        <img src="https://cdn.simpleicons.org/tiktok/FFFFFF" alt="TikTok">
-        <span>ZYSKN_</span>
-      </a>
-      <span class="marquee-sep">·</span>
-      <a href="https://instagram.com/zyskn_" target="_blank" class="marquee-item">
-        <img src="https://cdn.simpleicons.org/instagram/FFFFFF" alt="Instagram">
-        <span>ZYSKN_</span>
-      </a>
-      <span class="marquee-sep">·</span>
-      <a href="https://wa.me/5493544631553" target="_blank" class="marquee-item">
-        <img src="https://cdn.simpleicons.org/whatsapp/FFFFFF" alt="WhatsApp">
-        <span>+54 9 3544 631553</span>
-      </a>
-      <span class="marquee-sep">·</span>
+    <button class="tb-arrow" onclick="tbPrev()" aria-label="Anterior">‹</button>
+    <div class="tb-track" id="tbTrack">
+      <div class="tb-msg active">
+        <img src="https://cdn.simpleicons.org/instagram/FFFFFF" alt="">
+        <a href="https://instagram.com/zyskn_" target="_blank">SEGUINOS EN INSTAGRAM</a>
+      </div>
+      <div class="tb-msg">
+        <img src="https://cdn.simpleicons.org/tiktok/FFFFFF" alt="">
+        <a href="https://www.tiktok.com/@zyskn_" target="_blank">SEGUINOS EN TIKTOK</a>
+      </div>
+      <div class="tb-msg">
+        <img src="https://cdn.simpleicons.org/whatsapp/FFFFFF" alt="">
+        <a href="https://wa.me/5493544631553" target="_blank">CONSULTAS POR WHATSAPP</a>
+      </div>
+      <div class="tb-msg">
+        <span>ENVÍOS A TODO EL PAÍS · PIEZAS ÚNICAS SIN RESTOCK</span>
+      </div>
     </div>
+    <button class="tb-arrow" onclick="tbNext()" aria-label="Siguiente">›</button>
   </div>
 
   <!-- HEADER -->
@@ -938,6 +944,24 @@
     const SUPABASE_URL = 'https://iifrudupaxcahnopxqcb.supabase.co';
     const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlpZnJ1ZHVwYXhjYWhub3B4cWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NDUyNjgsImV4cCI6MjA5NzAyMTI2OH0.2tTm-ko4n15HctHX40w4_OjBlajaxYZXaqhNamGCD8o';
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    /* TOP BAR — autoplay + flechas */
+    let tbIndex = 0;
+    let tbTimer = null;
+    function tbGetMsgs() { return document.querySelectorAll('#tbTrack .tb-msg'); }
+    function tbShow(i) {
+      const msgs = tbGetMsgs();
+      msgs.forEach(m => m.classList.remove('active'));
+      tbIndex = (i + msgs.length) % msgs.length;
+      msgs[tbIndex].classList.add('active');
+    }
+    function tbNext() { tbShow(tbIndex + 1); tbRestart(); }
+    function tbPrev() { tbShow(tbIndex - 1); tbRestart(); }
+    function tbAuto() { tbTimer = setInterval(() => tbShow(tbIndex + 1), 4000); }
+    function tbRestart() { clearInterval(tbTimer); tbAuto(); }
+    tbAuto();
+    document.querySelector('.top-bar')?.addEventListener('mouseenter', () => clearInterval(tbTimer));
+    document.querySelector('.top-bar')?.addEventListener('mouseleave', tbAuto);
 
     /* STORE LOCK */
     async function checkStoreLock() {
