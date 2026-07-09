@@ -381,7 +381,7 @@
     @media (max-width:768px) { section { padding:3rem 1.2rem; } .section-title { font-size:1.2rem; margin-bottom:1.8rem; } }
 
     /* HERO */
-    .hero { height:82vh; min-height:520px; background-image: linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,.65)), url('hero-bg.jpeg[1].jpeg'); background-size: cover; background-position: center; display:flex; align-items:center; justify-content:center; color:#fff; text-align:center; max-width:100%; position:relative; overflow:hidden; }
+    .hero { height:82vh; min-height:520px; background-image: linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,.65)), url('hero-bg.jpeg'); background-size: cover; background-position: center; display:flex; align-items:center; justify-content:center; color:#fff; text-align:center; max-width:100%; position:relative; overflow:hidden; }
     .hero::before { content:none; }
     .hero-content { position:relative; z-index:1; padding:0 2rem; }
     .hero h1 { font-size:clamp(2.4rem,9vw,6rem); font-weight:900; text-transform:uppercase; letter-spacing:-.04em; line-height:.92; }
@@ -514,6 +514,7 @@
     #detailSizes button:hover, #detailSizes button.selected { background:var(--black); color:#fff; }
     .btn-add-cart { width:100%; background:var(--black); color:#fff; padding:1.1rem; font-size:.85rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; border:2px solid var(--black); cursor:pointer; transition:var(--transition); }
     .btn-add-cart:hover { background:transparent; color:var(--black); }
+    .btn-add-cart:disabled:hover { background:var(--black); color:#fff; }
     .back-link { margin-top:1.4rem; font-size:.75rem; text-decoration:underline; cursor:pointer; font-weight:700; text-transform:uppercase; letter-spacing:.08em; display:inline-block; color:var(--text-muted); }
     .back-link:hover { color:var(--black); }
     #thumbs { display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
@@ -607,10 +608,31 @@
     #seo-content p { font-size:.88rem; line-height:1.85; color:#555; max-width:900px; }
     #seo-content ul { list-style:none; padding:0; margin:.5rem 0 1rem; display:flex; flex-wrap:wrap; gap:.5rem; max-width:900px; }
     #seo-content ul li { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; background:var(--gray-mid); padding:.35rem .8rem; border-radius:2px; color:var(--black); }
+
+    /* SKIP LINK (accesibilidad) */
+    .skip-link {
+      position:absolute; left:-9999px; top:0; z-index:10000;
+      background:var(--black); color:#fff; padding:.8rem 1.4rem;
+      font-size:.75rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em;
+      text-decoration:none;
+    }
+    .skip-link:focus { left:12px; top:38px; }
+
+    /* Foco visible accesible en elementos interactivos clave */
+    .icon-btn:focus-visible, .filter-btn:focus-visible, .btn:focus-visible,
+    .btn-add-cart:focus-visible, .auth-btn:focus-visible, #detailSizes button:focus-visible,
+    .fav-btn:focus-visible, .nav-main a:focus-visible {
+      outline: 2px solid var(--red); outline-offset: 2px;
+    }
+
+    /* Placeholder visual para imágenes rotas */
+    img.img-error { object-fit: contain !important; padding: 18%; opacity:.35; background: var(--gray-bg); }
   </style>
 </head>
 
 <body>
+  <a href="#shop" class="skip-link">Saltar al contenido</a>
+
   <!-- LOCK SCREEN -->
   <div id="zyskn-lock-screen" style="display:none;">
     <div class="zls-logo">ZYSKN</div>
@@ -620,42 +642,42 @@
   </div>
 
   <div id="supreme-overlay"></div>
-  <div id="notification" class="notification"></div>
+  <div id="notification" class="notification" role="status" aria-live="polite"></div>
   <div id="nav-overlay"></div>
 
   <!-- AUTH MODAL -->
-  <div id="authModal">
+  <div id="authModal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
     <div class="auth-box">
-      <button class="auth-close" onclick="closeAuthModal()">×</button>
-      <div class="auth-logo">ZYSKN</div>
+      <button class="auth-close" onclick="closeAuthModal()" aria-label="Cerrar">×</button>
+      <div class="auth-logo" id="authModalTitle">ZYSKN</div>
       <div class="auth-subtitle">Ropa Vintage</div>
-      <div class="auth-tabs">
-        <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Iniciar sesión</button>
-        <button class="auth-tab" id="tabRegister" onclick="switchTab('register')">Registrarse</button>
+      <div class="auth-tabs" role="tablist">
+        <button class="auth-tab active" id="tabLogin" role="tab" aria-selected="true" onclick="switchTab('login')">Iniciar sesión</button>
+        <button class="auth-tab" id="tabRegister" role="tab" aria-selected="false" onclick="switchTab('register')">Registrarse</button>
       </div>
       <div class="auth-form active" id="formLogin">
-        <div class="auth-field"><label>Correo electrónico</label><input type="email" id="loginEmail" placeholder="tu@correo.com"></div>
-        <div class="auth-field"><label>Contraseña</label><input type="password" id="loginPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+        <div class="auth-field"><label for="loginEmail">Correo electrónico</label><input type="email" id="loginEmail" autocomplete="email" placeholder="tu@correo.com"></div>
+        <div class="auth-field"><label for="loginPassword">Contraseña</label><input type="password" id="loginPassword" autocomplete="current-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
         <button class="auth-btn" id="btnLogin" onclick="doLogin()">Iniciar sesión</button>
-        <div class="auth-error" id="loginError"></div>
+        <div class="auth-error" id="loginError" role="alert"></div>
         <div class="auth-switch">¿No tenés cuenta? <a onclick="switchTab('register')">Registrate</a></div>
       </div>
       <div class="auth-form" id="formRegister">
-        <div class="auth-field"><label>Nombre</label><input type="text" id="regName" placeholder="Tu nombre"></div>
-        <div class="auth-field"><label>Correo electrónico</label><input type="email" id="regEmail" placeholder="tu@correo.com"></div>
-        <div class="auth-field"><label>Contraseña</label><input type="password" id="regPassword" placeholder="Mínimo 6 caracteres" onkeydown="if(event.key==='Enter')doRegister()"></div>
+        <div class="auth-field"><label for="regName">Nombre</label><input type="text" id="regName" autocomplete="name" placeholder="Tu nombre"></div>
+        <div class="auth-field"><label for="regEmail">Correo electrónico</label><input type="email" id="regEmail" autocomplete="email" placeholder="tu@correo.com"></div>
+        <div class="auth-field"><label for="regPassword">Contraseña</label><input type="password" id="regPassword" autocomplete="new-password" placeholder="Mínimo 6 caracteres" onkeydown="if(event.key==='Enter')doRegister()"></div>
         <button class="auth-btn" id="btnRegister" onclick="doRegister()">Crear cuenta</button>
-        <div class="auth-error" id="registerError"></div>
-        <div class="auth-success" id="registerSuccess"></div>
+        <div class="auth-error" id="registerError" role="alert"></div>
+        <div class="auth-success" id="registerSuccess" role="status"></div>
         <div class="auth-switch">¿Ya tenés cuenta? <a onclick="switchTab('login')">Iniciá sesión</a></div>
       </div>
     </div>
   </div>
 
   <!-- CONFIRM DELETE MODAL -->
-  <div id="confirmModal">
+  <div id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle">
     <div class="confirm-box">
-      <h3>Eliminar cuenta</h3>
+      <h3 id="confirmModalTitle">Eliminar cuenta</h3>
       <p>¿Estás seguro? Esta acción es irreversible. Tu cuenta y todos tus datos serán eliminados permanentemente.</p>
       <div class="confirm-actions">
         <button class="confirm-cancel" onclick="closeConfirmModal()">Cancelar</button>
@@ -666,40 +688,40 @@
 
   <!-- TOP BAR -->
   <div class="top-bar">
-    <button class="tb-arrow" onclick="tbPrev()" aria-label="Anterior">‹</button>
+    <button class="tb-arrow" onclick="tbPrev()" aria-label="Mensaje anterior">‹</button>
     <div class="tb-track" id="tbTrack">
       <div class="tb-msg active">
-        <img src="https://cdn.simpleicons.org/instagram/FFFFFF" alt="">
-        <a href="https://instagram.com/zyskn_" target="_blank">SEGUINOS EN INSTAGRAM</a>
+        <img src="https://cdn.simpleicons.org/instagram/FFFFFF" alt="" width="13" height="13">
+        <a href="https://instagram.com/zyskn_" target="_blank" rel="noopener noreferrer">SEGUINOS EN INSTAGRAM</a>
       </div>
       <div class="tb-msg">
-        <img src="https://cdn.simpleicons.org/tiktok/FFFFFF" alt="">
-        <a href="https://www.tiktok.com/@zyskn_" target="_blank">SEGUINOS EN TIKTOK</a>
+        <img src="https://cdn.simpleicons.org/tiktok/FFFFFF" alt="" width="13" height="13">
+        <a href="https://www.tiktok.com/@zyskn_" target="_blank" rel="noopener noreferrer">SEGUINOS EN TIKTOK</a>
       </div>
       <div class="tb-msg">
-        <img src="https://cdn.simpleicons.org/whatsapp/FFFFFF" alt="">
-        <a href="https://wa.me/5493544631553" target="_blank">CONSULTAS POR WHATSAPP</a>
+        <img src="https://cdn.simpleicons.org/whatsapp/FFFFFF" alt="" width="13" height="13">
+        <a href="https://wa.me/5493544631553" target="_blank" rel="noopener noreferrer">CONSULTAS POR WHATSAPP</a>
       </div>
       <div class="tb-msg">
         <span>ENVÍOS A TODO EL PAÍS · PIEZAS ÚNICAS SIN RESTOCK</span>
       </div>
     </div>
-    <button class="tb-arrow" onclick="tbNext()" aria-label="Siguiente">›</button>
+    <button class="tb-arrow" onclick="tbNext()" aria-label="Mensaje siguiente">›</button>
   </div>
 
   <!-- HEADER -->
   <header id="header">
     <div class="header-content">
-      <div class="logo-section" onclick="window.open('https://instagram.com/zyskn_','_blank')"> 
+      <div class="logo-section" onclick="window.open('https://instagram.com/zyskn_','_blank','noopener')" role="link" tabindex="0" onkeydown="if(event.key==='Enter')window.open('https://instagram.com/zyskn_','_blank','noopener')" aria-label="ZYSKN — ir a Instagram">
         <span class="logo">ZYSKN</span>
         <span class="logo-slogan">Ropa Vintage</span>
       </div>
       <div id="navContainer" class="nav-container">
-        <nav class="nav-main" id="navMain">
+        <nav class="nav-main" id="navMain" aria-label="Navegación principal">
           <div class="mobile-search" style="display:none; width:100%; margin-bottom:1.6rem;">
             <div style="position:relative; border-bottom:1.5px solid #000;">
-              <svg style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:#000;opacity:.5;" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-              <input type="text" placeholder="Buscar" onkeyup="if(event.key==='Enter'){mobileSearch(this.value);this.value='';}" style="width:100%;padding:1rem 0 1rem 24px;border:none;background:transparent;font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;outline:none;color:#000;">
+              <svg style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:#000;opacity:.5;" viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <input type="text" placeholder="Buscar" aria-label="Buscar productos" onkeyup="if(event.key==='Enter'){mobileSearch(this.value);this.value='';}" style="width:100%;padding:1rem 0 1rem 24px;border:none;background:transparent;font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;outline:none;color:#000;">
             </div>
           </div>
           <div class="nav-item"><a href="javascript:void(0)" onclick="applyFilter('all','all')">TODO</a></div>
@@ -736,15 +758,15 @@
         <div class="nav-icons">
           <div class="search-wrapper">
             <div class="search-input-container">
-              <input type="text" id="searchInput" placeholder="Buscar" onkeyup="handleSearch(event)">
+              <input type="text" id="searchInput" placeholder="Buscar" aria-label="Buscar productos" onkeyup="handleSearch(event)">
             </div>
-            <button class="icon-btn search-icon" onclick="toggleSearch()">
-              <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <button class="icon-btn search-icon" onclick="toggleSearch()" aria-label="Abrir búsqueda">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
             </button>
           </div>
           <div class="user-menu-wrapper" id="userMenuWrapper">
-            <button class="icon-btn" id="userAuth" onclick="openAuthModal()" title="Iniciar sesión">
-              <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+            <button class="icon-btn" id="userAuth" onclick="openAuthModal()" title="Iniciar sesión" aria-label="Cuenta de usuario" aria-haspopup="true" aria-expanded="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
             </button>
             <div class="user-dropdown" id="userDropdown" style="display:none;">
               <div class="user-dropdown-name" id="userDropdownName">—</div>
@@ -752,11 +774,11 @@
               <button class="user-dropdown-item danger" onclick="openConfirmModal()">Eliminar cuenta</button>
             </div>
           </div>
-          <button class="icon-btn cart-icon" id="cart-icon" onclick="scrollToSection('cart-section')">
-            <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+          <button class="icon-btn cart-icon" id="cart-icon" onclick="scrollToSection('cart-section')" aria-label="Ver carrito de compras">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
             <span class="cart-badge" id="cartBadge" style="display:none;">0</span>
           </button>
-          <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+          <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
         </div>
       </div>
     </div>
@@ -768,7 +790,7 @@
       <div class="hero-content">
         <h1>Ropa Vintage y Streetwear en Córdoba</h1>
         <span class="hero-sub">CADA PIEZA, ÚNICA. CADA DROP, IRREPETIBLE.</span>
-        <a onclick="scrollToSection('shop')" class="btn">VER DROP 1</a>
+        <a onclick="scrollToSection('shop')" class="btn" role="button" tabindex="0" onkeydown="if(event.key==='Enter')scrollToSection('shop')">VER DROP 1</a>
       </div>
     </section>
 
@@ -782,7 +804,7 @@
 
     <!-- FILTROS -->
     <div id="filter-bar">
-      <div class="filter-inner">
+      <div class="filter-inner" role="group" aria-label="Filtros de productos">
         <button class="filter-btn active" onclick="applyFilter('all','all')" data-filter="all">TODO</button>
         <div class="filter-sep"></div>
         <button class="filter-btn" onclick="applyFilter('section','arriba')" data-filter="arriba">ARRIBA</button>
@@ -814,15 +836,15 @@
             <div id="zoomContainer" onclick="zoomImage()">
               <img id="detailImage" src="" alt="">
               <div id="detailStatusOverlay" class="detail-status-overlay"></div>
-              <button id="prevBtn" onclick="event.stopPropagation();changePhoto(-1)">‹</button>
-              <button id="nextBtn" onclick="event.stopPropagation();changePhoto(1)">›</button>
+              <button id="prevBtn" onclick="event.stopPropagation();changePhoto(-1)" aria-label="Foto anterior">‹</button>
+              <button id="nextBtn" onclick="event.stopPropagation();changePhoto(1)" aria-label="Foto siguiente">›</button>
             </div>
             <div id="thumbs"></div>
           </div>
           <div class="product-info">
             <div class="detail-name-wrap">
               <h2 id="detailName"></h2>
-              <button class="fav-btn" id="favBtn" onclick="toggleFavorite()" title="Agregar a favoritos" aria-label="Agregar a favoritos">♡</button>
+              <button class="fav-btn" id="favBtn" onclick="toggleFavorite()" title="Agregar a favoritos" aria-label="Agregar a favoritos" aria-pressed="false">♡</button>
             </div>
             <p id="detailPrice"></p>
             <div id="detailDesc"></div>
@@ -835,7 +857,7 @@
             <p class="sizes-label">Seleccionar Talle</p>
             <div id="detailSizes"></div>
             <button class="btn-add-cart" onclick="addToCartFromDetail(event)">AGREGAR AL CARRITO</button>
-            <span class="back-link" onclick="scrollToSection('shop')">← Volver a la tienda</span>
+            <span class="back-link" onclick="scrollToSection('shop')" role="button" tabindex="0" onkeydown="if(event.key==='Enter')scrollToSection('shop')">← Volver a la tienda</span>
           </div>
         </div>
       </div>
@@ -863,12 +885,12 @@
           <div class="cart-total-row"><span>TOTAL</span><span id="cartTotal">$0</span></div>
           <div style="margin-bottom:3rem;">
             <p style="font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1.5rem;padding-bottom:.8rem;border-bottom:1px solid rgba(0,0,0,.1);">Datos de Envío</p>
-            <div class="form-group"><label>Nombre y Apellido</label><input type="text" id="orderName" required></div>
-            <div class="form-group"><label>DNI</label><input type="text" id="orderDni" required></div>
-            <div class="form-group"><label>Celular</label><input type="tel" id="orderPhone" required></div>
-            <div class="form-group"><label>Email</label><input type="email" id="orderEmail" required></div>
-            <div class="form-group"><label>Ciudad y Provincia</label><input type="text" id="orderLocation" required></div>
-            <div class="form-group"><label>Sucursal Correo Argentino o Dirección</label><input type="text" id="orderShippingAddr" required></div>
+            <div class="form-group"><label for="orderName">Nombre y Apellido</label><input type="text" id="orderName" autocomplete="name" required></div>
+            <div class="form-group"><label for="orderDni">DNI</label><input type="text" id="orderDni" inputmode="numeric" autocomplete="off" required></div>
+            <div class="form-group"><label for="orderPhone">Celular</label><input type="tel" id="orderPhone" autocomplete="tel" required></div>
+            <div class="form-group"><label for="orderEmail">Email</label><input type="email" id="orderEmail" autocomplete="email" required></div>
+            <div class="form-group"><label for="orderLocation">Ciudad y Provincia</label><input type="text" id="orderLocation" autocomplete="address-level2" required></div>
+            <div class="form-group"><label for="orderShippingAddr">Sucursal Correo Argentino o Dirección</label><input type="text" id="orderShippingAddr" autocomplete="street-address" required></div>
           </div>
           <div class="yellow-warning">EL COSTO DE ENVÍO SE CALCULARÁ SEGÚN TU LOCALIDAD AL FINALIZAR LA COMPRA VÍA WHATSAPP</div>
           <button onclick="shareOnWhatsApp()" style="width:100%;background:#25D366;color:#fff;border:none;padding:1rem;font-size:.85rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;margin-top:.5rem;font-family:'Inter',sans-serif;">
@@ -890,7 +912,7 @@
           <details><summary>¿Cuáles son los métodos de pago?</summary><p>Aceptamos transferencia bancaria o efectivo.</p></details>
           <details><summary>¿Cómo funcionan los envíos?</summary><p>Realizamos envíos por Correo Argentino a todo el país. El costo corre por cuenta del cliente y se calcula según la distancia una vez confirmada la compra.</p></details>
           <details><summary>¿Hay cambios o devoluciones?</summary><p>No. Todas las piezas son únicas sin restock. Revisá detalladamente el estado especificado antes de comprar. Consultanos si tenés dudas.</p></details>
-          <details><summary>¿Cómo me contacto?</summary><p>Por WhatsApp al <a href="https://wa.me/5493544631553" target="_blank" style="font-weight:900;color:var(--red);">+54 9 3544 631553</a>, Instagram <a href="https://instagram.com/zyskn_" target="_blank" style="font-weight:900;color:var(--red);">@zyskn_</a> o TikTok <a href="https://www.tiktok.com/@zyskn_" target="_blank" style="font-weight:900;color:var(--red);">@zyskn_</a>.</p></details>
+          <details><summary>¿Cómo me contacto?</summary><p>Por WhatsApp al <a href="https://wa.me/5493544631553" target="_blank" rel="noopener noreferrer" style="font-weight:900;color:var(--red);">+54 9 3544 631553</a>, Instagram <a href="https://instagram.com/zyskn_" target="_blank" rel="noopener noreferrer" style="font-weight:900;color:var(--red);">@zyskn_</a> o TikTok <a href="https://www.tiktok.com/@zyskn_" target="_blank" rel="noopener noreferrer" style="font-weight:900;color:var(--red);">@zyskn_</a>.</p></details>
         </div>
       </div>
     </section>
@@ -900,21 +922,21 @@
       <div class="container">
         <h2 class="contact-title">CONTACTO</h2>
         <div class="social-links">
-          <a href="https://wa.me/5493544631553" class="social-item wa" target="_blank" rel="noopener">
+          <a href="https://wa.me/5493544631553" class="social-item wa" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp de ZYSKN">
             <div class="social-circle">
-              <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.94 3.659 1.437 5.634 1.437h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.94 3.659 1.437 5.634 1.437h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
             </div>
             <span class="social-label">WhatsApp</span>
           </a>
-          <a href="https://instagram.com/zyskn_" class="social-item ig" target="_blank" rel="noopener">
+          <a href="https://instagram.com/zyskn_" class="social-item ig" target="_blank" rel="noopener noreferrer" aria-label="Instagram de ZYSKN">
             <div class="social-circle">
-              <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
             </div>
             <span class="social-label">Instagram</span>
           </a>
-          <a href="https://www.tiktok.com/@zyskn_" class="social-item tt" target="_blank" rel="noopener">
+          <a href="https://www.tiktok.com/@zyskn_" class="social-item tt" target="_blank" rel="noopener noreferrer" aria-label="TikTok de ZYSKN">
             <div class="social-circle">
-              <svg viewBox="0 0 24 24" fill="#fff"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-11.07z"/></svg>
+              <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-11.07z"/></svg>
             </div>
             <span class="social-label">TikTok</span>
           </a>
@@ -925,7 +947,7 @@
     <footer class="bottom-footer">
       <div class="container">
         <div class="footer-brand">
-          <h2 onclick="window.open('https://instagram.com/zyskn_','_blank')">ZYSKN</h2> 
+          <h2 onclick="window.open('https://instagram.com/zyskn_','_blank','noopener')" role="link" tabindex="0" onkeydown="if(event.key==='Enter')window.open('https://instagram.com/zyskn_','_blank','noopener')">ZYSKN</h2>
           <p>Vintage &amp; Streetwear · Córdoba, Argentina</p>
         </div>
         <div class="footer-copy">
@@ -937,12 +959,14 @@
   </main>
 
   <!-- SUPABASE SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 
   <script>
     const SUPABASE_URL = 'https://iifrudupaxcahnopxqcb.supabase.co';
     const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlpZnJ1ZHVwYXhjYWhub3B4cWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NDUyNjgsImV4cCI6MjA5NzAyMTI2OH0.2tTm-ko4n15HctHX40w4_OjBlajaxYZXaqhNamGCD8o';
-    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    function zysknBoot() {
+      const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
     /* TOP BAR — autoplay + flechas */
     let tbIndex = 0;
@@ -961,6 +985,7 @@
     tbAuto();
     document.querySelector('.top-bar')?.addEventListener('mouseenter', () => clearInterval(tbTimer));
     document.querySelector('.top-bar')?.addEventListener('mouseleave', tbAuto);
+    window.tbNext = tbNext; window.tbPrev = tbPrev;
 
     /* STORE LOCK */
     async function checkStoreLock() {
@@ -1002,11 +1027,20 @@
     let currentProduct = null;
     let currentPhotos = [], currentPhotoIndex = 0, zoomed = false;
     let selectedSize = null;
-    let cart = JSON.parse(localStorage.getItem('zysk_cart') || '[]');
-    let localReservations = JSON.parse(localStorage.getItem('zysk_res') || '{}');
+    let cart = safeParseJSON(localStorage.getItem('zysk_cart'), []);
+    let localReservations = safeParseJSON(localStorage.getItem('zysk_res'), {});
     let scrollY = 0;
     let activeFilter = { type: 'all', value: 'all' };
     let currentUser = null;
+
+    function safeParseJSON(raw, fallback) {
+      try { const v = JSON.parse(raw); return v ?? fallback; } catch (e) { return fallback; }
+    }
+
+    function escapeHTML(str) {
+      if (str === null || str === undefined) return '';
+      return String(str).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+    }
 
     function getProductImages(p) {
       if (p.images && Array.isArray(p.images) && p.images.length) return p.images;
@@ -1070,15 +1104,15 @@
     }
 
     /* FAVORITOS */
-    let favorites = JSON.parse(localStorage.getItem('zysk_favs') || '[]');
+    let favorites = safeParseJSON(localStorage.getItem('zysk_favs'), []);
 
     function toggleFavorite() {
       if (!currentProduct) return;
       const id = currentProduct.id;
       const btn = document.getElementById('favBtn');
       const idx = favorites.indexOf(id);
-      if (idx === -1) { favorites.push(id); btn.classList.add('active'); showNotification('♡ GUARDADO EN FAVORITOS'); }
-      else { favorites.splice(idx, 1); btn.classList.remove('active'); showNotification('ELIMINADO DE FAVORITOS'); }
+      if (idx === -1) { favorites.push(id); btn.classList.add('active'); btn.setAttribute('aria-pressed','true'); showNotification('♡ GUARDADO EN FAVORITOS'); }
+      else { favorites.splice(idx, 1); btn.classList.remove('active'); btn.setAttribute('aria-pressed','false'); showNotification('ELIMINADO DE FAVORITOS'); }
       localStorage.setItem('zysk_favs', JSON.stringify(favorites));
       btn.classList.remove('pop'); void btn.offsetWidth; btn.classList.add('pop');
     }
@@ -1086,7 +1120,9 @@
     function updateFavBtn() {
       const btn = document.getElementById('favBtn');
       if (!btn || !currentProduct) return;
-      btn.classList.toggle('active', favorites.includes(currentProduct.id));
+      const isFav = favorites.includes(currentProduct.id);
+      btn.classList.toggle('active', isFav);
+      btn.setAttribute('aria-pressed', String(isFav));
     }
 
     /* AUTH */
@@ -1102,13 +1138,14 @@
       const dropdownName = document.getElementById('userDropdownName');
       if (user) {
         const name = user.user_metadata?.name || user.email.split('@')[0];
-        btnAuth.innerHTML = `<span style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--black);white-space:nowrap;">${name.split(' ')[0].toUpperCase()}</span>`;
-        btnAuth.onclick = () => { dropdown.classList.toggle('open'); };
+        btnAuth.innerHTML = `<span style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--black);white-space:nowrap;">${escapeHTML(name.split(' ')[0].toUpperCase())}</span>`;
+        btnAuth.setAttribute('aria-expanded', 'false');
+        btnAuth.onclick = () => { const open = dropdown.classList.toggle('open'); btnAuth.setAttribute('aria-expanded', String(open)); };
         dropdownName.textContent = name; dropdown.style.display = 'block';
         const orderEmail = document.getElementById('orderEmail');
         if (orderEmail && !orderEmail.value) orderEmail.value = user.email;
       } else {
-        btnAuth.innerHTML = `<svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:currentColor;"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>`;
+        btnAuth.innerHTML = `<svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:currentColor;" aria-hidden="true"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>`;
         btnAuth.onclick = openAuthModal; dropdown.style.display = 'none'; dropdown.classList.remove('open');
       }
     }
@@ -1120,6 +1157,8 @@
       document.getElementById('formRegister').classList.toggle('active', tab === 'register');
       document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
       document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+      document.getElementById('tabLogin').setAttribute('aria-selected', String(tab === 'login'));
+      document.getElementById('tabRegister').setAttribute('aria-selected', String(tab === 'register'));
       clearAuthErrors();
     }
     function clearAuthErrors() { ['loginError','registerError','registerSuccess'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = ''; }); }
@@ -1167,7 +1206,14 @@
       const dropdown = document.getElementById('userDropdown');
       if (wrapper && !wrapper.contains(e.target)) dropdown.classList.remove('open');
     });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeAuthModal(); closeConfirmModal();
+        document.getElementById('userDropdown')?.classList.remove('open');
+      }
+    });
     document.getElementById('authModal').addEventListener('click', (e) => { if (e.target === document.getElementById('authModal')) closeAuthModal(); });
+    document.getElementById('confirmModal').addEventListener('click', (e) => { if (e.target === document.getElementById('confirmModal')) closeConfirmModal(); });
 
     /* SUPABASE — PRODUCTOS */
     async function loadProducts() {
@@ -1176,7 +1222,13 @@
         const { data, error } = await sb.from('products').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false });
         if (error) throw error;
         allProducts = data || [];
-      } catch (e) { console.error('Error cargando productos:', e); allProducts = []; }
+      } catch (e) {
+        console.error('Error cargando productos:', e);
+        allProducts = [];
+        showLoadError('productsGrid');
+        showLoadError('newProductsGrid');
+        return;
+      }
       await syncReservations();
       filteredProducts = [...allProducts];
       renderProducts(filteredProducts, 'productsGrid');
@@ -1184,6 +1236,12 @@
       // Inyectar schema de productos luego de cargar
       injectProductSchema(allProducts);
       updateCartUI(); startTimers();
+    }
+
+    function showLoadError(gridId) {
+      const grid = document.getElementById(gridId);
+      if (!grid) return;
+      grid.innerHTML = `<div class="no-results"><p>No se pudieron cargar los productos. Revisá tu conexión y volvé a intentar.</p></div>`;
     }
 
     /* RESERVAS */
@@ -1251,21 +1309,22 @@
       grid.innerHTML = list.map(p => {
         const isReserved = p._reserved && !isReservedByMe(p.id);
         const isSold = p.is_sold;
-        const sizeBadges = (p.sizes || []).map(s => `<span class="badge badge-size">${s}</span>`).join('');
+        const sizeBadges = (p.sizes || []).map(s => `<span class="badge badge-size">${escapeHTML(s)}</span>`).join('');
         const newBadge = p.is_new ? '<span class="badge badge-new">NEW</span>' : '';
         const photos = getProductImages(p);
         const mainImg = photos[0] || '';
         const hoverImg = photos[1] || '';
         const cats = (p.categories && p.categories.length ? p.categories : [p.category || '']).join(', ');
+        const safeName = escapeHTML(p.name);
         return `<div class="product-card ${isReserved ? 'reserved' : ''} ${isSold ? 'sold' : ''}" onclick="showProductDetail('${p.id}')">
           <div class="product-image">
-            <img src="${mainImg}" alt="${p.name} - Ropa Vintage ZYSKN Córdoba" loading="lazy"
+            <img src="${mainImg}" alt="${safeName} - Ropa Vintage ZYSKN Córdoba" loading="lazy" onerror="this.onerror=null;this.classList.add('img-error');"
               ${hoverImg ? `onmouseenter="this.src='${hoverImg}'" onmouseleave="this.src='${mainImg}'"` : ''}>
           </div>
           <div class="product-meta">
             <div>
-              <p class="product-name">${p.name}</p>
-              <p class="product-cat">${cats}</p>
+              <p class="product-name">${safeName}</p>
+              <p class="product-cat">${escapeHTML(cats)}</p>
               <div class="product-badges">${newBadge}${sizeBadges}</div>
             </div>
             <p class="product-price">$${Number(p.price).toLocaleString('es-AR')}</p>
@@ -1285,19 +1344,22 @@
       document.getElementById('detailName').textContent = currentProduct.name;
       document.getElementById('detailPrice').textContent = `$${Number(currentProduct.price).toLocaleString('es-AR')}`;
       document.getElementById('detailDesc').innerHTML = currentProduct.description || '';
-      document.getElementById('detailImage').src = currentPhotos[0] || '';
-      document.getElementById('detailImage').alt = `${currentProduct.name} - Vintage ZYSKN Córdoba`;
-      document.getElementById('detailImage').style.transform = 'scale(1)';
+      const detailImgEl = document.getElementById('detailImage');
+      detailImgEl.src = currentPhotos[0] || '';
+      detailImgEl.alt = `${currentProduct.name} - Vintage ZYSKN Córdoba`;
+      detailImgEl.style.transform = 'scale(1)';
+      detailImgEl.classList.remove('img-error');
+      detailImgEl.onerror = function(){ this.onerror=null; this.classList.add('img-error'); };
       document.getElementById('detailTalle').textContent = currentProduct.talle || 'Consultar';
       document.getElementById('detailMedidas').textContent = currentProduct.medidas || 'Consultar';
       document.getElementById('detailEstado').textContent = currentProduct.estado || '10/10';
-      document.getElementById('detailSizes').innerHTML = (currentProduct.sizes || []).map(s => `<button onclick="setSize('${s}',this)">${s}</button>`).join('');
+      document.getElementById('detailSizes').innerHTML = (currentProduct.sizes || []).map(s => `<button onclick="setSize('${s}',this)">${escapeHTML(s)}</button>`).join('');
 
       const hasMultiple = currentPhotos.length > 1;
       document.getElementById('prevBtn').style.display = hasMultiple ? 'block' : 'none';
       document.getElementById('nextBtn').style.display = hasMultiple ? 'block' : 'none';
       document.getElementById('thumbs').innerHTML = currentPhotos.map((src, i) =>
-        `<img src="${src}" alt="${currentProduct.name} foto ${i+1}" onclick="currentPhotoIndex=${i};changePhoto(0)" class="${i === 0 ? 'active-thumb' : ''}">`
+        `<img src="${src}" alt="${escapeHTML(currentProduct.name)} foto ${i+1}" onclick="currentPhotoIndex=${i};changePhoto(0)" class="${i === 0 ? 'active-thumb' : ''}" onerror="this.onerror=null;this.classList.add('img-error');">`
       ).join('');
 
       const zc = document.getElementById('zoomContainer');
@@ -1391,10 +1453,10 @@
 
     /* ADD TO CART */
     async function addToCartFromDetail(event) {
-      if (!selectedSize) { alert('Seleccioná el talle'); return; }
-      if (currentProduct.is_sold) { alert('Este producto ya fue vendido'); return; }
-      if (currentProduct._reserved && !isReservedByMe(currentProduct.id)) { alert('Este producto está reservado por otro usuario'); return; }
-      if (cart.find(i => i.id === currentProduct.id)) { alert('Ya está en el carrito'); return; }
+      if (!selectedSize) { showNotification('SELECCIONÁ UN TALLE'); return; }
+      if (currentProduct.is_sold) { showNotification('ESTE PRODUCTO YA FUE VENDIDO'); return; }
+      if (currentProduct._reserved && !isReservedByMe(currentProduct.id)) { showNotification('PRODUCTO RESERVADO POR OTRO USUARIO'); return; }
+      if (cart.find(i => i.id === currentProduct.id)) { showNotification('YA ESTÁ EN EL CARRITO'); return; }
       await createReservation(currentProduct.id);
       currentProduct._reserved = true;
       cart.push({ ...currentProduct, size: selectedSize });
@@ -1416,10 +1478,10 @@
           const t = timeLeft(item.id); const m = Math.floor(t / 60); const s = (t % 60).toString().padStart(2, '0');
           return `<div style="margin-bottom:1rem;font-size:.88rem;border-bottom:1px solid rgba(0,0,0,.08);padding-bottom:1rem;display:flex;justify-content:space-between;align-items:center;">
             <div>
-              <span style="font-weight:700;">${item.name} (${item.size}) — $${Number(item.price).toLocaleString('es-AR')}</span>
+              <span style="font-weight:700;">${escapeHTML(item.name)} (${escapeHTML(item.size)}) — $${Number(item.price).toLocaleString('es-AR')}</span>
               <div class="reservation-timer">⏱ RESERVA ACTIVA ${m}:${s}</div>
             </div>
-            <button onclick="removeFromCart(${idx})" style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:900;font-size:1.3rem;line-height:1;">×</button>
+            <button onclick="removeFromCart(${idx})" aria-label="Quitar ${escapeHTML(item.name)} del carrito" style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:900;font-size:1.3rem;line-height:1;">×</button>
           </div>`;
         }).join('');
       }
@@ -1435,14 +1497,14 @@
 
     /* WHATSAPP */
     async function shareOnWhatsApp() {
-      if (cart.length === 0) { alert('El carrito está vacío'); return; }
+      if (cart.length === 0) { showNotification('EL CARRITO ESTÁ VACÍO'); return; }
       const nombre    = document.getElementById('orderName').value.trim();
       const dni       = document.getElementById('orderDni').value.trim();
       const celular   = document.getElementById('orderPhone').value.trim();
       const email     = document.getElementById('orderEmail').value.trim();
       const localidad = document.getElementById('orderLocation').value.trim();
       const sucursal  = document.getElementById('orderShippingAddr').value.trim();
-      if (!nombre || !dni || !celular || !localidad) { alert('Completá Nombre, DNI, Celular y Ciudad antes de continuar'); return; }
+      if (!nombre || !dni || !celular || !localidad) { showNotification('COMPLETÁ NOMBRE, DNI, CELULAR Y CIUDAD'); return; }
       const orderId = 'ZSK-' + Date.now().toString(36).toUpperCase();
       const now = new Date();
       const fecha = now.toLocaleDateString('es-AR');
@@ -1476,7 +1538,7 @@
 
       for (const item of cart) { await deleteReservation(item.id); }
       cart = []; localStorage.setItem('zysk_cart', JSON.stringify(cart)); updateCartUI();
-      window.open(`https://wa.me/5493544631553?text=${encodeURIComponent(msg)}`, '_blank');
+      window.open(`https://wa.me/5493544631553?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
       showNotification('PEDIDO ENVIADO · ' + orderId);
     }
 
@@ -1526,7 +1588,8 @@
     function showNotification(msg) {
       const n = document.getElementById('notification');
       n.textContent = msg; n.style.display = 'block';
-      setTimeout(() => n.style.display = 'none', 3500);
+      clearTimeout(n._hideTimer);
+      n._hideTimer = setTimeout(() => n.style.display = 'none', 3500);
     }
 
     function scrollToSection(id) {
@@ -1537,7 +1600,8 @@
       const navOverlay = document.getElementById('nav-overlay');
       const isMenuOpen = navMain && navMain.classList.contains('active');
       if (isMenuOpen) {
-        hamburger?.classList.remove('active'); navMain.classList.remove('active'); navOverlay?.classList.remove('active');
+        hamburger?.classList.remove('active'); hamburger?.setAttribute('aria-expanded','false');
+        navMain.classList.remove('active'); navOverlay?.classList.remove('active');
         document.body.style.position = ''; document.body.style.top = ''; document.body.style.width = '';
         window.scrollTo(0, scrollY);
       }
@@ -1555,6 +1619,28 @@
         }
       }, isMenuOpen ? 350 : 50);
     }
+    window.scrollToSection = scrollToSection;
+    window.applyFilter = applyFilter;
+    window.showProductDetail = showProductDetail;
+    window.changePhoto = changePhoto;
+    window.zoomImage = zoomImage;
+    window.setSize = setSize;
+    window.addToCartFromDetail = addToCartFromDetail;
+    window.removeFromCart = removeFromCart;
+    window.shareOnWhatsApp = shareOnWhatsApp;
+    window.toggleSearch = toggleSearch;
+    window.handleSearch = handleSearch;
+    window.mobileSearch = mobileSearch;
+    window.toggleFavorite = toggleFavorite;
+    window.openAuthModal = openAuthModal;
+    window.closeAuthModal = closeAuthModal;
+    window.switchTab = switchTab;
+    window.doLogin = doLogin;
+    window.doRegister = doRegister;
+    window.doLogout = doLogout;
+    window.openConfirmModal = openConfirmModal;
+    window.closeConfirmModal = closeConfirmModal;
+    window.doDeleteAccount = doDeleteAccount;
 
     /* MOBILE MENU */
     const hamburger = document.getElementById('hamburger');
@@ -1582,14 +1668,16 @@
       hamburger.addEventListener('click', () => {
         const isOpening = !navMain.classList.contains('active');
         document.getElementById('header').classList.remove('searching');
-        hamburger.classList.toggle('active'); navMain.classList.toggle('active'); navOverlay?.classList.toggle('active');
+        hamburger.classList.toggle('active'); hamburger.setAttribute('aria-expanded', String(isOpening));
+        navMain.classList.toggle('active'); navOverlay?.classList.toggle('active');
         if (isOpening) { scrollY = window.scrollY; document.body.style.position = 'fixed'; document.body.style.top = `-${scrollY}px`; document.body.style.width = '100%'; }
         else { document.body.style.position = ''; document.body.style.top = ''; document.body.style.width = ''; window.scrollTo(0, scrollY); }
       });
     }
 
     navOverlay?.addEventListener('click', () => {
-      hamburger.classList.remove('active'); navMain.classList.remove('active'); navOverlay.classList.remove('active');
+      hamburger.classList.remove('active'); hamburger.setAttribute('aria-expanded','false');
+      navMain.classList.remove('active'); navOverlay.classList.remove('active');
       document.body.style.position = ''; document.body.style.top = ''; document.body.style.width = ''; window.scrollTo(0, scrollY);
     });
 
@@ -1599,12 +1687,21 @@
       const header = document.getElementById('header');
       if (window.pageYOffset > 10) header.classList.add('elevated');
       else header.classList.remove('elevated');
-    });
+    }, { passive: true });
 
     /* BOOT */
     checkStoreLock();
     initAuth();
     loadProducts();
+    } // fin zysknBoot
+
+    if (typeof supabase !== 'undefined') {
+      zysknBoot();
+    } else {
+      const sdkScript = document.querySelector('script[src*="supabase-js"]');
+      if (sdkScript) sdkScript.addEventListener('load', zysknBoot);
+      else document.addEventListener('DOMContentLoaded', zysknBoot);
+    }
   </script>
 </body>
 </html>
