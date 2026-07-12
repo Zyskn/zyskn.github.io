@@ -153,6 +153,8 @@
     .badge-reserved { background:var(--orange-light); color:var(--orange); }
     .badge-pending { background:#fef9c3; color:#854d0e; }
     .badge-completed { background:var(--green-light); color:var(--green-dark); }
+    .badge-ingreso { background:var(--green-light); color:var(--green-dark); }
+    .badge-gasto { background:#fee2e2; color:var(--red); }
     .actions-cell { display:flex; gap:.4rem; align-items:center; flex-wrap:nowrap; }
 
     /* FILTERS */
@@ -449,6 +451,9 @@
     <button class="tab-btn" onclick="switchTab('orders')">
       Pedidos <span class="tab-badge" id="badgeOrders">0</span>
     </button>
+    <button class="tab-btn" onclick="switchTab('accounting')">
+      Contabilidad <span class="tab-badge" id="badgeAccounting">0</span>
+    </button>
   </div>
 
   <div class="admin-content">
@@ -508,6 +513,33 @@
         <button class="filter-chip" onclick="filterOrders('cancelled',this)">Cancelados</button>
       </div>
       <div id="ordersContainer"></div>
+    </div>
+
+    <!-- ACCOUNTING -->
+    <div id="tab-accounting" style="display:none;">
+      <div class="stats-row" style="margin-bottom:1.5rem;">
+        <div class="stat-card revenue"><div class="stat-num" id="ac-ingresos">–</div><div class="stat-label">Ingresos totales</div></div>
+        <div class="stat-card reserved"><div class="stat-num" id="ac-gastos">–</div><div class="stat-label">Gastos totales</div></div>
+        <div class="stat-card total"><div class="stat-num" id="ac-balance">–</div><div class="stat-label">Balance neto</div></div>
+      </div>
+      <div class="section-hdr">
+        <h2>Registro Contable <span id="accountingCountLabel"></span></h2>
+        <button class="btn-primary" onclick="openAccountingModal()">+ Agregar Registro</button>
+      </div>
+      <div class="filter-row">
+        <button class="filter-chip active" onclick="filterAccounting('all',this)">Todos</button>
+        <button class="filter-chip" onclick="filterAccounting('ingreso',this)">Ingresos</button>
+        <button class="filter-chip" onclick="filterAccounting('gasto',this)">Gastos</button>
+      </div>
+      <div class="table-wrapper">
+        <table class="product-table">
+          <thead>
+            <tr><th>Nombre</th><th>Tipo</th><th>Monto</th><th>Fecha</th><th>Notas</th><th>Acciones</th></tr>
+          </thead>
+          <tbody id="accountingTableBody"></tbody>
+        </table>
+      </div>
+      <div class="product-cards" id="accountingCardsList"></div>
     </div>
   </div>
 </div>
@@ -677,6 +709,47 @@
   </div>
 </div>
 
+<!-- MODAL CONTABLE -->
+<div class="modal-overlay" id="accountingModal">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title" id="accountingModalTitle">Nuevo Registro</div>
+      <button class="modal-close" onclick="closeModal('accountingModal')">×</button>
+    </div>
+    <div class="modal-body" style="display:block;padding:1.8rem 2rem;">
+      <div class="form-grid">
+        <div class="form-group form-full">
+          <label>Nombre / Concepto *</label>
+          <input type="text" id="ac-name" placeholder="Ej: Compra de stock, Venta mostrador, Envío...">
+        </div>
+        <div class="form-group">
+          <label>Tipo *</label>
+          <select id="ac-type">
+            <option value="ingreso">Ingreso</option>
+            <option value="gasto">Gasto</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Monto (ARS) *</label>
+          <input type="number" id="ac-amount" placeholder="15000" inputmode="numeric">
+        </div>
+        <div class="form-group form-full">
+          <label>Fecha</label>
+          <input type="date" id="ac-date">
+        </div>
+        <div class="form-group form-full">
+          <label>Notas <span class="optional">(opcional)</span></label>
+          <textarea id="ac-notes" rows="3" placeholder="Detalles adicionales..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="closeModal('accountingModal')">Cancelar</button>
+      <button class="btn-primary" onclick="saveAccountingEntry()" id="saveAccountingBtn">Guardar Registro</button>
+    </div>
+  </div>
+</div>
+
 <!-- LIGHTBOX -->
 <div id="lightbox" onclick="closeLightbox()">
   <button class="lb-close" onclick="closeLightbox()">×</button>
@@ -694,10 +767,13 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 let allAdminProducts = [];
 let allOrders = [];
 let allReservations = [];
+let allAccountingEntries = [];
 let editingProductId = null;
+let editingAccountingId = null;
 let confirmCallback = null;
 let ordersFilter = 'all';
 let productsAdminFilter = 'all';
+let accountingFilter = 'all';
 let productImages = [];
 let previewCurrentImg = 0;
 let storeLocked = false;
@@ -734,7 +810,7 @@ async function doLogin() {
 async function doLogout() { await sb.auth.signOut(); }
 
 async function initAdmin() {
-  await Promise.all([loadAdminProducts(), loadOrders(), loadReservations(), loadLockState()]);
+  await Promise.all([loadAdminProducts(), loadOrders(), loadReservations(), loadLockState(), loadAccountingEntries()]);
   renderDashboard();
 }
 
@@ -779,15 +855,16 @@ async function toggleStoreLock() {
 
 /* ══ TABS ══ */
 function switchTab(tab) {
-  ['dashboard','products','orders'].forEach(t => {
+  ['dashboard','products','orders','accounting'].forEach(t => {
     document.getElementById('tab-'+t).style.display = t===tab ? 'block' : 'none';
   });
   document.querySelectorAll('.tab-btn').forEach((btn,i) => {
-    btn.classList.toggle('active', ['dashboard','products','orders'][i]===tab);
+    btn.classList.toggle('active', ['dashboard','products','orders','accounting'][i]===tab);
   });
   document.getElementById('fabAdd').style.display = (tab==='products') ? '' : 'none';
   if (tab==='products') renderProductsTable();
   if (tab==='orders')   renderOrders();
+  if (tab==='accounting') renderAccounting();
 }
 
 /* ══ PRODUCTS ══ */
@@ -1424,6 +1501,171 @@ async function updateOrderStatus(id, status) {
   showToast('Estado → '+status.toUpperCase());
 }
 
+/* ══ ACCOUNTING ══ */
+async function loadAccountingEntries() {
+  const { data } = await sb.from('accounting_entries').select('*').order('entry_date',{ascending:false}).order('created_at',{ascending:false});
+  allAccountingEntries = data || [];
+  document.getElementById('badgeAccounting').textContent = allAccountingEntries.length;
+}
+
+function filterAccounting(filter, btn) {
+  accountingFilter = filter;
+  document.querySelectorAll('#tab-accounting .filter-chip').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAccounting();
+  scrollChipIntoView(btn);
+}
+
+function getFilteredAccounting() {
+  if (accountingFilter==='all') return allAccountingEntries;
+  return allAccountingEntries.filter(e=>e.type===accountingFilter);
+}
+
+function renderAccounting() {
+  const list = getFilteredAccounting();
+  document.getElementById('accountingCountLabel').textContent = `(${list.length})`;
+
+  const ingresos = allAccountingEntries.filter(e=>e.type==='ingreso').reduce((s,e)=>s+Number(e.amount||0),0);
+  const gastos   = allAccountingEntries.filter(e=>e.type==='gasto').reduce((s,e)=>s+Number(e.amount||0),0);
+  const balance  = ingresos - gastos;
+  document.getElementById('ac-ingresos').textContent = '$'+ingresos.toLocaleString('es-AR');
+  document.getElementById('ac-gastos').textContent    = '$'+gastos.toLocaleString('es-AR');
+  const balEl = document.getElementById('ac-balance');
+  balEl.textContent = (balance<0?'-':'')+'$'+Math.abs(balance).toLocaleString('es-AR');
+  balEl.style.color = balance>=0 ? 'var(--green)' : 'var(--red)';
+
+  renderAccountingTableDesktop(list);
+  renderAccountingCardsMobile(list);
+}
+
+function renderAccountingTableDesktop(list) {
+  const tbody = document.getElementById('accountingTableBody');
+  if (!list.length) {
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state">
+      <div class="empty-icon">📒</div>
+      <p>Sin registros aún</p>
+      <small>Agregá tu primer ingreso o gasto</small>
+    </div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = list.map((e, idx) => {
+    const badge = e.type==='ingreso'
+      ? '<span class="badge badge-ingreso">Ingreso</span>'
+      : '<span class="badge badge-gasto">Gasto</span>';
+    const dateLabel = e.entry_date ? new Date(e.entry_date+'T00:00:00').toLocaleDateString('es-AR') : '–';
+    const amountColor = e.type==='ingreso' ? 'var(--green-dark)' : 'var(--red)';
+    const sign = e.type==='ingreso' ? '+' : '−';
+    return `<tr style="animation-delay:${idx*0.03}s">
+      <td><strong style="font-size:.8rem;">${e.name}</strong></td>
+      <td>${badge}</td>
+      <td style="font-weight:900;font-size:.82rem;color:${amountColor};white-space:nowrap;">${sign}$${Number(e.amount).toLocaleString('es-AR')}</td>
+      <td style="font-size:.7rem;color:var(--muted);white-space:nowrap;">${dateLabel}</td>
+      <td style="font-size:.7rem;color:var(--muted);max-width:220px;">${e.notes||'–'}</td>
+      <td>
+        <div class="actions-cell">
+          <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;" onclick="openAccountingModal('${e.id}')">Editar</button>
+          <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;color:var(--red);border-color:rgba(163,0,0,.3);" onclick="confirmDeleteAccounting('${e.id}','${(e.name||'').replace(/'/g,"\\'")}')">Eliminar</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function renderAccountingCardsMobile(list) {
+  const wrap = document.getElementById('accountingCardsList');
+  if (!wrap) return;
+  if (!list.length) {
+    wrap.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">📒</div>
+      <p>Sin registros aún</p>
+      <small>Agregá tu primer ingreso o gasto</small>
+    </div>`;
+    return;
+  }
+  wrap.innerHTML = list.map((e, idx) => {
+    const badge = e.type==='ingreso'
+      ? '<span class="badge badge-ingreso">Ingreso</span>'
+      : '<span class="badge badge-gasto">Gasto</span>';
+    const dateLabel = e.entry_date ? new Date(e.entry_date+'T00:00:00').toLocaleDateString('es-AR') : '–';
+    const amountColor = e.type==='ingreso' ? 'var(--green-dark)' : 'var(--red)';
+    const sign = e.type==='ingreso' ? '+' : '−';
+    return `<div class="product-card" style="animation-delay:${idx*0.03}s">
+      <div class="product-card-main">
+        <div class="product-card-top">
+          <div>
+            <div class="product-card-name">${e.name}</div>
+            <div class="product-card-meta">${dateLabel} ${e.notes ? '· '+e.notes : ''}</div>
+          </div>
+          <div class="product-card-price" style="color:${amountColor};">${sign}$${Number(e.amount).toLocaleString('es-AR')}</div>
+        </div>
+        <div class="product-card-badges">${badge}</div>
+        <div class="product-card-actions">
+          <button class="btn-outline" onclick="openAccountingModal('${e.id}')">Editar</button>
+          <button class="btn-outline btn-del" title="Eliminar" onclick="confirmDeleteAccounting('${e.id}','${(e.name||'').replace(/'/g,"\\'")}')">🗑</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openAccountingModal(id=null) {
+  editingAccountingId = id;
+  document.getElementById('ac-name').value = '';
+  document.getElementById('ac-type').value = 'ingreso';
+  document.getElementById('ac-amount').value = '';
+  document.getElementById('ac-notes').value = '';
+  document.getElementById('ac-date').value = new Date().toISOString().slice(0,10);
+  if (id) {
+    document.getElementById('accountingModalTitle').textContent = 'Editar Registro';
+    const e = allAccountingEntries.find(x=>x.id===id);
+    if (e) {
+      document.getElementById('ac-name').value   = e.name || '';
+      document.getElementById('ac-type').value   = e.type || 'ingreso';
+      document.getElementById('ac-amount').value = e.amount || '';
+      document.getElementById('ac-notes').value  = e.notes || '';
+      document.getElementById('ac-date').value   = e.entry_date || new Date().toISOString().slice(0,10);
+    }
+  } else {
+    document.getElementById('accountingModalTitle').textContent = 'Nuevo Registro';
+  }
+  document.getElementById('accountingModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+async function saveAccountingEntry() {
+  const btn   = document.getElementById('saveAccountingBtn');
+  const name  = document.getElementById('ac-name').value.trim();
+  const amount = parseFloat(document.getElementById('ac-amount').value);
+  const type  = document.getElementById('ac-type').value;
+  const entry_date = document.getElementById('ac-date').value || new Date().toISOString().slice(0,10);
+  const notes = document.getElementById('ac-notes').value.trim();
+  if (!name || !amount) { showToast('Completá al menos Nombre y Monto'); return; }
+
+  const payload = { name, type, amount, entry_date, notes };
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Guardando...';
+  let error;
+  if (editingAccountingId) { ({error} = await sb.from('accounting_entries').update(payload).eq('id', editingAccountingId)); }
+  else { ({error} = await sb.from('accounting_entries').insert(payload)); }
+  btn.disabled = false; btn.textContent = 'Guardar Registro';
+  if (error) { showToast('Error: ' + error.message); return; }
+  showToast(editingAccountingId ? 'Registro actualizado' : 'Registro creado');
+  closeModal('accountingModal');
+  await loadAccountingEntries();
+  renderAccounting();
+}
+
+function confirmDeleteAccounting(id, name) {
+  document.getElementById('confirmTitle').textContent = 'Eliminar Registro';
+  document.getElementById('confirmMsg').textContent = `¿Estás seguro que querés eliminar "${name}"? Esta acción no se puede deshacer.`;
+  confirmCallback = async () => {
+    await sb.from('accounting_entries').delete().eq('id',id);
+    closeModal('confirmModal');
+    await loadAccountingEntries(); renderAccounting();
+    showToast('Registro eliminado');
+  };
+  document.getElementById('confirmModal').classList.add('active');
+}
+
 function renderDashboard() {
   const total   = allAdminProducts.length;
   const sold    = allAdminProducts.filter(p=>p.is_sold).length;
@@ -1476,7 +1718,7 @@ function confirmDeleteOrder(id, orderLabel) {
 /* ══ LIGHTBOX ══ */
 function openLightbox(src) { document.getElementById('lightboxImg').src = src; document.getElementById('lightbox').classList.add('active'); document.body.style.overflow = 'hidden'; }
 function closeLightbox() { document.getElementById('lightbox').classList.remove('active'); document.body.style.overflow = ''; }
-document.addEventListener('keydown', e => { if(e.key==='Escape') { closeLightbox(); closeModal('productModal'); closeModal('confirmModal'); } });
+document.addEventListener('keydown', e => { if(e.key==='Escape') { closeLightbox(); closeModal('productModal'); closeModal('confirmModal'); closeModal('accountingModal'); } });
 
 /* ══ TOAST ══ */
 let toastTimer;
