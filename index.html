@@ -1351,7 +1351,6 @@
         const isSold = p.is_sold;
         const sizeBadges = (p.sizes || []).map(s => `<span class="badge badge-size">${s}</span>`).join('');
         const newBadge = p.is_new ? '<span class="badge badge-new">NEW</span>' : '';
-        const urgencyBadge = (!isSold && !isReserved) ? '<span class="badge badge-urgency">ÚNICA UNIDAD</span>' : '';
         const photos = getProductImages(p);
         const mainImg = photos[0] || '';
         const hoverImg = photos[1] || '';
