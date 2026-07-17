@@ -325,6 +325,13 @@
     .img-upload-actions { display:flex; gap:.5rem; margin-top:.6rem; }
     .img-upload-actions .img-upload-zone { flex:1; margin-top:0; padding:1.1rem .8rem; }
 
+    /* REVIEWS TAB */
+    .review-stars-cell { color:var(--red); font-size:.85rem; letter-spacing:1px; white-space:nowrap; }
+    .review-comment-cell { font-size:.72rem; color:var(--muted); max-width:280px; }
+    .badge-approved { background:var(--green-light); color:var(--green-dark); }
+    .badge-unapproved { background:#fef9c3; color:#854d0e; }
+    .review-card-comment { font-size:.72rem; color:var(--muted); line-height:1.5; margin-top:.3rem; }
+
     /* RESPONSIVE */
     @media (max-width:900px) {
       .modal-body { grid-template-columns:1fr; }
@@ -451,6 +458,9 @@
     <button class="tab-btn" onclick="switchTab('orders')">
       Pedidos <span class="tab-badge" id="badgeOrders">0</span>
     </button>
+    <button class="tab-btn" onclick="switchTab('reviews')">
+      Reseñas <span class="tab-badge" id="badgeReviews">0</span>
+    </button>
     <button class="tab-btn" onclick="switchTab('accounting')">
       Contabilidad <span class="tab-badge" id="badgeAccounting">0</span>
     </button>
@@ -513,6 +523,28 @@
         <button class="filter-chip" onclick="filterOrders('cancelled',this)">Cancelados</button>
       </div>
       <div id="ordersContainer"></div>
+    </div>
+
+    <!-- REVIEWS -->
+    <div id="tab-reviews" style="display:none;">
+      <div class="section-hdr">
+        <h2>Reseñas de clientes <span id="reviewsCountLabel"></span></h2>
+        <button class="btn-outline" onclick="loadReviewsAdmin().then(renderReviews)">↻ Actualizar</button>
+      </div>
+      <div class="filter-row">
+        <button class="filter-chip active" onclick="filterReviewsAdmin('all',this)">Todas</button>
+        <button class="filter-chip" onclick="filterReviewsAdmin('pending',this)">Pendientes</button>
+        <button class="filter-chip" onclick="filterReviewsAdmin('approved',this)">Aprobadas</button>
+      </div>
+      <div class="table-wrapper">
+        <table class="product-table">
+          <thead>
+            <tr><th>Cliente</th><th>Prenda</th><th>Calificación</th><th>Comentario</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr>
+          </thead>
+          <tbody id="reviewsTableBody"></tbody>
+        </table>
+      </div>
+      <div class="product-cards" id="reviewsCardsList"></div>
     </div>
 
     <!-- ACCOUNTING -->
@@ -768,12 +800,14 @@ let allAdminProducts = [];
 let allOrders = [];
 let allReservations = [];
 let allAccountingEntries = [];
+let allReviewsAdmin = [];
 let editingProductId = null;
 let editingAccountingId = null;
 let confirmCallback = null;
 let ordersFilter = 'all';
 let productsAdminFilter = 'all';
 let accountingFilter = 'all';
+let reviewsAdminFilter = 'all';
 let productImages = [];
 let previewCurrentImg = 0;
 let storeLocked = false;
@@ -810,7 +844,7 @@ async function doLogin() {
 async function doLogout() { await sb.auth.signOut(); }
 
 async function initAdmin() {
-  await Promise.all([loadAdminProducts(), loadOrders(), loadReservations(), loadLockState(), loadAccountingEntries()]);
+  await Promise.all([loadAdminProducts(), loadOrders(), loadReservations(), loadLockState(), loadAccountingEntries(), loadReviewsAdmin()]);
   renderDashboard();
 }
 
@@ -855,15 +889,16 @@ async function toggleStoreLock() {
 
 /* ══ TABS ══ */
 function switchTab(tab) {
-  ['dashboard','products','orders','accounting'].forEach(t => {
+  ['dashboard','products','orders','reviews','accounting'].forEach(t => {
     document.getElementById('tab-'+t).style.display = t===tab ? 'block' : 'none';
   });
   document.querySelectorAll('.tab-btn').forEach((btn,i) => {
-    btn.classList.toggle('active', ['dashboard','products','orders','accounting'][i]===tab);
+    btn.classList.toggle('active', ['dashboard','products','orders','reviews','accounting'][i]===tab);
   });
   document.getElementById('fabAdd').style.display = (tab==='products') ? '' : 'none';
   if (tab==='products') renderProductsTable();
   if (tab==='orders')   renderOrders();
+  if (tab==='reviews')  renderReviews();
   if (tab==='accounting') renderAccounting();
 }
 
@@ -1499,6 +1534,133 @@ async function updateOrderStatus(id, status) {
   await sb.from('orders').update({status}).eq('id',id);
   await loadOrders(); renderOrders(); renderDashboard();
   showToast('Estado → '+status.toUpperCase());
+}
+
+/* ══ REVIEWS ══ */
+async function loadReviewsAdmin() {
+  const { data } = await sb.from('reviews').select('*').order('created_at',{ascending:false});
+  allReviewsAdmin = data || [];
+  const pending = allReviewsAdmin.filter(r=>!r.approved).length;
+  document.getElementById('badgeReviews').textContent = pending;
+}
+
+function filterReviewsAdmin(filter, btn) {
+  reviewsAdminFilter = filter;
+  document.querySelectorAll('#tab-reviews .filter-chip').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderReviews();
+  scrollChipIntoView(btn);
+}
+
+function getFilteredReviewsAdmin() {
+  if (reviewsAdminFilter === 'pending')  return allReviewsAdmin.filter(r=>!r.approved);
+  if (reviewsAdminFilter === 'approved') return allReviewsAdmin.filter(r=>r.approved);
+  return allReviewsAdmin;
+}
+
+function reviewStars(n) {
+  const full = Math.round(Number(n) || 0);
+  return '★'.repeat(full) + '☆'.repeat(5 - full);
+}
+
+function renderReviews() {
+  const list = getFilteredReviewsAdmin();
+  document.getElementById('reviewsCountLabel').textContent = `(${list.length})`;
+  renderReviewsTableDesktop(list);
+  renderReviewsCardsMobile(list);
+}
+
+function renderReviewsTableDesktop(list) {
+  const tbody = document.getElementById('reviewsTableBody');
+  if (!list.length) {
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state">
+      <div class="empty-icon">📝</div>
+      <p>Sin reseñas en esta categoría</p>
+      <small>Las reseñas enviadas por clientes van a aparecer acá</small>
+    </div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = list.map((r, idx) => {
+    const date = r.created_at ? new Date(r.created_at).toLocaleDateString('es-AR') : '–';
+    const statusBadge = r.approved
+      ? '<span class="badge badge-approved">Aprobada</span>'
+      : '<span class="badge badge-unapproved">Pendiente</span>';
+    const nameEsc = (r.customer_name||'').replace(/'/g,"\\'");
+    return `<tr style="animation-delay:${idx*0.03}s">
+      <td><strong style="font-size:.78rem;">${r.customer_name || '–'}</strong></td>
+      <td style="font-size:.7rem;color:var(--muted);">${r.product_name || '–'}</td>
+      <td class="review-stars-cell">${reviewStars(r.rating)}</td>
+      <td class="review-comment-cell">${(r.comment||'').replace(/</g,'&lt;')}</td>
+      <td style="font-size:.68rem;color:var(--muted);white-space:nowrap;">${date}</td>
+      <td>${statusBadge}</td>
+      <td>
+        <div class="actions-cell">
+          ${r.approved
+            ? `<button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;" onclick="toggleReviewApproval('${r.id}',true)">Ocultar</button>`
+            : `<button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;color:var(--green-dark);border-color:var(--green);" onclick="toggleReviewApproval('${r.id}',false)">Aprobar</button>`}
+          <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;color:var(--red);border-color:rgba(163,0,0,.3);" onclick="confirmDeleteReview('${r.id}','${nameEsc}')">Eliminar</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function renderReviewsCardsMobile(list) {
+  const wrap = document.getElementById('reviewsCardsList');
+  if (!wrap) return;
+  if (!list.length) {
+    wrap.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">📝</div>
+      <p>Sin reseñas en esta categoría</p>
+      <small>Las reseñas enviadas por clientes van a aparecer acá</small>
+    </div>`;
+    return;
+  }
+  wrap.innerHTML = list.map((r, idx) => {
+    const date = r.created_at ? new Date(r.created_at).toLocaleDateString('es-AR') : '–';
+    const statusBadge = r.approved
+      ? '<span class="badge badge-approved">Aprobada</span>'
+      : '<span class="badge badge-unapproved">Pendiente</span>';
+    const nameEsc = (r.customer_name||'').replace(/'/g,"\\'");
+    return `<div class="product-card" style="animation-delay:${idx*0.03}s">
+      <div class="product-card-main">
+        <div class="product-card-top">
+          <div>
+            <div class="product-card-name">${r.customer_name || 'Cliente'}</div>
+            <div class="product-card-meta">${r.product_name || ''} ${r.product_name ? '· ' : ''}${date}</div>
+          </div>
+          <div class="review-stars-cell">${reviewStars(r.rating)}</div>
+        </div>
+        <div class="review-card-comment">"${(r.comment||'').replace(/</g,'&lt;')}"</div>
+        <div class="product-card-badges">${statusBadge}</div>
+        <div class="product-card-actions">
+          ${r.approved
+            ? `<button class="btn-outline" onclick="toggleReviewApproval('${r.id}',true)">Ocultar</button>`
+            : `<button class="btn-outline" style="color:var(--green-dark);border-color:var(--green);" onclick="toggleReviewApproval('${r.id}',false)">Aprobar</button>`}
+          <button class="btn-outline btn-del" title="Eliminar" onclick="confirmDeleteReview('${r.id}','${nameEsc}')">🗑</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function toggleReviewApproval(id, currentApproved) {
+  const { error } = await sb.from('reviews').update({ approved: !currentApproved }).eq('id', id);
+  if (error) { showToast('Error: ' + error.message); return; }
+  await loadReviewsAdmin(); renderReviews();
+  showToast(!currentApproved ? 'Reseña aprobada — ya es visible en la tienda' : 'Reseña ocultada de la tienda');
+}
+
+function confirmDeleteReview(id, name) {
+  document.getElementById('confirmTitle').textContent = 'Eliminar Reseña';
+  document.getElementById('confirmMsg').textContent = `¿Estás seguro que querés eliminar la reseña de "${name || 'este cliente'}"? Esta acción no se puede deshacer.`;
+  confirmCallback = async () => {
+    await sb.from('reviews').delete().eq('id',id);
+    closeModal('confirmModal');
+    await loadReviewsAdmin(); renderReviews();
+    showToast('Reseña eliminada');
+  };
+  document.getElementById('confirmModal').classList.add('active');
 }
 
 /* ══ ACCOUNTING ══ */
