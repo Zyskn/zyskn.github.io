@@ -600,6 +600,57 @@
     #zyskn-lock-screen .zls-text { font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.18em; color:#555; animation:zyskn-pulse 2s ease infinite; }
     #zyskn-lock-screen .zls-sub { font-size:.58rem; color:#333; font-weight:500; letter-spacing:.06em; }
 
+    /* URGENCY BADGE */
+    .badge-urgency { background:var(--red); color:#fff; animation:urgencyPulse 1.6s ease-in-out infinite; }
+    @keyframes urgencyPulse { 0%,100%{opacity:1} 50%{opacity:.55} }
+
+    /* REVIEWS SECTION */
+    #reviews-section { background:#fff; border-top:1px solid rgba(0,0,0,0.08); max-width:100%; padding:5rem 2rem; }
+    #reviews-section .container { max-width:1100px; }
+    .reviews-head { display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:1.2rem; margin-bottom:2.5rem; }
+    .reviews-head .section-title { margin-bottom:0; }
+    .reviews-summary { display:flex; align-items:center; gap:10px; margin-top:6px; }
+    .reviews-summary .stars { color:var(--red); font-size:1rem; letter-spacing:2px; }
+    .reviews-summary span { font-size:.7rem; font-weight:700; color:var(--text-faint); text-transform:uppercase; letter-spacing:.06em; }
+    .btn-write-review {
+      background:var(--black); color:#fff; border:2px solid var(--black); padding:.85rem 1.8rem;
+      font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+      cursor:pointer; font-family:'Inter',sans-serif; transition:var(--transition); white-space:nowrap;
+    }
+    .btn-write-review:hover { background:transparent; color:var(--black); }
+    .reviews-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.4rem; }
+    .review-card { border:1px solid rgba(0,0,0,0.09); border-radius:4px; padding:1.4rem 1.5rem; background:var(--gray-bg); }
+    .review-card .stars { color:var(--red); font-size:.85rem; letter-spacing:2px; margin-bottom:.6rem; display:block; }
+    .review-card .review-comment { font-size:.82rem; color:var(--text-muted); line-height:1.65; margin-bottom:1rem; }
+    .review-card .review-footer { display:flex; justify-content:space-between; align-items:center; }
+    .review-card .review-name { font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--black); }
+    .review-card .review-product { font-size:.62rem; font-weight:700; color:var(--text-faint); text-transform:uppercase; letter-spacing:.05em; margin-top:2px; }
+    .review-card .review-date { font-size:.62rem; color:var(--text-faint); font-weight:600; white-space:nowrap; }
+    .reviews-empty { text-align:center; padding:3rem 0; grid-column:1/-1; }
+    .reviews-empty p { font-size:.82rem; color:var(--text-muted); text-transform:uppercase; font-weight:700; }
+
+    /* REVIEW MODAL */
+    #reviewModal {
+      display:none; position:fixed; inset:0; z-index:9000;
+      background:rgba(0,0,0,0.6); backdrop-filter:blur(6px);
+      align-items:center; justify-content:center;
+    }
+    #reviewModal.active { display:flex; }
+    .review-box {
+      background:#fff; width:100%; max-width:460px; margin:1rem;
+      padding:2.5rem 2rem; position:relative; border-radius:4px;
+      box-shadow:0 24px 80px rgba(0,0,0,0.2);
+      animation:authSlideIn .3s var(--ease-out);
+    }
+    .review-star-picker { display:flex; gap:8px; margin-bottom:1.4rem; }
+    .review-star-picker button {
+      background:none; border:none; cursor:pointer; font-size:1.8rem; line-height:1;
+      color:#ddd; padding:0; transition:color .15s, transform .15s;
+    }
+    .review-star-picker button.selected,
+    .review-star-picker button:hover { color:var(--red); transform:scale(1.1); }
+    #reviewFormError { font-size:.7rem; color:var(--red); font-weight:700; margin-top:.6rem; min-height:1.2em; text-align:center; }
+
     /* SEO CONTENT */
     #seo-content { background:#fafafa; border-top:1px solid rgba(0,0,0,0.05); }
     #seo-content h2 { font-size:clamp(1.1rem,3vw,1.5rem); }
@@ -661,6 +712,30 @@
         <button class="confirm-cancel" onclick="closeConfirmModal()">Cancelar</button>
         <button class="confirm-delete" onclick="doDeleteAccount()">Eliminar</button>
       </div>
+    </div>
+  </div>
+
+  <!-- REVIEW MODAL -->
+  <div id="reviewModal">
+    <div class="review-box">
+      <button class="auth-close" onclick="closeReviewModal()">×</button>
+      <div class="auth-logo">DEJANOS TU RESEÑA</div>
+      <div class="auth-subtitle">Contanos cómo fue tu compra</div>
+      <div class="auth-field"><label>Tu nombre</label><input type="text" id="reviewName" placeholder="Nombre y apellido"></div>
+      <div class="auth-field"><label>Prenda que compraste (opcional)</label><input type="text" id="reviewProduct" placeholder="Ej: Hoodie Nike vintage"></div>
+      <div class="auth-field">
+        <label>Calificación</label>
+        <div class="review-star-picker" id="reviewStarPicker">
+          <button type="button" data-val="1" onclick="setReviewStars(1)">★</button>
+          <button type="button" data-val="2" onclick="setReviewStars(2)">★</button>
+          <button type="button" data-val="3" onclick="setReviewStars(3)">★</button>
+          <button type="button" data-val="4" onclick="setReviewStars(4)">★</button>
+          <button type="button" data-val="5" onclick="setReviewStars(5)">★</button>
+        </div>
+      </div>
+      <div class="auth-field"><label>Tu comentario</label><input type="text" id="reviewComment" placeholder="Contanos tu experiencia con ZYSKN"></div>
+      <button class="auth-btn" id="btnSubmitReview" onclick="submitReview()">Enviar reseña</button>
+      <div class="auth-error" id="reviewFormError"></div>
     </div>
   </div>
 
@@ -730,6 +805,7 @@
               <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','shorts')">Shorts</a>
             </div>
           </div>
+          <div class="nav-item"><a href="javascript:void(0)" onclick="scrollToSection('reviews-section')">RESEÑAS</a></div>
           <div class="nav-item"><a href="javascript:void(0)" onclick="scrollToSection('faq-section')">FAQ</a></div>
           <div class="nav-item"><a href="javascript:void(0)" onclick="scrollToSection('contact')">CONTACTO</a></div>
         </nav>
@@ -874,6 +950,28 @@
           <button onclick="shareOnWhatsApp()" style="width:100%;background:#25D366;color:#fff;border:none;padding:1rem;font-size:.85rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;margin-top:.5rem;font-family:'Inter',sans-serif;">
             COMPLETAR PEDIDO POR WHATSAPP
           </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section id="reviews-section">
+      <div class="container" style="max-width:1100px;">
+        <div class="reviews-head">
+          <div>
+            <h2 class="section-title">
+              <span class="title-num">Clientes</span>
+              RESEÑAS
+            </h2>
+            <div class="reviews-summary" id="reviewsSummary" style="display:none;">
+              <span class="stars" id="reviewsSummaryStars"></span>
+              <span id="reviewsSummaryText"></span>
+            </div>
+          </div>
+          <button class="btn-write-review" onclick="openReviewModal()">DEJAR MI RESEÑA</button>
+        </div>
+        <div id="reviewsGrid" class="reviews-grid">
+          <div class="reviews-empty"><p>Cargando reseñas...</p></div>
         </div>
       </div>
     </section>
@@ -1253,6 +1351,7 @@
         const isSold = p.is_sold;
         const sizeBadges = (p.sizes || []).map(s => `<span class="badge badge-size">${s}</span>`).join('');
         const newBadge = p.is_new ? '<span class="badge badge-new">NEW</span>' : '';
+        const urgencyBadge = (!isSold && !isReserved) ? '<span class="badge badge-urgency">ÚNICA UNIDAD</span>' : '';
         const photos = getProductImages(p);
         const mainImg = photos[0] || '';
         const hoverImg = photos[1] || '';
@@ -1266,7 +1365,7 @@
             <div>
               <p class="product-name">${p.name}</p>
               <p class="product-cat">${cats}</p>
-              <div class="product-badges">${newBadge}${sizeBadges}</div>
+              <div class="product-badges">${urgencyBadge}${newBadge}${sizeBadges}</div>
             </div>
             <p class="product-price">$${Number(p.price).toLocaleString('es-AR')}</p>
           </div>
@@ -1480,6 +1579,103 @@
       showNotification('PEDIDO ENVIADO · ' + orderId);
     }
 
+    /* REVIEWS */
+    let selectedReviewStars = 0;
+
+    function openReviewModal() {
+      document.getElementById('reviewModal').classList.add('active');
+      document.getElementById('reviewName').value = '';
+      document.getElementById('reviewProduct').value = '';
+      document.getElementById('reviewComment').value = '';
+      document.getElementById('reviewFormError').textContent = '';
+      setReviewStars(0);
+    }
+    function closeReviewModal() { document.getElementById('reviewModal').classList.remove('active'); }
+    document.getElementById('reviewModal').addEventListener('click', (e) => { if (e.target === document.getElementById('reviewModal')) closeReviewModal(); });
+
+    function setReviewStars(n) {
+      selectedReviewStars = n;
+      document.querySelectorAll('#reviewStarPicker button').forEach(b => {
+        b.classList.toggle('selected', Number(b.dataset.val) <= n);
+      });
+    }
+
+    function starString(n) {
+      const full = Math.round(n);
+      return '★'.repeat(full) + '☆'.repeat(5 - full);
+    }
+
+    async function submitReview() {
+      const name = document.getElementById('reviewName').value.trim();
+      const productName = document.getElementById('reviewProduct').value.trim();
+      const comment = document.getElementById('reviewComment').value.trim();
+      const errEl = document.getElementById('reviewFormError');
+      const btn = document.getElementById('btnSubmitReview');
+
+      if (!name || !comment) { errEl.textContent = 'Completá tu nombre y comentario.'; return; }
+      if (!selectedReviewStars) { errEl.textContent = 'Seleccioná una calificación en estrellas.'; return; }
+
+      btn.disabled = true; btn.textContent = 'Enviando...';
+      try {
+        const { error } = await sb.from('reviews').insert({
+          customer_name: name,
+          product_name: productName || null,
+          rating: selectedReviewStars,
+          comment: comment,
+          approved: false
+        });
+        if (error) throw error;
+        closeReviewModal();
+        showNotification('¡GRACIAS! TU RESEÑA FUE ENVIADA');
+      } catch (e) {
+        console.error('Error enviando reseña:', e);
+        errEl.textContent = 'No se pudo enviar la reseña. Intentá de nuevo.';
+      } finally {
+        btn.disabled = false; btn.textContent = 'Enviar reseña';
+      }
+    }
+
+    async function loadReviews() {
+      const grid = document.getElementById('reviewsGrid');
+      try {
+        const { data, error } = await sb.from('reviews')
+          .select('*')
+          .eq('approved', true)
+          .order('created_at', { ascending: false });
+        if (error) throw error;
+
+        const reviews = data || [];
+        if (reviews.length === 0) {
+          grid.innerHTML = '<div class="reviews-empty"><p>Todavía no hay reseñas — ¡sé el primero en dejar la tuya!</p></div>';
+          document.getElementById('reviewsSummary').style.display = 'none';
+          return;
+        }
+
+        const avg = reviews.reduce((s, r) => s + Number(r.rating), 0) / reviews.length;
+        document.getElementById('reviewsSummary').style.display = 'flex';
+        document.getElementById('reviewsSummaryStars').textContent = starString(avg);
+        document.getElementById('reviewsSummaryText').textContent = `${avg.toFixed(1)} / 5 · ${reviews.length} reseña${reviews.length === 1 ? '' : 's'}`;
+
+        grid.innerHTML = reviews.map(r => {
+          const date = r.created_at ? new Date(r.created_at).toLocaleDateString('es-AR') : '';
+          return `<div class="review-card">
+            <span class="stars">${starString(r.rating)}</span>
+            <p class="review-comment">"${(r.comment || '').replace(/</g, '&lt;')}"</p>
+            <div class="review-footer">
+              <div>
+                <div class="review-name">${(r.customer_name || 'Cliente ZYSKN').replace(/</g, '&lt;')}</div>
+                ${r.product_name ? `<div class="review-product">${r.product_name.replace(/</g, '&lt;')}</div>` : ''}
+              </div>
+              <span class="review-date">${date}</span>
+            </div>
+          </div>`;
+        }).join('');
+      } catch (e) {
+        console.error('Error cargando reseñas:', e);
+        grid.innerHTML = '<div class="reviews-empty"><p>No se pudieron cargar las reseñas</p></div>';
+      }
+    }
+
     /* SEARCH */
     function toggleSearch() {
       const header = document.getElementById('header'); const input = document.getElementById('searchInput');
@@ -1605,6 +1801,7 @@
     checkStoreLock();
     initAuth();
     loadProducts();
+    loadReviews();
   </script>
 </body>
 </html>
