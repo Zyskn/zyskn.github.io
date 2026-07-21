@@ -1240,17 +1240,29 @@
     }
 
     async function doForgotPassword() {
-      const email = document.getElementById('forgotEmail').value.trim();
-      const errEl = document.getElementById('forgotError');
-      const sucEl = document.getElementById('forgotSuccess');
-      const btn = document.getElementById('btnForgot');
-      if (!email) { errEl.textContent = 'Ingresá tu correo electrónico.'; return; }
-      btn.disabled = true; btn.textContent = 'Enviando...';
-      const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: 'https://zyskn.github.io/' });
-      btn.disabled = false; btn.textContent = 'Enviar link de recuperación';
-      if (error) { errEl.textContent = 'No pudimos enviar el correo. Probá de nuevo.'; }
-      else { sucEl.textContent = 'Listo, revisá tu correo para restablecer la contraseña.'; }
-    }
+  const email = document.getElementById('forgotEmail').value.trim();
+  const errorEl = document.getElementById('forgotError');
+  const successEl = document.getElementById('forgotSuccess');
+
+  errorEl.textContent = '';
+  successEl.textContent = '';
+
+  if (!email) {
+    errorEl.textContent = 'Ingresá tu correo electrónico';
+    return;
+  }
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: 'https://zyskn.github.io/reset-password.html'
+  });
+
+  if (error) {
+    errorEl.textContent = error.message;
+  } else {
+    successEl.textContent =
+      'Te enviamos un link para recuperar tu contraseña.';
+  }
+}
 
     async function doLogin() {
       const email = document.getElementById('loginEmail').value.trim();
