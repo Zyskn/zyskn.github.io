@@ -330,6 +330,14 @@
     .auth-forgot a { color:var(--text-faint); font-weight:700; text-decoration:underline; cursor:pointer; }
     .auth-forgot a:hover { color:var(--black); }
 
+    /* RESET PASSWORD MODAL */
+    #resetPasswordModal {
+      display:none; position:fixed; inset:0; z-index:9600;
+      background:rgba(0,0,0,0.6); backdrop-filter:blur(6px);
+      align-items:center; justify-content:center;
+    }
+    #resetPasswordModal.active { display:flex; }
+
     /* USER DROPDOWN */
     .user-menu-wrapper { position:relative; }
     .user-dropdown {
@@ -705,6 +713,19 @@
         <div class="auth-success" id="forgotSuccess"></div>
         <div class="auth-switch"><a onclick="switchTab('login')">← Volver a iniciar sesión</a></div>
       </div>
+    </div>
+  </div>
+
+  <!-- RESET PASSWORD MODAL (se abre automáticamente al volver del link del mail) -->
+  <div id="resetPasswordModal">
+    <div class="auth-box">
+      <div class="auth-logo">NUEVA CONTRASEÑA</div>
+      <div class="auth-subtitle">Elegí tu nueva contraseña</div>
+      <div class="auth-field"><label>Nueva contraseña</label><input type="password" id="newPassword1" placeholder="Mínimo 6 caracteres"></div>
+      <div class="auth-field"><label>Repetir contraseña</label><input type="password" id="newPassword2" placeholder="Repetí la contraseña" onkeydown="if(event.key==='Enter')doResetPassword()"></div>
+      <button class="auth-btn" id="btnResetPassword" onclick="doResetPassword()">Guardar nueva contraseña</button>
+      <div class="auth-error" id="resetPasswordError"></div>
+      <div class="auth-success" id="resetPasswordSuccess"></div>
     </div>
   </div>
 
@@ -1197,11 +1218,63 @@
       btn.classList.toggle('active', favorites.includes(currentProduct.id));
     }
 
+    /* ============================================================
+       RESET PASSWORD MODAL — helpers (aparece cuando Supabase dispara
+       el evento PASSWORD_RECOVERY al volver del link del mail)
+    ============================================================ */
+    function openResetPasswordModal() {
+      closeAuthModal();
+      document.getElementById('resetPasswordModal').classList.add('active');
+      document.getElementById('newPassword1').value = '';
+      document.getElementById('newPassword2').value = '';
+      document.getElementById('resetPasswordError').textContent = '';
+      document.getElementById('resetPasswordSuccess').textContent = '';
+    }
+    function closeResetPasswordModal() {
+      document.getElementById('resetPasswordModal').classList.remove('active');
+    }
+
+    async function doResetPassword() {
+      const p1 = document.getElementById('newPassword1').value;
+      const p2 = document.getElementById('newPassword2').value;
+      const errEl = document.getElementById('resetPasswordError');
+      const sucEl = document.getElementById('resetPasswordSuccess');
+      const btn = document.getElementById('btnResetPassword');
+      errEl.textContent = ''; sucEl.textContent = '';
+
+      if (!p1 || !p2) { errEl.textContent = 'Completá ambos campos.'; return; }
+      if (p1.length < 6) { errEl.textContent = 'La contraseña debe tener al menos 6 caracteres.'; return; }
+      if (p1 !== p2) { errEl.textContent = 'Las contraseñas no coinciden.'; return; }
+
+      btn.disabled = true; btn.textContent = 'Guardando...';
+      const { error } = await sb.auth.updateUser({ password: p1 });
+      btn.disabled = false; btn.textContent = 'Guardar nueva contraseña';
+
+      if (error) {
+        errEl.textContent = 'No se pudo actualizar la contraseña. Probá de nuevo o pedí un nuevo link.';
+        return;
+      }
+      sucEl.textContent = '¡Listo! Tu contraseña fue actualizada.';
+      showNotification('CONTRASEÑA ACTUALIZADA');
+      setTimeout(() => {
+        closeResetPasswordModal();
+        // Limpiamos el hash de recuperación de la URL para que no vuelva a abrirse el modal
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }, 1600);
+    }
+
     /* AUTH */
     async function initAuth() {
       const { data: { session } } = await sb.auth.getSession();
       if (session?.user) { currentUser = session.user; updateAuthUI(currentUser); }
-      sb.auth.onAuthStateChange((_event, session) => { currentUser = session?.user || null; updateAuthUI(currentUser); });
+      sb.auth.onAuthStateChange((event, session) => {
+        currentUser = session?.user || null;
+        updateAuthUI(currentUser);
+        // Supabase dispara este evento cuando el usuario vuelve del link de
+        // recuperación de contraseña del mail. Ahí mostramos el modal para
+        // que pueda escribir su nueva contraseña.
+        if (event === 'PASSWORD_RECOVERY') { openResetPasswordModal(); }
+      });
     }
 
     function updateAuthUI(user) {
@@ -1240,29 +1313,17 @@
     }
 
     async function doForgotPassword() {
-  const email = document.getElementById('forgotEmail').value.trim();
-  const errorEl = document.getElementById('forgotError');
-  const successEl = document.getElementById('forgotSuccess');
-
-  errorEl.textContent = '';
-  successEl.textContent = '';
-
-  if (!email) {
-    errorEl.textContent = 'Ingresá tu correo electrónico';
-    return;
-  }
-
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: 'https://zyskn.github.io/reset-password.html'
-  });
-
-  if (error) {
-    errorEl.textContent = error.message;
-  } else {
-    successEl.textContent =
-      'Te enviamos un link para recuperar tu contraseña.';
-  }
-}
+      const email = document.getElementById('forgotEmail').value.trim();
+      const errEl = document.getElementById('forgotError');
+      const sucEl = document.getElementById('forgotSuccess');
+      const btn = document.getElementById('btnForgot');
+      if (!email) { errEl.textContent = 'Ingresá tu correo electrónico.'; return; }
+      btn.disabled = true; btn.textContent = 'Enviando...';
+      const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: 'https://zyskn.github.io/' });
+      btn.disabled = false; btn.textContent = 'Enviar link de recuperación';
+      if (error) { errEl.textContent = 'No pudimos enviar el correo. Probá de nuevo.'; }
+      else { sucEl.textContent = 'Listo, revisá tu correo para restablecer la contraseña.'; }
+    }
 
     async function doLogin() {
       const email = document.getElementById('loginEmail').value.trim();
