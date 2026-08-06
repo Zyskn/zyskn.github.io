@@ -487,9 +487,12 @@
     <!-- PRODUCTS -->
     <div id="tab-products" style="display:none;">
       <div class="section-hdr">
-        <h2>Productos <span id="productCountLabel"></span></h2>
-        <button class="btn-primary" onclick="openProductModal()">+ Agregar Producto</button>
-      </div>
+  <h2>Productos <span id="productCountLabel"></span></h2>
+  <div style="display:flex;gap:.5rem;">
+    <button class="btn-outline" onclick="borrarFotosHuerfanas()">🧹 Limpiar fotos</button>
+    <button class="btn-primary" onclick="openProductModal()">+ Agregar Producto</button>
+  </div>
+</div>
       <div class="filter-row">
         <button class="filter-chip active" onclick="filterProductsAdmin('all',this)">Todos</button>
         <button class="filter-chip" onclick="filterProductsAdmin('available',this)">Disponibles</button>
@@ -1457,6 +1460,26 @@ async function saveProduct() {
   renderProductsTable(); renderDashboard();
 }
 
+// ===== BORRAR FOTOS HUERFANAS DEL STORAGE =====
+async function borrarFotosHuerfanas() {
+  showToast('Buscando fotos huérfanas...');
+  const { data, error } = await sb.rpc('get_fotos_huerfanas');
+  if (error) { showToast('Error: ' + error.message); return; }
+  
+  const paths = data.map(d => d.path);
+  if (paths.length === 0) { showToast('No hay fotos huérfanas, está limpio'); return; }
+
+  if (!confirm(`Se encontraron ${paths.length} fotos huérfanas.\n¿Borrarlas del Storage?`)) return;
+
+  // Borra de a 100 para no pasar el límite
+  for (let i = 0; i < paths.length; i += 100) {
+    const chunk = paths.slice(i, i + 100);
+    const { error: delError } = await sb.storage.from('Products').remove(chunk);
+    if (delError) { showToast('Error borrando: ' + delError.message); return; }
+  }
+  showToast(`Borradas ${paths.length} fotos huérfanas`);
+}
+  
 async function toggleSold(id, currentSold) {
   await sb.from('products').update({is_sold:!currentSold}).eq('id',id);
   await loadAdminProducts(); renderProductsTable(); renderDashboard();
