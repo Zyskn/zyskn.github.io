@@ -11,8 +11,8 @@
        - Propuesta de valor única (sin restock)
        - CTA implícito
   ============================================================ -->
-  <title>ZYSKN – Tienda de Ropa Vintage en Córdoba </title>
-  <meta name="description" content="Ropa Vintage, Ropa full marcas, Tienda de Ropa Vintage en Córdoba, Remeras oversize, hoodies oversize, cargos y camperas importadas. Cada pieza es única, Sin Restock. Envíos a todo el país. Entrá y elegí la tuya.">
+  <title>ZYSKN – Ropa Vintage en Córdoba | Piezas Únicas Sin Restock</title>
+  <meta name="description" content="Tienda de Ropa Vintage en Córdoba. Remeras oversize, hoodies oversize, cargos y camperas importadas. Cada pieza es única, Sin Restock. Envíos a todo el país. Entrá y elegí la tuya.">
 
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
@@ -1370,34 +1370,23 @@
     });
     document.getElementById('authModal').addEventListener('click', (e) => { if (e.target === document.getElementById('authModal')) closeAuthModal(); });
 
-  function renderizarProductos(productos) {
-    const contenedor = document.getElementById('lista-productos'); 
-    if (!contenedor) return;
+    /* SUPABASE — PRODUCTOS */
+    async function loadProducts() {
+      showSkeletons('productsGrid', 6); showSkeletons('newProductsGrid', 3);
+      try {
+        const { data, error } = await sb.from('products').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false });
+        if (error) throw error;
+        allProducts = data || [];
+      } catch (e) { console.error('Error cargando productos:', e); allProducts = []; }
+      await syncReservations();
+      filteredProducts = [...allProducts];
+      renderProducts(filteredProducts, 'productsGrid');
+      renderProducts(allProducts.filter(p => p.is_new), 'newProductsGrid');
+      // Inyectar schema de productos luego de cargar
+      injectProductSchema(allProducts);
+      updateCartUI(); startTimers();
+    }
 
-    contenedor.innerHTML = ''; 
-    
-    // Guardamos los productos en la variable global si otras funciones la usan
-    allProducts = productos; 
-    filteredProducts = [...allProducts];
-
-    productos.forEach(prod => {
-      const item = document.createElement('div');
-      item.className = 'producto-card'; 
-      item.innerHTML = `
-        <h3>${prod.name}</h3>
-        <p class="precio">$${prod.precio}</p>
-      `;
-      contenedor.appendChild(item);
-    });
-
-    // ⚠️ IMPORTANTE: Ejecuta manualmente lo que hacía el final de loadProducts
-    if (typeof updateCartUI === 'function') updateCartUI();
-    if (typeof startTimers === 'function') startTimers();
-    
-    // Si usas reservas, llama a syncReservations() aquí también si es necesario
-    // if (typeof syncReservations === 'function') syncReservations();
-  }   
-    
     /* RESERVAS
        IMPORTANTE: para que esto sea 100% a prueba de condiciones de carrera
        (dos clientes reservando la misma prenda casi al mismo tiempo), la tabla
@@ -1986,45 +1975,5 @@
       loadReviews();
     })();
   </script>
-
-<!-- 1. Importar librería para leer CSV -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-
-<!-- 2. Script para cargar y mostrar productos -->
-<script>
-  // URL directa a tu archivo CSV (usa la que copiaste en el paso 1)
-  const csvUrl = 'https://raw.githubusercontent.com/Zyskn/zyskn.github.io/main/productos.csv';
-
-  Papa.parse(csvUrl, {
-    download: true,
-    header: true, // Usa la primera fila como nombres de columnas
-    complete: function(results) {
-      const productos = results.data;
-      console.log("Productos cargados:", productos);
-      
-      // 3. Aquí llamas a tu función para dibujar los productos
-      // Ejemplo: mostrarProductos(productos);
-      renderizarProductos(productos); 
-    },
-    error: function(err) {
-      console.error("Error al leer CSV:", err);
-    }
-  });
-
-  // Función de ejemplo para mostrar los datos en tu HTML
-  function renderizarProductos(productos) {
-    const contenedor = document.getElementById('lista-productos'); // Asegúrate de tener un div con este ID
-    if (!contenedor) return;
-
-    contenedor.innerHTML = ''; // Limpiar contenido previo
-    
-    productos.forEach(prod => {
-      // Ajusta 'nombre', 'precio' según las columnas reales de tu CSV
-      const item = document.createElement('div');
-      item.innerHTML = `<h3>${prod.nombre}</h3><p>Precio: $${prod.precio}</p>`;
-      contenedor.appendChild(item);
-    });
-  }
-</script>   
 </body>
 </html>
