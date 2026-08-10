@@ -1182,8 +1182,8 @@ function getSelectedCategories() {
 /* ══ COMPRESIÓN DE IMÁGENES A FORMATO ESTÁNDAR ══ */
 /* Redimensiona a un máximo de lado y recomprime en JPEG con calidad fija,
    para que todas las fotos de la tienda tengan un peso y una calidad visual coherentes. */
-const IMG_MAX_DIM = 1600;
-const IMG_QUALITY = 0.82;
+const IMG_MAX_DIM = 1080;
+const IMG_QUALITY = 0.75;
 
 function compressImageBlob(blob, maxDim = IMG_MAX_DIM, quality = IMG_QUALITY) {
   return new Promise((resolve, reject) => {
@@ -1204,7 +1204,7 @@ function compressImageBlob(blob, maxDim = IMG_MAX_DIM, quality = IMG_QUALITY) {
       ctx.drawImage(img, 0, 0, width, height);
       canvas.toBlob(out => {
         if (out) resolve(out); else reject(new Error('No se pudo comprimir la imagen'));
-      }, 'image/jpeg', quality);
+      }, 'image/webp', quality);
     };
     img.onerror = () => { URL.revokeObjectURL(objectUrl); reject(new Error('No se pudo leer la imagen')); };
     img.src = objectUrl;
@@ -1212,8 +1212,8 @@ function compressImageBlob(blob, maxDim = IMG_MAX_DIM, quality = IMG_QUALITY) {
 }
 
 async function uploadCompressedBlob(blob, suffix = '') {
-  const fileName = `${currentUploadFolder}/${Date.now()}-${Math.random().toString(36).slice(2,8)}${suffix}.jpg`;
-  const { error } = await sb.storage.from('Products').upload(fileName, blob, { contentType: 'image/jpeg' });
+  const fileName = `${currentUploadFolder}/${Date.now()}-${Math.random().toString(36).slice(2,8)}${suffix}.webp`;
+  const { error } = await sb.storage.from('Products').upload(fileName, blob, { contentType: 'image/webp' });
   if (error) throw error;
   const { data: urlData } = sb.storage.from('Products').getPublicUrl(fileName);
   return urlData.publicUrl;
@@ -1359,9 +1359,9 @@ async function handleFileUpload(event) {
       showToast(`No se pudo comprimir ${file.name}, se sube tal cual`);
       uploadBlob = file;
     }
-    const fileName = `${currentUploadFolder}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.jpg`;
+    const fileName = `${currentUploadFolder}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.webp`;
     showToast(`Subiendo ${file.name}...`);
-    const { error } = await sb.storage.from('Products').upload(fileName, uploadBlob, { contentType: 'image/jpeg' });
+    const { error } = await sb.storage.from('Products').upload(fileName, uploadBlob, { contentType: 'image/webp' });
     if (error) { showToast(`Error subiendo ${file.name}: ${error.message}`); continue; }
     const { data: urlData } = sb.storage.from('Products').getPublicUrl(fileName);
     productImages.push({ url: urlData.publicUrl });
@@ -1391,9 +1391,9 @@ uploadZone.addEventListener('drop', async e => {
       showToast(`No se pudo comprimir ${file.name}, se sube tal cual`);
       uploadBlob = file;
     }
-    const fileName = `${currentUploadFolder}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.jpg`;
+    const fileName = `${currentUploadFolder}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.webp`;
     showToast(`Subiendo ${file.name}...`);
-    const { error } = await sb.storage.from('Products').upload(fileName, uploadBlob, { contentType: 'image/jpeg' });
+    const { error } = await sb.storage.from('Products').upload(fileName, uploadBlob, { contentType: 'image/webp' });
     if (error) { showToast(`Error subiendo ${file.name}`); continue; }
     const { data: urlData } = sb.storage.from('Products').getPublicUrl(fileName);
     productImages.push({ url: urlData.publicUrl });
