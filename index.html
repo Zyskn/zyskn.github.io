@@ -1237,55 +1237,60 @@
     .tb-arrow { color: rgba(255,255,255,.52); }
     .tb-arrow:hover { color: #fff; }
   
-    /* --- CORRECCIÓN DEFINITIVA HERO Y MENÚ --- */
-    .nav-item:hover .sub-nav-wrapper {
+    /* --- CORRECCIÓN DEFINITIVA --- */
+    
+    /* TOP BAR: Ocultamiento forzado */
+    .top-bar {
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease !important;
+    }
+    body.scrolled-down .top-bar {
+      transform: translateY(-100%) !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+    body.scrolled-down header#header {
+      top: 0 !important;
+    }
+
+    /* HERO: Restaurar posición original pero evitar choque */
+    .hero {
+      display: flex !important;
+      align-items: flex-start !important; /* Volver a poner el contenido arriba */
+      justify-content: flex-start !important;
+      padding-top: clamp(80px, 15vh, 180px) !important; /* Espacio para que el h1 no toque los labels */
+      position: relative !important;
+    }
+
+    .hero::before, .hero::after {
+      z-index: 100 !important;
+      top: clamp(20px, 4vw, 40px) !important; /* Mantener etiquetas arriba fijas */
       opacity: 1 !important;
       visibility: visible !important;
-      transform: translateY(0) !important;
-      pointer-events: auto !important;
     }
-    .sub-nav-wrapper {
-      overflow: visible !important;
-      top: 100% !important;
+
+    .hero-content {
+      z-index: 10 !important;
+      position: relative !important;
+      margin-top: 0 !important; /* Resetear cualquier margen anterior */
     }
+
+    .hero h1 {
+      /* Ajuste de tamaño para que no choque en pantallas bajas */
+      font-size: clamp(2.5rem, 8vw, 7.5rem) !important;
+      line-height: 0.9 !important;
+      margin-top: 0 !important;
+    }
+
+    /* MENÚ: Puente de interacción */
     .sub-nav-wrapper::before {
       content: '' !important;
       position: absolute !important;
-      top: -30px !important;
+      top: -40px !important;
       left: 0 !important;
       width: 100% !important;
-      height: 30px !important;
+      height: 40px !important;
       background: transparent !important;
       display: block !important;
-    }
-    .hero {
-      display: flex !important;
-      flex-direction: column !important;
-      justify-content: flex-end !important;
-      align-items: flex-start !important;
-      padding-top: 140px !important;
-      position: relative !important;
-    }
-    .hero::before, .hero::after {
-      z-index: 99 !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-    }
-    .hero-content {
-      z-index: 5 !important;
-      position: relative !important;
-      margin-top: auto !important;
-    }
-    @media (max-width: 768px) {
-      .hero {
-        padding-top: 100px !important;
-        min-height: 500px !important;
-      }
-      .hero h1 {
-        font-size: clamp(2.5rem, 15vw, 4rem) !important;
-        line-height: 1 !important;
-        margin-bottom: 1rem !important;
-      }
     }
     /* --- FIN CORRECCIÓN --- */
 </style>
@@ -2581,13 +2586,21 @@
       document.body.style.position = ''; document.body.style.top = ''; document.body.style.width = ''; window.scrollTo(0, scrollY);
     });
 
-    window.addEventListener('scroll', () => {
-      if (window.pageYOffset > 50) document.body.classList.add('scrolled-down');
-      else document.body.classList.remove('scrolled-down');
+    
+    window.addEventListener('scroll', function() {
+      const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrollY > 40) {
+        document.body.classList.add('scrolled-down');
+      } else {
+        document.body.classList.remove('scrolled-down');
+      }
       const header = document.getElementById('header');
-      if (window.pageYOffset > 10) header.classList.add('elevated');
-      else header.classList.remove('elevated');
-    });
+      if (header) {
+        if (scrollY > 10) header.classList.add('elevated');
+        else header.classList.remove('elevated');
+      }
+    }, { passive: true });
+
 
     /* BOOT
        Si la tienda está bloqueada, no seguimos cargando productos/reseñas hasta
