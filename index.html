@@ -434,6 +434,10 @@
     #manifesto h2 span { color:var(--red); }
     #manifesto p { margin-top:3rem; font-size:.62rem; font-weight:600; color:#555; text-transform:uppercase; letter-spacing:.35em; display:flex; align-items:center; justify-content:center; gap:1.5rem; }
     #manifesto p::before,#manifesto p::after { content:''; width:30px; height:1px; background:rgba(255,255,255,0.1); }
+    .secondhand-note { max-width:520px; margin:2.2rem auto 0; padding:.8rem 1.15rem; border:1px solid rgba(255,255,255,.12); color:rgba(255,255,255,.62); font-size:.58rem; font-weight:600; line-height:1.6; letter-spacing:.08em; text-transform:uppercase; text-align:center; }
+    .secondhand-note strong { color:#fff; font-weight:700; }
+    .secondhand-note::before { content:'●'; color:var(--red); font-size:.5rem; margin-right:.55rem; vertical-align:1px; }
+    @media (max-width:600px) { .secondhand-note { margin:1.8rem 1.1rem 0; padding:.75rem .9rem; font-size:.52rem; letter-spacing:.055em; } }
 
     /* FILTROS */
     #filter-bar {
@@ -1082,6 +1086,7 @@
       <div class="manifesto-inner">
         <h2><span>SOLD</span> OUT MEANS <span>SOLD</span> OUT.</h2>
         <p>ZYSKN · EST. 2026</p>
+        <div class="secondhand-note"><strong>Ropa de segunda mano</strong>, seleccionada pieza por pieza. Comprá solo si comprendés y valorás este concepto :)</div>
       </div>
     </section>
 
