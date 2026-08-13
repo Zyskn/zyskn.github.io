@@ -243,6 +243,8 @@
     .cart-icon,.cart-icon svg { color:#000 !important; stroke:#000 !important; }
     .cart-icon:hover,.cart-icon:focus-visible,.cart-icon:hover svg,.cart-icon:focus-visible svg { color:var(--red) !important; stroke:var(--red) !important; }
     .cart-icon svg { width:22px; height:22px; }
+    .user-menu-wrapper .icon-btn.auth-active { color:var(--red) !important; filter:drop-shadow(0 0 5px rgba(163,0,0,.22)); }
+    .user-menu-wrapper .icon-btn.auth-active svg { stroke:var(--red) !important; }
     .cart-badge { position:absolute; top:-4px; right:-5px; min-width:16px; height:16px; padding:0 4px; border:0; background:var(--red); color:#fff; border-radius:999px; display:flex; align-items:center; justify-content:center; font-size:.58rem; font-weight:800; line-height:1; }
     .cart-badge.pulse { animation:cartBadgePop .55s cubic-bezier(.2,.8,.2,1); }
 
@@ -817,7 +819,7 @@
     #nuevo-section { padding:4.25rem 2rem 5rem; }
     #nuevo-section .section-title { margin-bottom:2.9rem; font-size:clamp(1.15rem,3.2vw,1.75rem); }
     #nuevo-section .section-title .title-num { margin-bottom:.75rem; font-size:.58rem; letter-spacing:.2em; }
-    .products-grid { grid-template-columns:repeat(5,minmax(0,1fr)); gap:clamp(1rem,1.65vw,1.8rem); }
+    .products-grid { grid-template-columns:repeat(4,minmax(0,1fr)); gap:clamp(1.2rem,2vw,2.1rem); }
     .product-card { padding-bottom:.5rem; }
     .product-image { margin-bottom:.82rem; border-color:rgba(0,0,0,.055); }
     .product-card:hover .product-image { border-color:rgba(163,0,0,.28); }
@@ -829,8 +831,8 @@
     .product-badges { grid-column:1/-1; gap:4px; margin-top:.42rem; }
     .badge { padding:3px 7px; font-size:.46rem; letter-spacing:.11em; }
     .product-card::before { top:.65rem; right:.65rem; width:28px; height:28px; font-size:.82rem; }
-    @media (max-width:1200px) { .products-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } }
-    @media (max-width:900px) { #nuevo-section { padding:3.5rem 1.2rem 4rem; } .products-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+    @media (max-width:1200px) { .products-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+    @media (max-width:900px) { #nuevo-section { padding:3.5rem 1.2rem 4rem; } .products-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
     @media (max-width:768px) { #nuevo-section .section-title { margin-bottom:2rem; } .products-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:1.05rem !important; } .product-name { font-size:.68rem; } .product-price { font-size:.73rem; } }
     @media (max-width:480px) { #nuevo-section { padding:3rem 1rem 3.5rem; } .products-grid { grid-template-columns:1fr !important; gap:1.25rem !important; } .product-card { column-gap:1rem; } }
     /* FINAL DESIGN POLISH */
@@ -1473,13 +1475,17 @@
       const dropdownName = document.getElementById('userDropdownName');
       if (user) {
         const name = user.user_metadata?.name || user.email.split('@')[0];
-        btnAuth.innerHTML = `<span style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--black);white-space:nowrap;">${name.split(' ')[0].toUpperCase()}</span>`;
+        btnAuth.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.4"></circle><path d="M5 20c.7-3.1 3.1-5 7-5s6.3 1.9 7 5"></path></svg>`;
+        btnAuth.classList.add('auth-active');
+        btnAuth.title = 'Cuenta activa';
         btnAuth.onclick = () => { dropdown.classList.toggle('open'); };
         dropdownName.textContent = name; dropdown.style.display = 'block';
         const orderEmail = document.getElementById('orderEmail');
         if (orderEmail && !orderEmail.value) orderEmail.value = user.email;
       } else {
         btnAuth.innerHTML = `<svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:currentColor;"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>`;
+        btnAuth.classList.remove('auth-active');
+        btnAuth.title = 'Iniciar sesión';
         btnAuth.onclick = openAuthModal; dropdown.style.display = 'none'; dropdown.classList.remove('open');
       }
     }
