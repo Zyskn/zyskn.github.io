@@ -776,6 +776,24 @@
     .btn-add-cart { position:relative; overflow:hidden; min-height:50px; font-family:'Space Grotesk',sans-serif; font-size:.72rem; letter-spacing:.14em; box-shadow:0 7px 18px rgba(0,0,0,.12); }
     .btn-add-cart:hover { transform:translateY(-2px); box-shadow:0 10px 22px rgba(0,0,0,.16); }
     .back-link { color:#666; font-size:.64rem; letter-spacing:.12em; }
+    /* FINAL 10/10 DETAIL REFINEMENT */
+    .product-detail-wrapper { max-width:1120px; padding:2.85rem 1.5rem; }
+    .product-detail-grid { grid-template-columns:minmax(420px,.94fr) minmax(460px,1.06fr); gap:3.15rem; }
+    .product-detail-col-img { display:flex; flex-direction:column; align-items:flex-start; }
+    #zoomContainer { max-width:500px; }
+    #thumbs { max-width:500px; gap:7px; }
+    .product-info { max-width:560px; padding-top:.1rem; }
+    .detail-name-wrap { padding-bottom:.65rem; }
+    #detailName { max-width:500px; font-size:clamp(1.08rem,1.9vw,1.58rem); letter-spacing:-.05em; }
+    #detailPrice { font-size:1.38rem; margin:.9rem 0 .72rem; }
+    #detailDesc { max-width:520px; font-size:.745rem; line-height:1.6; margin-bottom:.9rem; }
+    .detail-specs { max-width:520px; padding:.62rem .8rem; margin-bottom:.9rem; }
+    .single-unit-badge { max-width:520px; margin-bottom:.95rem; }
+    #detailSizes { margin-bottom:1rem; }
+    .btn-add-cart { max-width:460px; }
+    .back-link { margin-top:.85rem; }
+    @media (max-width:1020px) { .product-detail-grid { grid-template-columns:1fr 1fr; gap:2rem; } .product-info { max-width:none; } #zoomContainer,#thumbs,.detail-specs,.single-unit-badge { max-width:none; } }
+    @media (max-width:900px) { .product-detail-wrapper { padding:2.25rem 1.2rem; } .product-detail-grid { grid-template-columns:1fr !important; gap:1.8rem !important; } .product-detail-col-img { align-items:stretch; } #zoomContainer { max-width:620px; margin:0 auto; } #thumbs { max-width:620px; margin-left:auto; margin-right:auto; } .btn-add-cart { max-width:none; } }
     /* PRODUCT GRID PREMIUM POLISH */
     .products-grid { grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:clamp(1.15rem,2.4vw,2rem); align-items:start; }
     .product-card { padding-bottom:.35rem; transition:transform .38s var(--ease-out); }
@@ -795,6 +813,26 @@
     .product-card.sold .product-image::after, .product-card.reserved .product-image::after { padding:7px 14px; border-radius:999px; font-size:.55rem; letter-spacing:.16em; }
     @media (max-width:768px) { .products-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:1rem !important; } .product-card::before { display:none; } .product-name { font-size:.7rem; } .product-price { font-size:.76rem; } }
     @media (max-width:480px) { .products-grid { grid-template-columns:1fr !important; gap:1.35rem !important; } .product-card { display:grid; grid-template-columns:minmax(0,1fr) 1fr; column-gap:.9rem; } .product-card::before { display:none; } .product-image { grid-row:span 2; margin-bottom:0; } .product-meta { display:block; padding-top:.2rem; } .product-price { margin-top:.7rem; } }
+    /* PRODUCT GRID FINAL 10/10 POLISH */
+    #nuevo-section { padding:4.25rem 2rem 5rem; }
+    #nuevo-section .section-title { margin-bottom:2.9rem; font-size:clamp(1.15rem,3.2vw,1.75rem); }
+    #nuevo-section .section-title .title-num { margin-bottom:.75rem; font-size:.58rem; letter-spacing:.2em; }
+    .products-grid { grid-template-columns:repeat(5,minmax(0,1fr)); gap:clamp(1rem,1.65vw,1.8rem); }
+    .product-card { padding-bottom:.5rem; }
+    .product-image { margin-bottom:.82rem; border-color:rgba(0,0,0,.055); }
+    .product-card:hover .product-image { border-color:rgba(163,0,0,.28); }
+    .product-meta { display:grid; grid-template-columns:minmax(0,1fr) auto; column-gap:.75rem; row-gap:.22rem; align-items:start; }
+    .product-meta > div { min-width:0; }
+    .product-name { font-size:.71rem; line-height:1.28; letter-spacing:.035em; }
+    .product-cat { margin-top:.34rem; font-size:.56rem; letter-spacing:.1em; color:#858585; }
+    .product-price { align-self:start; padding-top:.02rem; font-size:.78rem; letter-spacing:-.025em; }
+    .product-badges { grid-column:1/-1; gap:4px; margin-top:.42rem; }
+    .badge { padding:3px 7px; font-size:.46rem; letter-spacing:.11em; }
+    .product-card::before { top:.65rem; right:.65rem; width:28px; height:28px; font-size:.82rem; }
+    @media (max-width:1200px) { .products-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } }
+    @media (max-width:900px) { #nuevo-section { padding:3.5rem 1.2rem 4rem; } .products-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+    @media (max-width:768px) { #nuevo-section .section-title { margin-bottom:2rem; } .products-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:1.05rem !important; } .product-name { font-size:.68rem; } .product-price { font-size:.73rem; } }
+    @media (max-width:480px) { #nuevo-section { padding:3rem 1rem 3.5rem; } .products-grid { grid-template-columns:1fr !important; gap:1.25rem !important; } .product-card { column-gap:1rem; } }
     /* FINAL DESIGN POLISH */
     section { scroll-margin-top:96px; }
     .container { width:100%; }
