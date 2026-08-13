@@ -1350,11 +1350,16 @@
     let currentUser = null;
 
     function getProductImages(p) {
-      if (p.images && Array.isArray(p.images) && p.images.length) return p.images;
+      if (p.images && Array.isArray(p.images) && p.images.length) return p.images.filter(Boolean);
       const imgs = [];
-      if (p.img)  imgs.push(p.img);
+      if (p.image) imgs.push(p.image);
+      if (p.image_url) imgs.push(p.image_url);
+      if (p.img) imgs.push(p.img);
       if (p.img2) imgs.push(p.img2);
       return imgs;
+    }
+    function getPrimaryProductImage(p) {
+      return getProductImages(p)[0] || '';
     }
 
     /* ============================================================
@@ -1843,7 +1848,7 @@
         return;
       }
       currentProduct._reserved = true;
-      cart.push({ ...currentProduct, size: selectedSize });
+      cart.push({ ...currentProduct, image: getPrimaryProductImage(currentProduct), size: selectedSize });
       localStorage.setItem('zysk_cart', JSON.stringify(cart));
       updateCartUI(); animateToCart(event.currentTarget); showNotification('RESERVADO POR 5 MINUTOS');
       scrollToSection('cart-section');
@@ -1861,10 +1866,11 @@
       if (cart.length === 0) { checkout.style.display = 'none'; empty.style.display = 'block'; document.getElementById('cartItems').innerHTML = ''; }
       else {
         checkout.style.display = 'block'; empty.style.display = 'none';
-        document.getElementById('cartItems').innerHTML = cart.map((item, idx) => {
+                document.getElementById('cartItems').innerHTML = cart.map((item, idx) => {
+          const itemImage = getPrimaryProductImage(item);
           const t = timeLeft(item.id); const m = Math.floor(t / 60); const s = (t % 60).toString().padStart(2, '0');
           return `<div class="cart-item">
-            ${item.image ? `<img class="cart-item-image" src="${item.image}" alt="${item.name}" loading="lazy">` : '<div class="cart-item-image"></div>'}
+            ${itemImage ? `<img class="cart-item-image" src="${itemImage}" alt="${item.name}" loading="lazy" onerror="this.onerror=null;this.replaceWith(Object.assign(document.createElement('div'),{className:'cart-item-image'}))">` : '<div class="cart-item-image"></div>'}
             <div class="cart-item-info">
               <div class="cart-item-name">${item.name}</div>
               <div class="cart-item-meta">Talle ${item.size}</div>
