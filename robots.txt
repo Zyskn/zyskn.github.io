@@ -1,3 +1,4 @@
 User-agent: *
-   Allow: /
-   Sitemap: https://zyskn.github.io/sitemap.xml
+Allow: /
+
+Sitemap: https://zyskn.github.io/sitemap.xml
