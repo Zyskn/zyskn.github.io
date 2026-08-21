@@ -443,7 +443,23 @@
 
     /* PRODUCTOS */
     #nuevo-section { background:#fff; border-bottom:1px solid rgba(0,0,0,0.08); max-width:100%; padding:5rem 2rem; }
+    .catalog-note { max-width:760px; margin:-1.25rem 0 2.25rem; padding:1rem 1.15rem; border-left:3px solid var(--red); background:#fafafa; color:var(--text-muted); font-size:.72rem; line-height:1.65; }
+    #joyitas-section { background:#0a0a0a; color:#fff; max-width:100%; padding:5rem 2rem; }
+    #joyitas-section .container { max-width:1200px; }
+    #joyitas-section .section-title { color:#fff; }
+    #joyitas-section .section-title .title-num { color:#e7a3a3; }
+    #joyitas-section .catalog-note { max-width:760px; background:#151515; color:#aaa; border-left-color:#d56b6b; }
+    #joyitas-section .catalog-note strong { color:#fff; }
+    #joyitas-section .catalog-note a { color:#ffb0b0; }
+    #joyitas-section .product-card { color:#fff; }
+    #joyitas-section .product-cat { color:#aaa; }
+    #joyitas-section .product-price { color:#fff; }
+    #joyitas-section .product-image { background:#151515; }
+    #joyitas-section .no-results p { color:#aaa; }
+    .catalog-note strong { color:var(--black); }
+    .catalog-note a { color:var(--red); font-weight:800; text-decoration:underline; text-underline-offset:2px; }
     .products-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1.5rem; }
+    @media (max-width:768px) { .catalog-note { margin:-.75rem 0 1.6rem; font-size:.68rem; } }
 
     /* SKELETON */
     .skeleton-card { animation:skeleton-pulse 1.5s ease-in-out infinite; }
@@ -981,9 +997,13 @@
         <img src="https://cdn.simpleicons.org/whatsapp/FFFFFF" alt="">
         <a href="https://wa.me/5493544631553" target="_blank">CONSULTAS POR WHATSAPP</a>
       </div>
-      <div class="tb-msg">
-        <span>ENVÍOS A TODO EL PAÍS · PIEZAS ÚNICAS SIN RESTOCK</span>
-      </div>
+          <div class="tb-msg">
+            <span>ENVÍOS A TODO EL PAÍS · PIEZAS ÚNICAS SIN RESTOCK</span>
+          </div>
+          <div class="tb-msg">
+            <img src="https://cdn.simpleicons.org/instagram/FFFFFF" alt="">
+            <a href="https://instagram.com/zyskn_" target="_blank" rel="noopener">MIRÁ LO VENDIDO EN INSTAGRAM</a>
+          </div>
     </div>
     <button class="tb-arrow" onclick="tbNext()" aria-label="Siguiente">›</button>
   </div>
@@ -1031,6 +1051,7 @@
               <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','shorts')">Shorts</a>
             </div>
           </div>
+          <div class="nav-item"><a href="javascript:void(0)" onclick="scrollToSection('joyitas-section')">JOYITAS VENDIDAS</a></div>
           <div class="nav-item"><a href="javascript:void(0)" onclick="scrollToSection('reviews-section')">RESEÑAS</a></div>
           <div class="nav-item"><a href="javascript:void(0)" onclick="scrollToSection('faq-section')">FAQ</a></div>
           <div class="nav-item"><a href="javascript:void(0)" onclick="scrollToSection('contact')">CONTACTO</a></div>
@@ -1104,6 +1125,7 @@
     <section id="nuevo-section">
       <div class="container" style="max-width:100%;">
         <h2 class="section-title" style="color:var(--red);">NUEVO</h2>
+        <div class="catalog-note" role="note"><strong>Para que la página cargue rápido y se mantenga fluida, retiramos automáticamente del catálogo las prendas que ya fueron vendidas.</strong> Si querés ver lo que ya se vendió y conocer las próximas novedades, visitá nuestro <a href="https://instagram.com/zyskn_" target="_blank" rel="noopener">Instagram @zyskn_</a>.</div>
         <div id="newProductsGrid" class="products-grid"></div>
       </div>
     </section>
@@ -1149,7 +1171,20 @@
         <span class="title-num">Piezas</span>
         <span id="shop-title">Ropa vintage disponible</span>
       </h2>
+      <div class="catalog-note" role="note"><strong>El catálogo muestra únicamente prendas disponibles.</strong> Cuando una pieza se vende, la quitamos de esta página para agilizar la carga y facilitar la navegación. Podés consultar lo vendido en <a href="https://instagram.com/zyskn_" target="_blank" rel="noopener">Instagram @zyskn_</a>.</div>
       <div id="productsGrid" class="products-grid"></div>
+    </section>
+
+    <!-- JOYITAS VENDIDAS — selección manual desde el panel admin -->
+    <section id="joyitas-section" aria-labelledby="joyitas-title">
+      <div class="container">
+        <h2 class="section-title">
+          <span class="title-num">Archivo seleccionado</span>
+          <span id="joyitas-title">Joyitas vendidas</span>
+        </h2>
+        <div class="catalog-note" role="note"><strong>Una vidriera con piezas especiales que ya encontraron dueño.</strong> Estas prendas se muestran únicamente cuando se seleccionan manualmente desde el panel de administración.</div>
+        <div id="joyitasGrid" class="products-grid"></div>
+      </div>
     </section>
 
     <!-- CART -->
@@ -1338,6 +1373,7 @@ CONFIRMAR PEDIDO POR WHATSAPP
 
     /* STATE */
     let allProducts = [];
+    let soldJoyitas = [];
     let filteredProducts = [];
     let currentProduct = null;
     let currentPhotos = [], currentPhotoIndex = 0, zoomed = false;
@@ -1596,12 +1632,16 @@ CONFIRMAR PEDIDO POR WHATSAPP
       try {
         const { data, error } = await sb.from('products').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false });
         if (error) throw error;
-        allProducts = data || [];
+        const products = data || [];
+        // El catálogo principal muestra solo disponibilidad; la vidriera usa una selección manual de vendidos.
+        allProducts = products.filter(p => !p.is_sold);
+        soldJoyitas = products.filter(p => p.is_sold && p.is_joyita);
       } catch (e) { console.error('Error cargando productos:', e); allProducts = []; }
       await syncReservations();
       filteredProducts = [...allProducts];
       renderProducts(filteredProducts, 'productsGrid');
       renderProducts(allProducts.filter(p => p.is_new), 'newProductsGrid');
+      renderProducts(soldJoyitas, 'joyitasGrid');
       // Inyectar schema de productos luego de cargar
       injectProductSchema(allProducts);
       updateCartUI(); startTimers();
@@ -2106,7 +2146,7 @@ CONFIRMAR PEDIDO POR WHATSAPP
             changed = true; showNotification('RESERVA VENCIDA — PRODUCTO LIBERADO');
           }
         }
-        if (changed) { await syncReservations(); renderProducts(filteredProducts, 'productsGrid'); renderProducts(allProducts.filter(p => p.is_new), 'newProductsGrid'); }
+        if (changed) { await syncReservations(); renderProducts(filteredProducts, 'productsGrid'); renderProducts(allProducts.filter(p => p.is_new), 'newProductsGrid'); renderProducts(soldJoyitas, 'joyitasGrid'); }
         updateCartUI();
       }, 1000);
     }
