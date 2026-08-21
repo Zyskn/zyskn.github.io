@@ -691,10 +691,6 @@
             <input type="checkbox" id="f-sold" onchange="updatePreview()">
             <span>Marcar como <strong>VENDIDO</strong></span>
           </label>
-          <label class="checkbox-row">
-            <input type="checkbox" id="f-joyita">
-            <span>Mostrar en <strong>JOYITAS VENDIDAS</strong> (selección manual)</span>
-          </label>
         </div>
       </div>
 
@@ -987,7 +983,6 @@ function renderProductsTableDesktop(list) {
         ? '<span class="badge badge-reserved">Reservado</span>'
         : '<span class="badge badge-avail">Disponible</span>';
     const newBadge = p.is_new ? ' <span class="badge badge-new">NEW</span>' : '';
-    const joyitaBadge = p.is_joyita ? ' <span class="badge badge-new">Joyita vendida</span>' : '';
     const images = getProductImages(p);
     const imgSrc = images[0] || null;
     const cats = getProductCategories(p);
@@ -1007,7 +1002,7 @@ function renderProductsTableDesktop(list) {
       <td style="font-weight:900;font-size:.82rem;white-space:nowrap;">$${Number(p.price).toLocaleString('es-AR')}</td>
       <td style="font-size:.68rem;color:var(--muted);">${catsLabel}</td>
       <td style="font-size:.68rem;">${(p.sizes||[]).join(' · ')||'–'}</td>
-      <td>${statusBadge}${newBadge}${joyitaBadge}</td>
+      <td>${statusBadge}${newBadge}</td>
       <td>
         <div class="actions-cell">
           <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;" onclick="openProductModal('${p.id}')">Editar</button>
@@ -1042,7 +1037,6 @@ function renderProductsCardsMobile(list) {
         ? '<span class="badge badge-reserved">Reservado</span>'
         : '<span class="badge badge-avail">Disponible</span>';
     const newBadge = p.is_new ? '<span class="badge badge-new">NEW</span>' : '';
-    const joyitaBadge = p.is_joyita ? '<span class="badge badge-new">Joyita vendida</span>' : '';
     const images = getProductImages(p);
     const imgSrc = images[0] || null;
     const cats = getProductCategories(p);
@@ -1060,7 +1054,7 @@ function renderProductsCardsMobile(list) {
           </div>
           <div class="product-card-price">$${Number(p.price).toLocaleString('es-AR')}</div>
         </div>
-        <div class="product-card-badges">${statusBadge}${newBadge}${joyitaBadge}</div>
+        <div class="product-card-badges">${statusBadge}${newBadge}</div>
         <div class="product-card-actions">
           <button class="btn-outline" onclick="openProductModal('${p.id}')">Editar</button>
           <button class="btn-outline" onclick="toggleSold('${p.id}',${p.is_sold})">${p.is_sold ? 'Disponible' : 'Vendido'}</button>
@@ -1473,7 +1467,6 @@ function openProductModal(id=null) {
   document.getElementById('f-estado').value   = '10/10';
   document.getElementById('f-new').checked    = true;
   document.getElementById('f-sold').checked   = false;
-  document.getElementById('f-joyita').checked = false;
   document.querySelectorAll('.size-toggle').forEach(b => b.classList.remove('selected'));
   document.querySelectorAll('.cat-toggle').forEach(b => b.classList.remove('selected'));
   document.getElementById('imgGallery').innerHTML = '';
@@ -1495,7 +1488,6 @@ function openProductModal(id=null) {
       document.getElementById('f-desc').value    = p.description || '';
       document.getElementById('f-new').checked   = !!p.is_new;
       document.getElementById('f-sold').checked  = !!p.is_sold;
-      document.getElementById('f-joyita').checked = !!p.is_joyita;
       (p.sizes||[]).forEach(s => { document.querySelectorAll('.size-toggle').forEach(b => { if (b.textContent === s) b.classList.add('selected'); }); });
       const savedCats = getProductCategories(p);
       document.querySelectorAll('.cat-toggle').forEach(btn => {
@@ -1542,7 +1534,6 @@ async function saveProduct() {
     images:       imagesArray,
     is_new:       document.getElementById('f-new').checked,
     is_sold:      document.getElementById('f-sold').checked,
-    is_joyita:    document.getElementById('f-joyita').checked && document.getElementById('f-sold').checked,
     sizes,
   };
 
