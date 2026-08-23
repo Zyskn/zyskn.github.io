@@ -1008,32 +1008,32 @@
           <div class="nav-item">
             <a href="javascript:void(0)" data-section="arriba">ARRIBA</a>
             <div class="sub-nav-wrapper">
-              <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','remeras')">Remeras</a>
-              <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','Casacas deportivas')">Casacas deportivas</a>
-              <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','chombas')">Chombas</a>
-              <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','camisas')">Camisas</a>
-              <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','hoodies')">Hoodies</a>
-              <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','polares')">Polares</a>
-              <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','sweaters')">Sweaters</a>
-              <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','rompevientos')">Rompevientos</a>
-              <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','camperas zip')">Camperas Zip</a>
-              <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','camperas')">Camperas</a>
+              <a href="#remeras" class="sub-nav-item" data-category="remeras" onclick="applyCategoryLink('remeras','remeras'); return false;">#Remeras</a>
+              <a href="#casacas-deportivas" class="sub-nav-item" onclick="applyCategoryLink('Casacas deportivas','casacas-deportivas'); return false;">#Casacas deportivas</a>
+              <a href="#chombas" class="sub-nav-item" onclick="applyCategoryLink('chombas','chombas'); return false;">#Chombas</a>
+              <a href="#camisas" class="sub-nav-item" onclick="applyCategoryLink('camisas','camisas'); return false;">#Camisas</a>
+              <a href="#hoodies" class="sub-nav-item" onclick="applyCategoryLink('hoodies','hoodies'); return false;">#Hoodies</a>
+              <a href="#polares" class="sub-nav-item" onclick="applyCategoryLink('polares','polares'); return false;">#Polares</a>
+              <a href="#sweaters" class="sub-nav-item" onclick="applyCategoryLink('sweaters','sweaters'); return false;">#Sweaters</a>
+              <a href="#rompevientos" class="sub-nav-item" onclick="applyCategoryLink('rompevientos','rompevientos'); return false;">#Rompevientos</a>
+              <a href="#camperas-zip" class="sub-nav-item" onclick="applyCategoryLink('camperas zip','camperas-zip'); return false;">#Camperas Zip</a>
+              <a href="#camperas" class="sub-nav-item" onclick="applyCategoryLink('camperas','camperas'); return false;">#Camperas</a>
             </div>
           </div>
           <div class="nav-item">
             <a href="javascript:void(0)" data-section="abajo">ABAJO</a>
             <div class="sub-nav-wrapper">
-              <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','pantalones')">Pantalones</a>
-              <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','pantalones cargo')">Pantalones Cargo</a>
-              <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','jeans')">Jeans</a>
-              <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','bermudas')">Bermudas</a>
-              <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','bermudas cargo')">Bermudas Cargo</a>
-              <a href="javascript:void(0)" class="sub-nav-item" onclick="applyFilter('category','shorts')">Shorts</a>
+              <a href="#pantalones" class="sub-nav-item" onclick="applyCategoryLink('pantalones','pantalones'); return false;">#Pantalones</a>
+              <a href="#pantalones-cargo" class="sub-nav-item" onclick="applyCategoryLink('pantalones cargo','pantalones-cargo'); return false;">#Pantalones Cargo</a>
+              <a href="#jeans" class="sub-nav-item" onclick="applyCategoryLink('jeans','jeans'); return false;">#Jeans</a>
+              <a href="#bermudas" class="sub-nav-item" onclick="applyCategoryLink('bermudas','bermudas'); return false;">#Bermudas</a>
+              <a href="#bermudas-cargo" class="sub-nav-item" onclick="applyCategoryLink('bermudas cargo','bermudas-cargo'); return false;">#Bermudas Cargo</a>
+              <a href="#shorts" class="sub-nav-item" onclick="applyCategoryLink('shorts','shorts'); return false;">#Shorts</a>
             </div>
           </div>
           <div class="nav-item"><a href="javascript:void(0)" onclick="scrollToSection('reviews-section')">RESEÑAS</a></div>
           <div class="nav-item"><a href="javascript:void(0)" onclick="scrollToSection('faq-section')">FAQ</a></div>
-          <div class="nav-item"><a href="javascript:void(0)" onclick="scrollToSection('contact')">CONTACTO</a></div>
+          <div class="nav-item"><a href="#contactos" onclick="scrollToSection('contact'); return false;">#Contactos</a></div>
         </nav>
         <div class="nav-icons">
           <div class="search-wrapper">
@@ -1327,7 +1327,7 @@ CONFIRMAR PEDIDO POR WHATSAPP
       document.body.style.position = 'fixed';
       document.body.style.top = `-${scrollYNow}px`;
       document.body.style.left = '0'; document.body.style.right = '0'; document.body.style.width = '100%';
-      document.addEventListener('touchmove', preventScrollTouch, { passive: false });
+      document.addEventListener('DOMContentLoaded', preventScrollTouch, { passive: false });
     }
 
     function preventScrollTouch(e) {
@@ -1602,6 +1602,7 @@ CONFIRMAR PEDIDO POR WHATSAPP
       filteredProducts = [...allProducts];
       renderProducts(filteredProducts, 'productsGrid');
       renderProducts(allProducts.filter(p => p.is_new), 'newProductsGrid');
+      applyHashFilter();
       // Inyectar schema de productos luego de cargar
       injectProductSchema(allProducts);
       updateCartUI(); startTimers();
@@ -1668,6 +1669,21 @@ CONFIRMAR PEDIDO POR WHATSAPP
     }
 
     /* FILTROS */
+    function applyCategoryLink(value, slug) {
+      history.pushState(null, '', `#${slug}`);
+      applyFilter('category', value);
+    }
+
+    function applyHashFilter() {
+      const slug = window.location.hash.replace(/^#/, '').toLowerCase();
+      if (!slug || slug === 'contactos') return;
+      const categoryLinks = document.querySelectorAll('.sub-nav-item[href^="#"]');
+      const link = Array.from(categoryLinks).find(item => item.getAttribute('href').slice(1) === slug);
+      if (link) applyFilter('category', link.dataset.category || link.textContent.replace(/^#/, '').trim());
+    }
+
+    window.addEventListener('hashchange', applyHashFilter);
+
     function applyFilter(type, value) {
       activeFilter = { type, value };
       document.querySelectorAll('.filter-btn').forEach(b => { b.classList.remove('active'); if (b.dataset.filter === value) b.classList.add('active'); });
