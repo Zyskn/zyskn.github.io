@@ -333,6 +333,24 @@
     .badge-unapproved { background:#fef9c3; color:#854d0e; }
     .review-card-comment { font-size:.72rem; color:var(--muted); line-height:1.5; margin-top:.3rem; }
 
+    /* WHATSAPP-STYLE FORMAT TOOLBAR */
+    .wa-format-toolbar { display:flex; gap:.35rem; margin-bottom:.4rem; flex-wrap:wrap; }
+    .wa-fmt-btn { width:30px; height:30px; display:inline-flex; align-items:center; justify-content:center; background:var(--surface2); border:1.5px solid var(--gray-mid); border-radius:var(--radius); cursor:pointer; font-size:.7rem; font-weight:800; color:var(--black); font-family:'Inter',sans-serif; transition:all .15s; }
+    .wa-fmt-btn:hover { border-color:var(--black); background:var(--gray); }
+    .wa-fmt-btn:active { transform:scale(.92); }
+    .wa-fmt-btn.i { font-style:italic; font-weight:600; }
+    .wa-fmt-btn.s { text-decoration:line-through; }
+    .wa-fmt-btn.m { font-family:monospace; font-weight:700; }
+    .preview-desc strong { color:var(--black); font-weight:800; }
+    .preview-desc code { background:var(--gray-mid); padding:1px 5px; border-radius:3px; font-size:.9em; }
+
+    /* PRODUCT SEARCH */
+    .product-search-wrap { margin-bottom:.9rem; position:relative; max-width:340px; }
+    .product-search-wrap input { width:100%; padding:.65rem .9rem .65rem 2.1rem; border:1.5px solid var(--gray-mid); border-radius:20px; font-family:'Inter',sans-serif; font-size:.74rem; outline:none; background:var(--surface); transition:border-color .2s, box-shadow .2s; }
+    .product-search-wrap input:focus { border-color:var(--black); box-shadow:0 0 0 3px rgba(0,0,0,.05); }
+    .product-search-wrap::before { content:'🔍'; position:absolute; left:.75rem; top:50%; transform:translateY(-50%); font-size:.7rem; opacity:.5; pointer-events:none; }
+    .kbd-hint { font-size:.55rem; color:var(--muted); font-weight:700; margin-left:.6rem; }
+
     /* RESPONSIVE */
     @media (max-width:900px) {
       .modal-body { grid-template-columns:1fr; }
@@ -392,7 +410,7 @@
       .img-gallery { grid-template-columns:repeat(3,1fr); }
       .img-add-url input { padding:.8rem .9rem; font-size:.85rem; }
       .img-add-url button { padding:.8rem 1rem; }
-      .modal-footer { padding:.9rem 1rem; gap:.6rem; padding-bottom:calc(.9rem + env(safe-area-inset-bottom)); }
+      .modal-footer { padding:.9rem 1rem; gap:.6rem; padding-bottom:calc(.9rem + env(safe-area-inset-bottom)); flex-wrap:wrap; }
       .modal-footer .btn-outline, .modal-footer .btn-primary { flex:1; justify-content:center; min-height:48px; font-size:.68rem; }
       .order-header { flex-direction:column; align-items:stretch; }
       .order-actions .btn-wa { width:100%; justify-content:center; min-height:46px; }
@@ -403,6 +421,8 @@
       .filter-chip { padding:.6rem 1.15rem; white-space:nowrap; flex-shrink:0; font-size:.62rem; min-height:38px; scroll-snap-align:start; border-width:1.5px; }
       .filter-chip.active { box-shadow:0 3px 10px rgba(0,0,0,.25); }
       .recent-order-row { flex-wrap:wrap; gap:.4rem .8rem; }
+      .product-search-wrap { max-width:100%; }
+      .kbd-hint { display:none; }
     }
     @media (max-width:420px) {
       .stats-row { grid-template-columns:1fr 1fr; }
@@ -494,6 +514,9 @@
     <button class="btn-primary" onclick="openProductModal()">+ Agregar Producto</button>
   </div>
 </div>
+      <div class="product-search-wrap">
+        <input type="text" id="productSearchInput" placeholder="Buscar por nombre..." oninput="renderProductsTable()" onkeydown="if(event.key==='Escape'){this.value='';renderProductsTable();this.blur();}">
+      </div>
       <div class="filter-row">
         <button class="filter-chip active" onclick="filterProductsAdmin('all',this)">Todos</button>
         <button class="filter-chip" onclick="filterProductsAdmin('available',this)">Disponibles</button>
@@ -627,6 +650,13 @@
           </div>
           <div class="form-group form-full">
             <label>Descripción / Detalles <span class="optional">(opcional)</span></label>
+            <div class="wa-format-toolbar">
+              <button type="button" class="wa-fmt-btn b" title="Negrita (*texto*)" onclick="wrapSelection('f-desc','*','*')">N</button>
+              <button type="button" class="wa-fmt-btn i" title="Cursiva (_texto_)" onclick="wrapSelection('f-desc','_','_')">K</button>
+              <button type="button" class="wa-fmt-btn s" title="Tachado (~texto~)" onclick="wrapSelection('f-desc','~','~')">T</button>
+              <button type="button" class="wa-fmt-btn m" title="Monoespaciado (```texto```)" onclick="wrapSelection('f-desc','```','```')">&lt;/&gt;</button>
+              <span class="cat-hint" style="margin:0;align-self:center;">como en WhatsApp: *negrita*, _cursiva_, ~tachado~</span>
+            </div>
             <textarea id="f-desc" rows="3" placeholder="Detalles adicionales, historia de la prenda, materiales..." oninput="updatePreview()"></textarea>
           </div>
         </div>
@@ -731,7 +761,8 @@
 
     <div class="modal-footer">
       <button class="btn-outline" onclick="closeModal('productModal')">Cancelar</button>
-      <button class="btn-primary" onclick="saveProduct()" id="saveProductBtn">Guardar Producto</button>
+      <button class="btn-outline" onclick="saveProduct(true)" id="saveAndAddBtn">+ Guardar y agregar otro</button>
+      <button class="btn-primary" onclick="saveProduct(false)" id="saveProductBtn">Guardar Producto <span class="kbd-hint">Ctrl+Enter</span></button>
     </div>
   </div>
 </div>
@@ -787,7 +818,7 @@
     </div>
     <div class="modal-footer">
       <button class="btn-outline" onclick="closeModal('accountingModal')">Cancelar</button>
-      <button class="btn-primary" onclick="saveAccountingEntry()" id="saveAccountingBtn">Guardar Registro</button>
+      <button class="btn-primary" onclick="saveAccountingEntry()" id="saveAccountingBtn">Guardar Registro <span class="kbd-hint">Ctrl+Enter</span></button>
     </div>
   </div>
 </div>
@@ -939,14 +970,21 @@ function filterProductsAdmin(filter, btn) {
 }
 
 function getFilteredAdminProducts() {
+  let list;
   switch(productsAdminFilter) {
-    case 'available': return allAdminProducts.filter(p=>!p.is_sold && !p.is_hidden && !isProductReserved(p.id));
-    case 'sold':      return allAdminProducts.filter(p=>p.is_sold);
-    case 'new':       return allAdminProducts.filter(p=>p.is_new);
-    case 'reserved':  return allAdminProducts.filter(p=>isProductReserved(p.id));
-    case 'hidden':    return allAdminProducts.filter(p=>p.is_hidden);
-    default:          return allAdminProducts;
+    case 'available': list = allAdminProducts.filter(p=>!p.is_sold && !p.is_hidden && !isProductReserved(p.id)); break;
+    case 'sold':      list = allAdminProducts.filter(p=>p.is_sold); break;
+    case 'new':       list = allAdminProducts.filter(p=>p.is_new); break;
+    case 'reserved':  list = allAdminProducts.filter(p=>isProductReserved(p.id)); break;
+    case 'hidden':    list = allAdminProducts.filter(p=>p.is_hidden); break;
+    default:          list = allAdminProducts;
   }
+  const searchInput = document.getElementById('productSearchInput');
+  const term = searchInput ? searchInput.value.trim().toLowerCase() : '';
+  if (term) {
+    list = list.filter(p => (p.name||'').toLowerCase().includes(term));
+  }
+  return list;
 }
 
 function scrollChipIntoView(btn) {
@@ -1014,6 +1052,7 @@ function renderProductsTableDesktop(list) {
       <td>
         <div class="actions-cell">
           <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;" onclick="openProductModal('${p.id}')">Editar</button>
+          <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;" onclick="duplicateProductAdmin('${p.id}')">Duplicar</button>
           <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;" onclick="toggleSold('${p.id}',${p.is_sold})">
             ${p.is_sold ? 'Disponible' : 'Vendido'}
           </button>
@@ -1069,6 +1108,7 @@ function renderProductsCardsMobile(list) {
         <div class="product-card-badges">${statusBadge}${newBadge}${hiddenBadge}</div>
         <div class="product-card-actions">
           <button class="btn-outline" onclick="openProductModal('${p.id}')">Editar</button>
+          <button class="btn-outline" onclick="duplicateProductAdmin('${p.id}')">Duplicar</button>
           <button class="btn-outline" onclick="toggleSold('${p.id}',${p.is_sold})">${p.is_sold ? 'Disponible' : 'Vendido'}</button>
           <button class="btn-outline" onclick="toggleHidden('${p.id}',${!!p.is_hidden})">${p.is_hidden ? 'Mostrar' : 'Ocultar'}</button>
           <button class="btn-outline btn-del" title="Eliminar" onclick="confirmDelete('${p.id}','${p.name.replace(/'/g,"\\'")}')">🗑</button>
@@ -1414,6 +1454,35 @@ uploadZone.addEventListener('drop', async e => {
   }
 });
 
+/* ══ FORMATO ESTILO WHATSAPP (*negrita*, _cursiva_, ~tachado~, mono con comillas triples) ══ */
+function wrapSelection(textareaId, before, after) {
+  const ta = document.getElementById(textareaId);
+  if (!ta) return;
+  const start = ta.selectionStart, end = ta.selectionEnd;
+  const val = ta.value;
+  const selected = val.substring(start, end);
+  const newVal = val.substring(0, start) + before + selected + after + val.substring(end);
+  ta.value = newVal;
+  ta.focus();
+  const cursorPos = selected
+    ? start + before.length + selected.length + after.length
+    : start + before.length;
+  ta.setSelectionRange(cursorPos, cursorPos);
+  ta.dispatchEvent(new Event('input'));
+}
+
+function formatWhatsAppText(text) {
+  if (!text) return '';
+  let out = text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  out = out.replace(/```([^`\n]+)```/g, '<code>$1</code>');
+  out = out.replace(/\*([^\*\n]+)\*/g, '<strong>$1</strong>');
+  out = out.replace(/_([^_\n]+)_/g, '<em>$1</em>');
+  out = out.replace(/~([^~\n]+)~/g, '<s>$1</s>');
+  out = out.replace(/\n/g, '<br>');
+  return out;
+}
+
 /* ══ PREVIEW ══ */
 function updatePreview() {
   const name    = document.getElementById('f-name').value || 'Nombre del producto';
@@ -1439,7 +1508,8 @@ function updatePreview() {
   medidasEl.textContent = medidas || ''; medidasEl.style.display = medidas ? 'block' : 'none';
 
   const descEl = document.getElementById('previewDesc');
-  descEl.textContent = desc || ''; descEl.style.display = desc ? 'block' : 'none';
+  descEl.innerHTML = desc ? formatWhatsAppText(desc) : '';
+  descEl.style.display = desc ? 'block' : 'none';
 
   const badgesEl = document.getElementById('previewBadges');
   let badges = '';
@@ -1521,13 +1591,47 @@ function openProductModal(id=null) {
   }
   document.getElementById('productModal').classList.add('active');
   document.body.style.overflow = 'hidden';
+  setTimeout(() => { const f = document.getElementById('f-name'); if (f) f.focus(); }, 60);
+}
+
+/* Duplica un producto existente como base para uno nuevo — ideal para prendas parecidas (mismo talle/categoría) */
+function duplicateProductAdmin(id) {
+  const p = allAdminProducts.find(x => x.id === id);
+  if (!p) { showToast('Producto no encontrado'); return; }
+  openProductModal(null);
+  document.getElementById('modalTitle').textContent = 'Duplicar Producto (nuevo)';
+  document.getElementById('f-name').value    = p.name ? `${p.name} (copia)` : '';
+  document.getElementById('f-price').value   = p.price || '';
+  document.getElementById('f-section').value = p.section || 'arriba';
+  document.getElementById('f-estado').value  = p.estado  || '10/10';
+  document.getElementById('f-talle').value   = p.talle   || '';
+  document.getElementById('f-medidas').value = p.medidas || '';
+  document.getElementById('f-desc').value    = p.description || '';
+  document.getElementById('f-new').checked   = true;
+  document.getElementById('f-sold').checked  = false;
+  document.getElementById('f-hidden').checked = !!p.is_hidden;
+  (p.sizes||[]).forEach(s => { document.querySelectorAll('.size-toggle').forEach(b => { if (b.textContent === s) b.classList.add('selected'); }); });
+  const savedCats = getProductCategories(p);
+  document.querySelectorAll('.cat-toggle').forEach(btn => {
+    const catVal = btn.getAttribute('onclick').match(/'([^']+)'/)?.[1] || '';
+    if (savedCats.includes(catVal)) btn.classList.add('selected');
+  });
+  const imgs = getProductImages(p);
+  productImages = imgs.map(url => ({url}));
+  renderImgGallery();
+  updatePreview();
+  const nameField = document.getElementById('f-name');
+  nameField.focus();
+  nameField.select();
+  showToast('Producto duplicado — ajustá los datos y guardá');
 }
 
 function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; }
 function toggleSize(btn) { btn.classList.toggle('selected'); updatePreview(); }
 
-async function saveProduct() {
+async function saveProduct(keepOpen=false) {
   const btn   = document.getElementById('saveProductBtn');
+  const btn2  = document.getElementById('saveAndAddBtn');
   const name  = document.getElementById('f-name').value.trim();
   const price = parseFloat(document.getElementById('f-price').value);
   const cats  = getSelectedCategories();
@@ -1555,16 +1659,47 @@ async function saveProduct() {
     sizes,
   };
 
-  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Guardando...';
+  btn.disabled = true; btn2.disabled = true;
+  const busyBtn = keepOpen ? btn2 : btn;
+  const busyOriginal = busyBtn.innerHTML;
+  busyBtn.innerHTML = '<span class="spinner"></span> Guardando...';
+
   let error;
   if (editingProductId) { ({error} = await sb.from('products').update(payload).eq('id', editingProductId)); }
   else { ({error} = await sb.from('products').insert(payload)); }
-  btn.disabled = false; btn.textContent = 'Guardar Producto';
+
+  btn.disabled = false; btn2.disabled = false;
+  btn.innerHTML = 'Guardar Producto <span class="kbd-hint">Ctrl+Enter</span>';
+  btn2.innerHTML = '+ Guardar y agregar otro';
+
   if (error) { showToast('Error: ' + error.message); return; }
-  showToast(editingProductId ? 'Producto actualizado' : 'Producto creado');
-  closeModal('productModal');
   await loadAdminProducts();
   renderProductsTable(); renderDashboard();
+
+  if (keepOpen) {
+    showToast('✓ Producto guardado — listo para el siguiente');
+    const keepSection = document.getElementById('f-section').value;
+    const keepEstado  = document.getElementById('f-estado').value;
+    const keptCats    = [...document.querySelectorAll('.cat-toggle.selected')];
+    editingProductId = null; productImages = []; previewCurrentImg = 0;
+    currentUploadFolder = `temp-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
+    ['f-name','f-price','f-talle','f-medidas','f-desc'].forEach(fid => { document.getElementById(fid).value = ''; });
+    document.getElementById('f-img-url-input').value = '';
+    document.getElementById('f-section').value = keepSection;
+    document.getElementById('f-estado').value  = keepEstado;
+    document.getElementById('f-new').checked    = true;
+    document.getElementById('f-sold').checked   = false;
+    document.getElementById('f-hidden').checked = false;
+    document.querySelectorAll('.size-toggle').forEach(b => b.classList.remove('selected'));
+    /* mantiene las categorías seleccionadas — útil al cargar varias prendas del mismo tipo seguidas */
+    document.getElementById('imgGallery').innerHTML = '';
+    document.getElementById('modalTitle').textContent = 'Nuevo Producto';
+    updatePreview();
+    document.getElementById('f-name').focus();
+  } else {
+    showToast(editingProductId ? 'Producto actualizado' : 'Producto creado');
+    closeModal('productModal');
+  }
 }
 
 // ===== BORRAR FOTOS HUERFANAS DEL STORAGE =====
@@ -1928,6 +2063,7 @@ function openAccountingModal(id=null) {
   }
   document.getElementById('accountingModal').classList.add('active');
   document.body.style.overflow = 'hidden';
+  setTimeout(() => { const f = document.getElementById('ac-name'); if (f) f.focus(); }, 60);
 }
 
 async function saveAccountingEntry() {
@@ -1944,7 +2080,7 @@ async function saveAccountingEntry() {
   let error;
   if (editingAccountingId) { ({error} = await sb.from('accounting_entries').update(payload).eq('id', editingAccountingId)); }
   else { ({error} = await sb.from('accounting_entries').insert(payload)); }
-  btn.disabled = false; btn.textContent = 'Guardar Registro';
+  btn.disabled = false; btn.innerHTML = 'Guardar Registro <span class="kbd-hint">Ctrl+Enter</span>';
   if (error) { showToast('Error: ' + error.message); return; }
   showToast(editingAccountingId ? 'Registro actualizado' : 'Registro creado');
   closeModal('accountingModal');
@@ -2017,6 +2153,25 @@ function confirmDeleteOrder(id, orderLabel) {
 function openLightbox(src) { document.getElementById('lightboxImg').src = src; document.getElementById('lightbox').classList.add('active'); document.body.style.overflow = 'hidden'; }
 function closeLightbox() { document.getElementById('lightbox').classList.remove('active'); document.body.style.overflow = ''; }
 document.addEventListener('keydown', e => { if(e.key==='Escape') { closeLightbox(); closeModal('productModal'); closeModal('confirmModal'); closeModal('accountingModal'); } });
+
+/* ══ ATAJOS DE TECLADO: Ctrl/Cmd+Enter guarda el modal activo ══ */
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+    if (document.getElementById('productModal').classList.contains('active')) {
+      e.preventDefault(); saveProduct(false);
+    } else if (document.getElementById('accountingModal').classList.contains('active')) {
+      e.preventDefault(); saveAccountingEntry();
+    } else if (document.getElementById('confirmModal').classList.contains('active')) {
+      e.preventDefault(); confirmAction();
+    }
+  }
+  /* Ctrl/Cmd+F enfoca el buscador de productos si esa pestaña está visible */
+  if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+    const searchInput = document.getElementById('productSearchInput');
+    const productsTabVisible = document.getElementById('tab-products').style.display !== 'none';
+    if (searchInput && productsTabVisible) { e.preventDefault(); searchInput.focus(); searchInput.select(); }
+  }
+});
 
 /* ══ TOAST ══ */
 let toastTimer;
