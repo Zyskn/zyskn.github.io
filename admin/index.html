@@ -151,6 +151,7 @@
     .badge-sold { background:#111; color:#fff; }
     .badge-avail { background:var(--green-light); color:var(--green-dark); }
     .badge-reserved { background:var(--orange-light); color:var(--orange); }
+    .badge-hidden { background:#444; color:#fff; }
     .badge-pending { background:#fef9c3; color:#854d0e; }
     .badge-completed { background:var(--green-light); color:var(--green-dark); }
     .badge-ingreso { background:var(--green-light); color:var(--green-dark); }
@@ -499,6 +500,7 @@
         <button class="filter-chip" onclick="filterProductsAdmin('sold',this)">Vendidos</button>
         <button class="filter-chip" onclick="filterProductsAdmin('new',this)">Nuevos</button>
         <button class="filter-chip" onclick="filterProductsAdmin('reserved',this)">Reservados</button>
+        <button class="filter-chip" onclick="filterProductsAdmin('hidden',this)">Ocultos</button>
       </div>
       <div class="table-wrapper">
         <table class="product-table">
@@ -690,6 +692,10 @@
           <label class="checkbox-row">
             <input type="checkbox" id="f-sold" onchange="updatePreview()">
             <span>Marcar como <strong>VENDIDO</strong></span>
+          </label>
+          <label class="checkbox-row">
+            <input type="checkbox" id="f-hidden" onchange="updatePreview()">
+            <span>Ocultar de la tienda (<strong>borrador</strong>)</span>
           </label>
         </div>
       </div>
@@ -934,10 +940,11 @@ function filterProductsAdmin(filter, btn) {
 
 function getFilteredAdminProducts() {
   switch(productsAdminFilter) {
-    case 'available': return allAdminProducts.filter(p=>!p.is_sold && !isProductReserved(p.id));
+    case 'available': return allAdminProducts.filter(p=>!p.is_sold && !p.is_hidden && !isProductReserved(p.id));
     case 'sold':      return allAdminProducts.filter(p=>p.is_sold);
     case 'new':       return allAdminProducts.filter(p=>p.is_new);
     case 'reserved':  return allAdminProducts.filter(p=>isProductReserved(p.id));
+    case 'hidden':    return allAdminProducts.filter(p=>p.is_hidden);
     default:          return allAdminProducts;
   }
 }
@@ -983,6 +990,7 @@ function renderProductsTableDesktop(list) {
         ? '<span class="badge badge-reserved">Reservado</span>'
         : '<span class="badge badge-avail">Disponible</span>';
     const newBadge = p.is_new ? ' <span class="badge badge-new">NEW</span>' : '';
+    const hiddenBadge = p.is_hidden ? ' <span class="badge badge-hidden">Oculto</span>' : '';
     const images = getProductImages(p);
     const imgSrc = images[0] || null;
     const cats = getProductCategories(p);
@@ -1002,12 +1010,15 @@ function renderProductsTableDesktop(list) {
       <td style="font-weight:900;font-size:.82rem;white-space:nowrap;">$${Number(p.price).toLocaleString('es-AR')}</td>
       <td style="font-size:.68rem;color:var(--muted);">${catsLabel}</td>
       <td style="font-size:.68rem;">${(p.sizes||[]).join(' · ')||'–'}</td>
-      <td>${statusBadge}${newBadge}</td>
+      <td>${statusBadge}${newBadge}${hiddenBadge}</td>
       <td>
         <div class="actions-cell">
           <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;" onclick="openProductModal('${p.id}')">Editar</button>
           <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;" onclick="toggleSold('${p.id}',${p.is_sold})">
             ${p.is_sold ? 'Disponible' : 'Vendido'}
+          </button>
+          <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;" onclick="toggleHidden('${p.id}',${!!p.is_hidden})">
+            ${p.is_hidden ? 'Mostrar' : 'Ocultar'}
           </button>
           <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;color:var(--red);border-color:rgba(163,0,0,.3);" onclick="confirmDelete('${p.id}','${p.name.replace(/'/g,"\\'")}')">Eliminar</button>
         </div>
@@ -1037,6 +1048,7 @@ function renderProductsCardsMobile(list) {
         ? '<span class="badge badge-reserved">Reservado</span>'
         : '<span class="badge badge-avail">Disponible</span>';
     const newBadge = p.is_new ? '<span class="badge badge-new">NEW</span>' : '';
+    const hiddenBadge = p.is_hidden ? '<span class="badge badge-hidden">Oculto</span>' : '';
     const images = getProductImages(p);
     const imgSrc = images[0] || null;
     const cats = getProductCategories(p);
@@ -1054,10 +1066,11 @@ function renderProductsCardsMobile(list) {
           </div>
           <div class="product-card-price">$${Number(p.price).toLocaleString('es-AR')}</div>
         </div>
-        <div class="product-card-badges">${statusBadge}${newBadge}</div>
+        <div class="product-card-badges">${statusBadge}${newBadge}${hiddenBadge}</div>
         <div class="product-card-actions">
           <button class="btn-outline" onclick="openProductModal('${p.id}')">Editar</button>
           <button class="btn-outline" onclick="toggleSold('${p.id}',${p.is_sold})">${p.is_sold ? 'Disponible' : 'Vendido'}</button>
+          <button class="btn-outline" onclick="toggleHidden('${p.id}',${!!p.is_hidden})">${p.is_hidden ? 'Mostrar' : 'Ocultar'}</button>
           <button class="btn-outline btn-del" title="Eliminar" onclick="confirmDelete('${p.id}','${p.name.replace(/'/g,"\\'")}')">🗑</button>
         </div>
       </div>
@@ -1410,6 +1423,7 @@ function updatePreview() {
   const desc    = document.getElementById('f-desc').value;
   const isNew   = document.getElementById('f-new').checked;
   const isSold  = document.getElementById('f-sold').checked;
+  const isHidden= document.getElementById('f-hidden').checked;
   const sizes   = [...document.querySelectorAll('.size-toggle.selected')].map(b=>b.textContent);
   const cats    = getSelectedCategories();
 
@@ -1431,6 +1445,7 @@ function updatePreview() {
   let badges = '';
   if (isNew)  badges += '<span class="badge badge-new">NEW</span>';
   if (isSold) badges += '<span class="badge badge-sold" style="margin-top:3px;">Vendido</span>';
+  if (isHidden) badges += '<span class="badge badge-hidden" style="margin-top:3px;">Oculto — no visible en tienda</span>';
   badgesEl.innerHTML = badges;
 
   const placeholder = document.getElementById('previewImgPlaceholder');
@@ -1467,6 +1482,7 @@ function openProductModal(id=null) {
   document.getElementById('f-estado').value   = '10/10';
   document.getElementById('f-new').checked    = true;
   document.getElementById('f-sold').checked   = false;
+  document.getElementById('f-hidden').checked = false;
   document.querySelectorAll('.size-toggle').forEach(b => b.classList.remove('selected'));
   document.querySelectorAll('.cat-toggle').forEach(b => b.classList.remove('selected'));
   document.getElementById('imgGallery').innerHTML = '';
@@ -1488,6 +1504,7 @@ function openProductModal(id=null) {
       document.getElementById('f-desc').value    = p.description || '';
       document.getElementById('f-new').checked   = !!p.is_new;
       document.getElementById('f-sold').checked  = !!p.is_sold;
+      document.getElementById('f-hidden').checked = !!p.is_hidden;
       (p.sizes||[]).forEach(s => { document.querySelectorAll('.size-toggle').forEach(b => { if (b.textContent === s) b.classList.add('selected'); }); });
       const savedCats = getProductCategories(p);
       document.querySelectorAll('.cat-toggle').forEach(btn => {
@@ -1534,6 +1551,7 @@ async function saveProduct() {
     images:       imagesArray,
     is_new:       document.getElementById('f-new').checked,
     is_sold:      document.getElementById('f-sold').checked,
+    is_hidden:    document.getElementById('f-hidden').checked,
     sizes,
   };
 
@@ -1573,6 +1591,12 @@ async function toggleSold(id, currentSold) {
   await sb.from('products').update({is_sold:!currentSold}).eq('id',id);
   await loadAdminProducts(); renderProductsTable(); renderDashboard();
   showToast(!currentSold ? 'Marcado como VENDIDO' : 'Marcado como DISPONIBLE');
+}
+
+async function toggleHidden(id, currentHidden) {
+  await sb.from('products').update({is_hidden:!currentHidden}).eq('id',id);
+  await loadAdminProducts(); renderProductsTable(); renderDashboard();
+  showToast(!currentHidden ? 'Producto oculto de la tienda' : 'Producto visible en la tienda');
 }
 
 function confirmDelete(id, name) {
