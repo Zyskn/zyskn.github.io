@@ -722,6 +722,8 @@
     .review-card .review-footer { display:flex; justify-content:space-between; align-items:center; }
     .review-card .review-name { font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--black); }
     .review-card .review-product { font-size:.62rem; font-weight:700; color:var(--text-faint); text-transform:uppercase; letter-spacing:.05em; margin-top:2px; }
+    .review-card .review-instagram { display:inline-block; margin-top:5px; color:var(--red); font-size:.62rem; font-weight:800; text-decoration:none; letter-spacing:.04em; }
+    .review-card .review-instagram:hover { text-decoration:underline; }
     .review-card .review-date { font-size:.62rem; color:var(--text-faint); font-weight:600; white-space:nowrap; }
     .reviews-empty { text-align:center; padding:3rem 0; grid-column:1/-1; }
     .reviews-empty p { font-size:.82rem; color:var(--text-muted); text-transform:uppercase; font-weight:700; }
@@ -949,6 +951,7 @@
       <div class="auth-subtitle">Contanos cómo fue tu compra</div>
       <div class="auth-field"><label>Tu nombre</label><input type="text" id="reviewName" placeholder="Nombre y apellido"></div>
       <div class="auth-field"><label>Prenda que compraste (opcional)</label><input type="text" id="reviewProduct" placeholder="Ej: Hoodie Nike vintage"></div>
+      <div class="auth-field"><label>Instagram (opcional)</label><input type="text" id="reviewInstagram" placeholder="@tuusuario" maxlength="80" autocomplete="off"></div>
       <div class="auth-field">
         <label>Calificación</label>
         <div class="review-star-picker" id="reviewStarPicker">
@@ -1995,6 +1998,7 @@ allProducts = data || [];
       document.getElementById('reviewModal').classList.add('active');
       document.getElementById('reviewName').value = '';
       document.getElementById('reviewProduct').value = '';
+      document.getElementById('reviewInstagram').value = '';
       document.getElementById('reviewComment').value = '';
       document.getElementById('reviewFormError').textContent = '';
       setReviewStars(0);
@@ -2017,6 +2021,7 @@ allProducts = data || [];
     async function submitReview() {
       const name = document.getElementById('reviewName').value.trim();
       const productName = document.getElementById('reviewProduct').value.trim();
+      const instagram = document.getElementById('reviewInstagram').value.trim().replace(/^@+/, '').replace(/[^a-zA-Z0-9._]/g, '');
       const comment = document.getElementById('reviewComment').value.trim();
       const errEl = document.getElementById('reviewFormError');
       const btn = document.getElementById('btnSubmitReview');
@@ -2029,6 +2034,7 @@ allProducts = data || [];
         const { error } = await sb.from('reviews').insert({
           customer_name: name,
           product_name: productName || null,
+          instagram: instagram || null,
           rating: selectedReviewStars,
           comment: comment,
           approved: false
@@ -2074,6 +2080,7 @@ allProducts = data || [];
               <div>
                 <div class="review-name">${(r.customer_name || 'Cliente ZYSKN').replace(/</g, '&lt;')}</div>
                 ${r.product_name ? `<div class="review-product">${r.product_name.replace(/</g, '&lt;')}</div>` : ''}
+                ${r.instagram ? `<a class="review-instagram" href="https://instagram.com/${encodeURIComponent(r.instagram.replace(/^@+/, ''))}" target="_blank" rel="noopener">@${r.instagram.replace(/^@+/, '').replace(/</g, '&lt;')}</a>` : ''}
               </div>
               <span class="review-date">${date}</span>
             </div>
