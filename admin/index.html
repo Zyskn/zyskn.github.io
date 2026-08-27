@@ -499,6 +499,9 @@
         <div class="stat-card revenue"><div class="stat-num" id="st-revenue">–</div><div class="stat-label">Ingresos confirmados</div></div>
         <div class="stat-card capital"><div class="stat-num" id="st-capital">–</div><div class="stat-label">Capital en stock</div></div>
       </div>
+      <div style="display:flex;justify-content:flex-end;margin:-.8rem 0 1.5rem;">
+        <button class="btn-outline" onclick="openDashboardMetricsModal()">✎ Editar números del dashboard</button>
+      </div>
       <div style="background:var(--surface);border:1px solid rgba(0,0,0,.06);border-radius:var(--radius);padding:1.5rem;box-shadow:var(--shadow-sm);">
         <p style="font-size:.62rem;font-weight:900;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:1.2rem;">Pedidos recientes</p>
         <div id="recentOrders"></div>
@@ -831,6 +834,55 @@
 
 <div id="toast"></div>
 
+<!-- MODAL MÉTRICAS DEL DASHBOARD -->
+<div class="modal-overlay" id="dashboardMetricsModal">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title">Editar números del dashboard</div>
+      <button class="modal-close" onclick="closeModal('dashboardMetricsModal')">×</button>
+    </div>
+    <div class="modal-body" style="display:block;padding:1.8rem 2rem;">
+      <p style="font-size:.68rem;color:var(--muted);line-height:1.5;margin-bottom:1.2rem;">Dejá un campo vacío para que el número se calcule automáticamente desde productos, pedidos, reservas y contabilidad. Si escribís un valor, el dashboard mostrará ese valor manual.</p>
+      <div class="form-grid">
+        <div class="form-group"><label>Total de prendas</label><input type="number" min="0" id="m-total" placeholder="Automático"></div>
+        <div class="form-group"><label>Prendas en stock</label><input type="number" min="0" id="m-avail" placeholder="Automático"></div>
+        <div class="form-group"><label>Prendas vendidas</label><input type="number" min="0" id="m-sold" placeholder="Automático"></div>
+        <div class="form-group"><label>Reservadas ahora</label><input type="number" min="0" id="m-res" placeholder="Automático"></div>
+        <div class="form-group"><label>Pedidos totales</label><input type="number" min="0" id="m-orders" placeholder="Automático"></div>
+        <div class="form-group"><label>Ingresos confirmados (ARS)</label><input type="number" min="0" id="m-revenue" placeholder="Automático"></div>
+        <div class="form-group form-full"><label>Capital en stock (ARS)</label><input type="number" min="0" id="m-capital" placeholder="Automático"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="clearDashboardOverrides()">Usar cálculos automáticos</button>
+      <button class="btn-primary" onclick="saveDashboardOverrides()">Guardar números</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDITAR RESEÑA -->
+<div class="modal-overlay" id="reviewModal">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title">Editar reseña</div>
+      <button class="modal-close" onclick="closeModal('reviewModal')">×</button>
+    </div>
+    <div class="modal-body" style="display:block;padding:1.8rem 2rem;">
+      <div class="form-grid">
+        <div class="form-group form-full"><label>Nombre del cliente</label><input type="text" id="rv-name" maxlength="120"></div>
+        <div class="form-group form-full"><label>Prenda comprada</label><input type="text" id="rv-product" maxlength="160"></div>
+        <div class="form-group"><label>Calificación</label><select id="rv-rating"><option value="5">5 estrellas</option><option value="4">4 estrellas</option><option value="3">3 estrellas</option><option value="2">2 estrellas</option><option value="1">1 estrella</option></select></div>
+        <div class="form-group"><label>Estado</label><select id="rv-approved"><option value="true">Visible / aprobada</option><option value="false">Oculta / pendiente</option></select></div>
+        <div class="form-group form-full"><label>Comentario</label><textarea id="rv-comment" rows="5" maxlength="1000" placeholder="Escribí la experiencia del cliente..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="closeModal('reviewModal')">Cancelar</button>
+      <button class="btn-primary" onclick="saveReviewEdit()">Guardar reseña</button>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL  = 'https://iifrudupaxcahnopxqcb.supabase.co';
@@ -853,6 +905,8 @@ let productImages = [];
 let previewCurrentImg = 0;
 let storeLocked = false;
 let currentUploadFolder = null;
+let dashboardOverrides = {};
+let editingReviewId = null;
 
 /* ══ AUTH ══ */
 sb.auth.onAuthStateChange((event, session) => {
@@ -885,7 +939,7 @@ async function doLogin() {
 async function doLogout() { await sb.auth.signOut(); }
 
 async function initAdmin() {
-  await Promise.all([loadAdminProducts(), loadOrders(), loadReservations(), loadLockState(), loadAccountingEntries(), loadReviewsAdmin()]);
+  await Promise.all([loadAdminProducts(), loadOrders(), loadReservations(), loadLockState(), loadAccountingEntries(), loadReviewsAdmin(), loadDashboardOverrides()]);
   renderDashboard();
 }
 
@@ -926,6 +980,49 @@ async function toggleStoreLock() {
   storeLocked = newState;
   updateLockUI();
   showToast(storeLocked ? 'Tienda bloqueada' : 'Tienda desbloqueada');
+}
+
+/* ══ MÉTRICAS EDITABLES ══ */
+async function loadDashboardOverrides() {
+  const { data, error } = await sb.from('settings').select('value').eq('key','dashboard_overrides').maybeSingle();
+  if (error) { dashboardOverrides = {}; return; }
+  try { dashboardOverrides = data?.value ? JSON.parse(data.value) : {}; }
+  catch { dashboardOverrides = {}; }
+}
+
+function metricValue(key, automatic) {
+  const value = dashboardOverrides?.[key];
+  return value === '' || value === null || value === undefined ? automatic : Number(value);
+}
+
+function openDashboardMetricsModal() {
+  const ids = ['total','avail','sold','res','orders','revenue','capital'];
+  ids.forEach(key => { const el = document.getElementById('m-'+key); if (el) el.value = dashboardOverrides?.[key] ?? ''; });
+  document.getElementById('dashboardMetricsModal').classList.add('active');
+}
+
+async function saveDashboardOverrides() {
+  const keys = ['total','avail','sold','res','orders','revenue','capital'];
+  const overrides = {};
+  keys.forEach(key => {
+    const raw = document.getElementById('m-'+key).value.trim();
+    if (raw !== '' && Number.isFinite(Number(raw)) && Number(raw) >= 0) overrides[key] = Number(raw);
+  });
+  const { error } = await sb.from('settings').upsert({ key:'dashboard_overrides', value:JSON.stringify(overrides) }, { onConflict:'key' });
+  if (error) { showToast('No se pudieron guardar los números'); return; }
+  dashboardOverrides = overrides;
+  closeModal('dashboardMetricsModal');
+  renderDashboard();
+  showToast('Números del dashboard guardados');
+}
+
+async function clearDashboardOverrides() {
+  const { error } = await sb.from('settings').upsert({ key:'dashboard_overrides', value:'{}' }, { onConflict:'key' });
+  if (error) { showToast('No se pudieron restaurar los cálculos'); return; }
+  dashboardOverrides = {};
+  closeModal('dashboardMetricsModal');
+  renderDashboard();
+  showToast('Cálculos automáticos restaurados');
 }
 
 /* ══ TABS ══ */
@@ -1869,6 +1966,7 @@ function renderReviewsTableDesktop(list) {
           ${r.approved
             ? `<button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;" onclick="toggleReviewApproval('${r.id}',true)">Ocultar</button>`
             : `<button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;color:var(--green-dark);border-color:var(--green);" onclick="toggleReviewApproval('${r.id}',false)">Aprobar</button>`}
+          <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;" onclick="openReviewEdit('${r.id}')">Editar</button>
           <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;color:var(--red);border-color:rgba(163,0,0,.3);" onclick="confirmDeleteReview('${r.id}','${nameEsc}')">Eliminar</button>
         </div>
       </td>
@@ -1908,11 +2006,42 @@ function renderReviewsCardsMobile(list) {
           ${r.approved
             ? `<button class="btn-outline" onclick="toggleReviewApproval('${r.id}',true)">Ocultar</button>`
             : `<button class="btn-outline" style="color:var(--green-dark);border-color:var(--green);" onclick="toggleReviewApproval('${r.id}',false)">Aprobar</button>`}
+          <button class="btn-outline" onclick="openReviewEdit('${r.id}')">Editar</button>
           <button class="btn-outline btn-del" title="Eliminar" onclick="confirmDeleteReview('${r.id}','${nameEsc}')">🗑</button>
         </div>
       </div>
     </div>`;
   }).join('');
+}
+
+function openReviewEdit(id) {
+  const review = allReviewsAdmin.find(r => String(r.id) === String(id));
+  if (!review) return;
+  editingReviewId = id;
+  document.getElementById('rv-name').value = review.customer_name || '';
+  document.getElementById('rv-product').value = review.product_name || '';
+  document.getElementById('rv-rating').value = String(review.rating || 5);
+  document.getElementById('rv-approved').value = String(Boolean(review.approved));
+  document.getElementById('rv-comment').value = review.comment || '';
+  document.getElementById('reviewModal').classList.add('active');
+}
+
+async function saveReviewEdit() {
+  if (!editingReviewId) return;
+  const payload = {
+    customer_name: document.getElementById('rv-name').value.trim(),
+    product_name: document.getElementById('rv-product').value.trim(),
+    rating: Number(document.getElementById('rv-rating').value),
+    approved: document.getElementById('rv-approved').value === 'true',
+    comment: document.getElementById('rv-comment').value.trim()
+  };
+  if (!payload.customer_name || !payload.comment || !payload.rating) { showToast('Completá nombre, calificación y comentario'); return; }
+  const { error } = await sb.from('reviews').update(payload).eq('id', editingReviewId);
+  if (error) { showToast('Error al guardar la reseña: ' + error.message); return; }
+  editingReviewId = null;
+  closeModal('reviewModal');
+  await loadReviewsAdmin(); renderReviews();
+  showToast('Reseña actualizada');
 }
 
 async function toggleReviewApproval(id, currentApproved) {
@@ -2101,13 +2230,20 @@ function confirmDeleteAccounting(id, name) {
 }
 
 function renderDashboard() {
-  const total   = allAdminProducts.length;
-  const sold    = allAdminProducts.filter(p=>p.is_sold).length;
-  const avail   = total - sold;
-  const res     = allReservations.length;
-  const orders  = allOrders.length;
-  const revenue = allOrders.filter(o=>o.status==='completed').reduce((s,o)=>s+Number(o.total||0),0);
-  const capital = allAdminProducts.filter(p=>!p.is_sold).reduce((s,p)=>s+Number(p.price||0),0);
+  const totalAuto   = allAdminProducts.length;
+  const soldAuto    = allAdminProducts.filter(p=>p.is_sold).length;
+  const availAuto   = totalAuto - soldAuto;
+  const resAuto     = allReservations.length;
+  const ordersAuto  = allOrders.length;
+  const revenueAuto = allOrders.filter(o=>o.status==='completed').reduce((s,o)=>s+Number(o.total||0),0);
+  const capitalAuto = allAdminProducts.filter(p=>!p.is_sold).reduce((s,p)=>s+Number(p.price||0),0);
+  const total = metricValue('total', totalAuto);
+  const sold = metricValue('sold', soldAuto);
+  const avail = metricValue('avail', availAuto);
+  const res = metricValue('res', resAuto);
+  const orders = metricValue('orders', ordersAuto);
+  const revenue = metricValue('revenue', revenueAuto);
+  const capital = metricValue('capital', capitalAuto);
   document.getElementById('st-total').textContent   = total;
   document.getElementById('st-avail').textContent   = avail;
   document.getElementById('st-sold').textContent    = sold;
