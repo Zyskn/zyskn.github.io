@@ -891,7 +891,7 @@
 <div class="modal-overlay" id="orderModal">
   <div class="modal modal-sm">
     <div class="modal-header">
-      <div class="modal-title">Agregar pedido manual</div>
+      <div class="modal-title" id="orderModalTitle">Agregar pedido manual</div>
       <button class="modal-close" onclick="closeModal('orderModal')">×</button>
     </div>
     <div class="modal-body" style="display:block;padding:1.8rem 2rem;">
@@ -912,7 +912,7 @@
     </div>
     <div class="modal-footer">
       <button class="btn-outline" onclick="closeModal('orderModal')">Cancelar</button>
-      <button class="btn-primary" onclick="saveManualOrder()">Guardar pedido</button>
+      <button class="btn-primary" id="saveOrderBtn" onclick="saveManualOrder()">Guardar pedido</button>
     </div>
   </div>
 </div>
@@ -941,6 +941,7 @@ let storeLocked = false;
 let currentUploadFolder = null;
 let dashboardOverrides = {};
 let editingReviewId = null;
+let editingOrderId = null;
 
 /* ══ AUTH ══ */
 sb.auth.onAuthStateChange((event, session) => {
@@ -1927,6 +1928,8 @@ function renderOrders() {
         <a href="https://wa.me/${(order.customer_phone||'5493544631553').replace(/\D/g,'')}?text=${waText}" target="_blank">
           <button class="btn-wa">Contactar por WhatsApp</button>
         </a>
+        <button class="btn-outline" onclick="openOrderEdit('${order.id}')">Editar</button>
+        <button class="btn-outline" style="color:var(--red);border-color:rgba(163,0,0,.3);" onclick="confirmDeleteOrder('${order.id}','${String(order.order_id||'').replace(/'/g,"\\'")}')">Eliminar</button>
       </div>
     </div>`;
   }).join('');
@@ -1940,10 +1943,36 @@ async function updateOrderStatus(id, status) {
 
 /* ══ PEDIDOS MANUALES ══ */
 function openOrderModal() {
+  editingOrderId = null;
+  document.getElementById('orderModalTitle').textContent = 'Agregar pedido manual';
+  document.getElementById('saveOrderBtn').textContent = 'Guardar pedido';
   ['ord-id','ord-name','ord-dni','ord-phone','ord-email','ord-location','ord-shipping','ord-items','ord-total'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   document.getElementById('ord-status').value = 'pending';
   const now = new Date(); now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
   document.getElementById('ord-date').value = now.toISOString().slice(0,16);
+  document.getElementById('orderModal').classList.add('active');
+}
+
+function openOrderEdit(id) {
+  const order = allOrders.find(o => String(o.id) === String(id));
+  if (!order) return;
+  editingOrderId = id;
+  document.getElementById('orderModalTitle').textContent = 'Editar pedido';
+  document.getElementById('saveOrderBtn').textContent = 'Guardar cambios';
+  document.getElementById('ord-id').value = order.order_id || '';
+  document.getElementById('ord-name').value = order.customer_name || '';
+  document.getElementById('ord-dni').value = order.customer_dni || '';
+  document.getElementById('ord-phone').value = order.customer_phone || '';
+  document.getElementById('ord-email').value = order.customer_email || '';
+  document.getElementById('ord-location').value = order.customer_location || '';
+  document.getElementById('ord-shipping').value = order.customer_shipping || '';
+  document.getElementById('ord-total').value = order.total ?? 0;
+  document.getElementById('ord-status').value = order.status || 'pending';
+  document.getElementById('ord-items').value = Array.isArray(order.items) ? order.items.map(i => i.name ? `${i.name}${i.size ? ' '+i.size : ''}` : '').filter(Boolean).join('\\n') : '';
+  if (order.created_at) {
+    const d = new Date(order.created_at); d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    document.getElementById('ord-date').value = d.toISOString().slice(0,16);
+  }
   document.getElementById('orderModal').classList.add('active');
 }
 
@@ -1966,11 +1995,16 @@ async function saveManualOrder() {
     status: document.getElementById('ord-status').value,
     ...(dateRaw ? { created_at: new Date(dateRaw).toISOString() } : {})
   };
-  const { error } = await sb.from('orders').insert(payload);
+  const query = editingOrderId
+    ? sb.from('orders').update(payload).eq('id', editingOrderId)
+    : sb.from('orders').insert(payload);
+  const { error } = await query;
   if (error) { showToast('Error al guardar pedido: ' + error.message); console.error('manual order:', error); return; }
+  const wasEditing = Boolean(editingOrderId);
+  editingOrderId = null;
   closeModal('orderModal');
   await loadOrders(); renderOrders(); renderDashboard();
-  showToast('Pedido agregado correctamente');
+  showToast(wasEditing ? 'Pedido actualizado correctamente' : 'Pedido agregado correctamente');
 }
 
 /* ══ REVIEWS ══ */
