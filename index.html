@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- ============================================================
@@ -13,7 +15,6 @@
   ============================================================ -->
   <title>Ropa Vintage y Streetwear Online en Argentina | ZYSKN</title>
   <meta name="description" content="Comprá ropa vintage y streetwear online en ZYSKN. Remeras, hoodies, pantalones cargo, jeans y camperas seleccionadas desde Córdoba, Traslasierra. Piezas únicas y envíos a toda Argentina.">
-  <meta name="keywords" content="ropa vintage Argentina, ropa vintage online, streetwear Argentina, ropa usada seleccionada, remeras vintage, hoodies vintage, pantalones cargo, jeans vintage, camperas vintage, ropa vintage Córdoba, ropa vintage Traslasierra">
 
   <link rel="icon" type="image/png" href="faviconn[1].png">
   <link rel="apple-touch-icon" href="faviconn[1].png">
@@ -23,6 +24,7 @@
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="googlebot" content="index, follow">
   <meta name="theme-color" content="#a30000">
+  <meta name="color-scheme" content="light">
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
   <meta property="og:locale" content="es_AR">
@@ -30,7 +32,7 @@
   <meta property="og:description" content="Ropa vintage y streetwear seleccionada desde Córdoba, Traslasierra. Piezas únicas, sin restock y envíos a toda Argentina.">
   <meta property="og:image" content="https://zyskn.github.io/open-graphhh.jpg">
   <meta property="og:image:secure_url" content="https://zyskn.github.io/open-graphhh.jpg">
-  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1600">
   <meta property="og:image:height" content="840">
   <meta property="og:image:alt" content="ZYSKN: ropa vintage y streetwear en Córdoba, Argentina">
@@ -865,10 +867,62 @@
     @media (max-width:420px) { .container { padding-left:16px; padding-right:16px; } }
   
 
+    /* TECHNICAL SEO + MOBILE POLISH */
+    .skip-link { position:fixed; top:8px; left:8px; z-index:10000; transform:translateY(-160%); background:var(--black); color:#fff; padding:.7rem 1rem; font-size:.7rem; font-weight:800; text-decoration:none; border:2px solid var(--red); }
+    .skip-link:focus { transform:translateY(0); }
+    html { scroll-behavior:smooth; }
+    body { text-rendering:optimizeLegibility; }
+    img { display:block; }
+    .hero { min-height:clamp(520px,76svh,760px); }
+    .hero-content { width:min(100%,720px); }
+    .hero h1 { max-width:12ch; text-wrap:balance; }
+    .hero-sub { max-width:42rem; text-wrap:pretty; }
+    .filter-inner { overflow-x:auto; overscroll-behavior-x:contain; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+    .filter-inner::-webkit-scrollbar { display:none; }
+    .filter-btn { min-width:44px; min-height:44px; }
+    .icon-btn, .hamburger { min-width:44px; min-height:44px; }
+    .product-card { min-width:0; }
+    .product-image { aspect-ratio:4/5; }
+    .product-image img { width:100%; height:100%; object-fit:cover; }
+    #reviewModal, #authModal { padding:1rem; }
+    @media (max-width:768px) {
+      body { padding-top:84px; }
+      .hero { min-height:calc(100svh - 84px); max-height:720px; }
+      .hero-content { padding-left:20px; padding-right:20px; }
+      .hero h1 { font-size:clamp(2.45rem,12vw,4.6rem); line-height:.92; }
+      .hero-sub { max-width:34rem; font-size:.68rem; line-height:1.65; }
+      .hero .btn { min-height:48px; width:min(100%,330px); }
+      .filter-inner { justify-content:flex-start; padding-left:16px; padding-right:16px; }
+      .filter-btn { flex:0 0 auto; }
+      .modal, .review-box, .auth-box { max-height:calc(100svh - 2rem); overflow-y:auto; }
+      input, select, textarea { font-size:16px; }
+    }
+    @media (max-width:420px) {
+      .hero-content { padding-left:16px; padding-right:16px; }
+      .hero h1 { font-size:clamp(2.25rem,13vw,3.7rem); }
+      .hero .btn { width:100%; }
+      .trust-item { min-height:74px; }
+    }
+
+    /* PROFESSIONAL POLISH */
+    .trust-strip { display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid rgba(0,0,0,.1); border-bottom:1px solid rgba(0,0,0,.1); background:#fff; }
+    .trust-item { min-height:92px; padding:1.25rem 1.2rem; display:flex; flex-direction:column; justify-content:center; gap:.35rem; border-right:1px solid rgba(0,0,0,.1); text-align:center; }
+    .trust-item:last-child { border-right:0; }
+    .trust-item strong { font-family:'Space Grotesk',sans-serif; font-size:.65rem; letter-spacing:.12em; font-weight:700; }
+    .trust-item span { color:#777; font-size:.62rem; letter-spacing:.04em; }
+    .section-kicker { display:block; margin-bottom:.65rem; color:var(--red); font-family:'Space Grotesk',sans-serif; font-size:.58rem; font-weight:700; text-transform:uppercase; letter-spacing:.2em; }
+    .product-card { transition:transform .35s var(--ease-out), opacity .25s ease; }
+    .product-card:focus-visible { outline:2px solid var(--red); outline-offset:5px; transform:translateY(-3px); }
+    .product-card:hover { transform:translateY(-4px); }
+    .product-image { background:#f3f3f3; }
+    .btn:focus-visible, .btn-dark:focus-visible, .btn-add-cart:focus-visible { box-shadow:0 0 0 4px rgba(163,0,0,.18); }
+    @media (max-width:700px) { .trust-strip { grid-template-columns:repeat(2,1fr); } .trust-item:nth-child(2) { border-right:0; } .trust-item:nth-child(-n+2) { border-bottom:1px solid rgba(0,0,0,.1); } .trust-item { min-height:78px; padding:.9rem .65rem; } .trust-item strong { font-size:.55rem; } .trust-item span { font-size:.56rem; } }
+    @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; transition-duration:.001ms !important; } }
   </style>
 </head>
 
 <body>
+  <a class="skip-link" href="#shop">Saltar al catálogo</a>
   <!-- LOCK SCREEN -->
   <div id="zyskn-lock-screen" style="display:none;">
     <div class="zls-logo">ZYSKN</div>
@@ -878,7 +932,7 @@
   </div>
 
   <div id="supreme-overlay"></div>
-  <div id="notification" class="notification"></div>
+  <div id="notification" class="notification" role="status" aria-live="polite" aria-atomic="true"></div>
   <div id="nav-overlay"></div>
 
   <!-- AUTH MODAL -->
@@ -1072,16 +1126,24 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-content">
 <h1 id="hero-title"><span>ROPA VINTAGE</span><span>QUE NO SE REPITE.</span></h1>
-        <p class="hero-sub">Streetwear, outdoor y prendas únicas seleccionadas en Córdoba, Traslasierra. Envíos a toda Argentina.</p>
+        <p class="hero-sub">Vintage, streetwear y outdoor seleccionados en Traslasierra, Córdoba. Comprá online y recibí tu pedido en toda Argentina.</p>
         <a href="#shop" onclick="scrollToSection('shop'); return false;" class="btn">VER PRENDAS DISPONIBLES</a>
       </div>
+    </section>
+
+    <!-- CONFIANZA -->
+    <section class="trust-strip" aria-label="Información de compra">
+      <div class="trust-item"><strong>PIEZAS ÚNICAS</strong><span>Sin restock</span></div>
+      <div class="trust-item"><strong>ESTADO VERIFICADO</strong><span>Fotos y detalles reales</span></div>
+      <div class="trust-item"><strong>ENVÍOS NACIONALES</strong><span>A toda Argentina</span></div>
+      <div class="trust-item"><strong>RESERVAS 72 H</strong><span>Consultá por WhatsApp</span></div>
     </section>
 
     <!-- MANIFESTO -->
     <section id="manifesto">
       <div class="manifesto-inner">
         <h2><span>SOLD</span> OUT MEANS <span>SOLD</span> OUT.</h2>
-        <p>Una vez que se va, no vuelve. Piezas únicas seleccionadas en Córdoba, Traslasierra.</p>
+        <p>Una vez que se va, no vuelve. Seleccionamos cada pieza en Traslasierra, Córdoba, y enviamos a todo el país.</p>
       </div>
     </section>
 
@@ -1106,6 +1168,7 @@
     <!-- NEW ARRIVALS -->
     <section id="nuevo-section">
       <div class="container" style="max-width:100%;">
+        <span class="section-kicker">Último drop</span>
         <h2 class="section-title" style="color:var(--red);">NUEVAS PRENDAS VINTAGE Y STREETWEAR</h2>
         <div id="newProductsGrid" class="products-grid"></div>
       </div>
@@ -1398,8 +1461,8 @@ CONFIRMAR PEDIDO POR WHATSAPP
                 "@type": "Organization",
                 "name": "ZYSKN"
               },
-              "url": "https://zyskn.github.io"
-            },
+                          "url": `https://zyskn.github.io/#producto-${p.id}`
+          },
             "size": (p.sizes || []).join(', ') || p.talle || '',
             "category": (p.categories && p.categories.length ? p.categories : [p.category || '']).join(', ')
           }
@@ -1718,7 +1781,8 @@ allProducts = data || [];
         const mainImg = photos[0] || '';
         const hoverImg = photos[1] || '';
         const cats = (p.categories && p.categories.length ? p.categories : [p.category || '']).join(', ');
-        return `<div class="product-card ${isReserved ? 'reserved' : ''} ${isSold ? 'sold' : ''}" onclick="showProductDetail('${p.id}')">
+        const statusText = isSold ? 'Sin stock' : (isReserved ? 'Reservado' : 'Disponible');
+        return `<article class="product-card ${isReserved ? 'reserved' : ''} ${isSold ? 'sold' : ''}" tabindex="0" role="button" aria-label="Ver ${p.name}. ${statusText}. Precio $${Number(p.price).toLocaleString('es-AR')}" onclick="showProductDetail('${p.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showProductDetail('${p.id}');}">
           <div class="product-image">
             <img src="${mainImg}" alt="${p.name} - Ropa Vintage ZYSKN Córdoba" loading="lazy"
               ${hoverImg ? `onmouseenter="this.src='${hoverImg}'" onmouseleave="this.src='${mainImg}'"` : ''}>
@@ -1731,7 +1795,7 @@ allProducts = data || [];
             </div>
             <p class="product-price">$${Number(p.price).toLocaleString('es-AR')}</p>
           </div>
-        </div>`;
+        </article>`;
       }).join('');
     }
 
