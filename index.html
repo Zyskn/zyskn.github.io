@@ -29,7 +29,7 @@
 
   <meta property="og:locale" content="es_AR">
   <meta property="og:title" content="ZYSKN Tienda Online de Ropa Vintage y Streetwear">
-  <meta property="og:description" content="Piezas únicas seleccionadas 1 por 1. Todo sin restock, envios a todo el país.">
+  <meta property="og:description" content="Piezas únicas seleccionadas 1 por 1. Todo sin restock, envíos a todo el país.">
   <meta property="og:image" content="https://zyskn.github.io/open-graphhh.jpg">
   <meta property="og:image:secure_url" content="https://zyskn.github.io/open-graphhh.jpg">
   <meta property="og:image:type" content="image/jpeg">
@@ -42,7 +42,7 @@
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="ZYSKN Tienda Online de Ropa Vintage y Streetwear">
-  <meta name="twitter:description" content="Piezas únicas seleccionadas 1 por 1. Todo sin restock, envios a todo el país.">
+  <meta name="twitter:description" content="Piezas únicas seleccionadas 1 por 1. Todo sin restock, envíos a todo el país.">
   <meta name="twitter:image" content="https://zyskn.github.io/open-graphhh.jpg">
   <meta name="twitter:image:alt" content="ZYSKN Tienda de ropa vintage y streetwear en Córdoba, Argentina">
 
@@ -265,8 +265,8 @@
       #userAuth { width:28px!important; height:28px!important; padding:0!important; margin:0!important; font-size:0!important; }
       #userAuth svg { width:20px!important; height:20px!important; }
       .nav-main { position:fixed; top:0; right:0; width:82vw; max-width:340px; height:100dvh; background:rgba(255,255,255,0.99); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); flex-direction:column; justify-content:flex-start; align-items:flex-start; padding:5.5rem 1.6rem 2rem; box-shadow:-8px 0 40px rgba(0,0,0,0.12); overflow-y:auto; gap:0; z-index:3005; transform:translate3d(100%,0,0); transition:transform .42s var(--ease-out); pointer-events:none; border-left:1px solid rgba(0,0,0,0.05); }
-      .nav-main.active { transform:translate3d(0,0,0); pointer-events:auto; }
-      body.mobile-menu-open #navMain { transform:translate3d(0,0,0) !important; pointer-events:auto !important; visibility:visible !important; }
+      .nav-main.active { transform:translate3d(0,0,0); opacity:1; visibility:visible; pointer-events:auto; }
+      body.mobile-menu-open #navMain { transform:translate3d(0,0,0) !important; opacity:1 !important; pointer-events:auto !important; visibility:visible !important; }
       body.mobile-menu-open #nav-overlay { display:block !important; opacity:1; }
       .nav-item { padding:0; width:100%; border-bottom:1px solid rgba(0,0,0,0.06); }
       .nav-item > a { display:block; padding:1rem .4rem; font-family:'Space Grotesk',sans-serif; font-size:1.05rem; font-weight:600; letter-spacing:.08em; }
@@ -901,23 +901,127 @@
       .hero-content { padding-left:16px; padding-right:16px; }
       .hero h1 { font-size:clamp(2.25rem,13vw,3.7rem); }
       .hero .btn { width:100%; }
-      .trust-item { min-height:74px; }
     }
 
     /* PROFESSIONAL POLISH */
-    .trust-strip { display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid rgba(0,0,0,.1); border-bottom:1px solid rgba(0,0,0,.1); background:#fff; }
-    .trust-item { min-height:92px; padding:1.25rem 1.2rem; display:flex; flex-direction:column; justify-content:center; gap:.35rem; border-right:1px solid rgba(0,0,0,.1); text-align:center; }
-    .trust-item:last-child { border-right:0; }
-    .trust-item strong { font-family:'Space Grotesk',sans-serif; font-size:.65rem; letter-spacing:.12em; font-weight:700; }
-    .trust-item span { color:#777; font-size:.62rem; letter-spacing:.04em; }
     .section-kicker { display:block; margin-bottom:.65rem; color:var(--red); font-family:'Space Grotesk',sans-serif; font-size:.58rem; font-weight:700; text-transform:uppercase; letter-spacing:.2em; }
     .product-card { transition:transform .35s var(--ease-out), opacity .25s ease; }
     .product-card:focus-visible { outline:2px solid var(--red); outline-offset:5px; transform:translateY(-3px); }
     .product-card:hover { transform:translateY(-4px); }
     .product-image { background:#f3f3f3; }
     .btn:focus-visible, .btn-dark:focus-visible, .btn-add-cart:focus-visible { box-shadow:0 0 0 4px rgba(163,0,0,.18); }
-    @media (max-width:700px) { .trust-strip { grid-template-columns:repeat(2,1fr); } .trust-item:nth-child(2) { border-right:0; } .trust-item:nth-child(-n+2) { border-bottom:1px solid rgba(0,0,0,.1); } .trust-item { min-height:78px; padding:.9rem .65rem; } .trust-item strong { font-size:.55rem; } .trust-item span { font-size:.56rem; } }
     @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; transition-duration:.001ms !important; } }
+  
+    @keyframes mobileHeaderFadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width:1024px) {
+      header#header {
+        padding: 6px 16px;
+        min-height: 56px;
+        animation: mobileHeaderFadeIn .6s var(--ease-out) both;
+      }
+      header#header .header-content { min-height: 56px; gap: 10px; }
+      header#header .logo-section { min-width: 0; }
+      header#header .logo { font-size: 1.7rem; }
+      header#header .logo-slogan { font-size: .5rem; letter-spacing: .18em; }
+      header#header .nav-icons {
+        display: flex !important;
+        align-items: center;
+        justify-content: flex-end !important;
+        gap: 4px !important;
+        min-height: 44px;
+      }
+      header#header .user-menu-wrapper,
+      header#header #cart-icon,
+      header#header #hamburger {
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
+        flex: 0 0 44px;
+      }
+      header#header .user-menu-wrapper { display: grid; place-items: center; }
+      header#header #userAuth,
+      header#header #cart-icon {
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
+        display: grid !important;
+        place-items: center !important;
+      }
+      header#header #userAuth svg,
+      header#header #cart-icon svg {
+        width: 22px !important;
+        height: 22px !important;
+      }
+      header#header #hamburger {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        padding: 10px !important;
+      }
+      header#header #hamburger span { width: 24px; height: 2px; }
+    }
+    @media (max-width:420px) {
+      header#header { padding-inline: 10px; }
+      header#header .header-content { gap: 4px; }
+      header#header .nav-icons { gap: 1px !important; }
+      header#header .logo { font-size: 1.55rem; }
+      header#header .logo-slogan { font-size: .46rem; letter-spacing: .14em; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      header#header { animation: none !important; }
+    }
+
+    @keyframes mobileRevealUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes mobileHeroDrift {
+      from { transform: scale(1.02); }
+      to { transform: scale(1.07); }
+    }
+    @media (max-width:1024px) and (prefers-reduced-motion: no-preference) {
+      .hero::before { animation: mobileHeroDrift 9s ease-in-out alternate infinite; }
+      .hero-content h1 { opacity: 0; animation: mobileRevealUp .7s var(--ease-out) .12s both; }
+      .hero-content .hero-sub { opacity: 0; animation: mobileRevealUp .7s var(--ease-out) .24s both; }
+      .hero-content .btn { opacity: 0; animation: mobileRevealUp .7s var(--ease-out) .36s both; }
+      #manifesto .manifesto-inner { opacity: 0; animation: mobileRevealUp .72s var(--ease-out) .1s both; }
+      #nuevo-section .section-kicker, #nuevo-section .section-title,
+      #shop .section-title, #reviews-section .reviews-head,
+      #faq-section .section-title, #faq-section .faq-list,
+      footer#contact .contact-intro, footer#contact .social-links { opacity: 0; animation: mobileRevealUp .68s var(--ease-out) both; }
+      #nuevo-section .section-title { animation-delay: .08s; }
+      #shop .section-title, #reviews-section .reviews-head, #faq-section .section-title { animation-delay: .12s; }
+      #faq-section .faq-list, footer#contact .social-links { animation-delay: .2s; }
+      .product-card { opacity: 0; animation: mobileRevealUp .62s var(--ease-out) both; }
+      .product-card:nth-child(2) { animation-delay: .06s; }
+      .product-card:nth-child(3) { animation-delay: .12s; }
+      .product-card:nth-child(4) { animation-delay: .18s; }
+      .product-card:nth-child(5) { animation-delay: .24s; }
+      .product-card:nth-child(6) { animation-delay: .30s; }
+      .product-card:nth-child(n+7) { animation-delay: .36s; }
+      .filter-btn:active, .btn:active, .btn-dark:active, .btn-add-cart:active,
+      .whatsapp-order-btn:active, .icon-btn:active, .hamburger:active { transform: scale(.96); transition: transform .16s var(--ease-out); }
+      .nav-main.active .nav-item { animation: mobileRevealUp .42s var(--ease-out) both; }
+      .nav-main.active .nav-item:nth-child(2) { animation-delay: .04s; }
+      .nav-main.active .nav-item:nth-child(3) { animation-delay: .08s; }
+      .nav-main.active .nav-item:nth-child(4) { animation-delay: .12s; }
+      .nav-main.active .nav-item:nth-child(5) { animation-delay: .16s; }
+      .nav-main.active .nav-item:nth-child(6) { animation-delay: .20s; }
+      .nav-main.active .nav-item:nth-child(7) { animation-delay: .24s; }
+    }
+    @media (max-width:1024px) {
+      .hero::before { will-change: transform; }
+      .product-card, .filter-btn, .btn, .btn-dark, .btn-add-cart, .icon-btn, .hamburger { touch-action: manipulation; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero::before { animation: none !important; }
+    }
   </style>
 </head>
 
@@ -1028,15 +1132,15 @@
     <div class="tb-track" id="tbTrack">
       <div class="tb-msg active">
         <img src="https://cdn.simpleicons.org/instagram/FFFFFF" alt="">
-        <a href="https://instagram.com/zyskn_" target="_blank">SEGUINOS EN INSTAGRAM</a>
+        <a href="https://instagram.com/zyskn_" target="_blank" rel="noopener noreferrer">SEGUINOS EN INSTAGRAM</a>
       </div>
       <div class="tb-msg">
         <img src="https://cdn.simpleicons.org/tiktok/FFFFFF" alt="">
-        <a href="https://www.tiktok.com/@zyskn_" target="_blank">SEGUINOS EN TIKTOK</a>
+        <a href="https://www.tiktok.com/@zyskn_" target="_blank" rel="noopener noreferrer">SEGUINOS EN TIKTOK</a>
       </div>
       <div class="tb-msg">
         <img src="https://cdn.simpleicons.org/whatsapp/FFFFFF" alt="">
-        <a href="https://wa.me/5493544631553" target="_blank">CONSULTAS POR WHATSAPP</a>
+        <a href="https://wa.me/5493544631553" target="_blank" rel="noopener noreferrer">CONSULTAS POR WHATSAPP</a>
       </div>
       <div class="tb-msg">
         <span>ENVÍOS A TODO EL PAÍS · PIEZAS ÚNICAS SIN RESTOCK</span>
@@ -1090,7 +1194,7 @@
           </div>
           <div class="nav-item"><a href="javascript:void(0)" onclick="scrollToSection('reviews-section')">RESEÑAS</a></div>
           <div class="nav-item"><a href="javascript:void(0)" onclick="scrollToSection('faq-section')">FAQ</a></div>
-          <div class="nav-item"><a href="contactos" onclick="scrollToSection('contact'); return false;">CONTACTOS</a></div>
+          <div class="nav-item"><a href="#contact" aria-label="Ir a la sección de contactos" onclick="scrollToSection('contact'); return false;">CONTACTOS</a></div>
         </nav>
         <div class="nav-icons">
           <div class="search-wrapper">
@@ -1115,7 +1219,7 @@
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l1.5 10.2a2 2 0 0 0 2 1.8h8.8a2 2 0 0 0 1.9-1.4L21 8H6"></path><circle cx="9" cy="20" r="1"></circle><circle cx="18" cy="20" r="1"></circle></svg>
             <span class="cart-badge" id="cartBadge" style="display:none;">0</span>
           </button>
-          <button type="button" class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
+          <button type="button" class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="navMain" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
         </div>
       </div>
     </div>
@@ -1126,24 +1230,16 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-content">
 <h1 id="hero-title"><span>ROPA VINTAGE</span><span>QUE NO SE REPITE.</span></h1>
-        <p class="hero-sub">Somos una tienda especializada en ropa Vintage, Streetwear y Outdoor. Comprá y disfruta lo que nadie tiene.</p>
+        <p class="hero-sub">Somos una tienda especializada en ropa Vintage, Streetwear y Outdoor. Comprá y disfrutá lo que nadie tiene.</p>
         <a href="#shop" onclick="scrollToSection('shop'); return false;" class="btn">VER PRENDAS DISPONIBLES</a>
       </div>
-    </section>
-
-    <!-- CONFIANZA -->
-    <section class="trust-strip" aria-label="Información de compra">
-      <div class="trust-item"><strong>PIEZAS ÚNICAS</strong><span>Sin restock</span></div>
-      <div class="trust-item"><strong>ESTADO VERIFICADO</strong><span>Fotos y detalles reales</span></div>
-      <div class="trust-item"><strong>ENVÍOS NACIONALES</strong><span>A toda Argentina</span></div>
-      <div class="trust-item"><strong>RESERVAS 72 H</strong><span>Consultá por WhatsApp</span></div>
     </section>
 
     <!-- MANIFESTO -->
     <section id="manifesto">
       <div class="manifesto-inner">
         <h2><span>SOLD</span> OUT MEANS <span>SOLD</span> OUT.</h2>
-        <p>Una vez que se va, no vuelve. Seleccionamos cada pieza de manera rigusoramente para garantizar calidad de verdad a nuestros clientes.</p>
+        <p>Una vez que se va, no vuelve. Seleccionamos cada pieza de manera rigurosamente para garantizar calidad de verdad a nuestros clientes.</p>
       </div>
     </section>
 
@@ -1237,12 +1333,12 @@
             <div class="cart-total-row"><span>TOTAL</span><span id="cartTotal">$0</span></div>
             <div style="margin-bottom:1.5rem;">
               <p style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;margin-bottom:1rem;padding-bottom:.7rem;border-bottom:1px solid rgba(0,0,0,.1);">Datos de envío</p>
-            <div class="form-group"><label>Nombre y Apellido</label><input type="text" id="orderName" required></div>
-            <div class="form-group"><label>DNI</label><input type="text" id="orderDni" required></div>
-            <div class="form-group"><label>Celular</label><input type="tel" id="orderPhone" required></div>
-            <div class="form-group"><label>Email</label><input type="email" id="orderEmail" required></div>
-            <div class="form-group"><label>Ciudad y Provincia</label><input type="text" id="orderLocation" required></div>
-            <div class="form-group"><label>Sucursal Correo Argentino o Dirección</label><input type="text" id="orderShippingAddr" required></div>
+            <div class="form-group"><label for="orderName">Nombre y Apellido</label><input type="text" id="orderName" autocomplete="name" required></div>
+            <div class="form-group"><label for="orderDni">DNI</label><input type="text" id="orderDni" inputmode="numeric" autocomplete="off" required></div>
+            <div class="form-group"><label for="orderPhone">Celular</label><input type="tel" id="orderPhone" autocomplete="tel" required></div>
+            <div class="form-group"><label for="orderEmail">Email</label><input type="email" id="orderEmail" autocomplete="email" required></div>
+            <div class="form-group"><label for="orderLocation">Ciudad y Provincia</label><input type="text" id="orderLocation" autocomplete="address-level2" required></div>
+            <div class="form-group"><label for="orderShippingAddr">Sucursal Correo Argentino o Dirección</label><input type="text" id="orderShippingAddr" autocomplete="street-address" required></div>
           </div>
           <div class="yellow-warning">EL COSTO DE ENVÍO SE CALCULARÁ SEGÚN TU LOCALIDAD AL FINALIZAR LA COMPRA VÍA WHATSAPP</div>
           <button id="btnWhatsAppOrder" class="whatsapp-order-btn" onclick="shareOnWhatsApp()">
@@ -1278,7 +1374,7 @@ CONFIRMAR PEDIDO POR WHATSAPP
     <!-- FAQ -->
     <section id="faq-section">
       <div class="container">
-        <h2 class="section-title"><span class="title-num">Ayuda</span>Preguntas frecuentes sobre ropa vintage y envíos</h2>
+        <h2 class="section-title"><span class="title-num">Ayuda</span>Preguntas frecuentes</h2>
         <div class="faq-list">
           <details><summary>¿Qué tipo de ropa vende ZYSKN?</summary><p>Ofrecemos ropa vintage, streetwear, retro, outdoor y trekking toda importada y original de Estados Unidos. Cada prenda pasa por un <strong>riguroso control de estado</strong> para garantizar <strong>la mayor calidad, estilo y durabilidad</strong> a nuestros clientes. Podés explorar el catálogo completo en la sección "NEW" — cada pieza es única y no tiene restock.</p></details>
           <details><summary>¿Por qué las prendas son únicas?</summary><p>Elegimos cada prenda a mano, una por una. Eso significa que cada una tiene <strong>una sola unidad disponible</strong>: lo que ves hoy, no lo vas a volver a ver.</p></details>
@@ -1287,33 +1383,33 @@ CONFIRMAR PEDIDO POR WHATSAPP
           <details><summary>¿Cuáles son los métodos de pago?</summary><p>Aceptamos transferencia bancaria o efectivo.</p></details>
           <details><summary>¿Cómo funcionan los envíos?</summary><p>Realizamos envíos desde Córdoba, Traslasierra, por Correo Argentino a todo el país. Podés comprar desde Buenos Aires, Córdoba, Santa Fe, Mendoza, Entre Ríos, Salta, Tucumán, Neuquén, Río Negro o cualquier otra provincia argentina. El costo corre por cuenta del cliente y se calcula según la localidad una vez confirmada la compra.</p></details>
           <details><summary>¿Hay cambios o devoluciones?</summary><p>No. Todas las piezas son únicas sin restock. Te recomendamos revisar detalladamente el estado especificado antes de comprar. Consultanos si tenés dudas adicionales.</p></details>
-          <details><summary>¿Cómo me contacto?</summary><p>Podes ponerte en contacto con nosotros por WhatsApp al <a href="https://wa.me/5493544631553" target="_blank" style="font-weight:900;color:var(--red);">+54 9 3544 631553</a>, Instagram <a href="https://instagram.com/zyskn_" target="_blank" style="font-weight:900;color:var(--red);">@zyskn_</a> o TikTok <a href="https://www.tiktok.com/@zyskn_" target="_blank" style="font-weight:900;color:var(--red);">@zyskn_</a>.</p></details>
+          <details><summary>¿Cómo me contacto?</summary><p>Podés ponerte en contacto con nosotros por WhatsApp al <a href="https://wa.me/5493544631553" target="_blank" rel="noopener noreferrer" style="font-weight:900;color:var(--red);">+54 9 3544 631553</a>, Instagram <a href="https://instagram.com/zyskn_" target="_blank" rel="noopener noreferrer" style="font-weight:900;color:var(--red);">@zyskn_</a> o TikTok <a href="https://www.tiktok.com/@zyskn_" target="_blank" rel="noopener noreferrer" style="font-weight:900;color:var(--red);">@zyskn_</a>.</p></details>
         </div>
       </div>
     </section>
 
     <!-- CONTACT -->
-    <footer id="contact">
+    <footer id="contact" aria-labelledby="contact-title">
       <div class="container">
         <div class="contact-intro">
           <span class="contact-kicker">Estamos para ayudarte</span>
-          <h2 class="contact-title">Hablemos</h2>
+          <h2 id="contact-title" class="contact-title">Hablemos</h2>
           <p class="contact-subtitle">¿Buscás ropa vintage, streetwear o una prenda única? Consultanos por medidas, estado, envíos a toda Argentina o reservas. Te respondemos directamente.</p>
         </div>
         <div class="social-links">
-          <a href="https://wa.me/5493544631553" class="social-item wa" target="_blank" rel="noopener">
+          <a href="https://wa.me/5493544631553" class="social-item wa" target="_blank" rel="noopener noreferrer">
             <div class="social-circle">
               <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.94 3.659 1.437 5.634 1.437h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
             </div>
             <span class="social-label">WhatsApp</span><span class="social-handle">Respuesta directa</span>
           </a>
-          <a href="https://instagram.com/zyskn_" class="social-item ig" target="_blank" rel="noopener">
+          <a href="https://instagram.com/zyskn_" class="social-item ig" target="_blank" rel="noopener noreferrer">
             <div class="social-circle">
               <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
             </div>
             <span class="social-label">Instagram</span><span class="social-handle">@zyskn_</span>
           </a>
-          <a href="https://www.tiktok.com/@zyskn_" class="social-item tt" target="_blank" rel="noopener">
+          <a href="https://www.tiktok.com/@zyskn_" class="social-item tt" target="_blank" rel="noopener noreferrer">
             <div class="social-circle">
               <svg viewBox="0 0 24 24" fill="#fff"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-11.07z"/></svg>
             </div>
@@ -1328,7 +1424,7 @@ CONFIRMAR PEDIDO POR WHATSAPP
         <div class="footer-brand">
           <h2 onclick="window.open('https://instagram.com/zyskn_','_blank')">ZYSKN</h2> 
           <p>Ropa vintage y streetwear online · Envíos a toda Argentina desde Traslasierra, Córdoba</p>
-          <p class="secondhand-note-footer">Esta es ropa de segunda mano, compre si solo comprende esto :)</p>
+          <p class="secondhand-note-footer">Esta es ropa de segunda mano. Comprá solo si comprendés esto :)</p>
         </div>
         <div class="footer-copy">
           <p>© 2026 ZYSKN</p>
@@ -2046,7 +2142,7 @@ allProducts = data || [];
       msg += `─────────────────────\n`;
       msg += `· *TOTAL: $${total.toLocaleString('es-AR')}*\n`;
       msg += `_· El costo de envío se calcula según destino._\n\n`;
-      msg += `_Gracias por tu compra. En breve nos ponemos en contacto!._`;
+      msg += `_Gracias por tu compra. En breve nos ponemos en contacto._`;
 
       for (const item of cart) { await deleteReservation(item.id); }
       cart = []; localStorage.setItem('zysk_cart', JSON.stringify(cart)); updateCartUI();
@@ -2144,7 +2240,7 @@ allProducts = data || [];
               <div>
                 <div class="review-name">${(r.customer_name || 'Cliente ZYSKN').replace(/</g, '&lt;')}</div>
                 ${r.product_name ? `<div class="review-product">${r.product_name.replace(/</g, '&lt;')}</div>` : ''}
-                ${r.instagram ? `<a class="review-instagram" href="https://instagram.com/${encodeURIComponent(r.instagram.replace(/^@+/, ''))}" target="_blank" rel="noopener">@${r.instagram.replace(/^@+/, '').replace(/</g, '&lt;')}</a>` : ''}
+                ${r.instagram ? `<a class="review-instagram" href="https://instagram.com/${encodeURIComponent(r.instagram.replace(/^@+/, ''))}" target="_blank" rel="noopener noreferrer">@${r.instagram.replace(/^@+/, '').replace(/</g, '&lt;')}</a>` : ''}
               </div>
               <span class="review-date">${date}</span>
             </div>
@@ -2286,7 +2382,7 @@ allProducts = data || [];
         document.body.style.width = '100%';
       } else closeMobileMenu();
     }
-    if (hamburger && navMain) hamburger.addEventListener('click', toggleMobileMenu);
+    if (hamburger && navMain) hamburger.onclick = toggleMobileMenu;
     navOverlay?.addEventListener('click', closeMobileMenu);
     navMain?.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
       if (window.innerWidth <= 1024 && !link.dataset.section) closeMobileMenu();
