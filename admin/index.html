@@ -1093,6 +1093,10 @@ function isProductReserved(id) {
   return allReservations.some(r => r.product_id === id);
 }
 
+function isProductMarkedReserved(product) {
+  return !!product?.is_reserved || isProductReserved(product?.id);
+}
+
 function filterProductsAdmin(filter, btn) {
   productsAdminFilter = filter;
   document.querySelectorAll('#tab-products .filter-chip').forEach(b=>b.classList.remove('active'));
@@ -1104,10 +1108,10 @@ function filterProductsAdmin(filter, btn) {
 function getFilteredAdminProducts() {
   let list;
   switch(productsAdminFilter) {
-    case 'available': list = allAdminProducts.filter(p=>!p.is_sold && !p.is_hidden && !isProductReserved(p.id)); break;
+    case 'available': list = allAdminProducts.filter(p=>!p.is_sold && !p.is_hidden && !isProductMarkedReserved(p)); break;
     case 'sold':      list = allAdminProducts.filter(p=>p.is_sold); break;
     case 'new':       list = allAdminProducts.filter(p=>p.is_new); break;
-    case 'reserved':  list = allAdminProducts.filter(p=>isProductReserved(p.id)); break;
+    case 'reserved':  list = allAdminProducts.filter(p=>isProductMarkedReserved(p)); break;
     case 'hidden':    list = allAdminProducts.filter(p=>p.is_hidden); break;
     default:          list = allAdminProducts;
   }
@@ -1153,7 +1157,7 @@ function renderProductsTableDesktop(list) {
     return;
   }
   tbody.innerHTML = list.map((p, idx) => {
-    const reserved = isProductReserved(p.id);
+    const reserved = isProductMarkedReserved(p);
     const statusBadge = p.is_sold
       ? '<span class="badge badge-sold">Vendido</span>'
       : reserved
@@ -1188,6 +1192,9 @@ function renderProductsTableDesktop(list) {
           <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;" onclick="toggleSold('${p.id}',${p.is_sold})">
             ${p.is_sold ? 'Disponible' : 'Vendido'}
           </button>
+          <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;${reserved ? 'color:var(--orange);border-color:rgba(234,88,12,.35);' : ''}" onclick="toggleReserved('${p.id}',${reserved})" ${p.is_sold ? 'disabled title="Un producto vendido no puede reservarse"' : ''}>
+            ${reserved ? 'Liberar reserva' : 'Reservar'}
+          </button>
           <button class="btn-outline" style="font-size:.55rem;padding:.3rem .65rem;" onclick="toggleHidden('${p.id}',${!!p.is_hidden})">
             ${p.is_hidden ? 'Mostrar' : 'Ocultar'}
           </button>
@@ -1212,7 +1219,7 @@ function renderProductsCardsMobile(list) {
     return;
   }
   wrap.innerHTML = list.map((p, idx) => {
-    const reserved = isProductReserved(p.id);
+    const reserved = isProductMarkedReserved(p);
     const statusBadge = p.is_sold
       ? '<span class="badge badge-sold">Vendido</span>'
       : reserved
@@ -1242,6 +1249,7 @@ function renderProductsCardsMobile(list) {
           <button class="btn-outline" onclick="openProductModal('${p.id}')">Editar</button>
           <button class="btn-outline" onclick="duplicateProductAdmin('${p.id}')">Duplicar</button>
           <button class="btn-outline" onclick="toggleSold('${p.id}',${p.is_sold})">${p.is_sold ? 'Disponible' : 'Vendido'}</button>
+          <button class="btn-outline" onclick="toggleReserved('${p.id}',${reserved})" ${p.is_sold ? 'disabled title="Un producto vendido no puede reservarse"' : ''}>${reserved ? 'Liberar reserva' : 'Reservar'}</button>
           <button class="btn-outline" onclick="toggleHidden('${p.id}',${!!p.is_hidden})">${p.is_hidden ? 'Mostrar' : 'Ocultar'}</button>
           <button class="btn-outline btn-del" title="Eliminar" onclick="confirmDelete('${p.id}','${p.name.replace(/'/g,"\\'")}')">🗑</button>
         </div>
@@ -1788,6 +1796,7 @@ async function saveProduct(keepOpen=false) {
     is_new:       document.getElementById('f-new').checked,
     is_sold:      document.getElementById('f-sold').checked,
     is_hidden:    document.getElementById('f-hidden').checked,
+    is_reserved:  editingProductId ? !!allAdminProducts.find(p => p.id === editingProductId)?.is_reserved : false,
     sizes,
   };
 
@@ -1855,9 +1864,20 @@ async function borrarFotosHuerfanas() {
 }
   
 async function toggleSold(id, currentSold) {
-  await sb.from('products').update({is_sold:!currentSold}).eq('id',id);
+  const { error } = await sb.from('products').update({is_sold:!currentSold}).eq('id',id);
+  if (error) { showToast('Error al actualizar venta: ' + error.message); return; }
   await loadAdminProducts(); renderProductsTable(); renderDashboard();
   showToast(!currentSold ? 'Marcado como VENDIDO' : 'Marcado como DISPONIBLE');
+}
+
+async function toggleReserved(id, currentReserved) {
+  const nextReserved = !currentReserved;
+  const { error } = await sb.from('products').update({is_reserved: nextReserved}).eq('id', id);
+  if (error) { showToast('Error al actualizar reserva: ' + error.message); return; }
+  await loadAdminProducts();
+  renderProductsTable();
+  renderDashboard();
+  showToast(nextReserved ? 'Producto reservado' : 'Reserva liberada');
 }
 
 async function toggleHidden(id, currentHidden) {
@@ -2337,8 +2357,8 @@ function confirmDeleteAccounting(id, name) {
 function renderDashboard() {
   const totalAuto   = allAdminProducts.length;
   const soldAuto    = allAdminProducts.filter(p=>p.is_sold).length;
-  const availAuto   = totalAuto - soldAuto;
-  const resAuto     = allReservations.length;
+  const availAuto   = allAdminProducts.filter(p=>!p.is_sold && !p.is_hidden && !isProductMarkedReserved(p)).length;
+  const resAuto     = allAdminProducts.filter(p=>isProductMarkedReserved(p)).length;
   const ordersAuto  = allOrders.length;
   const revenueAuto = allOrders.filter(o=>o.status==='completed').reduce((s,o)=>s+Number(o.total||0),0);
   const capitalAuto = allAdminProducts.filter(p=>!p.is_sold).reduce((s,p)=>s+Number(p.price||0),0);
