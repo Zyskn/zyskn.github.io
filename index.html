@@ -397,7 +397,7 @@
     /* HERO */
     .hero { height:clamp(520px,56.25vw,780px); min-height:520px; background-image:linear-gradient(90deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.38) 46%,rgba(0,0,0,.12) 100%),url('hero-bg1.png'); background-size:cover; background-position:center; display:flex; align-items:center; justify-content:flex-start; color:#fff; text-align:left; max-width:100%; position:relative; overflow:hidden; }
     .hero::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,.18)); pointer-events:none; z-index:0; }
-    .hero::after { content:'ZYSKN'; position:absolute; right:-4%; bottom:4%; color:transparent; font-family:'Space Grotesk',sans-serif; font-size:clamp(7rem,22vw,18rem); font-weight:900; letter-spacing:-.13em; line-height:.7; -webkit-text-stroke:2px rgba(255,255,255,.24); opacity:.7; transform:rotate(-7deg); pointer-events:none; animation:heroGraffiti 12s ease-in-out infinite alternate; }
+    .hero::after { content:none; }
     .hero-content { position:relative; z-index:1; width:min(1200px,100%); padding:0 clamp(3rem,10vw,10rem); margin:0; text-align:left; }
     .hero h1 { max-width:600px; margin:0; font-size:clamp(2.6rem,5.2vw,5.2rem); font-weight:900; text-transform:uppercase; letter-spacing:-.05em; line-height:.92; text-wrap:balance; }
     .hero h1 span { display:block; }
@@ -1035,7 +1035,7 @@
     #faq-section > *:not(.urban-texture):not(.street-stamp):not(.street-slash),
     #cart-section > *:not(.urban-texture):not(.street-stamp):not(.street-slash) { z-index:2 !important; }
     .urban-texture::before {
-      content:'ZYSKN'; position:absolute; left:-4%; top:13%;
+      content:none; position:absolute; left:-4%; top:13%;
       font-family:'Space Grotesk',sans-serif; font-size:clamp(8rem,24vw,19rem); font-weight:900;
       letter-spacing:-.12em; line-height:.72; color:rgba(163,0,0,.025); -webkit-text-stroke:2px rgba(163,0,0,.27);
       transform:rotate(-7deg); animation:graffitiFloat 15s ease-in-out infinite alternate;
