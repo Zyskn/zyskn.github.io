@@ -1,181 +1,323 @@
 <!DOCTYPE html>
-
 <html lang="es">
-
 <head>
-
   <meta charset="UTF-8">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta name="theme-color" content="#ffffff">
+  <meta name="robots" content="noindex, follow">
   <title>404 — Página no encontrada | ZYSKN</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap" rel="stylesheet">
-
-  <link rel="icon" type="image/png" href="/favicon.png">
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="/faviconn[1].png">
+  <link rel="apple-touch-icon" href="/faviconn[1].png">
   <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    *{margin:0;padding:0;box-sizing:border-box}
-
-    body{
-
-      font-family:'Inter',sans-serif;
-
-      background:#000;
-
-      color:#fff;
-
-      height:100vh;
-
-      display:flex;
-
-      align-items:center;
-
-      justify-content:center;
-
-      text-align:center;
-
-      overflow:hidden;
-
+    :root {
+      --red: #a30000;
+      --black: #0a0a0a;
+      --muted: #777;
+      --line: #e7e7e7;
+      --soft: #f7f7f7;
+      --ease: cubic-bezier(.16, 1, .3, 1);
     }
 
-    body::before{
+    html, body { min-height: 100%; }
 
-      content:'';
-
-      position:absolute;
-
-      inset:0;
-
-      background:radial-gradient(ellipse 60vw 50vh at 50% 100%,rgba(163,0,0,0.22) 0%,transparent 70%);
-
-      pointer-events:none;
-
+    body {
+      min-height: 100vh;
+      background: #fff;
+      color: var(--black);
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+      overflow: hidden;
     }
 
-    .wrap{position:relative;z-index:1;padding:1.5rem;max-width:480px}
-
-    .logo{
-
-      font-size:1.8rem;
-
-      font-weight:900;
-
-      letter-spacing:-.04em;
-
-      margin-bottom:.8rem;
-
-      cursor:pointer;
-
-      color:#fff; /* <- TODO BLANCO */
-
-      transition:all .3s ease;
-
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: .32;
+      background-image: linear-gradient(90deg, transparent 0 49.8%, rgba(163,0,0,.08) 50%, transparent 50.2%);
+      background-size: 100% 100%;
+      animation: scanLine 7s ease-in-out infinite;
     }
 
-    .logo span{color:inherit;transition:inherit} /* hereda del padre */
-
-    
-
-    /* EFECTO ROJO EN TODO EL LOGO */
-
-    .logo:hover{
-
-      color:#A30000;
-
-      transform:scale(1.03);
-
-      text-shadow:0 0 18px rgba(163,0,0,.7);
-
+    body::after {
+      content: '';
+      position: fixed;
+      width: 280px;
+      height: 280px;
+      left: -160px;
+      bottom: -180px;
+      border: 1px solid rgba(163,0,0,.12);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: redOrbit 12s linear infinite;
     }
 
-    
-
-    h1{
-
-      font-size:clamp(2.8rem,10vw,5.5rem);
-
-      font-weight:900;
-
-      line-height:.9;
-
-      letter-spacing:-.04em;
-
-      margin-bottom:.6rem;
-
+    header {
+      width: 100%;
+      height: 78px;
+      padding: 0 clamp(1.25rem, 5vw, 4rem);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
     }
 
-    p{
-
-      font-size:.72rem;
-
-      font-weight:700;
-
-      text-transform:uppercase;
-
-      letter-spacing:.1em;
-
-      color:#777;
-
-      margin-bottom:2rem;
-
-      line-height:1.5;
-
+    .brand {
+      color: var(--black);
+      text-decoration: none;
+      transition: color .2s ease;
     }
 
-    .btn{
+    .brand:hover { color: var(--red); }
 
-      display:inline-block;
-
-      padding:.75rem 1.8rem;
-
-      background:#fff;
-
-      color:#000;
-
-      text-decoration:none;
-
-      font-size:.7rem;
-
-      font-weight:800;
-
-      text-transform:uppercase;
-
-      letter-spacing:.1em;
-
-      border:1.5px solid #fff;
-
-      transition:all .25s ease;
-
+    .brand-name {
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: -.09em;
+      line-height: .85;
     }
 
-    .btn:hover{background:transparent;color:#fff}
+    .brand-subtitle {
+      display: block;
+      margin-top: .45rem;
+      color: var(--muted);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .47rem;
+      font-weight: 600;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
 
+    .header-label {
+      color: #999;
+      font-size: .56rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    main {
+      position: relative;
+      flex: 1;
+      width: min(100% - 2.5rem, 1040px);
+      margin: 0 auto;
+      padding: clamp(5rem, 13vh, 10rem) 0 clamp(4rem, 10vh, 7rem);
+      display: grid;
+      grid-template-columns: minmax(180px, .8fr) minmax(0, 1fr);
+      animation: pageFloat 8s ease-in-out infinite;
+      align-items: center;
+      gap: clamp(3rem, 10vw, 9rem);
+    }
+
+    .number {
+      position: relative;
+      color: var(--red);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(7rem, 18vw, 13rem);
+      font-weight: 600;
+      letter-spacing: -.14em;
+      line-height: .7;
+      white-space: nowrap;
+      animation: numberLift 4.8s ease-in-out infinite;
+      text-shadow: 0 10px 24px rgba(163,0,0,.12);
+    }
+
+    .number::after {
+      content: '';
+      position: absolute;
+      left: 42%;
+      top: -1.2rem;
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(163,0,0,.35);
+      border-radius: 50%;
+      animation: orbitMark 6s linear infinite;
+    }
+
+    .content {
+      position: relative;
+      border-left: 1px solid var(--line);
+      padding-left: clamp(1.5rem, 4vw, 3.5rem);
+      animation: copyReveal 1s var(--ease) both;
+    }
+
+    .content::before {
+      content: '';
+      position: absolute;
+      left: -1px;
+      top: 0;
+      width: 1px;
+      height: 48px;
+      background: var(--red);
+      animation: borderTravel 4s ease-in-out infinite;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      color: var(--red);
+      font-size: .59rem;
+      font-weight: 800;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      margin-bottom: 1.35rem;
+    }
+
+    .eyebrow::before { content: ''; width: 24px; height: 1px; background: currentColor; }
+
+    h1 {
+      max-width: 10ch;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 4.4vw, 4.2rem);
+      font-weight: 600;
+      letter-spacing: -.075em;
+      line-height: .98;
+      text-transform: uppercase;
+      margin-bottom: 1.35rem;
+    }
+
+    .description {
+      max-width: 37ch;
+      color: var(--muted);
+      font-size: .78rem;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    .actions { display: flex; align-items: center; flex-wrap: wrap; gap: 1.25rem; }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: .75rem 1.25rem;
+      border: 1px solid var(--black);
+      background: var(--black);
+      color: #fff;
+      font-size: .61rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: background .22s ease, border-color .22s ease, color .22s ease, transform .22s var(--ease);
+    }
+
+    .button:hover { background: var(--red); border-color: var(--red); transform: translateY(-2px); }
+    .button:active { transform: scale(.97); }
+    .button:not(.back)::after { content: '↗'; margin-left: .65rem; transition: transform .25s var(--ease); }
+    .button:not(.back):hover::after { transform: translate(3px, -3px); }
+
+    .button.back {
+      border-color: transparent;
+      background: transparent;
+      color: var(--black);
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .button.back:hover { border-color: transparent; background: transparent; color: var(--red); }
+
+    footer {
+      width: min(100% - 2.5rem, 1040px);
+      margin: 0 auto;
+      padding: 1.25rem 0 1.5rem;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      color: #aaa;
+      font-size: .53rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    #countdown { color: var(--black); }
+    #countdown strong { color: var(--red); }
+
+    @keyframes scanLine { 0%, 100% { transform: translateX(-35%); opacity: .15; } 50% { transform: translateX(35%); opacity: .55; } }
+    @keyframes redOrbit { from { transform: rotate(0deg) translateX(18px) rotate(0deg); } to { transform: rotate(360deg) translateX(18px) rotate(-360deg); } }
+    @keyframes pageFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+    @keyframes numberLift { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+    @keyframes orbitMark { from { transform: rotate(0deg) translateX(25px) rotate(0deg); } to { transform: rotate(360deg) translateX(25px) rotate(-360deg); } }
+    @keyframes copyReveal { from { opacity: 0; transform: translateX(18px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes borderTravel { 0%, 100% { transform: translateY(0); opacity: .3; } 50% { transform: translateY(115px); opacity: 1; } }
+
+    @media (max-width: 640px) {
+      header { height: 68px; }
+      .header-label { display: none; }
+      main {
+        width: min(100% - 2.5rem, 480px);
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        padding-top: 5.5rem;
+        padding-bottom: 5rem;
+      }
+      .number { font-size: clamp(7rem, 30vw, 10rem); animation-duration: 4s; }
+      .number::after { top: -1.5rem; left: 45%; width: 28px; height: 28px; }
+      .content::before { animation-duration: 3.5s; }
+      .content { border-left: 0; border-top: 1px solid var(--line); padding: 2rem 0 0; }
+      footer { width: min(100% - 2.5rem, 480px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: .001ms !important; }
+    }
   </style>
-
 </head>
-
 <body>
+  <header>
+    <a class="brand" href="/" aria-label="Volver a ZYSKN">
+      <span class="brand-name">ZYSKN</span>
+      <span class="brand-subtitle">Vintage &amp; streetwear</span>
+    </a>
+    <span class="header-label">Página no encontrada</span>
+  </header>
 
-  <div class="wrap">
+  <main aria-labelledby="error-title">
+    <div class="number" aria-hidden="true">404</div>
+    <section class="content">
+      <div class="eyebrow">Error de navegación</div>
+      <h1 id="error-title">Esta pieza no está disponible.</h1>
+      <p class="description">La página que estás buscando no existe o fue movida. Volvé a la tienda para descubrir las piezas seleccionadas de ZYSKN.</p>
+      <div class="actions">
+        <a class="button" href="/">Volver a la tienda</a>
+        <a class="button back" href="/" onclick="history.back(); return false;">← Volver atrás</a>
+      </div>
+    </section>
+  </main>
 
-    <div class="logo" onclick="location.href='/'">ZYS<span>KN</span></div>
-
-    <h1>404</h1>
-
-    <p>Esta pieza no existe.<br>Volvé al drop.</p>
-
-    <a href="/" class="btn">Volver a la tienda</a>
-
-  </div>
+  <footer>
+    <span>ZYSKN / Córdoba, Argentina</span>
+    <span id="countdown" aria-live="polite">Redirección automática: <strong>8</strong>s</span>
+  </footer>
 
   <script>
-
-    setTimeout(()=>{window.location.href='/'}, 8000);
-
+    let remaining = 8;
+    const countdown = document.querySelector('#countdown strong');
+    const timer = setInterval(() => {
+      remaining -= 1;
+      if (countdown) countdown.textContent = remaining;
+      if (remaining <= 0) {
+        clearInterval(timer);
+        window.location.href = '/';
+      }
+    }, 1000);
   </script>
-
 </body>
-
 </html>
+
