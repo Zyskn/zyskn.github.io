@@ -1550,7 +1550,7 @@ CONFIRMAR PEDIDO POR WHATSAPP
               "@type": "Offer",
               "priceCurrency": "ARS",
               "price": String(p.price),
-              "availability": (p.is_sold || p._reserved)
+"availability": (p.is_sold || p.is_reserved || p._reserved)
                 ? "https://schema.org/OutOfStock"
                 : "https://schema.org/InStock",
               "seller": {
@@ -1780,10 +1780,12 @@ allProducts = data || [];
       try {
         await sb.from('reservations').delete().lt('expires_at', new Date().toISOString());
         const { data } = await sb.from('reservations').select('*');
-        if (data) {
-          allProducts.forEach(p => { p._reserved = false; });
-          data.forEach(r => { allProducts.forEach(p => { if (p.id === r.product_id) p._reserved = true; }); });
-        }
+        // is_reserved viene del panel admin; _reserved también contempla la reserva temporal del carrito.
+        allProducts.forEach(p => {
+          p._adminReserved = !!p.is_reserved;
+          p._reserved = !!p.is_reserved;
+        });
+        (data || []).forEach(r => { allProducts.forEach(p => { if (p.id === r.product_id) p._reserved = true; }); });
       } catch (e) { console.error('Error sync reservas:', e); }
     }
 
@@ -1873,7 +1875,7 @@ allProducts = data || [];
       if (!grid) return;
       if (!list || list.length === 0) { grid.innerHTML = '<div class="no-results"><p>No hay productos en esta categoría</p></div>'; return; }
       grid.innerHTML = list.map(p => {
-        const isReserved = p._reserved && !isReservedByMe(p.id);
+        const isReserved = p._adminReserved || (p._reserved && !isReservedByMe(p.id));
         const isSold = p.is_sold;
         const sizeBadges = (p.sizes || []).map(s => `<span class="badge badge-size">${s}</span>`).join('');
         const newBadge = p.is_new ? '<span class="badge badge-new">NEW</span>' : '';
@@ -1939,9 +1941,10 @@ allProducts = data || [];
       const btn = document.querySelector('#product-detail .btn-add-cart');
       const statusOverlay = document.getElementById('detailStatusOverlay');
       const isSold = currentProduct.is_sold;
-      const isReservedByOther = currentProduct._reserved && !isReservedByMe(currentProduct.id);
+      const isAdminReserved = currentProduct._adminReserved || currentProduct.is_reserved;
+      const isReservedByOther = !isAdminReserved && currentProduct._reserved && !isReservedByMe(currentProduct.id);
 
-      if (isSold || isReservedByOther) {
+      if (isSold || isAdminReserved || isReservedByOther) {
         const text = isSold ? 'SIN STOCK' : 'RESERVADO';
         statusOverlay.textContent = text;
         statusOverlay.classList.add('show');
@@ -2018,6 +2021,7 @@ allProducts = data || [];
     async function addToCartFromDetail(event) {
       if (!selectedSize) { alert('Seleccioná el talle'); return; }
       if (currentProduct.is_sold) { alert('Este producto ya fue vendido'); return; }
+      if (currentProduct._adminReserved || currentProduct.is_reserved) { alert('Este producto está reservado'); return; }
       if (currentProduct._reserved && !isReservedByMe(currentProduct.id)) { alert('Este producto está reservado por otro usuario'); return; }
       if (cart.find(i => i.id === currentProduct.id)) { alert('Ya está en el carrito'); return; }
       const ok = await createReservation(currentProduct.id);
@@ -2094,15 +2098,16 @@ allProducts = data || [];
       let idsToCheck = cart.map(i => i.id);
       let freshProducts = [];
       try {
-        const { data, error } = await sb.from('products').select('id,is_sold').in('id', idsToCheck);
+        const { data, error } = await sb.from('products').select('id,is_sold,is_reserved').in('id', idsToCheck);
         if (error) throw error;
         freshProducts = data || [];
       } catch (e) {
         console.error('Error revalidando stock:', e);
       }
       const soldNow = freshProducts.filter(p => p.is_sold).map(p => p.id);
-      const stillMine = idsToCheck.filter(id => isReservedByMe(id));
-      const lostToOthers = idsToCheck.filter(id => !soldNow.includes(id) && !stillMine.includes(id));
+      const adminReservedNow = freshProducts.filter(p => p.is_reserved).map(p => p.id);
+      const stillMine = idsToCheck.filter(id => isReservedByMe(id) && !adminReservedNow.includes(id));
+      const lostToOthers = idsToCheck.filter(id => !soldNow.includes(id) && !adminReservedNow.includes(id) && !stillMine.includes(id));
       const unavailable = [...new Set([...soldNow, ...lostToOthers])];
 
       if (unavailable.length > 0) {
@@ -2289,7 +2294,7 @@ allProducts = data || [];
             cart = cart.filter(i => i.id !== productId);
             localStorage.setItem('zysk_cart', JSON.stringify(cart));
             localStorage.setItem('zysk_res', JSON.stringify(localReservations));
-            const p = allProducts.find(pr => pr.id === productId); if (p) p._reserved = false;
+            const p = allProducts.find(pr => pr.id === productId); if (p) { p._reserved = !!p.is_reserved; p._adminReserved = !!p.is_reserved; }
             changed = true; showNotification('RESERVA VENCIDA — PRODUCTO LIBERADO');
           }
         }
