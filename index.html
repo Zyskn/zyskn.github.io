@@ -1771,12 +1771,11 @@ allProducts = data || [];
     }
 
     /* RESERVAS
-       IMPORTANTE: para que esto sea 100% a prueba de condiciones de carrera
-       (dos clientes reservando la misma prenda casi al mismo tiempo), la tabla
-       "reservations" en Supabase debe tener una restricción UNIQUE en product_id,
-       y este insert debe fallar (no upsert) si ya existe una fila para ese producto.
-       Acá evitamos el upsert ciego: primero comprobamos si ya hay una reserva
-       vigente de otro usuario antes de intentar crear la nuestra. */
+       Con la restricción UNIQUE en product_id ya creada en Supabase, usamos
+       INSERT (no upsert) para que dos reservas de la misma prenda casi
+       simultáneas no se pisen entre sí: la segunda falla limpiamente con
+       error de constraint (23505) y se le avisa al usuario que se le
+       adelantaron, en vez de robarle silenciosamente la reserva al primero. */
     async function syncReservations() {
       try {
         await sb.from('reservations').delete().lt('expires_at', new Date().toISOString());
@@ -1791,15 +1790,20 @@ allProducts = data || [];
     async function createReservation(productId) {
       const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
       try {
-        // Revisamos primero si ya existe una reserva vigente de otro usuario
-        const { data: existing } = await sb.from('reservations').select('*').eq('product_id', productId).maybeSingle();
-        if (existing && new Date(existing.expires_at) > new Date() && !isReservedByMe(productId)) {
-          return false; // ya reservado por otro cliente
+        // Limpiamos reservas vencidas de esta prenda puntual antes de intentar
+        // insertar, para no chocar con una fila vieja que ya expiró.
+        await sb.from('reservations').delete().eq('product_id', productId).lt('expires_at', new Date().toISOString());
+
+        // Insert directo (no upsert). Si otro cliente reservó esta prenda
+        // en el medio, la constraint UNIQUE en product_id hace que esto
+        // falle limpiamente (error 23505) en vez de pisar su reserva.
+        const { error } = await sb.from('reservations').insert({ product_id: productId, expires_at: expiresAt });
+
+        if (error) {
+          if (error.code === '23505') return false; // ya reservado por otro cliente
+          throw error;
         }
-        // insert (no upsert ciego) — si hay UNIQUE constraint en product_id, esto falla
-        // limpiamente en vez de pisar una reserva ajena si llegó otra petición en el medio
-        const { error } = await sb.from('reservations').upsert({ product_id: productId, expires_at: expiresAt }, { onConflict: 'product_id' });
-        if (error) throw error;
+
         localReservations[productId] = Date.now() + 5 * 60 * 1000;
         localStorage.setItem('zysk_res', JSON.stringify(localReservations));
         return true;
