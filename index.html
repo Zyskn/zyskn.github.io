@@ -119,6 +119,25 @@
       --text-faint: #888;
       --whatsapp:   #25D366;
       --yellow:     #FFF3CD;
+
+      /* ==========================================================
+         IMÁGENES DE FONDO POR APARTADO
+         Cambiá solamente los nombres/rutas de abajo.
+         Podés usar archivos locales, por ejemplo: url('img/nuevo.webp')
+         o URLs completas, por ejemplo: url('https://.../imagen.webp')
+         ========================================================== */
+      --hero-image:           var(--hero-image);
+      --manifesto-image:      none;
+      --filter-image:         none;
+      --nuevo-image:          none;
+      --product-detail-image: none;
+      --shop-image:           none;
+      --cart-image:           none;
+      --reviews-image:        none;
+      --faq-image:            none;
+      --contact-image:        none;
+      --bottom-footer-image:  none;
+
       --transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
       --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -395,7 +414,7 @@
     @media (max-width:768px) { section { padding:3rem 1.2rem; } .section-title { font-size:1.2rem; margin-bottom:1.8rem; } }
 
     /* HERO */
-    .hero { height:clamp(520px,56.25vw,780px); min-height:520px; background-image:linear-gradient(90deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.38) 46%,rgba(0,0,0,.12) 100%),url('hero-bg1.png'); background-size:cover; background-position:center; display:flex; align-items:center; justify-content:flex-start; color:#fff; text-align:left; max-width:100%; position:relative; overflow:hidden; }
+    .hero { height:clamp(520px,56.25vw,780px); min-height:520px; background-image:linear-gradient(90deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.38) 46%,rgba(0,0,0,.12) 100%),var(--hero-image); background-size:cover; background-position:center; display:flex; align-items:center; justify-content:flex-start; color:#fff; text-align:left; max-width:100%; position:relative; overflow:hidden; }
     .hero::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,.18)); pointer-events:none; }
     .hero-content { position:relative; z-index:1; width:min(1200px,100%); padding:0 clamp(3rem,10vw,10rem); margin:0; text-align:left; }
     .hero h1 { max-width:600px; margin:0; font-size:clamp(2.6rem,5.2vw,5.2rem); font-weight:900; text-transform:uppercase; letter-spacing:-.05em; line-height:.92; text-wrap:balance; }
@@ -403,7 +422,7 @@
     .hero-sub { max-width:520px; margin:1.4rem 0 0; font-size:.76rem; font-weight:600; letter-spacing:.09em; line-height:1.6; text-transform:uppercase; color:rgba(255,255,255,.78); }
     .hero .btn { margin-top:2rem; animation:heroCtaBreath 6.5s ease-in-out infinite; will-change:filter,transform; position:relative; overflow:hidden; isolation:isolate; }
     @media (max-width:768px) {
-      .hero { min-height:520px; height:78vh; background-image:linear-gradient(90deg,rgba(0,0,0,.68),rgba(0,0,0,.3)),url('hero-bg1.png'); background-position:58% center; }
+      .hero { min-height:520px; height:78vh; background-image:linear-gradient(90deg,rgba(0,0,0,.68),rgba(0,0,0,.3)),var(--hero-image); background-position:58% center; }
       .hero-content { padding:0 1.6rem; }
       .hero h1 { max-width:340px; font-size:clamp(2.25rem,10.5vw,3.8rem); line-height:.92; }
       .hero-sub { max-width:320px; margin-top:1.25rem; font-size:.62rem; letter-spacing:.07em; line-height:1.55; }
@@ -609,23 +628,127 @@
     #faq-section details p strong { color:var(--black); }
     @media (max-width:600px) { #faq-section { padding:3.5rem 1.2rem; } #faq-section summary { min-height:64px; font-size:.7rem; letter-spacing:.06em; } #faq-section details p { padding-left:2.5rem; padding-right:1.5rem; font-size:.8rem; } }
 
-    /* CONFIGURACIÓN DE FONDOS POR SECCIÓN
-       Reemplazá `none` por: url('https://tu-enlace-de-imagen.com/imagen.webp')
-       Las imágenes aparecerán detrás del texto, con overlay automático para mantener contraste. */
-    :root { --manifesto-image:none; --nuevo-image:none; --shop-image:none; --cart-image:none; --reviews-image:none; --faq-image:none; --contact-image:none; }
-    #manifesto,#nuevo-section,#shop,#cart-section,#reviews-section,#faq-section,footer#contact { position:relative; isolation:isolate; background-size:cover; background-position:center; background-repeat:no-repeat; }
-    #manifesto::after,#nuevo-section::after,#shop::after,#cart-section::after,#reviews-section::after,#faq-section::after,footer#contact::after { content:''; position:absolute; inset:0; z-index:0; pointer-events:none; background:linear-gradient(180deg,rgba(255,255,255,.88),rgba(255,255,255,.94)); }
-    #manifesto { background-image:var(--manifesto-image); }
-    #nuevo-section { background-image:var(--nuevo-image); }
-    #shop { background-image:var(--shop-image); }
-    #cart-section { background-image:var(--cart-image); }
-    #reviews-section { background-image:var(--reviews-image); }
-    #faq-section { background-image:var(--faq-image); }
-    footer#contact { background-image:var(--contact-image); }
-    #manifesto > *,#nuevo-section > *,#shop > *,#cart-section > *,#reviews-section > *,#faq-section > *,footer#contact > * { position:relative; z-index:1; }
+    /* ============================================================
+       FONDOS PERSONALIZABLES PARA TODOS LOS APARTADOS
+       Las rutas se configuran arriba, dentro de :root.
+       El overlay está integrado para mantener el texto legible.
+       ============================================================ */
+
+    #filter-bar,
+    #manifesto,
+    #nuevo-section,
+    #product-detail,
+    #shop,
+    #cart-section,
+    #reviews-section,
+    #faq-section,
+    footer#contact,
+    footer.bottom-footer {
+      position:relative;
+      isolation:isolate;
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
+    }
+
+    /* MANIFIESTO: fondo oscuro para conservar su estética */
+    #manifesto {
+      background-color:var(--black);
+      background-image:
+        linear-gradient(180deg,rgba(0,0,0,.72),rgba(0,0,0,.82)),
+        var(--manifesto-image);
+    }
+
+    /* BARRA DE FILTROS */
+    #filter-bar {
+      background-color:#fff;
+      background-image:
+        linear-gradient(180deg,rgba(255,255,255,.90),rgba(255,255,255,.94)),
+        var(--filter-image);
+    }
+
+    /* NUEVO */
+    #nuevo-section {
+      background-color:#fff;
+      background-image:
+        linear-gradient(180deg,rgba(255,255,255,.88),rgba(255,255,255,.94)),
+        var(--nuevo-image);
+    }
+
+    /* DETALLE DE PRODUCTO */
+    #product-detail {
+      background-color:#fff;
+      background-image:
+        linear-gradient(180deg,rgba(255,255,255,.90),rgba(255,255,255,.96)),
+        var(--product-detail-image);
+    }
+
+    /* CATÁLOGO / SHOP */
+    #shop {
+      background-color:#fff;
+      background-image:
+        linear-gradient(180deg,rgba(255,255,255,.88),rgba(255,255,255,.94)),
+        var(--shop-image);
+    }
+
+    /* CARRITO */
+    #cart-section {
+      background-color:#f7f7f7;
+      background-image:
+        linear-gradient(180deg,rgba(247,247,247,.90),rgba(247,247,247,.96)),
+        var(--cart-image);
+    }
+
+    /* RESEÑAS */
+    #reviews-section {
+      background-color:#fff;
+      background-image:
+        linear-gradient(180deg,rgba(255,255,255,.88),rgba(255,255,255,.94)),
+        var(--reviews-image);
+    }
+
+    /* FAQ */
+    #faq-section {
+      background-color:#f7f7f7;
+      background-image:
+        linear-gradient(180deg,rgba(247,247,247,.90),rgba(247,247,247,.96)),
+        var(--faq-image);
+    }
+
+    /* CONTACTO */
+    footer#contact {
+      background-color:#f7f7f7;
+      background-image:
+        linear-gradient(180deg,rgba(247,247,247,.86),rgba(247,247,247,.93)),
+        var(--contact-image);
+    }
+
+    /* FOOTER FINAL */
+    footer.bottom-footer {
+      background-color:var(--black);
+      background-image:
+        linear-gradient(180deg,rgba(0,0,0,.82),rgba(0,0,0,.94)),
+        var(--bottom-footer-image);
+    }
+
+    /* El contenido siempre queda por encima de los fondos */
+    #filter-bar > *,
+    #manifesto > *,
+    #nuevo-section > *,
+    #product-detail > *,
+    #shop > *,
+    #cart-section > *,
+    #reviews-section > *,
+    #faq-section > *,
+    footer#contact > *,
+    footer.bottom-footer > * {
+      position:relative;
+      z-index:1;
+    }
+
     /* CONTACT */
     footer#contact { position:relative; isolation:isolate; background-color:#f7f7f7; color:var(--black); border-top:1px solid rgba(0,0,0,.08); border-bottom:1px solid rgba(0,0,0,.08); padding:clamp(5rem,10vw,9rem) 0; overflow:hidden; }
-    footer#contact::before { content:''; position:absolute; inset:0; z-index:0; opacity:.58; background:radial-gradient(circle at 84% 18%,rgba(163,0,0,.13),transparent 24%),radial-gradient(circle at 12% 82%,rgba(0,0,0,.07),transparent 28%),linear-gradient(115deg,transparent 0 42%,rgba(255,255,255,.72) 48%,transparent 55%); background-size:auto,auto,180% 100%; animation:contactFlow 18s ease-in-out infinite alternate; pointer-events:none; }
+    footer#contact::before { content:''; position:absolute; inset:0; z-index:0; opacity:.34; background:radial-gradient(circle at 84% 18%,rgba(163,0,0,.13),transparent 24%),radial-gradient(circle at 12% 82%,rgba(0,0,0,.07),transparent 28%),linear-gradient(115deg,transparent 0 42%,rgba(255,255,255,.72) 48%,transparent 55%); background-size:auto,auto,180% 100%; animation:contactFlow 18s ease-in-out infinite alternate; pointer-events:none; }
     @keyframes contactFlow { 0% { background-position:center,center,0% 0; } 100% { background-position:center,center,100% 0; } }
     @media (prefers-reduced-motion:reduce) { footer#contact::before,.section-image-slot::after { animation:none; } }
     /* Ejemplo de uso: --nuevo-image:url('https://tu-cdn.com/nuevo.webp'); */
