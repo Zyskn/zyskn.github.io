@@ -1189,6 +1189,72 @@
     @media (max-width:1024px) and (prefers-reduced-motion:reduce) {
       .mobile-scroll-effect { opacity:1; transform:none; }
     }
+  
+
+    /* ============================================================
+       TEMA BLANCO LIMPIO
+       Los apartados sin imagen quedan en blanco puro.
+       Se conservan las imágenes activas del hero, manifiesto y footer.
+    ============================================================ */
+    :root {
+      --white: #ffffff;
+      --gray-bg: #ffffff;
+      --gray-mid: #ffffff;
+    }
+
+    body,
+    section,
+    #filter-bar,
+    #nuevo-section,
+    #product-detail,
+    #shop,
+    #cart-section,
+    #reviews-section,
+    #faq-section,
+    footer#contact {
+      background-color: #ffffff !important;
+    }
+
+    #filter-bar,
+    #nuevo-section,
+    #product-detail,
+    #shop,
+    #cart-section,
+    #reviews-section,
+    #faq-section,
+    footer#contact {
+      background-image: none !important;
+    }
+
+    .product-image,
+    .skeleton-img,
+    #zoomContainer,
+    .cart-item-image,
+    .cart-panel,
+    .filter-btn,
+    .form-group input,
+    .search-input-container input {
+      background-color: #ffffff !important;
+    }
+
+    #faq-section,
+    #cart-section,
+    footer#contact,
+    #nuevo-section,
+    #product-detail,
+    #shop,
+    #reviews-section {
+      color: #000000;
+    }
+
+    /* En móvil, el menú y sus submenús también permanecen blancos. */
+    .nav-main,
+    .sub-nav-wrapper,
+    .sub-nav-item,
+    .user-dropdown {
+      background-color: #ffffff !important;
+    }
+
   </style>
 </head>
 
