@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://iifrudupaxcahnopxqcb.supabase.co" crossorigin>
+  <link rel="preload" as="image" href="hero-bg1.png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- ============================================================
@@ -13,8 +16,10 @@
        - Propuesta de valor única (sin restock)
        - CTA implícito
   ============================================================ -->
-  <title>Ropa vintage y streetwear en Traslasierra | ZYSKN</title>
-  <meta name="description" content="Ropa vintage y streetwear en Traslasierra, Córdoba: remeras, buzos, cargos, jeans y camperas seleccionadas 1 por 1. Piezas únicas y envíos a toda Argentina.">
+  <title>Ropa vintage y streetwear en Argentina | ZYSKN</title>
+  <meta name="description" content="Comprá ropa vintage y streetwear en Argentina. Piezas únicas seleccionadas en Traslasierra, Córdoba: remeras, buzos, cargos, jeans y camperas, con envíos a todo el país.">
+  <meta name="application-name" content="ZYSKN">
+  <meta name="format-detection" content="telephone=yes">
 
   <link rel="icon" type="image/png" href="faviconn[1].png">
   <link rel="apple-touch-icon" href="faviconn[1].png">
@@ -28,8 +33,8 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
   <meta property="og:locale" content="es_AR">
-  <meta property="og:title" content="Ropa vintage y streetwear en Traslasierra | ZYSKN">
-  <meta property="og:description" content="Ropa vintage y streetwear seleccionada en Traslasierra, Córdoba. Piezas únicas, sin restock y envíos a toda Argentina.">
+  <meta property="og:title" content="Ropa vintage y streetwear en Argentina | ZYSKN">
+  <meta property="og:description" content="Comprá ropa vintage y streetwear en Argentina. Piezas únicas seleccionadas en Traslasierra, Córdoba, con envíos a todo el país.">
   <meta property="og:image" content="https://zyskn.github.io/open-graphhh.jpg">
   <meta property="og:image:secure_url" content="https://zyskn.github.io/open-graphhh.jpg">
   <meta property="og:image:type" content="image/jpeg">
@@ -41,8 +46,8 @@
   <meta property="og:type" content="website">
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Ropa vintage y streetwear en Traslasierra | ZYSKN">
-  <meta name="twitter:description" content="Ropa vintage y streetwear seleccionada en Traslasierra, Córdoba. Piezas únicas y envíos a toda Argentina.">
+  <meta name="twitter:title" content="Ropa vintage y streetwear en Argentina | ZYSKN">
+  <meta name="twitter:description" content="Comprá ropa vintage y streetwear en Argentina. Piezas únicas seleccionadas en Traslasierra, Córdoba, con envíos a todo el país.">
   <meta name="twitter:image" content="https://zyskn.github.io/open-graphhh.jpg">
   <meta name="twitter:image:alt" content="ZYSKN: ropa vintage y streetwear en Traslasierra, Córdoba, con envíos a toda Argentina">
 
@@ -80,7 +85,7 @@
       {
         "@type": "WebSite",
         "@id": "https://zyskn.github.io/#website",
-        "name": "ZYSKN | Ropa Vintage y Streetwear",
+        "name": "ZYSKN | Ropa vintage y streetwear en Argentina",
         "url": "https://zyskn.github.io/",
         "inLanguage": "es-AR",
         "publisher": {"@id": "https://zyskn.github.io/#store"}
@@ -89,7 +94,7 @@
         "@type": "WebPage",
         "@id": "https://zyskn.github.io/#webpage",
         "url": "https://zyskn.github.io/",
-        "name": "Ropa vintage y streetwear en Traslasierra, Córdoba | ZYSKN",
+        "name": "Ropa vintage y streetwear en Argentina | ZYSKN",
         "isPartOf": {"@id": "https://zyskn.github.io/#website"},
         "about": {"@id": "https://zyskn.github.io/#store"},
         "inLanguage": "es-AR"
@@ -1474,7 +1479,7 @@
     <!-- HERO -->
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-content">
-<h1 id="hero-title"><span>ROPA VINTAGE</span><span>QUE NO SE REPITE.</span></h1>
+<h1 id="hero-title"><span>ROPA VINTAGE</span><span>Y STREETWEAR.</span></h1>
         <p class="hero-sub">Somos una tienda de ropa vintage, streetwear y outdoor en Traslasierra, Córdoba. Comprá piezas únicas seleccionadas una por una, con envíos a toda Argentina.</p>
         <a href="#shop" onclick="scrollToSection('shop'); return false;" class="btn">VER PRENDAS DISPONIBLES</a>
       </div>
@@ -1792,9 +1797,9 @@ CONFIRMAR PEDIDO POR WHATSAPP
       const itemListSchema = {
         "@context": "https://schema.org",
         "@type": "ItemList",
-        "name": "ZYSKN | Ropa Vintage y Streetwear",
-        "description": "Catálogo de ropa vintage y streetwear importada de EE.UU.: remeras americanas, hoodies oversize, cargos, camperas y más. Piezas únicas con estética 90s, sin restock.",
-        "url": "https://zyskn.github.io",
+        "name": "ZYSKN | Ropa vintage y streetwear en Argentina",
+        "description": "Catálogo de ropa vintage y streetwear seleccionada en Traslasierra, Córdoba, con piezas únicas, remeras, hoodies, cargos y camperas, y envíos a toda Argentina.",
+        "url": "https://zyskn.github.io/",
         "numberOfItems": products.length,
         "itemListElement": products.slice(0, 20).map((p, i) => ({
           "@type": "ListItem",
@@ -1802,7 +1807,7 @@ CONFIRMAR PEDIDO POR WHATSAPP
           "item": {
             "@type": "Product",
             "name": p.name,
-            "description": p.description ? p.description.replace(/<[^>]*>/g, '').substring(0, 160) : `${p.name} - Prenda vintage única en ZYSKN Córdoba`,
+            "description": p.description ? p.description.replace(/<[^>]*>/g, '').substring(0, 160) : `${p.name} - Prenda vintage única de ZYSKN, con envíos a toda Argentina`,
             "image": getProductImages(p)[0] || '',
             "brand": { "@type": "Brand", "name": "ZYSKN" },
             "offers": {
