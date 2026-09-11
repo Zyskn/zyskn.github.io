@@ -1272,6 +1272,77 @@
     .seo-context-links a { color:var(--red); font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; text-decoration:underline; text-underline-offset:3px; }
     @media (max-width:600px) { .seo-context-inner { padding:3.3rem 1.2rem; } .seo-context-links { flex-direction:column; gap:.8rem; } }
 
+  
+
+    /* ZYSKN POLISH PASS — responsive, conversión y accesibilidad */
+    :root {
+      --container-max: 1280px;
+      --gutter: clamp(1rem, 3.2vw, 3rem);
+      --red-accessible: #9b0000;
+    }
+    html { scroll-behavior: smooth; }
+    body { min-width: 320px; }
+    .container, section { width: 100%; }
+    .container { max-width: var(--container-max); padding-inline: var(--gutter); }
+    header#header { padding-inline: var(--gutter); }
+    .nav-icons { gap: clamp(.65rem, 1.4vw, 1.1rem); }
+    .icon-btn, .hamburger { min-width: 40px; min-height: 40px; }
+    .icon-btn svg { width: 20px; height: 20px; }
+    .cart-badge { top: 0; right: 0; }
+    #nuevo-section, #shop { padding-inline: var(--gutter); }
+    #nuevo-section > .container, #shop > .container { max-width: var(--container-max); margin-inline: auto; }
+    .products-grid {
+      width: 100%; grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(1rem, 2vw, 2rem); align-items: start;
+    }
+    .product-card { min-width: 0; }
+    .product-image { border: 1px solid rgba(0,0,0,.06); }
+    .product-meta { gap: .75rem; }
+    .product-name { line-height: 1.25; text-wrap: balance; }
+    .product-price { color: var(--red-accessible); font-weight: 800; }
+    .product-badges { min-height: 20px; }
+    .badge { line-height: 1.35; }
+    #filter-bar { top: 84px; backdrop-filter: blur(14px); background: rgba(255,255,255,.94); }
+    @media (max-width:1024px) { #filter-bar { top: 56px; } }
+    .skeleton-card { min-width: 0; }
+    .skeleton-img, .skeleton-line { background: linear-gradient(100deg,#f0f0f0 25%,#fafafa 40%,#f0f0f0 60%); background-size: 300% 100%; animation: skeleton-shimmer 1.35s ease-in-out infinite; }
+    @keyframes skeleton-shimmer { to { background-position: -150% 0; } }
+    .no-results { min-height: 220px; display: grid; place-items: center; border: 1px dashed rgba(0,0,0,.18); }
+    #product-detail { background: #fff !important; }
+    #detailPrice { color: var(--red-accessible); }
+    .btn-add-cart, .whatsapp-order-btn, .auth-btn { min-height: 52px; border-radius: 2px; }
+    .btn-add-cart:focus-visible, .whatsapp-order-btn:focus-visible, .btn:focus-visible, .filter-btn:focus-visible, .icon-btn:focus-visible, .hamburger:focus-visible { outline: 3px solid rgba(163,0,0,.35); outline-offset: 3px; }
+    @media (max-width: 1100px) and (min-width: 769px) { .products-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 768px) {
+      .products-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 1rem .7rem !important; }
+      #nuevo-section, #shop { padding-block: 3.5rem; }
+      .product-image { margin-bottom: .65rem; }
+      .product-meta { display: block; }
+      .product-price { margin-top: .45rem; font-size: .88rem; }
+      .product-name { font-size: .72rem; }
+      .product-cat { font-size: .58rem; }
+      .badge { font-size: .5rem; padding: 2px 5px; }
+      #filter-bar { overflow-x: auto; scrollbar-width: none; }
+      #filter-bar::-webkit-scrollbar { display:none; }
+      .filter-inner { flex-wrap: nowrap; width: max-content; }
+      .filter-sep { flex: 0 0 auto; }
+      .filter-btn { min-height: 38px; }
+      .hero { min-height: 600px; }
+      .hero-content { padding-inline: 1.25rem; }
+      .hero h1 { max-width: 100%; }
+      .contact-subtitle { max-width: 100%; }
+    }
+    @media (max-width: 420px) {
+      .products-grid { gap: .9rem .55rem !important; }
+      .product-name { font-size: .67rem; letter-spacing: .025em; }
+      .product-cat { font-size: .53rem; }
+      .product-price { font-size: .82rem; }
+      .hero h1 { font-size: clamp(2.15rem, 11.5vw, 3.2rem); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+
   </style>
 </head>
 
@@ -1610,6 +1681,7 @@ CONFIRMAR PEDIDO POR WHATSAPP
           </button>
           <div class="secure-purchase-badge"><span>COMPRA SEGURA</span></div>
         </div>
+      </div>
       </div>
     </section>
 
@@ -2725,6 +2797,26 @@ allProducts = data || [];
       loadProducts();
       loadReviews();
     })();
+
+
+    /* Evita productos repetidos dentro de un mismo bloque. */
+    (function improveProductRendering() {
+      const originalRenderProducts = window.renderProducts;
+      if (typeof originalRenderProducts !== 'function') return;
+      window.renderProducts = function(list, gridId) {
+        const seen = new Set();
+        const clean = (list || []).filter(p => {
+          const key = p.id || `${p.name}|${p.price}|${p.talle || ''}`;
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+        originalRenderProducts(clean, gridId);
+        const grid = document.getElementById(gridId);
+        if (grid) grid.setAttribute('aria-busy', 'false');
+      };
+    })();
+
   </script>
 </body>
 </html>
